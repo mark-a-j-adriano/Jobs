@@ -42,8 +42,7 @@ app.controller("creativeCTRL", function (
     artwork: { visible: false, progress: 0 },
     article: { visible: false, progress: 0 },
     creative: { visible: false, progress: 0 },
-  }
-
+  };
 
   vm.artwork = {
     preview: false,
@@ -155,18 +154,8 @@ app.controller("creativeCTRL", function (
     { text: "Creative Team", predicate: "creative_form", sortable: true },
     { text: "Job Classification", predicate: "artwork_type", sortable: true },
     { text: "Designer", predicate: "designer", sortable: true },
-    {
-      text: "Copywriter",
-      predicate: "writer",
-      sortable: true,
-      dataType: "number"
-    },
-    {
-      text: "Date / Time Required",
-      predicate: "due_date",
-      sortable: true,
-      dataType: "number"
-    },
+    { text: "Copywriter", predicate: "writer", sortable: true,  dataType: "number" },
+    { text: "Date / Time Required", predicate: "due_date",  sortable: true,  dataType: "number" },
     { text: "Status", predicate: "status", sortable: true },
     { text: "Action", predicate: "", sortable: false }
   ];
@@ -549,18 +538,18 @@ app.controller("creativeCTRL", function (
           id: "team",
           name: "Team"
         },
-        {
-          id: "cc_response",
-          name: "CC Response"
-        },
-        {
-          id: "cc_extension",
-          name: "Extension"
-        },
-        {
-          id: "cc_mobile_no",
-          name: "Mobile Number"
-        }
+        // {
+        //   id: "cc_response",
+        //   name: "CC Response"
+        // },
+        // {
+        //   id: "cc_extension",
+        //   name: "Extension"
+        // },
+        // {
+        //   id: "cc_mobile_no",
+        //   name: "Mobile Number"
+        // }
       ];
 
       if (JSON.stringify(vm.job) == "{}") {
@@ -910,6 +899,7 @@ app.controller("creativeCTRL", function (
         vm.job.logged_in_user = username;
         vm.job.tasks = [];
         vm.job.job_no = orderID;
+        vm.job.meeting_location = "CreativeLAB";
         vm.getCreativeBriefs(true);
         vm.getTaskIcons(vm.job.team);
       },

@@ -539,10 +539,7 @@
                 </div>
             </div>
             <div class="col-md-8">
-                <div class="box box-solid box-studio">
-                    <div class="box-header curved">
-                        Preview of Completed Artwork
-                    </div>
+                <div class="box box-solid">               
                     <div class="box-body" style="margin-top:10px;" ng-show="ctrl.ACL.section5">
                         <div ng-bind-html="ctrl.task.artwork_trix"></div>
                     </div>
@@ -900,7 +897,6 @@
                         style="margin-left: 10px;">
                         <i class="fa fa-thumbs-up"></i> &nbsp; Approve
                     </button>
-
                 </div>
 
                 <div class="pull-right" ng-show="ctrl.currentUser.canEdit == 'writer'">
@@ -947,6 +943,10 @@
                     <button type="button" class="btn btn-primary" ng-click="ctrl.submitTask( ctrl.task.status );" style="margin-left: 10px;"
                         ng-hide="ctrl.task.status=='Pending Assignment' || ctrl.task.status=='Cancelled' || ctrl.task.status=='Completed'">
                         <i class="fa fa-save"></i> &nbsp; Save Updates
+                    </button>
+                    <button type="button" class="btn btn-primary" ng-click="ctrl.approveArtwork();" ng-show="ctrl.task.status=='For Approval'"
+                        style="margin-left: 10px;">
+                        <i class="fa fa-thumbs-up"></i> &nbsp; Approve
                     </button>
                     <button type="button" class="btn btn-primary" ng-click="ctrl.closeStudioTask();" ng-show="ctrl.task.status=='Pending Import'"
                         style="margin-left: 10px;">

@@ -3,7 +3,7 @@ app.controller('LoginCtrl', function ($auth, $state, $window, $stateParams, toas
     vm.isDev = false;
     //console.log('hostname:'+ JSON.stringify($window.location.hostname));
     //vm.isUAT = (window.location.hostname.includes("-dev") || window.location.hostname.includes("localhost")) ? true : false;
-    vm.isUAT = false;
+    vm.isUAT = true;
     vm.userName = '';
     vm.eMail = '';
     vm.passWord = '';

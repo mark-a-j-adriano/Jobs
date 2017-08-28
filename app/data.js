@@ -121,7 +121,7 @@ app.factory("DataFactory", [
   "Upload",
   function ($http, $timeout, $q, $location, StorageFactory, Upload) {
     var obj = {};
-    var base_url = "http://creativelab.sphnet.com.sg";
+    var base_url = "http://creativelab-dev.sphnet.com.sg";
     /***  RESOLVABLE - START ***/
 
     // returns a PROMISE
