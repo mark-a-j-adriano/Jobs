@@ -1,0 +1,256 @@
+<html ng-app="myApp">
+
+<head>
+  <title>CreativeLAB</title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <meta name="Description" content="Creative Job Requisition System created with AngularJS and PHP">
+
+  <!-- Bootstrap 3.3.6 -->
+  <link rel="stylesheet" type="text/css" href="lib/css/bootstrap/css/bootstrap.min.css">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" type="text/css" href="lib/css/font-awesome/css/font-awesome.min.css">
+  <!-- Ionicons -->
+  <link rel="stylesheet" type="text/css" href="lib/css/ionicons/css/ionicons.min.css">
+  <!-- Toastr -->
+  <link rel="stylesheet" type="text/css" href="lib/css/angular-toastr.css">
+  <!-- Angular Data Tables 
+  <link rel="stylesheet" href="lib/angular-datatables/css/jquery.dataTables.min.css">
+  <link rel="stylesheet" href="lib/angular-datatables/css/responsive.dataTables.min.css">
+  <link rel="stylesheet" href="lib/angular-datatables/css/angular-datatables.min.css">
+-->
+  <!-- Theme style -->
+  <link rel="stylesheet" type="text/css" href="lib/css/AdminLTE.min.css">
+  <!-- AdminLTE Skins. Choose a skin from the css/skins
+       folder instead of downloading all of them to reduce the load. -->
+  <link rel="stylesheet" type="text/css" href="lib/css/skins/_all-skins.min.css">
+  <link rel="stylesheet" type="text/css" href="lib/css/divtable.css">
+  <link rel="stylesheet" type="text/css" href="lib/css/box2.css">
+  <link rel="stylesheet" type="text/css" href="lib/css/trix.css">
+  <!--<link rel="stylesheet" href="lib/css/isteven-multi-select.min.css">-->
+</head>
+
+<body class="hold-transition skin-blue fixed sidebar-mini sidebar-collapse">
+  <!-- ./wrapper -->
+  <div class="wrapper">
+    <div ng-controller="NavCtrl as ctrl">
+      <div ng-show="ctrl.fullName!=''">
+        <!-- Main Header -->
+        <header class="main-header">
+          <!-- Logo -->
+          <a href="index.html" class="logo">
+            <!-- mini logo for sidebar mini 50x50 pixels -->
+            <span class="logo-mini"><b>C</b>LAB</span>
+            <!-- logo for regular state and mobile devices -->
+            <span class="logo-lg"><b>Creative</b>LAB</span>
+          </a>
+
+          <!-- Header Navbar -->
+          <nav class="navbar navbar-static-top" role="navigation">
+            <!-- Sidebar toggle button-->
+            <a class="sidebar-toggle" data-toggle="offcanvas" role="button">
+              <span class="sr-only">Toggle navigation</span>
+            </a>
+            <!-- Navbar Right Menu -->
+            <div class="navbar-custom-menu">
+              <ul class="nav navbar-nav">
+                <!-- User Account Menu -->
+                <li class="dropdown user user-menu">
+                  <!-- Menu Toggle Button -->
+                  <a class="dropdown-toggle" data-toggle="dropdown">
+                    <!-- The user image in the navbar-->
+                    <i class="fa fa-user" aria-hidden="true"></i>
+                    <!-- <img src="dist/img/user2-160x160.jpg" class="user-image" alt="User Image"> -->
+                    <!-- hidden-xs hides the username on small devices so only the image appears. -->
+                    <span class="hidden-xs">
+                        {{ ctrl.fullName }}  - [ {{ ctrl.role}} ] &nbsp;&nbsp;
+                        <i class="fa fa-caret-down" aria-hidden="true"></i>
+                    </span>
+                  </a>
+                  <ul class="dropdown-menu">
+                    <li class="header"></li>
+                    <li>
+                    </li>
+                    <li class="footer" ng-if="ctrl.isAuthenticated();">
+                      <a ng-click="ctrl.logOut();">Log Out</a>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </div>
+          </nav>
+        </header>
+        <!-- Left side column. contains the logo and sidebar -->
+        <!-- Left side column. contains the logo and sidebar -->
+        <aside class="main-sidebar">
+          <!-- sidebar: style can be found in sidebar.less -->
+          <section class="sidebar">
+
+            <!-- sidebar menu: : style can be found in sidebar.less -->
+            <ul class="sidebar-menu">
+              <li class="header"></li>
+
+              <!-- SALES REPRESENTATIVE -->
+              <li ng-hide="ctrl.role=='Designer'"><a ui-sref="sales"><i class="fa fa-folder"></i> 
+                <span>My Job Request<br/>(Sales Representative)</span></a>
+              </li>
+
+              <!-- COPYWRITER -->
+              <li ng-hide="ctrl.role=='Designer' || ctrl.role=='Sales'"><a ui-sref="copywriter"><i class="fa fa-edit"></i> 
+              <span>My Writing Task<br/>(Copywriter)</span></a>
+              </li>
+
+              <!-- DESIGNER -->
+              <li ng-show="ctrl.role=='Designer' || ctrl.role=='Coordinator' || ctrl.role=='Administrator'"><a ui-sref="designer"><i class="fa fa-laptop"></i> 
+              <span>My Artwork Task<br/>(Designer)</span></a>
+              </li>
+
+              <!-- COORDINATOR -->
+              <li ng-show="ctrl.role=='Coordinator' || ctrl.role=='Administrator'"><a ui-sref="coordinator"><i class="fa fa-tasks"></i> 
+              <span>Job Request List<br/>(Coordinator)</span></a>
+              </li>
+
+              <!-- SETTINGS -->
+              <li ng-show="ctrl.role=='Administrator'"><a href="http://creativelab-dev.sphnet.com.sg/"><i class="fa fa-cog"></i> 
+                <span>Settings</span></a>
+              </li>
+
+
+            </ul>
+          </section>
+          <!-- /.sidebar -->
+        </aside>
+        <!-- Add the sidebar's background. This div must be placed
+        immediately after the control sidebar -->
+        <div class="control-sidebar-bg"></div>
+      </div>
+    </div>
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper layout-boxed">
+      <!--<div ng-view></div>-->
+      <div ui-view></div>
+    </div>
+    <!-- /.content-wrapper -->
+  </div>
+  <!-- ./wrapper -->
+
+
+  <!-- REQUIRED JS SCRIPTS -->
+  <script src="lib/js/angular.min.js"></script>
+  <!--<script src="lib/js/angular-route.min.js"></script>-->
+  <script src="lib/js/angular-animate.min.js"></script>
+  <script src="lib/js/angular-sanitize.min.js"></script>
+  <script src="lib/js/ui-bootstrap-tpls.min.js"></script>
+  <script src="lib/js/angular-ui-router.min.js"></script>
+
+
+  <!-- ANGULAR JS ADD ONS -->
+  <!-- Date field masking -\  https://github.com/Gillardo/bootstrap-ui-datetime-picker->
+  <script src="lib/angularAddOn/datetime-picker.min.js"></script>-->
+
+  <!-- Date / Time field masking -\  https://github.com/text-mask/text-mask 
+  <script src="lib/angularAddOn/abdt/js/datetimepicker.js"></script>
+   <script src="lib/angularAddOn/abdt/js/datetimepicker.templates.js"></script>
+  <script src="lib/angularAddOn/ADM-dateTimePicker.min.js"></script>
+  -->
+  <!-- Date / Time field masking -\  https://github.com/Gillardo/bootstrap-ui-datetime-picker -->
+  <script src="lib/angularAddOn/datetime-picker.min.js"></script>
+  <script src="lib/js/angular-filter.min.js"></script>
+
+  <!--Lodash - A modern JavaScript utility library delivering modularity, performance & extras. -->
+  <script src="lib/js/lodash.min.js"></script>
+  <!-- AngularJS service to handle Rest API Restful Resources properly and easily -\  https://github.com/mgonto/restangular -->
+  <script src="lib/angularAddOn/restangular.min.js"></script>
+
+
+  <!-- Input field masking -\  https://github.com/text-mask/text-mask-->
+  <script src="lib/angularAddOn/angular1TextMask.min.js"></script>
+  <!-- Input field multiple files -\  https://github.com/mistralworks/ng-file-model
+  <script src="lib/angularAddOn/ng-file-model.min.js"></script>-->
+  <!-- Input field multiple file upload -\  
+  https://github.com/danialfarid/ng-file-upload
+  http://luxiyalu.com/angular-all-about-inputfile/
+  -->
+  <script src="lib/angularAddOn/ng-file-upload-shim.min.js"></script>
+  <script src="lib/angularAddOn/ng-file-upload.min.js"></script>
+  <script src="lib/angularAddOn/angularjs-dropdown-multiselect.min.js"></script>
+  <!--<script src="lib/js/isteven-multi-select.min.js"></script>-->
+  <!-- Use of Local and Session Storage -\  https://github.com/gsklee/ngStorage-->
+  <script src="lib/js/ngStorage.min.js"></script>
+
+  <!--
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/2.5.0/ui-bootstrap.min.js"></script> 
+  <script src="http://angular-ui.github.com/bootstrap/ui-bootstrap-tpls-0.1.0.js"></script>
+  -->
+
+  <!-- jQuery 2.2.3 -->
+  <script src="lib/js/jquery-2.2.3.min.js"></script>
+
+  <script src="app/app.js"></script>
+  <script src="app/data.js"></script>
+  <script src="app/directives.js"></script>
+  <script src="app/controllers/login.js"></script>
+  <script src="app/controllers/jobs.js"></script>
+
+  <script src="app/controllers/studio.js"></script>
+  <script src="app/controllers/digital.js"></script>
+  <script src="app/controllers/ooh.js"></script>
+  <script src="app/controllers/content.js"></script>
+  <script src="app/controllers/display.js"></script>
+  <script src="app/controllers/classified.js"></script>
+  <script src="app/controllers/importer.js"></script>
+   <script src="app/controllers/radio.js"></script>
+
+  <script src="app/controllers/dashboard.js"></script>
+  <!-- EXPERIMENTAL -->
+  <script src="app/controllers/dateTime.js"></script>
+
+  <!--
+  <script src="app/routes.js"></script> 
+  -->
+  <!-- AngularJS Toaster is a customized version of "toastr" non-blocking notification javascript library.
+    https://github.com/jirikavi/AngularJS-Toaster -->
+  <script src="lib/js/angular-toastr.tpls.js"></script>
+  <!-- for OAuth to Gmail - https://github.com/sahat/satellizer -->
+  <script src="lib/js/satellizer.min.js"></script>
+  <!-- Knockout makes it easier to create rich, responsive UIs with JavaScript -->
+  <script src="lib/js/knockout-min.js"></script>
+
+  <!-- Moment = Parse, validate, manipulate, and display dates and times in JavaScript. -->
+  <script src="lib/js/moment.min.js"></script>
+  <!-- rx-angular = Library for bridging between RxJS and AngularJS. 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/5.3.0/Rx.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/rx-angular/1.1.3/rx.angular.min.js"></script>
+  -->
+
+
+  <!-- Angular Data Tables 
+  <script src="lib/angular-datatables/jquery.dataTables.min.js"></script>
+  <script src="lib/angular-datatables/dataTables.responsive.min.js"></script>
+  <script src="lib/angular-datatables/angular-datatables.min.js"></script>
+  -->
+  <!-- Bootstrap 3.3.6 -->
+  <script src="lib/css/bootstrap/js/bootstrap.min.js"></script>
+  <!-- dashForms App -->
+  <script src="lib/js/app.min.js"></script>
+  <!--<script src="lib/js/ng-wig.min.js"></script>
+  <script src="https://cdn.ckeditor.com/4.7.1/standard/ckeditor.js"></script>
+  <script src="lib/js/ng-ckeditor.min.js"></script>
+  -->
+
+  <script src="lib/js/trix.min.js"></script>
+  <script src="lib/js/angular-trix.min.js"></script>
+
+
+  <script src="lib/js/jquery.slimscroll.min.js"></script>
+  <!-- Optionally, you can add Slimscroll and FastClick plugins.
+      Both of these plugins are recommended to enhance the
+      user experience. Slimscroll is required when using the
+      fixed layout. 
+  -->
+</body>
+
+</html>

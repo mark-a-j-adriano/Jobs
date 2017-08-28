@@ -1,0 +1,254 @@
+[
+    {
+        "id": "damonng",
+        "name": "Damon Ng - Copy Writer"
+    },
+    {
+        "id": "hsolikin",
+        "name": "Handi Solikin - Designer"
+    },
+    {
+        "id": "emsmaav1",
+        "name": "EMS Mark Anthony Adriano"
+    },
+    {
+        "id": "teows",
+        "name": "Teo Wan Soon - Coordinator"
+    },
+    {
+        "id": "ngod",
+        "name": "Ngo Daphne - Sales"
+    },
+    {
+        "id": "leolean",
+        "name": "Leonard Lean CK - Coordinator"
+    },
+    {
+        "id": "annieyeo",
+        "name": "Annie Yeo CL - Copy Writer"
+    },
+    {
+        "id": "kohbc",
+        "name": "Koh Bee Chu - Designer"
+    },
+    {
+        "id": "PRJCC1",
+        "name": "PRJCC1 - sales"
+    },
+    {
+        "id": "PRJCC2",
+        "name": "PRJCC2 - Sales"
+    },
+    {
+        "id": "PRJCC3",
+        "name": "PRJCC3 - Coordinator"
+    },
+    {
+        "id": "PRJCC4",
+        "name": "PRJCC4 - Designer"
+    },
+    {
+        "id": "PRJCC5",
+        "name": "PRJCC5 - Designer"
+    },
+    {
+        "id": "PRJCC6",
+        "name": "PRJCC6 - Designer"
+    },
+    {
+        "id": "PRJCC7",
+        "name": "PRJCC7 - Campaign Team"
+    },
+    {
+        "id": "PRJCC8",
+        "name": "PRJCC8 - Campaign Team"
+    },
+    {
+        "id": "PRJMP3",
+        "name": "PRJMP3 - OOH Coordinator"
+    },
+    {
+        "id": "PRJMP2",
+        "name": "PRJMP2 - OOH SalesTH"
+    },
+    {
+        "id": "PRJMP1",
+        "name": "PRJMP1 - OOH Sales"
+    },
+    {
+        "id": "PRJMP4",
+        "name": "PRJMP4 - OOH Designer"
+    },
+    {
+        "id": "PRJMP5",
+        "name": "PRJMP5 - OOH Designer"
+    },
+    {
+        "id": "PRJMP6",
+        "name": "PRJMP6 - OOH Buddy"
+    },
+    {
+        "id": "PRJMP7",
+        "name": "PRJMP7 - OOH Buddy"
+    },
+    {
+        "id": "PRJMP8",
+        "name": "PRJMP8 - Eng Writer"
+    },
+    {
+        "id": "PRJMP9",
+        "name": "PRJMP9 - Eng Writer"
+    },
+    {
+        "id": "PRJMP10",
+        "name": "PRJMP10 - Chi Writer"
+    },
+    {
+        "id": "PRJMP11",
+        "name": "PRJMP11 - Chi Writer"
+    },
+    {
+        "id": "PRJMP12",
+        "name": "PRJMP12 - Malay Writer"
+    },
+    {
+        "id": "PRJMP13",
+        "name": "PRJMP13 - OOH Malay Writer"
+    },
+    {
+        "id": "PRJCN1",
+        "name": "PRJCN1 - Head Of CreativeLAB"
+    },
+    {
+        "id": "PRJCN2",
+        "name": "PRJCN2 - Head Of CreativeLAB"
+    },
+    {
+        "id": "PRJCN3",
+        "name": "PRJCN3 - Creative Director"
+    },
+    {
+        "id": "PRJCN4",
+        "name": "PRJCN4 - Creative Director"
+    },
+    {
+        "id": "PRJCN5",
+        "name": "PRJCN5 - Art Director"
+    },
+    {
+        "id": "PRJCN6",
+        "name": "PRJCN6 - Art Director"
+    },
+    {
+        "id": "PRJCN7",
+        "name": "PRJCN7 - Asst Art Director"
+    },
+    {
+        "id": "PRJCN8",
+        "name": "PRJCN8 - Asst Art Director"
+    },
+    {
+        "id": "PRJCN9",
+        "name": "PRJCN9 - Designer"
+    },
+    {
+        "id": "PRJCN10",
+        "name": "PRJCN10 - Designer"
+    },
+    {
+        "id": "PRJCN11",
+        "name": "PRJCN11 - Freelancer"
+    },
+    {
+        "id": "PRJCN12",
+        "name": "PRJCN12 - Freelancer"
+    },
+    {
+        "id": "PRJCN13",
+        "name": "PRJCN13 - Operations "
+    },
+    {
+        "id": "PRJCN14",
+        "name": "PRJCN14 - Operations "
+    },
+    {
+        "id": "PRJCN20",
+        "name": "PRJCN20 - Display Sales"
+    },
+    {
+        "id": "PRJCE1",
+        "name": "PRJCE1 - English Writer"
+    },
+    {
+        "id": "PRJCE2",
+        "name": "PRJCE2 - English Writer"
+    },
+    {
+        "id": "PRJCE3",
+        "name": "PRJCE3 - Chinese Writer"
+    },
+    {
+        "id": "PRJCE4",
+        "name": "PRJCE4 - Chinese Writer"
+    },
+    {
+        "id": "PRJCE5",
+        "name": "PRJCE5 - Malay Writer"
+    },
+    {
+        "id": "PRJCE6",
+        "name": "PRJCE6 - Malay Writer"
+    },
+    {
+        "id": "PRJSS1",
+        "name": "PRJSS1 - CLS Sales"
+    },
+    {
+        "id": "PRJSS2",
+        "name": "PRJSS2 - CLS Sales TL"
+    },
+    {
+        "id": "PRJSS3",
+        "name": "PRJSS3 - CLS Coordinator"
+    },
+    {
+        "id": "PRJSS4",
+        "name": "PRJSS4 - CLS Designer"
+    },
+    {
+        "id": "PRJSS5",
+        "name": "PRJSS5 - CLS Designer"
+    },
+    {
+        "id": "PRJSS6",
+        "name": "PRJSS6 - CLS Designer2"
+    },
+    {
+        "id": "PRJSS7",
+        "name": "PRJSS7 - CLS Designer2"
+    },
+    {
+        "id": "PRJSS8",
+        "name": "PRJSS8 - CLS Copywriter"
+    },
+    {
+        "id": "PRJSS9",
+        "name": "PRJSS9 - CLS Copywriter"
+    },
+    {
+        "id": "PRJSS10",
+        "name": "PRJSS6 - CLS Art Director"
+    },
+    {
+        "id": "PRJSS11",
+        "name": "PRJSS7 - CLS Art Director"
+    },
+    {
+        "id": "PRJSS12",
+        "name": "PRJSS8 - CLS Art Supervisor"
+    },
+    {
+        "id": "PRJSS13",
+        "name": "PRJSS9 - CLS Art Supervisor"
+    }
+]

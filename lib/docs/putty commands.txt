@@ -1,0 +1,40 @@
+ssh -l prjjc jobscre-web01-dev //for login to server
+14#Jun17
+
+'Copy www folder to UAT server : www directory
+scp -r www prjjc@jobscre-web01-dev:/test/prjjc/jc
+
+
+'Copy index file to UAT server 
+scp index.html prjjc@jobscre-web01-dev:/test/prjjc/jc/www
+
+'------------------------------------------------------------------------------------------------------------------------------------
+
+'RENAME OR MOVE 
+mv old_folder_name new_folder_name
+
+'CRUD a file
+nano <filename>
+
+LS - list all folders
+
+ 'To remove a directory that contains other files or directories, use the following command.
+rm -r www2
+mv www1 www2
+
+'------------------------------------------------------------------------------------------------------------------------------------
+
+http://jobscre-app01-dev.sphnet.com.sg/ 
+http://creativelab-dev.sph.com.sg
+http://creativelab-dev.sphnet.com.sg
+
+
+'------------------------------------------------------------------------------------------------------------------------------------
+
+'Copy prd folder to UAT server : prd directory
+scp -r prd prjjc@jobscre-web01-dev:/test/prjjc/jc/prd/apache/jc 
+
+'------------------------------------------------------------------------------------------------------------------------------------
+ssh -l prdjc jobscre-web03-prd
+e9AMFBs1
+cd /prd/apache/jc/www

@@ -1,0 +1,26 @@
+=================================================================
+AUTHENTICATION FUNCTION - 1503640293
+=================================================================
+working directory : C:\xampp\htdocs\Creative\Jobs\service
+request : {"username":"adfasd","password":"asdfasdf"}
+LDAP bind failed...
+=================================================================
+stamp:1503640293
+expiry=2017/08/25 02:21:54
+jwt_token-eyJhbGciOiAiSFMyNTYiLCJ0eXAiOiAiSldUIn0=.eyJpc3MiOiAiY3JlYXRpdmVsYWIuc3BoLmNvbS5zZyIsImV4cCI6MjAxNy8wOC8yNSAwMjoyMTo1NCwiY291bnRyeSI6ICJTaW5nYXBvcmUiLCJ1c2VySUQiOiJhZGZhc2QiLCJlbWFpbCI6ImFkZmFzZEBzcGguY29tLnNnIn0=.eNdbKPT01gHfpddPtXkNNgOPnWNlmJgEDHr1Aky7dCs=
+=================================================================
+AUTHENTICATION FUNCTION - 1503640954
+=================================================================
+working directory : C:\xampp\htdocs\Creative\Jobs\service
+request : {"username":"adfasdf","password":"asdfasdf"}
+LDAP bind failed...
+=================================================================
+stamp:1503640954
+expiry=1503642775
+jwt_token-eyJhbGciOiAiSFMyNTYiLCJ0eXAiOiAiSldUIn0=.eyJpc3MiOiAiY3JlYXRpdmVsYWIuc3BoLmNvbS5zZyIsImV4cCI6MTUwMzY0Mjc3NSwiY291bnRyeSI6ICJTaW5nYXBvcmUiLCJ1c2VySUQiOiJhZGZhc2RmIiwiZW1haWwiOiJhZGZhc2RmQHNwaC5jb20uc2cifQ==.k5uHE3YG22qrQsVAcxqBvTPyfviMcL9WDv4e7lflHvw=
+=================================================================
+AUTHENTICATION FUNCTION - 1503644097
+=================================================================
+working directory : C:\xampp\htdocs\Creative\Jobs\service
+request : {"username":"emsmaav1","password":"Mark"}
+LDAP bind failed...

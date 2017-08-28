@@ -1,0 +1,8 @@
+<input type="button" value="Disable" ng-click="editorDIsabled=true">
+<input type="button" value="Enable" ng-click="editorDIsabled=false">
+<hr>
+
+<ng-ckeditor ng-model="htmlEditor" ng-disabled="editorDIsabled"   remove-buttons="Image" remove-plugins="iframe,flash,smiley">
+</ng-ckeditor>
+
+<hr> |{{htmlEditor}}|

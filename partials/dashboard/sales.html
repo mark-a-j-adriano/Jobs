@@ -1,0 +1,300 @@
+<script>
+    $('.collapse').on('show.bs.collapse', function () {
+        $('.collapse.in').collapse('hide');
+    });
+
+</script>
+
+<style>
+    .hiddenRow {
+        padding: 0 !important;
+    }
+</style>
+
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>
+        Sales Person
+        <small> </small>
+    </h1>
+    <!--
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i>  </a></li>
+        <li class="active"> </li>
+    </ol>
+    -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <!-- Small boxes (Stat box) -->
+    <div class="row">
+        <div class="col-lg-2 col-xs-4">
+            <!-- small box -->
+            <div class="small-box bg-orange" ng-click="ctrl.getJobList('Draft');" style="cursor:pointer">
+                <div class="inner">
+                    <h3 ng-show="ctrl.stats.draft > 0">{{ctrl.stats.draft}}</h3>
+                    <h3 ng-hide="ctrl.stats.draft > 0">0</h3>
+                    <p>Draft</p>
+                </div>
+                <!--
+                <div class="icon">
+                    <i class="ion ion-pie-graph"></i>
+                </div>
+                -->
+            </div>
+        </div>
+        <!-- ./col -->
+        <div class="col-lg-2 col-xs-4">
+            <!-- small box -->
+            <div class="small-box bg-aqua" ng-click="ctrl.getJobList('Request Re-Submission');" style="cursor:pointer">
+                <div class="inner">
+                    <h3 ng-show="ctrl.stats.pending_sales_info > 0">{{ctrl.stats.pending_sales_info}}</h3>
+                    <h3 ng-hide="ctrl.stats.pending_sales_info > 0">0</h3>
+                    <p>Pending Sales Information</p>
+                </div>
+                <!--
+                <div class="icon">
+                    <i class="ion ion-bag"></i>
+                </div>
+                -->
+            </div>
+        </div>
+        <!-- ./col -->
+        <div class="col-lg-2 col-xs-4">
+            <!-- small box -->
+            <div class="small-box bg-green" ng-click="ctrl.getJobList('In Progress');" style="cursor:pointer">
+                <div class="inner">
+                    <h3 ng-show="ctrl.stats.in_progress > 0">{{ctrl.stats.in_progress}}</h3>
+                    <h3 ng-hide="ctrl.stats.in_progress > 0">0</h3>
+                    <p>In Progress</p>
+                </div>
+                <!--
+                <div class="icon">
+                    <i class="ion ion-stats-bars"></i>
+                </div>
+                -->
+            </div>
+        </div>
+        <!-- ./col -->
+        <div class="col-lg-2 col-xs-4">
+            <!-- small box -->
+            <div class="small-box bg-blue" ng-click="ctrl.getJobList('For Approval');" style="cursor:pointer">
+                <div class="inner">
+                    <h3 ng-show="ctrl.stats.pending_approval > 0">{{ctrl.stats.pending_approval}}</h3>
+                    <h3 ng-hide="ctrl.stats.pending_approval > 0">0</h3>
+                    <p>Pending Approval</p>
+                </div>
+                <!--
+                <div class="icon">
+                    <i class="ion ion-person-add"></i>
+                </div>
+                -->
+            </div>
+        </div>
+        <!-- ./col -->
+        <div class="col-lg-2 col-xs-4">
+            <!-- small box -->
+            <div class="small-box bg-red" ng-click="ctrl.getJobList('For Revision');" style="cursor:pointer">
+                <div class="inner">
+                    <h3 ng-show="ctrl.stats.for_revision > 0">{{ctrl.stats.for_revision}}</h3>
+                    <h3 ng-hide="ctrl.stats.for_revision > 0">0</h3>
+                    <p>For Revision</p>
+                </div>
+                <!--
+                <div class="icon">
+                    <i class="ion ion-pie-graph"></i>
+                </div>
+                -->
+            </div>
+        </div>
+        <!-- ./col -->
+
+        <div class="col-lg-2 col-xs-4">
+            <!-- small box -->
+            <div class="small-box bg-purple" ng-click="ctrl.getJobList('Completed');" style="cursor:pointer">
+                <div class="inner">
+                    <h3 ng-show="ctrl.stats.completed > 0">{{ctrl.stats.completed}}</h3>
+                    <h3 ng-hide="ctrl.stats.completed > 0">0</h3>
+                    <p>Completed</p>
+                </div>
+                <!--
+                <div class="icon">
+                    <i class="ion ion-pie-graph"></i>
+                </div>
+                -->
+            </div>
+        </div>
+        <!-- ./col -->
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box box-solid box-default">
+                <div class="box-header">
+                    <h3 class="box-title">Request List</h3>
+                    <div class="box-tools pull-right">
+                        <span>{{ ctrl.jobs.length }} records</span>
+                    </div>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <div class="form-inline" style="width:100%">
+                        <div class="form-group" style="width:100%">
+                            <label class="col-sm-1">Search Filter:</label>
+                            <div class="col-sm-10">
+                                <span class="input-icon">
+                                    <input placeholder="Filter Job Request list ..." class="nav-search-input" ng-model="ctrl.filterJobs" 
+                                    ng-change="ctrl.resetLimit();"  autocomplete="off" type="text" style="width:300px;" focus>
+                                    &nbsp;
+                                    <i class="search-icon fa fa-search nav-search-icon"></i>
+                                </span>
+                            </div>
+                            <div class="col-sm-1">
+                                <button type="button" class="btn btn-default pull-right" ng-click="ctrl.openJobReq('00');">
+                                    <i class="fa fa-plus"></i> 
+                                    Create New Job Order
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.box-body -->
+
+                <div class="box-footer  table-responsive no-padding">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th ng-repeat="c in ctrl.columnTitle">
+                                    <div ng-hide="c.sortable">{{c.text}}</div>
+                                    <div ng-show="c.sortable">
+                                        <a ng-click="ctrl.orderByField=c.predicate; ctrl.reverseSort = !ctrl.reverseSort" style="cursor:pointer">
+                                            {{c.text}}
+                                            <span ng-show="ctrl.orderByField == c.predicate">
+                                                <span ng-show="!ctrl.reverseSort" style='font-weight:100;'>
+                                                    &nbsp;
+                                                    <i class="fa fa-angle-up"></i>
+                                                </span>
+                                                <span ng-show="ctrl.reverseSort"  style='font-weight:100;'>
+                                                    &nbsp;                                                    
+                                                    <i class="fa fa-angle-down"></i>
+                                                </span>
+                                            </span>
+                                        </a>
+                                    </div>
+                                </th>
+                            </tr>
+                            <!--
+                            <tr ng-show="ctrl.jobs.length==0">
+                                <th colspan="8" style="vertical-align:middle;"><i class="fa fa-ban fa-3x"></i>&nbsp;No data found</th>
+                            </tr>
+                            -->
+                            <tr ng-hide="(ctrl.jobs.length>-1) || ctrl.qResultError">
+                                <th colspan="8" style="vertical-align:middle;"><i class="fa fa-cog fa-3x fa-spin"></i>&nbsp;Loading</th>
+                            </tr>
+                        </thead>
+                        <!--
+                        <tbody ng-repeat="c in ctrl.jobs | filter: ctrl.filterJobs | orderBy:'-id'" id="{{c.id}}" animate-on-change='c.packing + c.stock + c.price + c.description'
+                            ng-animate="ctrl.animationsEnabled" ng-click="ctrl.go(c);">
+                        -->
+                        <tbody ng-repeat="c in ctrl.jobs | filter: ctrl.filterJobs | orderBy:ctrl.orderByField:ctrl.reverseSort" id="{{c.id}}" animate-on-change='c.job_no + c.title + c.booking_type + c.status'
+                            ng-animate="ctrl.animationsEnabled" ng-click="ctrl.go(c);" ng-show='ctrl.jobs.length > 0'>
+                            <tr>
+                                <td class="pullright">
+                                    <button type="btn btn-small" title="Click to show list of task for Job Order..." ng-click="jobData.showTaskList=!jobData.showTaskList"
+                                        ng-hide="c.tasks.length==0">
+										<i class="fa fa-chevron-right" ng-hide="jobData.showTaskList"></i>
+                                        <i class="fa fa-chevron-down"  ng-show="jobData.showTaskList"></i>
+                                    </button>
+                                </td>
+                                <!--<td>{{c.job_no}}</td>-->
+                                <td>{{c.title}}</td>
+                                <td>{{c.booking_type}}</td>
+                                <td style="text-align: right;padding-right:100px;">{{c.ad_spend | currency : "$" : 2}}</td>
+                                <td style="text-align: right;padding-right:100px;">{{c.production_cost | currency : "$" : 2}}</td>
+                                <td>{{c.status}}</td>
+                                <td style="width:100px">
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-warning fa fa-edit" ng-click="ctrl.openJobReq(c.id);"></button>
+                                        <!--<button type="button" class="btn btn-danger fa fa-trash-o" ng-click="ctrl.deleteProduct(c);"></button>-->
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr ng-show="jobData.showTaskList">
+                                <td>&nbsp;</td>
+                                <td colspan="7">
+                                    <!--<table class="table table-bordered table-condensed table-inverse" style="background-color:aliceblue;border: 2px solid darkblue;">-->
+                                    <table class="table table-condensed" style='border: 1px solid black; background-color:aliceblue; border-collapse: collapse;margin:0;'>
+                                        <thead>
+                                            <tr>
+                                                <th ng-repeat="x in ctrl.subColumnTitle" style='border: 1px solid black; background-color:aliceblue; border-collapse: collapse;'>{{x.text}}</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="task in c.tasks track by $index" ng-show='c.tasks.length > 0' style='border: 1px solid black; background-color:aliceblue; border-collapse: collapse;'>
+                                                <td style="border: 1px solid black;">{{($index + 1)}}</td>
+                                                <td style="border: 1px solid black;">{{task.creative_form | propercase}}</td>
+                                                <td style="border: 1px solid black;">{{task.artwork_type}}</td>
+                                                <td style="border: 1px solid black;">{{task.due_date | date:"dd/MM/yyyy hh:mm a"}}</td>
+                                                <td style="border: 1px solid black;" ng-hide="task.pub_date.length > 0">
+                                                    <span>{{task.pub_date | date:"dd/MM/yyyy"}}</span>
+                                                </td>
+                                                <td style="border: 1px solid black;" ng-show="task.pub_date.length > 0">
+                                                    <p ng-repeat="pubDate in task.pub_date">
+                                                        <span>{{pubDate | date:"dd/MM/yyyy"}}</span>
+                                                    </p>
+                                                </td>
+
+                                                <td style="border: 1px solid black;" ng-hide="task.designer.length > 0">
+                                                    {{task.designer}}
+                                                </td>
+                                                <td style="border: 1px solid black;" ng-show="task.designer.length > 0">
+                                                    <p ng-repeat="designer in task.designer">
+                                                        <span>{{designer}}</span>
+                                                    </p>
+                                                </td>
+
+                                                <td style="border: 1px solid black;" ng-hide="task.writer.length > 0">
+                                                    {{task.writer}}
+                                                </td>
+                                                <td style="border: 1px solid black;" ng-show="task.writer.length > 0">
+                                                    <p ng-repeat="writer in task.writer">
+                                                        <span>{{writer}}</span>
+                                                    </p>
+                                                </td>
+                                                
+                                                <td style="border: 1px solid black;">{{task.submitted_date | date:"dd/MM/yyyy hh:mm a"}}</td>
+                                                <td style="border: 1px solid black;">{{task.status}}</td>
+                                                <td style="width:100px;border: 1px solid black; background-color:aliceblue; border-collapse: collapse;">
+                                                    <div class="btn-group">
+                                                        <button type="button" class="btn btn-default fa fa-edit" ng-click="ctrl.openTask(c,task);"></button>
+                                                        <!--<button type="button" class="btn btn-danger fa fa-trash-o" ng-click="ctrl.deleteProduct(c);"></button>-->
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr ng-hide='c.tasks.length > 0'>
+                                                <td colspan="10" style="text-align:center">
+                                                    <b><i>No Record found.</i></b>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tbody ng-hide='ctrl.jobs.length > 0'>
+                            <tr>
+                                <td colspan="7" style="text-align:center">
+                                    <b><i>No Record found.</i></b>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.box-footer -->
+            </div>
+            <!-- /.box -->
+        </div>
+    </div>
+</section>
+<!-- /.content -->

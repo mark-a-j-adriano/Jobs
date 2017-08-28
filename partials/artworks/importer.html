@@ -1,0 +1,1036 @@
+<style>
+    figcaption {
+        visibility: hidden;
+    }
+
+    progress {
+        visibility: hidden;
+    }
+
+    trix-editor .caption-editing textarea {
+        display: none;
+    }
+
+    .trix-content .attachment.attachment-file {
+        display: none;
+    }
+</style>
+
+<div class="container" style="padding:0">
+    <!-- Header content -->
+    <section class="content" style="background-color:white;min-height: 0px;padding:0">
+        <div class="row">
+            <div class="col-md-12">
+                <!--<img style="width:100%" src="./lib/img/jobs/JobReqBanner - Display.jpg">-->
+                <div class="box" style="margin-bottom:0px;">
+                    <div class="box-header" style="background-image:url('./lib/img/jobs/JobReqBanner - Importer.jpg');background-size: cover;min-height:65px;">
+                        <!--<img style="width:100%" src="./lib/img/jobs/JobReqBanner - Display.jpg">-->
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" title="Close Task" style="background-color:rgba(255,255,255,0.5);" ng-click="ctrl.gotoMain();">
+		                        <i class="fa fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" style="padding-left:10px;padding-right:10px;">
+            <div class="col-md-9">
+                <span ng-show="ctrl.task.status=='new'"><h4>New Artwork Request</h4></span>
+                <div class="info-box bg-aqua" ng-click="ctrl.revertTask();" ng-show="ctrl.docMessages.length > 0" style="margin-top:10px;height:50px;min-height: 50px;cursor:pointer">
+                    <span class="info-box-icon" style="height:50px;">
+                        <i class="fa fa-comments-o"></i>
+                    </span>
+                    <div class="info-box-content" style="height:50px;">
+                        <span class="info-box-text">MESSAGES</span>
+                        <span class="info-box-number">{{ctrl.docMessages.length}}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3" style="text-align: right;">
+                <h4>Status: {{ctrl.task.status | uppercase}}</h4>
+                <h5>Task Number: {{ctrl.task.task_no}}</h5>
+            </div>
+        </div>
+    </section>
+
+    <!-- MAIN CONTENT -->
+    <!-- Task Details - START -->
+    <section class="content" style="background-color:white;padding-top:0">
+        <div class="row">
+            <div class="col-md-4">
+                <!-- Request Information - START -->
+                <div class="box box-solid box-importer">
+                    <div class="box-header curved">
+                        Request Information
+                    </div>
+                    <div class="box-body">
+                    </div>
+                    <div class="box-footer">
+                        <div class="form-group">
+                            <label>Client / Title:</label>
+                            <input class="form-control input-sm fld-att" ng-model="ctrl.task.title" type="text" ng-readonly="ctrl.ACL.section0">
+                        </div>
+                    </div>
+                </div>
+                <!-- Request Information - END -->
+
+                <!-- Requested By - START -->
+                <div class="box box-solid box-importer">
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label>Submitted By :</label>
+                            <input class="form-control input-sm fld-att" ng-model="ctrl.task.submitted_by" type="text" ng-readonly="ctrl.ACL.section0">
+                        </div>
+                        <div class="form-group" style="width:100%">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <label>Extension :</label>
+                                    <input id='extension' ng-model="ctrl.task.extension" text-mask="ctrl.MaskConfig.extNum" type="text" class="form-control  input-sm fld-att"
+                                        ng-readonly="ctrl.ACL.section0" />
+                                </div>
+                                <div class="col-sm-8">
+                                    <label>Mobile Number :</label>
+                                    <input id='mobile_no' ng-model="ctrl.task.mobile_no" text-mask="ctrl.MaskConfig.phone" type="text" class="form-control  input-sm fld-att"
+                                        ng-readonly="ctrl.ACL.section0" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Team :</label>
+                            <input class="form-control input-sm fld-att" ng-model="ctrl.task.team" type="text" ng-readonly="ctrl.ACL.section0">
+                        </div>
+                        <div class="form-group">
+                            <label>CC Response :</label>
+                            <input class="form-control input-sm fld-att" ng-model="ctrl.task.cc_response" type="text" ng-readonly="ctrl.ACL.section0">
+                        </div>
+                        <div class="form-group" style="width:100%">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <label>Extension :</label>
+                                    <input ng-model="ctrl.task.cc_extension" text-mask="ctrl.MaskConfig.extNum" type="text" class="form-control  input-sm fld-att"
+                                        ng-readonly="ctrl.ACL.section0" />
+                                </div>
+                                <div class="col-sm-8">
+                                    <label>Mobile Number :</label>
+                                    <input ng-model="ctrl.task.cc_mobile_no" text-mask="ctrl.MaskConfig.phone" type="text" class="form-control  input-sm fld-att"
+                                        ng-readonly="ctrl.ACL.section0" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="overlay" ng-hide="ctrl.currentUser!=''">
+                        <i class="fa fa-refresh fa-spin"></i>
+                    </div>
+                </div>
+                <!-- Requested By  - END -->
+
+            </div>
+            <div class="col-md-8">
+                <!-- Specification  - START -->
+                <div class="box box-solid box-importer">
+                    <div class="box-header curved">
+                        Specifications
+                    </div>
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-4 col-sm-4">
+                                <div class="form-group">
+                                    <label>Job Classification</label>
+                                    <select name="artwork_type" id="artwork_type" class="form-control input-sm select-att" ng-model="ctrl.task.artwork_type"
+                                        ng-disabled="ctrl.ACL.section0">
+                                        <option ng-repeat="option in ctrl.artwork_Types" value="{{option.artwork_type}}">{{option.artwork_type}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-4 col-sm-4">
+                                <div class="form-group">
+                                    <label>Publication</label>
+                                    <select name="publication" id="publication" class="form-control input-sm select-att" ng-model="ctrl.task.publication" ng-change="ctrl.defineLang();"
+                                        ng-disabled="ctrl.ACL.section2">
+                                        <option ng-repeat="option in ctrl.pubOptions" value="{{option.product_code}}">{{option.product_name}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-4 col-sm-4">
+                                <div class="form-group">
+                                    <label>Other</label>
+                                    <input name="other_pub" id="other_pub" class="form-control input-sm fld-att" type="text" ng-model="ctrl.task.other_pub" ng-readonly="ctrl.ACL.section2"
+                                        ng-disabled="ctrl.task.publication != 'Other'">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4 col-sm-4">
+                                <div class="form-group">
+                                    <label>Type</label>
+                                    <select name="pub_type" id="pub_type" ng-model="ctrl.task.pub_type" ng-disabled="ctrl.ACL.section0" class="form-control input-sm select-att"
+                                        ng-change="ctrl.defineType(true);">
+                                        <option ng-repeat="option in ctrl.pubTypes" value="{{option.code}}">{{option.name}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-4 col-sm-4">
+                                <div class="form-group">
+                                    <label>Pre-defined size</label>
+                                    <select name="size_option" id="size_option" class="form-control input-sm select-att" ng-model="ctrl.task.size_option" ng-change="ctrl.defineSize();"
+                                        ng-disabled="ctrl.ACL.section2">
+                                        <option ng-repeat="option in ctrl.pubSizes" value="{{option.size}}">{{option.size}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-4 col-sm-4">
+                                <div class="form-group">
+                                    <!--<label>Size<span style="font-style: italic;font-size: smaller;">&nbsp;(cols x height)</span></label>-->
+                                    <label>Height x Cols</label>
+                                    <input name="pub_size" id="pub_size" class="form-control input-sm fld-att" type="text" ng-model="ctrl.task.pub_size" text-mask="ctrl.MaskConfig.size"
+                                        ng-readonly="ctrl.ACL.section2" ng-disabled="ctrl.task.size_option != 'Other'">
+                                </div>                               
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4 col-sm-4">
+                                <div class="form-group" style="width:100%;padding-top:10px;margin-left:20px;">
+                                    <div class="row">
+                                        <label class="col-xs-4" style="padding:0px;">Language</label>
+                                        <div class="col-xs-4" style="padding:0px;">
+                                            <div class="checkbox" style="margin-top: 0px;">
+                                                <input type="radio" id="language" ng-model="ctrl.task.language" value="English" ng-disabled="ctrl.ACL.section2" />
+                                                <label style="cursor:default;padding-left: 5px;">English</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-4" style="padding:0px;">
+                                            <div class="checkbox" style="margin-top: 0px;">
+                                                <input type="radio" id="language" ng-model="ctrl.task.language" value="Chinese" ng-disabled="ctrl.ACL.section2" />
+                                                <label style="cursor:default;padding-left: 5px;">Chinese</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-1 col-sm-1"></div>
+                            <div class="col-7 col-sm-7">
+                                <div class="form-group" style="width:100%;padding-top:10px;">
+                                    <div class="row">
+                                        <label class="col-xs-4" style="padding:0px;">Date / Time Required</label>
+                                        <div class="col-xs-8" style="padding:0px;">
+                                            <div class="form-group" style="width: 95%;margin-bottom: 0;">
+                                                <p class="input-group" style="margin-bottom: 0;">
+                                                    <input type="text" class="form-control" datetime-picker="dd/MM/yyyy  h:mm a" datepicker-options="ctrl.dateTimePicker1.datepickerOptions"
+                                                        ng-readonly="ctrl.ACL.section0" default-time="9:00" ng-model="ctrl.task.due_date"
+                                                        is-open="ctrl.dateTimePicker1.open" style="height: 30px;" />
+                                                    <span class="input-group-btn">
+                                                        <button type="button" class="btn btn-default"  style="height: 30px;" ng-disabled="ctrl.ACL.section2"
+                                                        ng-click="ctrl.openCalendar($event, 'dateTimePicker1')"> 
+                                                            <i class="fa fa-calendar"></i>
+                                                        </button>
+                                                    </span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-inline" style="width:100%;margin-left: 20px;">
+                                <div class="form-group" style="width:100%;padding-top:0px;">
+                                    <label class="col-sm-1" style="padding:0px;">Category</label>
+                                    <div class="col-sm-3" style="padding:0px;text-align:center;">
+                                        <div class="checkbox">
+                                            <input type="radio" id="language" ng-model="ctrl.task.category" value="Company Logo" ng-disabled="ctrl.ACL.section2" ng-change="ctrl.getCategory();"
+                                            />
+                                            <label style="cursor:default;"><span>&nbsp;&nbsp;&nbsp;</span>Company Logo</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3" style="padding:0px;text-align:center;">
+                                        <div class="checkbox">
+                                            <div class="checkbox">
+                                                <input type="radio" id="language" ng-model="ctrl.task.category" value="Obituary Pix" ng-disabled="ctrl.ACL.section2" ng-change="ctrl.getCategory();"
+                                                />
+                                                <label style="cursor:default;"><span>&nbsp;&nbsp;&nbsp;</span>Obituary Pix</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3" style="padding:0px;text-align:center;">
+                                        <div class="checkbox">
+                                            <input type="radio" id="language" ng-model="ctrl.task.category" value="Pix from Advertiser" ng-disabled="ctrl.ACL.section2"
+                                                ng-change="ctrl.getCategory();" />
+                                            <label style="cursor:default;"><span>&nbsp;&nbsp;&nbsp;</span>Pix from Advertiser</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-2" style="padding:0px;text-align:center;"> </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-footer" ng-show="ctrl.task.category=='Company Logo'">
+                        <div class="row">
+                            <div class="col-4 col-sm-4">
+                                <div class="form-group" style="width:100%;padding-top:10px;margin-left:20px;">
+                                    <div class="row">
+                                        <label class="col-xs-4" style="padding:0px;">Colour</label>
+                                        <div class="col-xs-4" style="padding:0px;">
+                                            <div class="checkbox" style="margin-top: 0px;">
+                                                <input type="radio" id="colour" ng-model="ctrl.task.colour" value="B&W" ng-disabled="ctrl.ACL.section2" />
+                                                <label style="cursor:default;padding-left: 5px;">B&amp;W</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-4" style="padding:0px;">
+                                            <div class="checkbox" style="margin-top: 0px;">
+                                                <input type="radio" id="colour" ng-model="ctrl.task.colour" value="Colour" ng-disabled="ctrl.ACL.section2" />
+                                                <label style="cursor:default;padding-left: 5px;">Colour</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-2 col-sm-2"></div>
+                            <div class="col-6 col-sm-6">
+                                <div class="form-group" style="width:100%;padding-top:10px;">
+                                    <div class="row">
+                                        <label class="col-xs-4" style="padding:0px;">Charges Option </label>
+                                        <div class="col-xs-4" style="padding:0px;">
+                                            <div class="checkbox" style="margin-top: 0px;">
+                                                <input type="radio" id="charge_option" ng-model="ctrl.task.charge_option" value="Chargeable" ng-disabled="ctrl.ACL.section2 || ctrl.task.colour==null"
+                                                />
+                                                <label style="cursor:default;padding-left: 5px;">Chargeable</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-4" style="padding:0px;">
+                                            <div class="checkbox" style="margin-top: 0px;">
+                                                <input type="radio" id="charge_option" ng-model="ctrl.task.charge_option" value="Non-Chargeable" ng-disabled="ctrl.ACL.section2  || ctrl.task.colour==null"
+                                                />
+                                                <label style="cursor:default;padding-left: 5px;">Non-Chargeable</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" style="margin-top:0px;">
+                            <div class="form-group">
+                                <label class="col-2 col-sm-2" style="padding-right: 0;">Company Name</label>
+                                <div class="col-8 col-sm-8">
+                                    <input type="text" maxlength="21" size="21" class="form-control input-sm fld-att" ng-model="ctrl.task.company" ng-disabled="ctrl.ACL.section2 || ctrl.task.charge_option==null"
+                                        ng-change="ctrl.getDefaultLogoGrp();">
+                                </div>
+                                <div class="col-2 col-sm-2">
+                                    <input type="text" maxlength="1" size="1" class="form-control input-sm fld-att" ng-model="ctrl.task.company_tag" ng-disabled="ctrl.ACL.section2 || ctrl.task.charge_option==null">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" style="margin-top:15px;">
+                            <div class="form-group">
+                                <label class="col-2 col-sm-2">Logo Group</label>
+                                <div class="col-10 col-sm-10">
+                                    <select name="logo_group" id="logo_group" class="form-control input-sm select-att" ng-model="ctrl.task.logo_group" ng-disabled="ctrl.ACL.section2 || ctrl.task.company==null">
+                                        <option ng-repeat="option in ctrl.LogoGrps  | filter:{Pub: ctrl.task.language, Charge: ctrl.task.charge_option, Colour: ctrl.task.colour}"
+                                        value="{{option.LogoGrp}}">{{option.LogoGrp}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="box-footer" ng-show="ctrl.task.category=='Pix from Advertiser'">
+                        <div class="row">
+                            <div class="col-4 col-sm-4">
+                                <div class="form-group" style="width:100%;padding-top:10px;margin-left:20px;">
+                                    <div class="row">
+                                        <label class="col-xs-4" style="padding:0px;">Colour</label>
+                                        <div class="col-xs-4" style="padding:0px;">
+                                            <div class="checkbox" style="margin-top: 0px;">
+                                                <input type="radio" id="colour" ng-model="ctrl.task.colour" value="B&W" ng-disabled="ctrl.ACL.section2" />
+                                                <label style="cursor:default;padding-left: 5px;">B&amp;W</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-4" style="padding:0px;">
+                                            <div class="checkbox" style="margin-top: 0px;">
+                                                <input type="radio" id="colour" ng-model="ctrl.task.colour" value="Colour" ng-disabled="ctrl.ACL.section2" />
+                                                <label style="cursor:default;padding-left: 5px;">Colour</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-2 col-sm-2"></div>
+                            <div class="col-6 col-sm-6">
+                                <div class="form-group" style="width:100%;padding-top:10px;">
+                                    <div class="row">
+                                        <label class="col-xs-4" style="padding:0px;">Charges Option </label>
+                                        <div class="col-xs-4" style="padding:0px;">
+                                            <div class="checkbox" style="margin-top: 0px;">
+                                                <input type="radio" id="charge_option" ng-model="ctrl.task.charge_option" value="Chargeable" ng-disabled="ctrl.ACL.section2  || ctrl.task.colour==null"
+                                                />
+                                                <label style="cursor:default;padding-left: 5px;">Chargeable</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-4" style="padding:0px;">
+                                            <div class="checkbox" style="margin-top: 0px;">
+                                                <input type="radio" id="charge_option" ng-model="ctrl.task.charge_option" value="Non-Chargeable" ng-disabled="ctrl.ACL.section2   || ctrl.task.colour==null"
+                                                />
+                                                <label style="cursor:default;padding-left: 5px;">Non-Chargeable</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" style="margin-top:0px;">
+                            <div class="form-group">
+                                <label class="col-2 col-sm-2">Logo Group</label>
+                                <div class="col-10 col-sm-10">
+                                    <select name="logo_group" id="logo_group" class="form-control input-sm select-att" ng-model="ctrl.task.logo_group" ng-disabled="ctrl.ACL.section2 || ctrl.task.charge_option==null">
+                                        <option ng-repeat="option in ctrl.LogoGrps | filter:{Pub: ctrl.task.language, Charges: ctrl.task.charge_option, Colour: ctrl.task.colour}" value="{{option.LogoGrp}}">{{option.LogoGrp}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" style="margin-top:15px;">
+                            <div class="form-group">
+                                <label class="col-2 col-sm-2">Description</label>
+                                <div class="col-10 col-sm-10">
+                                    <input type="text" maxlength="9" size="9" class="form-control input-sm fld-att" ng-model="ctrl.task.description" ng-disabled="ctrl.ACL.section2 || ctrl.task.charge_option==null">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-footer" ng-show="ctrl.task.category=='Obituary Pix'">
+                        <div class="row">
+                            <div class="col-4 col-sm-4">
+                                <div class="form-group" style="width:100%;padding-top:10px;margin-left:20px;">
+                                    <div class="row">
+                                        <label class="col-xs-4" style="padding:0px;">Colour</label>
+                                        <div class="col-xs-4" style="padding:0px;">
+                                            <div class="checkbox" style="margin-top: 0px;">
+                                                <input type="radio" id="colour" ng-model="ctrl.task.colour" value="B&W" ng-disabled="ctrl.ACL.section2" />
+                                                <label style="cursor:default;padding-left: 5px;">B&amp;W</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-4" style="padding:0px;">
+                                            <div class="checkbox" style="margin-top: 0px;">
+                                                <input type="radio" id="colour" ng-model="ctrl.task.colour" value="Colour" ng-disabled="ctrl.ACL.section2" />
+                                                <label style="cursor:default;padding-left: 5px;">Colour</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-2 col-sm-2"></div>
+                            <div class="col-6 col-sm-6">
+                                <div class="form-group" style="width:100%;padding-top:10px;">
+                                    <div class="row">
+                                        <label class="col-xs-4" style="padding:0px;">Departed Date</label>
+                                        <div class="col-xs-8" style="padding:0px;">
+                                            <div class="form-group" style="width: 95%;margin-bottom: 0;">
+                                                <p class="input-group">
+                                                    <input type="text" class="form-control" datetime-picker="dd/MM/yyyy" datepicker-options="ctrl.dateTimePicker2.datepickerOptions"
+                                                        ng-readonly="ctrl.ACL.section0" default-time="9:00" ng-model="ctrl.task.departed_date"
+                                                        enable-time="false" is-open="ctrl.dateTimePicker2.open" style="height: 30px;"
+                                                    />
+                                                    <span class="input-group-btn">
+                                                        <button type="button" class="btn btn-default"  style="height: 30px;" 
+                                                        ng-disabled="ctrl.ACL.section2 || ctrl.task.colour==null"
+                                                        ng-click="ctrl.openCalendar($event, 'dateTimePicker2')"> 
+                                                            <i class="fa fa-calendar"></i>
+                                                        </button>
+                                                    </span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" style="margin-top:0px;">
+                            <div class="form-group">
+                                <label class="col-2 col-sm-2" style="padding-right: 0;">Deceased Name</label>
+                                <div class="col-10 col-sm-10">
+                                    <input type="text" maxlength="18" size="18" class="form-control input-sm fld-att" ng-model="ctrl.task.deceased_name" ng-disabled="ctrl.ACL.section2 || ctrl.task.colour==null"
+                                        ng-change="ctrl.getDefaultLogoGrp();">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" style="margin-top:15px;">
+                            <div class="form-group">
+                                <label class="col-2 col-sm-2">Logo Group</label>
+                                <div class="col-10 col-sm-10">
+                                    <select name="logo_group" id="logo_group" class="form-control input-sm select-att" ng-model="ctrl.task.logo_group" ng-disabled="ctrl.ACL.section2 || ctrl.task.deceased_name==null">
+                                        <option ng-repeat="option in ctrl.LogoGrps" value="{{option.LogoGrp}}">{{option.LogoGrp}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- Specification  - END -->
+
+                <!-- Assignment Details  - START -->
+                <div class="box box-solid box-importer">
+                    <div class="box-header curved">
+                        Assignment Details
+                    </div>
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-6 col-sm-6">
+                                <div class="form-group">
+                                    <label>Creative Traffic</label>
+                                    <p class="input-group">
+                                        <input id='team_head' class="form-control input-sm fld-att" type="text" ng-model="ctrl.task.team_head" ng-readonly="ctrl.ACL.section0">
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-default fld-att" ng-disabled="ctrl.ACL.section3" 
+                                            ng-click="ctrl.selectUser('ClassifiedLAB', 'Creative', '5', 'team_head', '0');">
+                                                <i class="fa fa-user"></i>
+                                            </button>
+                                        </span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-6 col-sm-6">
+                                <div class="form-group">
+                                    <label>Art Director</label>
+                                    <p class="input-group">
+                                        <input id='designer' class="form-control input-sm fld-att" type="text" ng-model="ctrl.task.art_director" ng-readonly="ctrl.ACL.section0">
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-default fld-att" ng-disabled="ctrl.ACL.section3"
+                                            ng-click="ctrl.selectUser('ClassifiedLAB', 'Creative', [4,5,6,8,10,15], 'art_director', '0');">
+                                                <i class="fa fa-user"></i>
+                                            </button>
+                                        </span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6 col-sm-6">
+                                 <div class="form-group">
+                                    <label>Assigned Designer</label>
+                                    <p class="input-group">
+                                        <input id='designer' class="form-control input-sm fld-att" type="text" ng-model="ctrl.task.designer" ng-readonly="ctrl.ACL.section0">
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-default fld-att" ng-disabled="ctrl.ACL.section3"
+                                            ng-click="ctrl.selectUser('StudioLAB', 'Creative', [5,10,15] , 'designer', '0');">
+                                                <i class="fa fa-user"></i>
+                                            </button>
+                                        </span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-6 col-sm-6">
+                                <div class="form-group">
+                                    <label>Art Supervisor</label>
+                                    <p class="input-group">
+                                        <input id='buddy' class="form-control input-sm fld-att" type="text" ng-model="ctrl.task.art_supervisor" ng-readonly="ctrl.ACL.section0">
+                                        <span class="input-group-btn">
+                                             <button type="button" class="btn btn-default fld-att" ng-disabled="ctrl.ACL.section3"
+                                            ng-click="ctrl.selectUser('ClassifiedLAB', 'Creative', [5,6,8,10,15], 'art_supervisor', '0');">
+                                                <i class="fa fa-user"></i>
+                                            </button>
+                                        </span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>                      
+                    </div>
+                </div>
+                <!-- Assignment Details  - END -->
+            </div>
+        </div>
+    </section>
+    <!-- Task Details - END -->
+
+    <section class="content" style="background-color:white;padding-top:0">
+        <!-- Materials & Instructions - START -->
+        <div class="row">
+            <div class="col-md-8">
+                <!-- Materials - START -->
+                <div class="box box-solid box-importer">
+                    <div class="box-header curved">
+                        Materials
+                    </div>
+                    <div class="box-body" style="margin-top:10px;" ng-show="ctrl.ACL.section2">
+                        <div ng-bind-html="ctrl.task.materials_trix"></div>
+                    </div>
+                    <div class="box-body" style="margin-top:10px;" ng-hide="ctrl.ACL.section2">
+                        <trix-editor ng-model-options="{ updateOn: 'blur' }" spellcheck="false" class="trix-content" ng-model="ctrl.task.materials_trix"
+                            angular-trix trix-initialize="ctrl.trixInitialize(e, editor, 'materials');" trix-change="trixChange(e, editor, 'materials');"
+                            trix-focus="trixFocus(e, editor, 'materials');" trix-selection-change="trixSelectionChange(e, editor, 'materials');"
+                            trix-attachment-remove="ctrl.trixAttachmentRemove(e, editor, 'materials');" trix-blur="ctrl.trixBlur(e,editor,'materials');"
+                            trix-file-accept="trixFileAccept(e, editor, 'materials');" trix-attachment-add="ctrl.trixAttachmentAdd(e, editor, 'materials');"
+                            ng-readonly="ctrl.ACL.section2" placeholder="" style='background-color:white;min-height:150px;'></trix-editor>
+                    </div>
+                    <div class="box-footer" style="margin-top:10px;">
+                        <div class="row">
+                            <div class="col-sm-10">
+                                <span ng-show="ctrl.task.materials.length > 0"> {{ctrl.task.materials.length}} &nbsp; attachment(s)</span>
+                                <span ng-hide="ctrl.task.materials.length > 0"> 0 &nbsp; attachment(s)</span>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class="box-tools pull-right">
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-default" ngf-select="ctrl.uploadFiles($files, 'materials')" ngf-multiple="true" ng-disabled="ctrl.ACL.section2">
+                                          <strong style="color:black;"><i class="fa fa-paperclip"></i></strong>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <table style="width:100%;border:0px solid gray;">
+                                    <thead>
+                                        <tr>
+                                            <td colspan="4">&nbsp;</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody style="display: block;overflow-y: auto;overflow-x: hidden;max-height: 100px;min-height: 30px;">
+                                        <tr ng-repeat="file in ctrl.task.materials track by $index" ng-class-odd="'stripedTableRow'">
+                                            <td style="width:45%;text-align:center;">
+                                                <a ng-href="{{file.url}}" target="_blank" style="color: blue;cursor: pointer;">{{file.name}}</a>
+                                            </td>
+                                            <td style="width:45%;text-align:center;">{{file.uploadDt}}</td>
+                                            <td style="width:50px;text-align:right;color:red;">
+                                                <button ng-click="ctrl.deleteFile($index, file, 'materials')" ng-show="file && !ctrl.ACL.section2">
+                                                    <i class="fa fa-trash-o"></i>	
+                                                </button>
+                                            </td>
+                                            <td style="width:50px;text-align:right;color: blue;cursor: pointer;">
+                                                <a target="_self" ng-href="{{file.url}}" download="{{file.name}}">
+                                                    <button ng-click="saveFile(file);" ng-show="file">                                                    
+                                                        <i class="fa fa-download"></i>
+                                                    </button>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Materials - END -->
+            </div>
+            <div class="col-md-4">
+                <div class="box box-solid box-importer">
+                    <div class="box-header curved">
+                        Instructions
+                    </div>
+                    <div class="box-body">
+                        <div style="border:1px solid gray;margin-top:10px;  ">
+                            <div class="form-group">
+                                <textarea id="instruction" ng-model="ctrl.task.instruction" 
+                                    class="form-control ng-pristine ng-valid ng-empty ng-touched ng-untouched fld-att"
+                                    style="resize: horizontal; min-height: 190px;border:0;cursor:text;" ng-readonly="ctrl.ACL.section2">						            
+                                </textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Materials & Instructions - END -->
+      
+        <!-- Preview of Completed Artwork - START  -->
+        <div class="row" ng-if="ctrl.statusNum > 1">
+            <div class="col-md-12">
+                <div class="box box-solid box-importer" style="margin-bottom: 10px;">
+                    <div class="box-header curved">
+                        Preview of Completed Artwork
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="box box-solid box-none">
+                    <div class="box-header" style="padding-top:0;padding-bottom:0;">
+                    </div>
+                    <div class="box-body" style="margin-top:10px;" ng-show="ctrl.ACL.section5">
+                        <div ng-bind-html="ctrl.task.artwork_trix"></div>
+                    </div>
+                    <div class="box-body" style="margin-top:10px;" ng-hide="ctrl.ACL.section5">
+                        <trix-editor ng-model-options="{ updateOn: 'blur' }" spellcheck="false" class="trix-content" style='background-color:white;min-height:150px;'
+                            ng-model="ctrl.task.artwork_trix" angular-trix trix-initialize="ctrl.trixInitialize(e, editor, 'artwork');"
+                            trix-change="trixChange(e, editor, 'artwork');" trix-focus="trixFocus(e, editor, 'artwork');" trix-selection-change="trixSelectionChange(e, editor, 'artwork');"
+                            trix-attachment-remove="ctrl.trixAttachmentRemove(e, editor, 'artwork');" trix-blur="ctrl.trixBlur(e,editor,'artwork');"
+                            trix-file-accept="trixFileAccept(e, editor, 'artwork');" trix-attachment-add="ctrl.trixAttachmentAdd(e, editor, 'artwork');"
+                            placeholder="Write something.." ng-disabled="ctrl.ACL.section5"></trix-editor>
+                    </div>
+                    <div class="box-footer" style="margin-top:10px;">
+                        <div class="row">
+                            <div class="col-sm-10">
+                                <span ng-show="ctrl.task.artwork.length > 0"> {{ctrl.task.artwork.length}} &nbsp; attachment(s)</span>
+                                <span ng-hide="ctrl.task.artwork.length > 0"> 0 &nbsp; attachment(s)</span>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class="box-tools pull-right">
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-default" ngf-select="ctrl.uploadFiles($files, 'artwork')" ngf-multiple="true" style="background-color: white; color: black; border: 1px solid blue;"
+                                            ng-disabled="ctrl.ACL.section2">
+                                            <i class="fa fa-paperclip"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <br>
+                                <table style="width:100%;border:0px solid gray;">
+                                    <tbody style="display: block;overflow-y: auto;overflow-x: hidden;max-height: 100px;min-height: 30px;">
+                                        <tr ng-repeat="file in ctrl.task.artwork track by $index" ng-class-odd="'stripedTableRow'">
+                                            <td style="width:45%;text-align:center;">
+                                                <a ng-href="{{file.url}}" target="_blank" style="color: blue;cursor: pointer;">{{file.name}}</a>
+                                            </td>
+                                            <td style="width:45%;text-align:center;">{{file.uploadDt}}</td>
+                                            <td style="width:50px;text-align:right;color:red;">
+                                                <button ng-click="ctrl.deleteFile($index, file, 'artwork')" ng-show="file && !ctrl.ACL.section5">
+                                                    <i class="fa fa-trash-o"></i>	
+                                                </button>
+                                            </td>
+                                            <td style="width:50px;text-align:right;">
+                                                <a target="_self" ng-href="{{file.url}}" download="{{file.name}}">
+                                                    <button ng-click="saveFile(file);" ng-show="file">                                                    
+                                                        <i class="fa fa-download"></i>
+                                                    </button>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="box box-solid box-none">
+                    <div class="box-header with-border">
+                        <div class="form-group" style="width:100%">
+                            <label class="col-sm-6" style="padding:0px;">Final Ad Size :</label>
+                            <div class="col-sm-6" style="padding:0px;">
+                                <input name="final_size" id="final_size" class="form-control input-sm fld-att" type="text" ng-model="ctrl.task.final_size"
+                                    placeholder="{{ctrl.task.pub_size}}" ng-readonly="ctrl.ACL.section5" ng-disabled="!(ctrl.task.status=='In Progress' || ctrl.task.status=='For Revision')">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-body with-border">
+                        <b><i>Coordinator / Designer Comments:</i></b>
+                    </div>
+                    <div class="box-footer with-border">
+                        <div style="border:1px solid gray;">
+                            <div class="form-group">
+                                <textarea class="form-control ng-pristine ng-valid ng-empty ng-touched ng-untouched" 
+                                    style="resize: horizontal; min-height: 130px;border:0;cursor:text;"
+                                    ng-model="ctrl.task.designer_comments" ng-readonly="ctrl.ACL.section5"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" ng-if="ctrl.statusNum > 2">
+            <div class="col-md-12">
+                <div class="box box-solid box-importer" style="margin-bottom: 10px;">
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="box box-solid box-none">
+                    <div class="box-header  with-border" style="padding-top:0;padding-bottom:0;">
+                        Client / Sales Comments:
+                    </div>
+                    <div class="box-body  with-border" style="padding-top:0;padding-bottom:0;">
+                        <div style="border:1px solid gray;">
+                            <div class="form-group">
+                                <textarea class="form-control ng-pristine ng-valid ng-empty ng-touched ng-untouched" 
+                                    style="resize: horizontal; min-height: 80px;border:0;cursor:text;"
+                                    ng-model="ctrl.task.client_comments" ng-readonly="ctrl.ACL.section6"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>           
+        </div>
+        <!-- Preview of Completed Artwork - END -->
+
+        <!-- Product Details - START -->
+        <div class="row" ng-hide="ctrl.task.due_date == '' || ctrl.task.due_date == null">
+            <div class="col-md-12">
+                <div class="box box-solid box-importer">
+                    <div class="box-header curved">
+                        Product Details
+                    </div>
+                    <div class="box-body" ng-hide="ctrl.statusNum>0">
+                        <button type="button" class="btn btn-defult" style="border: 1;font-weight: bold;" ng-click="ctrl.addProduct();" ng-disabled="ctrl.ACL.section7">
+                            Add Product
+                        </button>
+                    </div>
+                    <div class="box-footer" style="margin: 0;padding-top:0px;padding-bottom:0;">
+                        <table class="table table-hover table-bordered">
+                            <thead>
+                                <tr>
+                                    <th class="col-xs-2" style="text-align:center">Publication</th>
+                                    <th class="col-xs-2" style="text-align:center">Pub Date</th>
+                                    <th class="col-xs-2" style="text-align:center">Ad number</th>                                     
+                                    <th class="col-xs-2" style="text-align:center">Filename / Import No.</th>
+                                    <th class="col-xs-2" style="text-align:center">Remark</th>
+                                    <th class="col-xs-2" style="text-align:center">&nbsp;</th>
+                                </tr>
+                            </thead>
+                            <tbody style="min-height:100px;">
+                                <tr ng-repeat="option in ctrl.productList track by $index">
+                                    <td class="col-xs-1" style="text-align:center">{{option.pubID}}</td>
+                                    <td class="col-xs-2" style="text-align:center">{{option.pubDate | date:"dd/MM/yyyy"}}</td>
+                                    <td class="col-xs-2" style="text-align:center">{{option.cashNum}}</td>                                   
+                                    <td class="col-xs-2" style="text-align:center">{{option.filename}}</td>
+                                    <td class="col-xs-2" style="text-align:center">{{option.remark}}</td>
+                                    <td class="col-xs-1" style="text-align:center; color: black;" ng-hide="ctrl.ACL.section9 || option == null">
+                                        <button type="button" class="btn btn-danger pull-right" ng-show="ctrl.task.status!='For Approval'" ng-click="ctrl.deleteRow($index);"
+                                            style="text-align:center; color: black;" popover="Delete" popover-trigger="mouseenter"
+                                            ng-disabled="ctrl.ACL.section7"><i class="fa fa-trash-o"></i></button>
+                                        <button type="button" class="btn btn-info pull-right" ng-click="ctrl.editRow(option, $index);" popover="Edit" popover-trigger="mouseenter"
+                                            style="text-align:center; color: black;" ng-disabled="ctrl.ACL.section7"><i class="fa fa-pencil"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Product Details - END -->
+
+        <!-- Audit Trail Logs - START -->
+        <div class="row" ng-show="(ctrl.task.status!='new')">
+            <div class="col-md-12">
+                <div class="box box-solid box-importer">
+                    <div class="box-header curved">
+                        Edit History
+                    </div>
+                    <div class="box-body" style="max-height:350px;overflow-y: scroll;">
+                        <table class="table table-bordered" ng-show="ctrl.docHistory.length==0">
+                            <thead>
+                                <tr>
+                                    <th class="col-xs-3" style="text-align:center">Date</th>
+                                    <th class="col-xs-3" style="text-align:center">Modified By</th>
+                                    <th class="col-xs-6" style="text-align:center">Details</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="col-xs-3" style="text-align:center">&nbsp;</td>
+                                    <td class="col-xs-3" style="text-align:center">&nbsp;</td>
+                                    <td class="col-xs-6" style="text-align:justify">&nbsp;</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <uib-tabset active="active" style="border: 0px solid lightgray; " ng-hide="ctrl.docHistory.length==0">
+                            <uib-tab index="0" heading="Audit Trail" style="border: 0px solid lightgray; ">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th class="col-xs-3" style="text-align:center">Date</th>
+                                            <th class="col-xs-3" style="text-align:center">Modified By</th>
+                                            <th class="col-xs-6" style="text-align:center">Details</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="log in ctrl.docHistory">
+                                            <td class="col-xs-3" style="text-align:center">{{log.action_taken_at}}</td>
+                                            <td class="col-xs-3" style="text-align:center">{{log.action_taken_by}}</td>
+                                            <td class="col-xs-6" style="text-align:justify">{{log.detail}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </uib-tab>
+                            <uib-tab index="1" heading="Message Trail" style="border: 0px solid lightgray; ">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th class="col-xs-3" style="text-align:center">Date</th>
+                                            <th class="col-xs-3" style="text-align:center">Message By</th>
+                                            <th class="col-xs-6" style="text-align:center">Details</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="chat in ctrl.docMessages">
+                                            <td class="col-xs-3" style="text-align:center">{{chat.sent_date}}</td>
+                                            <td class="col-xs-3" style="text-align:center">{{chat.sender}}</td>
+                                            <td class="col-xs-6" style="text-align:justify">{{chat.msg}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </uib-tab>
+                        </uib-tabset>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--  Audit Trail Logs - END -->
+    </section>
+
+</div>
+
+<!-- BUTTONS -->
+<div class="container" style="padding:0">
+    <!-- READ ONLY TASK -->
+    <section class="content" style="background-color:white;padding-top:0" ng-show="ctrl.readOnly">
+        <div class="row">
+            <div class="col-md-5">
+                <button type="button" class="btn btn-default" ng-click="ctrl.gotoMain();"><i class="fa fa-remove"></i> Close</button>
+            </div>
+            <div class="col-md-1">
+                <button type="button" class="btn btn-default btn-sm" ng-click="ctrl.developerLog=!ctrl.developerLog" style="border: 1px solid #a1a1a1;border-radius: 25px;background:white;">
+                     <i class="fa fa-question-circle"></i>
+                </button>
+            </div>
+            <div class="col-md-1">
+                <button type="button" class="btn btn-primary bg-teal-gradient" ng-click="ctrl.revertTask();" 
+                ng-hide="(ctrl.task.status=='new' || ctrl.task.status=='Completed' || ctrl.task.status=='Cancelled')">
+                         <i class="fa fa-comments-o"></i> Chat
+                </button>
+            </div>
+            <div class="col-md-5">
+                <div class="pull-right">
+                     <button type="button" class="btn btn-danger" ng-click="ctrl.revertTask('cancel');" 
+                    ng-show="(ctrl.currentUser.role>=25 || ctrl.currentUser.role<10) && ctrl.currentUser.canEdit!='' &&
+                    !(ctrl.task.status == 0  || ctrl.statusNum > 5)">
+                      <i class="fa fa-hand-stop-o"></i> &nbsp; Cancel Artwork Request
+                    </button>
+                    <button type="button" class="btn btn-primary" ng-click="ctrl.editTask();" ng-hide="ctrl.currentUser.canEdit=='' || ctrl.currentUser.canEdit=='reader'">
+                        <i class="fa fa-pencil-square-o"></i> &nbsp; Edit
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- EDIT TASK -->
+    <section class="content" style="background-color:white;padding-top:0" ng-hide="ctrl.readOnly">
+        <div class="row">
+            <div class="col-md-2">
+                <button type="button" class="btn btn-default" ng-click="ctrl.gotoMain();"><i class="fa fa-remove"></i> Close</button>
+            </div>
+            <div class="col-md-10">
+
+                <div class="pull-right" ng-show="ctrl.currentUser.canEdit == 'sales'">
+                    <!--
+                    <button type="button" class="btn btn-primary" ng-click="ctrl.saveDraftTask();" ng-show="(ctrl.task.status=='new')">
+                        <i class="fa fa-save"></i> &nbsp; Save As Draft
+                    </button>
+                    -->
+                    <button type="button" class="btn btn-primary" ng-click="ctrl.submitTask();" ng-show="ctrl.task.status=='new' || ctrl.task.status=='Draft'"
+                        style="margin-left: 10px;">
+                        <i class="fa fa-save"></i> &nbsp; Submit
+                    </button>
+                    <button type="button" class="btn btn-primary" ng-click="ctrl.submitTask('Previous Status');" ng-show="ctrl.task.status=='Request Re-Submission'"
+                        style="margin-left: 10px;">
+                        <i class="fa fa-save"></i> &nbsp; Re-Submit
+                    </button>
+
+                    <button type="button" class="btn btn-primary" ng-click="ctrl.revertTask('rejected');" ng-show="ctrl.task.status=='For Approval'"
+                        style="margin-left: 10px;">
+                        <i class="fa fa-hand-o-left"></i> &nbsp; For Revision
+                    </button>
+                    <button type="button" class="btn btn-primary" ng-click="ctrl.approveArtwork();" ng-show="ctrl.task.status=='For Approval'"
+                        style="margin-left: 10px;">
+                        <i class="fa fa-thumbs-up"></i> &nbsp; Approve
+                    </button>
+                </div>              
+
+                <div class="pull-right" ng-show="ctrl.currentUser.canEdit == 'designer'">
+                    <button type="button" class="btn btn-primary" ng-click="ctrl.revertTask('revert');" ng-show="ctrl.task.status=='In Progress'"
+                        style="margin-left: 10px;">
+                        <i class="fa fa-reply"></i> &nbsp; Request Re-submission
+                    </button>
+
+                    <button type="button" class="btn btn-primary" ng-click="ctrl.submitTask('For Approval');" ng-show="ctrl.statusNum==2" style="margin-left: 10px;">
+                        <i class="fa fa-save"></i> &nbsp; Request Artwork Approval
+                    </button>
+
+                    <button type="button" class="btn btn-primary" ng-click="ctrl.submitTask( ctrl.task.status );" ng-show="ctrl.statusNum==2"
+                        style="margin-left: 10px;">
+                        <i class="fa fa-save"></i> &nbsp; Save Updates
+                    </button>
+
+                    <button type="button" class="btn btn-primary" ng-click="ctrl.closeClassifiedTask();" ng-show="ctrl.task.status=='Pending Import'"
+                        style="margin-left: 10px;">
+                        <i class="fa fa-check"></i> &nbsp; Task Completed
+                    </button>
+                </div>
+
+                <div class="pull-right" ng-show="ctrl.currentUser.canEdit == 'coordinator'">
+                    <button type="button" class="btn btn-danger" ng-click="ctrl.submitTask( 'Cancelled' );" ng-show="ctrl.task.status=='Cancellation Request'"
+                        style="margin-left: 10px;">
+                        <i class="fa fa-close"></i> &nbsp; Cancel Artwork
+                    </button>
+                    <button type="button" class="btn btn-primary" ng-click="ctrl.revertTask('revert');" ng-show="ctrl.task.status=='Pending Assignment'"
+                        style="margin-left: 10px;">
+                        <i class="fa fa-reply"></i> &nbsp; Request Re-submission
+                    </button>
+                    <button type="button" class="btn btn-primary" ng-click="ctrl.isAssigned();" style="margin-left: 10px;" ng-show="ctrl.task.status=='Pending Assignment'"
+                        style="margin-left: 10px;">
+                        <i class="fa fa-save"></i> &nbsp; Save Assignments
+                    </button>
+                    <button type="button" class="btn btn-primary" ng-click="ctrl.submitTask( ctrl.task.status );" style="margin-left: 10px;"
+                        ng-hide="ctrl.task.status=='Pending Assignment' || ctrl.task.status=='Cancelled' || ctrl.task.status=='Completed'">
+                        <i class="fa fa-save"></i> &nbsp; Save Updates
+                    </button>
+                    <button type="button" class="btn btn-primary" ng-click="ctrl.closeClassifiedTask();" ng-show="ctrl.task.status=='Pending Import'"
+                        style="margin-left: 10px;">
+                        <i class="fa fa-check"></i> &nbsp; Task Completed
+                    </button>
+                </div>
+
+                <div class="pull-right">
+                    <button type="button" class="btn btn-primary bg-teal-gradient pull-right" ng-click="ctrl.revertTask();" 
+                    ng-hide="(ctrl.task.status=='new' || ctrl.task.status=='Completed' || ctrl.task.status=='Cancelled')"
+                        style="margin-left: 10px;">
+                         <i class="fa fa-comments-o"></i> Chat
+                    </button>
+
+                    <button type="button" class="btn btn-default btn-sm" ng-click="ctrl.developerLog=!ctrl.developerLog" style="border: 1px solid #a1a1a1;border-radius: 25px;background:white;">
+                        <i class="fa fa-question-circle"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <section class="content" style="background-color:white;padding-top:0" ng-show="ctrl.developerLog">
+        <div class="row">
+            <div class="col-md-4">
+                <p><b>CURRENT USER</b></p>
+                <p>ID - {{ ctrl.currentUser.id }} </p>
+                <p>Name - {{ ctrl.currentUser.name }} </p>
+                <p>Role - {{ ctrl.currentUser.role }} </p>
+
+                <p><b>PROGRAMMER DEBUG LOG</b></p>
+                <p>task status: {{ctrl.task.status}}</p>
+                <p>status number: {{ctrl.statusNum}}</p>
+                <p>readOnly: {{ctrl.readOnly}}</p>
+                <p>canEdit: {{ctrl.currentUser.canEdit}} </p>
+                <p>userAction: {{ctrl.currentUser.userAction}}</p>
+            </div>
+            <div class="col-md-4">
+                <p><b>SECTION ACCESS - RESTRICTIONS</b></p>
+                <p>1 - Job Information - {{ ctrl.ACL.section1 }} </p>
+                <p>2- Specification - {{ ctrl.ACL.section2 }} </p>
+                <p>3 - Assignment Details - {{ ctrl.ACL.section3 }} </p>
+                <p>4 - Preview of Completed Write Up - {{ ctrl.ACL.section4 }} </p>
+                <p>5 - Preview of Completed Artwork1 - {{ ctrl.ACL.section5 }} </p>
+                <p>6 - Preview of Completed Artwork2 - {{ ctrl.ACL.section6 }} </p>
+                <p>7 - Product Details - {{ ctrl.ACL.section7 }} </p>
+            </div>
+            <div class="col-md-4">
+                <p><b>SECTION ACCESS</b></p>
+                <p>AM - {{ ctrl.task.submitted_by_username }} </p>
+                <p>TH - {{ ctrl.task.cc_response_username }} </p>
+                <p>TC - {{ ctrl.task.team_head_username }} </p>
+            </div>
+        </div>
+    </section>
+</div>
+<input name="_method" class="form-control input-sm fld-att" type="hidden" value="put" ng-model="ctrl.task._method">

@@ -1,0 +1,232 @@
+<!-- form start -->
+<form class="form-horizontal">
+    <div class="col-md-12" style="margin: 0; padding-bottom: 0">
+        <div class="box box-solid box-ooh">
+
+            <div class="box-header">
+                <h4>{{ctrl.formTitle}}</h4>
+            </div>
+            <!--
+            <div class="box-body" ng-show="ctrl.formType=='Digital'">
+                <div class="row">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">Category :</label>
+                        <div class="col-sm-6">
+                            <select name="category" id="category" class="form-control input-sm select-att" ng-model="ctrl.output.category" ng-change="ctrl.filterOptions();">
+                                <option ng-repeat="option in ctrl.Options  | unique : 'category'" value="{{option.category}}">{{option.category}}</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-2">&nbsp;</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">Location :</label>
+                        <div class="col-sm-6">
+                            <select name="location" id="location" class="form-control input-sm select-att" ng-model="ctrl.output.location" ng-change="ctrl.filterOptions();"
+                                ng-disabled="ctrl.output.category==''">
+                                <option ng-repeat="option in ctrl.Options | filter:{category: ctrl.output.category} | unique : 'location'" 
+                                value="{{option.location}}">{{option.location}}</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-2">&nbsp;</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">Description :</label>
+                        <div class="col-sm-6">
+                            <select name="description" id="description" class="form-control input-sm select-att" ng-model="ctrl.output.description" ng-change="ctrl.filterOptions();"
+                                ng-disabled="ctrl.output.location==''">
+                                <option ng-repeat="option in ctrl.Options | filter:{category: ctrl.output.category, location: ctrl.output.location} | unique : 'description'" 
+                                value="{{option.description}}">{{option.description}}</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-2">&nbsp;</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">Material Specs (w x h) :</label>
+                        <div class="col-sm-6">
+                            <select name="material" id="material" class="form-control input-sm select-att" ng-model="ctrl.output.material_specs" ng-change="ctrl.filterOptions();"
+                                ng-disabled="ctrl.output.description==''">
+                                <option ng-repeat="option in ctrl.Options | filter:{category: ctrl.output.category, location: ctrl.output.location, description: ctrl.output.description}  | unique : 'material_specs'" 
+                                value="{{option.material_specs}}">{{option.material_specs}}</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-2">&nbsp;</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">Number of screens :</label>
+                        <div class="col-sm-6">
+                            <select name="screens" id="screens" class="form-control input-sm select-att" ng-model="ctrl.output.no_of_screens" ng-change="ctrl.filterOptions();"
+                                ng-disabled="ctrl.output.material_specs==''">
+                                <option ng-repeat="option in ctrl.Options | filter:{category: ctrl.output.category, location: ctrl.output.location, description: ctrl.output.description, material_specs:ctrl.output.material_specs}  | unique : 'no_of_screens'" 
+                                value="{{option.no_of_screens}}">{{option.no_of_screens}}</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-2">&nbsp;</div>
+                    </div>
+                </div>
+            </div>
+            -->
+            <div class="box-body" ng-hide="ctrl.formType=='Digital'">
+                <div class="row">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">Location :</label>
+                        <div class="col-sm-6">
+                            <select name="location" id="location" class="form-control input-sm select-att" 
+                                ng-model="ctrl.output.location" ng-change="ctrl.clearField(2); ctrl.getFilteredList(2);">
+                                <option ng-repeat="option in ctrl.Options.list1  | unique : 'location'" 
+                                    value="{{option.location}}">{{option.location}}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-sm-2">&nbsp;</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">Description :</label>
+                        <div class="col-sm-6">
+                            <select name="description" id="description" class="form-control input-sm select-att" 
+                                ng-model="ctrl.output.description" ng-change="ctrl.clearField(3); ctrl.getFilteredList(3);"
+                                ng-disabled="ctrl.output.location==''">
+                                <option ng-repeat="option in ctrl.Options.list2 | unique : 'description'" 
+                                    value="{{option.description}}">{{option.description}}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-sm-2">&nbsp;</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">Dimension :</label>
+                        <div class="col-sm-6">
+                            <select name="dimension" id="dimension" class="form-control input-sm select-att" 
+                                ng-model="ctrl.output.dimension" ng-change="ctrl.clearField(4); ctrl.getFilteredList(4);"
+                                ng-disabled="ctrl.output.description==''">
+                                <option ng-repeat="option in ctrl.Options.list3  | unique : 'dimension'" 
+                                    value="{{option.dimension}}">{{option.dimension}}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-sm-2">&nbsp;</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">Material :</label>
+                        <div class="col-sm-6">
+                            <select name="material" id="material" class="form-control input-sm select-att" 
+                                ng-model="ctrl.output.material" ng-change="ctrl.clearField(5); ctrl.getFilteredList(5);"
+                                ng-disabled="ctrl.output.dimension==''">
+                                <option ng-repeat="option in ctrl.Options.list4 | unique : 'material'" 
+                                    value="{{option.material}}">{{option.material}}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-sm-2">&nbsp;</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">Remarks :</label>
+                        <div class="col-sm-6">
+                            <select name="remarks" id="remarks" class="form-control input-sm select-att" 
+                                ng-model="ctrl.output.remarks"  ng-disabled="ctrl.output.material==''">
+                                <option ng-repeat="option in ctrl.Options.list5 | unique : 'remarks'" 
+                                    value="{{option.remarks}}">{{option.remarks}}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-sm-2">&nbsp;</div>
+                    </div>
+                </div>
+            </div>
+
+             <div class="box-body" ng-show="ctrl.formType=='Digital'">
+                <div class="row">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">Category :</label>
+                        <div class="col-sm-6">
+                            <select name="category" id="category" class="form-control input-sm select-att" 
+                                ng-model="ctrl.output.category" ng-change="ctrl.clearField(2); ctrl.getFilteredList(2);">
+                                <option ng-repeat="option in ctrl.Options.list1  | unique : 'category'" 
+                                    value="{{option.category}}">{{option.category}}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-sm-2">&nbsp;</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">Location :</label>
+                        <div class="col-sm-6">
+                            <select name="location" id="location" class="form-control input-sm select-att" 
+                                ng-model="ctrl.output.location" ng-change="ctrl.clearField(3); ctrl.getFilteredList(3);"
+                                ng-disabled="ctrl.output.category==''">
+                                <option ng-repeat="option in ctrl.Options.list2 | unique : 'location'" 
+                                    value="{{option.location}}">{{option.location}}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-sm-2">&nbsp;</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">Description :</label>
+                        <div class="col-sm-6">
+                            <select name="description" id="description" class="form-control input-sm select-att" 
+                                ng-model="ctrl.output.description" ng-change="ctrl.clearField(4); ctrl.getFilteredList(4);"
+                                ng-disabled="ctrl.output.location==''">
+                                <option ng-repeat="option in ctrl.Options.list3  | unique : 'description'" 
+                                    value="{{option.description}}">{{option.description}}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-sm-2">&nbsp;</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">Material :</label>
+                        <div class="col-sm-6">
+                            <select name="material" id="material" class="form-control input-sm select-att" 
+                                ng-model="ctrl.output.material" ng-change="ctrl.clearField(5); ctrl.getFilteredList(5);"
+                                ng-disabled="ctrl.output.description==''">
+                                <option ng-repeat="option in ctrl.Options.list4 | unique : 'material'" 
+                                    value="{{option.material}}">{{option.material}}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-sm-2">&nbsp;</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">Screens :</label>
+                        <div class="col-sm-6">
+                            <select name="screens" id="screens" class="form-control input-sm select-att" 
+                                ng-model="ctrl.output.screens"  ng-disabled="ctrl.output.material==''">
+                                <option ng-repeat="option in ctrl.Options.list5 | unique : 'screens'" 
+                                    value="{{option.screens}}">{{option.screens}}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-sm-2">&nbsp;</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="box-footer" ng-show="ctrl.formTitle=='Add Product'">
+                <button type="button" class="btn btn-default" ng-click="ctrl.cancel()"><i class="fa fa-remove"></i> Close</button>
+                <div class="pull-right">
+                    <button type="button" class="btn btn-default" ng-click="ctrl.ok()"><i class="fa fa-share"></i> Add</button>
+                </div>
+            </div>
+            <div class="box-footer" ng-hide="ctrl.formTitle=='Add Product'">
+                <button type="button" class="btn btn-default" ng-click="ctrl.cancel()"><i class="fa fa-remove"></i> Close</button>
+                <div class="pull-right">
+                    <button type="button" class="btn btn-default" ng-click="ctrl.ok()"><i class="fa fa-share"></i> Save</button>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</form>

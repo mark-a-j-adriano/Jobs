@@ -1,0 +1,62 @@
+[
+    {
+        "Priority": 1,
+        "Status": "Ads"
+    },
+    {
+        "Priority": 2,
+        "Status": "Advertorial-style Ads"
+    },
+    {
+        "Priority": 3,
+        "Status": "Business Pitch"
+    },
+    {
+        "Priority": 4,
+        "Status": "Brochure"
+    },
+    {
+        "Priority": 5,
+        "Status": "Campaigns"
+    },
+    {
+        "Priority": 6,
+        "Status": "Collaterals"
+    },
+    {
+        "Priority": 7,
+        "Status": "eDM"
+    },
+    {
+        "Priority": 8,
+        "Status": "Electronic Transmission"
+    },
+    {
+        "Priority": 9,
+        "Status": "Logo Design"
+    },
+    {
+        "Priority": 10,
+        "Status": "Magazine Ad"
+    },
+    {
+        "Priority": 11,
+        "Status": "Storyboard"
+    },
+    {
+        "Priority": 12,
+        "Status": "Translation [Chinese]"
+    },
+    {
+        "Priority": 13,
+        "Status": "Translation [English]"
+    },
+    {
+        "Priority": 14,
+        "Status": "Translation [Malay]"
+    },
+    {
+        "Priority": 15,
+        "Status": "Others"
+    }
+]

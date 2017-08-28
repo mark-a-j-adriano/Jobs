@@ -1,0 +1,234 @@
+<script>
+    $('.collapse').on('show.bs.collapse', function () {
+        $('.collapse.in').collapse('hide');
+    });
+
+</script>
+
+<style>
+    .hiddenRow {
+        padding: 0 !important;
+    }
+</style>
+
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>
+        Copywriter
+        <small></small>
+    </h1>
+    <!--
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>
+        <li class="active">Here</li>
+    </ol>
+    -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <!-- Small boxes (Stat box) -->
+    <div class="row">
+        <div class="col-lg-2 col-xs-4">
+            <!-- small box -->
+            <div class="small-box bg-aqua" ng-click="ctrl.getTaskList('Request Re-Submission');" style="cursor:pointer">
+                <div class="inner">
+                    <h3 ng-show="ctrl.stats.pending_sales_info > 0">{{ctrl.stats.pending_sales_info}}</h3>
+                    <h3 ng-hide="ctrl.stats.pending_sales_info > 0">0</h3>
+                    <p>Pending Sales Information</p>
+                </div>
+                <!--
+                <div class="icon">
+                    <i class="ion ion-bag"></i>
+                </div>
+                -->
+            </div>
+        </div>
+        <!-- ./col -->
+        <div class="col-lg-2 col-xs-4">
+            <!-- small box -->
+            <div class="small-box bg-green" ng-click="ctrl.getTaskList('In Progress');" style="cursor:pointer">
+                <div class="inner">
+                    <h3 ng-show="ctrl.stats.in_progress > 0">{{ctrl.stats.in_progress}}</h3>
+                    <h3 ng-hide="ctrl.stats.in_progress > 0">0</h3>
+                    <p>In Progress</p>
+                </div>
+                <!--
+                <div class="icon">
+                    <i class="ion ion-stats-bars"></i>
+                </div>
+                -->
+            </div>
+        </div>
+        <!-- ./col -->
+        <div class="col-lg-2 col-xs-4">
+            <!-- small box -->
+            <div class="small-box bg-blue" ng-click="ctrl.getTaskList('For Approval');" style="cursor:pointer">
+                <div class="inner">
+                    <h3 ng-show="ctrl.stats.pending_approval > 0">{{ctrl.stats.pending_approval}}</h3>
+                    <h3 ng-hide="ctrl.stats.pending_approval > 0">0</h3>
+                    <p>Pending Approval</p>
+                </div>
+                <!--
+                <div class="icon">
+                    <i class="ion ion-person-add"></i>
+                </div>
+                -->
+            </div>
+        </div>
+        <!-- ./col -->
+        <div class="col-lg-2 col-xs-4">
+            <!-- small box -->
+            <div class="small-box bg-red" ng-click="ctrl.getTaskList('For Revision');" style="cursor:pointer">
+                <div class="inner">
+                    <h3 ng-show="ctrl.stats.for_revision > 0">{{ctrl.stats.for_revision}}</h3>
+                    <h3 ng-hide="ctrl.stats.for_revision > 0">0</h3>
+                    <p>For Revision</p>
+                </div>
+                <!--
+                <div class="icon">
+                    <i class="ion ion-pie-graph"></i>
+                </div>
+                -->
+            </div>
+        </div>
+        <!-- ./col -->
+        <div class="col-lg-2 col-xs-4">
+            <!-- small box -->
+            <div class="small-box bg-orange" ng-click="ctrl.getTaskList('Pending Import');" style="cursor:pointer">
+                <div class="inner">
+                    <h3 ng-show="ctrl.stats.pending_import > 0">{{ctrl.stats.pending_import}}</h3>
+                    <h3 ng-hide="ctrl.stats.pending_import > 0">0</h3>
+                    <p>Pending Import</p>
+                </div>
+                <!--
+                <div class="icon">
+                    <i class="ion ion-pie-graph"></i>
+                </div>
+                -->
+            </div>
+        </div>
+        <!-- ./col -->
+        <div class="col-lg-2 col-xs-4">
+            <!-- small box -->
+            <div class="small-box bg-purple" ng-click="ctrl.getTaskList('Completed');" style="cursor:pointer">
+                <div class="inner">
+                    <h3 ng-show="ctrl.stats.completed > 0">{{ctrl.stats.completed}}</h3>
+                    <h3 ng-hide="ctrl.stats.completed > 0">0</h3>
+                    <p>Completed</p>
+                </div>
+                <!--
+                <div class="icon">
+                    <i class="ion ion-pie-graph"></i>
+                </div>
+                -->
+            </div>
+        </div>
+        <!-- ./col -->
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+
+            <div class="box box-solid box-default">
+                <div class="box-header">
+                    <h3 class="box-title">Request List</h3>
+                    <div class="box-tools pull-right">
+                        <span>{{ ctrl.tasks.length }} records</span>
+                    </div>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <div class="form-inline" style="width:100%">
+                        <div class="form-group" style="width:100%">
+                            <label class="col-sm-1">Search Filter:</label>
+                            <div class="col-sm-11">
+                                <span class="input-icon">
+                                    <input placeholder="Filter Job Request list ..." class="nav-search-input" ng-model="ctrl.filterJobs" 
+                                    ng-change="ctrl.resetLimit();"  autocomplete="off" type="text" style="width:300px;" focus>
+                                    &nbsp;
+                                    <i class="search-icon fa fa-search nav-search-icon"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.box-body -->
+
+                <div class="box-footer  table-responsive no-padding">
+                    <table class="table table-condensed" style='border: 1px solid black; background-color:aliceblue; border-collapse: collapse;margin:0;'>
+                        <thead>
+                            <tr>
+                                <th ng-repeat="c in ctrl.subColumnTitle" style='cursor:pointer;border: 1px solid black; background-color:aliceblue; border-collapse: collapse;'>
+                                    <a ng-click="ctrl.orderByField=c.predicate; ctrl.reverseSort = !ctrl.reverseSort" style="cursor:pointer">
+                                        <div ng-hide="c.sortable">{{c.text}}</div>
+                                        <div ng-show="c.sortable">
+
+                                            {{c.text}}
+                                            <span ng-show="ctrl.orderByField == c.predicate">
+                                                <span ng-show="!ctrl.reverseSort" style='font-weight:100;'>
+                                                    &nbsp;
+                                                    <i class="fa fa-angle-up"></i>
+                                                </span>
+                                            <span ng-show="ctrl.reverseSort" style='font-weight:100;'>
+                                                    &nbsp;                                                    
+                                                    <i class="fa fa-angle-down"></i>
+                                                </span>
+                                            </span>
+
+                                        </div>
+                                    </a>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="task in ctrl.tasks  | filter: ctrl.filterJobs | orderBy:ctrl.orderByField:ctrl.reverseSort" id="{{task.id}}"
+                                animate-on-change='task.task_no + task.creative_form + task.artwork_type + task.status' ng-animate="ctrl.animationsEnabled"
+                                ng-click="ctrl.go(task);" ng-show='ctrl.tasks.length > 0'>
+                                <td style="border: 1px solid black;">{{($index + 1)}}</td>
+                                <td style="border: 1px solid black;">{{task.title}}</td>
+                                <td style="border: 1px solid black;">{{task.creative_form | propercase}}</td>
+                                <td style="border: 1px solid black;">{{task.artwork_type}}</td>
+                                <td style="border: 1px solid black;">{{task.due_date | date:"dd/MM/yyyy hh:mm a"}}</td>
+                                <td style="border: 1px solid black;" ng-hide="task.pub_date.length > 0">
+                                    <span>{{task.pub_date | date:"dd/MM/yyyy"}}</span>
+                                </td>
+                                <td style="border: 1px solid black;" ng-show="task.pub_date.length > 0">
+                                    <p ng-repeat="pubDate in task.pub_date">
+                                        <span>{{pubDate | date:"dd/MM/yyyy"}}</span>
+                                    </p>
+                                </td>
+                                <td style="border: 1px solid black;">{{task.pub_size}}</td>
+                                 <td style="border: 1px solid black;" ng-hide="task.designer.length > 0">
+                                    {{task.designer}}
+                                </td>
+                                <td style="border: 1px solid black;" ng-show="task.designer.length > 0">
+                                    <p ng-repeat="designer in task.designer">
+                                        <span>{{designer}}</span>
+                                    </p>                                    
+                                </td>                                
+                                <td style="border: 1px solid black;">{{task.sales}}</td>
+                                <td style="border: 1px solid black;">{{task.submitted_date | date:"dd/MM/yyyy hh:mm a"}}</td>
+                                <td style="border: 1px solid black;">{{task.status}}</td>
+                                <td style="width:100px;border: 1px solid black; background-color:aliceblue; border-collapse: collapse;">
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-default fa fa-edit" ng-click="ctrl.openTask(c,task);"></button>
+                                        <!--<button type="button" class="btn btn-danger fa fa-trash-o" ng-click="ctrl.deleteProduct(c);"></button>-->
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr ng-hide='ctrl.tasks.length > 0'>
+                                <td colspan="12" style="text-align:center">
+                                    <b><i>No Record found.</i></b>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.box-footer -->
+            </div>
+            <!-- /.box -->
+        </div>
+    </div>
+</section>
+<!-- /.content -->

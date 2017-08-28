@@ -1,0 +1,567 @@
+<div class="container" style="padding:0;">
+    <!-- Header content -->
+    <section class="content" style="background-color:white;min-height: 0px;padding:0">
+        <div class="row">
+            <div class="col-md-12">
+                <!--<img style="width:100%" src="./lib/img/jobs/JobReqBanner - Display.jpg">-->
+                <div class="box" style="margin-bottom:0px;">
+                    <div class="box-header" style="background-image:url('./lib/img/jobs/JobReqBanner - CreativeLab.jpg');background-size: cover;min-height:65px;">
+                        <!--<img style="width:100%" src="./lib/img/jobs/JobReqBanner - Display.jpg">-->
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" title="Close Task" style="background-color:rgba(255,255,255,0.5);" ng-click="ctrl.gotoDash(false);">
+		                        <i class="fa fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" style="padding-left:10px;padding-right:10px;">
+            <div class="col-md-6">
+                <span ng-hide="ctrl.job.status!='new'"><h4>Job Request</h4></span>
+                <span ng-hide="ctrl.job.status='new'"><h4>New Job Request</h4></span>
+            </div>
+            <div class="col-md-6" style="text-align: right;">
+                <!--<span ng-show='ctrl.job.job_no!=null'><h4>Job Number: {{ ctrl.job.job_no }}</h4></span>-->
+                <h4>Job Number: {{ctrl.job.job_no}}</h4>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Main content -->
+    <!-- Task Details - START -->
+    <section class="content" style="background-color:white;padding-top:0">
+        <div class="row">
+            <div class="col-md-4">
+                <!-- Request Information - START -->
+                <div class="box box-solid box-creative">
+                    <div class="box-header curved">
+                        Request Information
+                    </div>
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label>Client / Title:</label>
+                            <input id='title' class="form-control input-sm fld-att" type="text" ng-model="ctrl.job.title" ng-disabled="ctrl.readOnly">
+                        </div>
+                        <div class="form-inline" style="width:100%">
+                            <div class="form-group" style="width:100%">
+                                <label class="col-sm-4" style="padding:0px;">Booking Type:</label>
+                                <div class="col-sm-4" style="padding:0px;">
+                                    <label>
+                                        <input id='booking_type' type="radio" ng-model="ctrl.job.booking_type"  value="direct" ng-disabled="ctrl.readOnly">
+                                        &emsp;Direct
+                                    </label>
+                                </div>
+                                <div class="col-sm-4" style="padding:0px;">
+                                    <label>
+                                        <input id='booking_type' type="radio" ng-model="ctrl.job.booking_type"  value="agency" ng-disabled="ctrl.readOnly">
+                                        &emsp;Agency
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-footer" ng-show="ctrl.currentUser.canEdit">
+                        <div class="form-group">
+                            <label>Ad Spend :</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">$</span>
+                                <input type="text" class="form-control input-sm fld-att" ng-model="ctrl.job.ad_spend" style='text-align:right' readonly>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Production Cost :</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">$</span>
+                                <input type="text" class="form-control input-sm fld-att" ng-model="ctrl.job.production_cost" style='text-align:right' readonly>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Request Information - END -->
+
+                <!-- Requested By - START -->
+                <div class="box box-solid box-creative">
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label>Submitted By : </label>
+                            <input id='submitted_by' class="form-control input-sm fld-att" type="text" ng-model="ctrl.job.submitted_by" ng-disabled="ctrl.readOnly">
+                        </div>
+                        <div class="form-group" style="width:100%">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <label>Extension :</label>
+                                    <input id='extension' ng-model="ctrl.job.extension" text-mask="ctrl.MaskConfig.extNum" type="text" class="form-control  input-sm fld-att"
+                                        ng-disabled="ctrl.readOnly" />
+                                </div>
+                                <div class="col-sm-8">
+                                    <label>Mobile Number :</label>
+                                    <input id='mobile_no' ng-model="ctrl.job.mobile_no" text-mask="ctrl.MaskConfig.phone" type="text" class="form-control  input-sm fld-att"
+                                        ng-disabled="ctrl.readOnly" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Team :</label>
+                            <p class="input-group">
+                                <input id='team' class="form-control input-sm fld-att" type="text" ng-model="ctrl.job.team" ng-readonly="ctrl.ACL.section0">
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default fld-att" 
+                                    ng-click="ctrl.selectUser('StudioLAB', 'Creative', '20', 'team', '0');">
+                                        <i class="fa fa-group"></i>
+                                    </button>
+                                </span>
+                            </p>
+                        </div>
+
+                        <div class="form-group">
+                            <label>CC Response :</label>
+                            <p class="input-group">
+                                <input id='cc_response' class="form-control input-sm fld-att" type="text" ng-model="ctrl.job.cc_response" ng-readonly="ctrl.ACL.section0">
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default fld-att" ng-disabled="ctrl.ACL.section4"
+                                    ng-click="ctrl.selectUser('StudioLAB', 'Creative', '20', 'cc_response', '0');">
+                                        <i class="fa fa-user"></i>
+                                    </button>
+                                </span>
+                            </p>
+                        </div>
+                        <!--
+                        <div class="form-group">
+                            <label>Team :</label>
+                            <input id='team' class="form-control input-sm fld-att" type="text" ng-model="ctrl.job.team" ng-disabled="ctrl.readOnly">
+                        </div>                        
+                        <div class="form-group">
+                            <label>CC Response :</label>
+                            <input id='cc_response' class="form-control input-sm fld-att" type="text" ng-model="ctrl.job.cc_response" ng-disabled="ctrl.readOnly">
+                        </div>
+                        -->
+                        <div class="form-group" style="width:100%">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <label>Extension :</label>
+                                    <input ng-model="ctrl.job.cc_extension" text-mask="ctrl.MaskConfig.extNum" type="text" class="form-control  input-sm fld-att"
+                                        ng-disabled="ctrl.readOnly" />
+                                </div>
+                                <div class="col-sm-8">
+                                    <label>Mobile Number :</label>
+                                    <input ng-model="ctrl.job.cc_mobile_no" text-mask="ctrl.MaskConfig.phone" type="text" class="form-control  input-sm fld-att"
+                                        ng-disabled="ctrl.readOnly" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="overlay" ng-hide="ctrl.currentUser!=''">
+                        <i class="fa fa-refresh fa-spin"></i>
+                    </div>
+                </div>
+                <!-- Requested By  - END -->
+
+                <!-- Job Brief (meeting) - START -->
+                <div class="box box-solid box-creative">
+                    <div class="box-header" style="background-color: white; color:black;">
+                        <b>Job Brief (meeting)</b>
+                    </div>
+                    <div class="box-body">
+                        <div class="form-group" style="width:100%">
+                            <div class="row">
+                                <div class="col-sm-5">
+                                    <label>Location :</label>
+                                    <input class="form-control input-sm fld-att" type="text" ng-model="ctrl.job.meeting_location" ng-disabled="ctrl.readOnly">
+                                </div>
+                                <div class="col-sm-7">
+                                    <label>Schedule :</label>
+
+                                    <p class="input-group">
+                                        <input type="text" class="form-control input-sm fld-att" datetime-picker="dd/MM/yyyy  h:mm a" datepicker-options="ctrl.dateTimePicker.datepickerOptions"
+                                            default-time="9:00" ng-model="ctrl.job.meeting_schedule" is-open="ctrl.dateTimePicker.open"
+                                            readOnly/>
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-default fld-att"  
+                                            ng-click="ctrl.openCalendar($event, 'dateTimePicker')" ng-disabled="ctrl.readOnly">
+                                                <i class="fa fa-calendar"></i>
+                                            </button>
+                                        </span>
+                                    </p>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Job Brief (meeting)  - END -->
+            </div>
+            <div class="col-md-8">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="box box-solid box-creative" style="margin-bottom: 10px;">
+                            <div class="box-header curved">
+                                Shared Materials
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="box box-solid box-none">
+                            <div class="box-body" style="padding:0">
+                                <div style="border:1px solid gray;">
+                                    <div class="form-group">
+                                        <b>&emsp; Instruction from Clients:</b><br>
+                                        <textarea id='instruction' class="form-control ng-pristine ng-valid ng-empty ng-touched ng-untouched fld-att" 
+                                            style="resize: horizontal; min-height: 350px;border:0;cursor:text;"
+                                            ng-model="ctrl.job.instruction" ng-readonly="ctrl.readOnly"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-8">
+                        <div class="box box-solid box-none" style="border:1px solid gray;">
+                            <div class="box-body">
+                                <div class="row">
+                                    <div class="form-group" style="width:100%">
+                                        <div class="col-sm-12">
+                                            <label>Website URL :</label>
+                                            <input class="form-control input-sm fld-att" type="text" ng-model="ctrl.job.website_url" ng-disabled="ctrl.readOnly">
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <label>Username :</label>
+                                            <input class="form-control input-sm fld-att" type="text" ng-model="ctrl.job.username" ng-disabled="ctrl.readOnly">
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <label>Password :</label>
+                                            <input class="form-control input-sm fld-att" type="text" ng-model="ctrl.job.passcode" ng-disabled="ctrl.readOnly">
+                                            <br>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="box box-solid box-none" style="border:1px solid gray;">
+                            <div class="box-header" style="padding-bottom:0;">
+                                <b>Materials (Soft copy attachment):</b>
+                            </div>
+                            <div class="box-body" style="min-height: 180px;margin: 0;padding-top:5px;padding-bottom:0;" ng-hide="ctrl.artwork.preview">
+                                <!--<div class="box-body" style="min-height: 180px;margin: 0;padding-top:5px;padding-bottom:0;" ng-hide="ctrl.artwork.preview">-->
+                                <table style="width:100%;border:0px solid gray;">
+                                    <tbody style="display: block;overflow-y: auto;overflow-x: hidden;max-height: 100px;min-height: 100px;">
+                                        <tr ng-repeat="file in ctrl.job.materials track by $index" ng-class-odd="'stripedTableRow'">
+                                            <td style="width:45%;text-align:center;">
+                                                <a ng-href="{{file.url}}" target="_blank">{{file.name}}</a>
+                                            </td>
+                                            <td style="width:45%;text-align:center;">{{file.uploadDt}}</td>
+                                            <td style="width:50px;text-align:right;">
+                                                <a target="_self" ng-href="{{file.url}}" download="{{file.name}}">
+                                                    <button ng-click="saveFile(file);" ng-show="file">                                                    
+                                                        <i class="fa fa-download"></i>
+                                                    </button>
+                                                </a>
+                                            </td>
+                                            <td style="width:50px;text-align:right;color:red;">
+                                                <button ng-click="ctrl.deleteFile($index, file, 'materials')" ng-show="file" ng-hide="ctrl.readOnly">
+                                                    <i class="fa fa-trash-o"></i>	
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="box-footer" style="border-top:1px solid lightgray;padding-top:5px;margin:0;">
+                                <span ng-if="ctrl.job.materials.length>0">{{ctrl.job.materials.length}} &nbsp; attachment(s)</span>
+                                <div class="pull-right">
+                                    <div class="btn btn-default" name="artwork" ngf-select="ctrl.uploadFiles($files, 'materials')" ngf-multiple="true" style="border: 1;font-weight: bold;"
+                                        ng-hide="ctrl.ACL.section8 || ctrl.readOnly">Upload
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="overlay" ng-show='ctrl.spinners.materials.visible'>
+                                <i class="fa fa-spinner fa-pulse fa-2x fa-fw text-danger"></i>
+                                <uib-progressbar class="progress-striped active" value="dynamic" type="warning">
+                                    <b>{{ctrl.spinners.materials.progress}}%</b>
+                                </uib-progressbar>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="box box-solid box-none" style="border:1px solid gray;">
+                            <div class="box-header">
+                                <b>Creative Brief:</b><br>
+                                <div style="display: block;overflow-y: auto;overflow-x: hidden;max-height: 140px;min-height: 140px;">
+                                    <div class="checkbox" ng-repeat="creative in ctrl.creatives">
+                                        <label>
+                                            &emsp;                                          
+                                            <input type="checkbox" ng-model="creative.isSelected" ng-disabled="ctrl.readOnly"/>
+                                            {{ creative.name }}
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="box-body" style="resize: horizontal; min-height: 180px;border:0;border-top:1px solid gray;
+                            padding-top:2px;padding-bottom:0;">
+                                <table style="width:100%;border:0px solid gray;">
+                                    <thead style="display: block;color:white;background-color:darkslategrey;width:100%;">
+                                        <tr style="width:100%;">
+                                            <th style="width:100%;text-align:center;" colspan='2'>FileName</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody style="display: block;overflow-y: auto;overflow-x: hidden;max-height: 140px;min-height: 140px;">
+                                        <tr ng-repeat="file in ctrl.job.creative_briefs track by $index" ng-class-odd="'stripedTableRow'" style="width:100%;">
+                                            <td style="width:80%;"><a ng-href="{{file.url}}" target="_blank">{{file.name}}</a></td>
+                                            <td style="width:10%;">
+                                                <a target="_self" ng-href="{{file.url}}" download="{{file.name}}">
+                                                    <button ng-click="saveFile(file);" ng-show="file">                                                    
+                                                        <i class="fa fa-download"></i>
+                                                    </button>
+                                                </a>
+                                            </td>
+                                            <td style="width:10%;text-align:right;color:red;">
+                                                <button ng-click="ctrl.deleteFile($index, file, 'creative_briefs')" ng-show="file" ng-hide="ctrl.readOnly">
+                                                    <i class="fa fa-trash-o"></i>	
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="box-footer" style="border-top:1px solid gray;">
+                                <span ng-if="ctrl.job.creative_briefs.length>0">{{ctrl.job.creative_briefs.length}} &nbsp; attachment(s)</span>
+                                <div class="pull-right">
+                                    <!--
+                                    <div class="btn btn-default" name="creative_briefs" ngf-select="ctrl.uploadFiles($files, 'creative_briefs')" 
+                                        ngf-multiple="true" ngf-pattern="'application/msword, application/vnd.ms-excel, application/vnd.ms-powerpoint,
+                                        text/plain, application/pdf, application/zip, application/x-rar-compressed, application/x-7z-compressed,application/octet-stream'"
+                                        style="border: 1;font-weight: bold;" ng-hide="ctrl.ACL.section8">Upload
+                                    </div>
+                                    -->
+                                    <div class="btn btn-default" name="creative_briefs" ngf-select="ctrl.uploadFiles($files, 'creative_briefs')" ngf-multiple="true"
+                                        ng-hide="ctrl.ACL.section8 || ctrl.readOnly">Upload
+                                    </div>
+                                    <!--
+                                    <button type="button" class="btn btn-default" ng-click="alert('Function not yet available...');" ng-if="ctrl.job.creative_briefs.length>0"
+                                        style="margin-right:10px;margin-left:10px;color:white;background-color: black">Download
+                                    </button>
+                                    -->
+                                </div>
+                            </div>
+                            <div class="overlay" ng-hide='ctrl.creatives.length > 0'>
+                                <i class="fa fa-refresh fa-spin "></i>
+                            </div>
+                            <div class="overlay" ng-show='ctrl.spinners.creative.visible'>
+                                <i class="fa fa-spinner fa-pulse fa-2x fa-fw text-danger"></i>
+                                <uib-progressbar class="progress-striped active" value="dynamic" type="warning" style="width: 100%; position: absolute; height: 20px; top: 90%; opacity: 0.5;">
+                                    <b>{{ctrl.spinners.creative.progress}}%</b>
+                                </uib-progressbar>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Task Details - END -->
+
+    <section class="content" style="background-color:white" ng-show="ctrl.job.id!=null">
+        <!-- Creative Team Member - START -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-solid box-none" style="padding:15px;">
+                    <div style="resize: horizontal; min-height: 120px; border:1px solid gray;">
+                        <div class="box-header">
+                            <b>Creative Team Member : </b>
+                        </div>
+                        <div class="box-body">
+                            {{ctrl.job.team_members}}
+                            <!--
+                            <div ng-repeat="tm in ctrl.job.team_members">
+                                {{tm}} &emsp;
+                            </div>
+                            -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--  Creative Team Member - END -->
+
+        <!-- Artwork Details - START -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-solid box-creative">
+                    <div class="box-header curved">
+                        Artwork Details
+                    </div>
+                    <div class="box-body">
+                        <div class="form-inline" style="width:100%" ng-hide="ctrl.readOnly">
+                            <div class="form-group" style="width:100%;text-align:center;">
+                                <label class="col-sm-1" style="text-align:left;">Add Task : </label>
+                                <div class="col-sm-1" ng-repeat="c in ctrl.iconList" ng-show='c.isActive'>
+                                    <input type="image" src="{{c.pixPath}}" width="35" height="35" uib-tooltip="{{c.toolTip}}" class='task-icon' ng-click="ctrl.openPage(c.taskName);">
+                                    <br> {{c.display}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-footer table-responsive no-padding">
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                                <tr ng-hide="(ctrl.taskList.length>-1) || ctrl.qTaskResultError || !ctrl.readOnly">
+                                    <th style="vertical-align:middle;">&emsp;<i class="fa fa-cog fa-2x fa-spin"></i>&emsp;Loading</th>
+                                </tr>
+                                <tr>
+                                    <th ng-repeat="c in ctrl.columnTitles">{{c.text}}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-show="ctrl.taskList.length==0">
+                                    <td style="vertical-align:middle;" colspan="8">
+                                        &emsp;
+                                        <span ng-show='ctrl.readOnly'>
+                                            <i class="fa fa-ban fa-2x"></i>&emsp;No data found
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr ng-repeat="c in ctrl.taskList track by $index">
+                                    <td>{{($index + 1)}}</td>
+                                    <td>{{c.creative_form | propercase}}</td>
+                                    <td>{{c.artwork_type}}</td>
+
+
+                                    <td ng-hide="c.designer.length > 0">
+                                        {{c.designer}}
+                                    </td>
+                                    <td ng-show="c.designer.length > 0">
+                                        <p ng-repeat="designer in c.designer">
+                                            <span>{{designer}}</span>
+                                        </p>
+                                    </td>
+
+                                    <td ng-hide="c.writer.length > 0">
+                                        {{c.writer}}
+                                    </td>
+                                    <td ng-show="c.writer.length > 0">
+                                        <p ng-repeat="writer in c.writer">
+                                            <span>{{writer}}</span>
+                                        </p>
+                                    </td>
+
+                                    <td>{{c.due_date | date:"dd/MM/yyyy hh:mm a"}}</td>
+                                    <td>{{c.status}}</td>
+                                    <td style="width:100px">
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-default fa fa-edit" ng-click="ctrl.openTask(c);"></button>
+                                            <!--<button type="button" class="btn btn-danger fa fa-trash-o" ng-click="ctrl.deleteProduct(c);" ng-hide="ctrl.readOnly"></button>-->
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--  Artwork Details - END -->
+
+        <!-- Audit Trail Logs - START -->
+        <div class="row" ng-show="ctrl.docHistory.length!=0">
+            <div class="col-md-12">
+                <div class="box box-solid box-creative">
+                    <div class="box-header curved">
+                        Edit History
+                    </div>
+                    <div class="box-body">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th class="col-xs-3" style="text-align:center">Date</th>
+                                    <th class="col-xs-3" style="text-align:center">Modified By</th>
+                                    <th class="col-xs-6" style="text-align:center">Details</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="log in ctrl.docHistory">
+                                    <td class="col-xs-3" style="text-align:center">{{log.action_taken_at}}</td>
+                                    <td class="col-xs-3" style="text-align:center">{{log.action_taken_by}}</td>
+                                    <td class="col-xs-6" style="text-align:justify">{{log.detail}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--  Audit Trail Logs - END -->
+    </section>
+
+    <!-- ACTION BUTTON -->
+    <section class="content" style="background-color:white;padding-top:0">
+        <div class="row" ng-show="ctrl.job.id==null">
+            <div class="col-md-12">
+                <button type="button" class="btn btn-default" ng-click="ctrl.gotoDash(false);"><i class="fa fa-remove"></i>Close</button>
+                <div class="pull-right" style='width:200px;'>
+                    <button type="button" class="btn btn-primary btn-block" ng-click="ctrl.checkValidity();">NEXT ></button>
+                </div>
+            </div>
+        </div>
+        <div class="row" ng-hide="ctrl.job.id==null || ctrl.job.status=='Completed'">
+            <div class="col-md-12">
+                <button type="button" class="btn btn-default" ng-click="ctrl.gotoDash(false);"><i class="fa fa-remove"></i> Close</button>
+                <div class="pull-right" ng-show="ctrl.readOnly">
+                    <button type="button" class="btn btn-primary" ng-click="ctrl.editJob();" ng-show='ctrl.currentUser.canEdit'>
+                        <i class="fa fa-pencil-square-o"></i> Edit</button>
+                    <button type="button" class="btn btn-default btn-sm" ng-click="ctrl.developerLog=!ctrl.developerLog" style="border: 1px solid #a1a1a1;border-radius: 25px;background:white;">
+                        <i class="fa fa-question-circle"></i>
+                    </button>
+                </div>
+                <div class="pull-right" ng-hide="ctrl.readOnly">
+                    <button type="button" class="btn btn-primary" ng-click="ctrl.checkValidity();" ng-show='ctrl.currentUser.canEdit'>
+                        <i class="fa fa-save"></i> Save</button>
+                    <button type="button" class="btn btn-default btn-sm" ng-click="ctrl.developerLog=!ctrl.developerLog" style="border: 1px solid #a1a1a1;border-radius: 25px;background:white;">
+                        <i class="fa fa-question-circle"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </section>
+    <section class="content" style="background-color:white;padding-top:0" ng-show="ctrl.developerLog">
+        <div class="row">
+            <div class="col-md-4">
+                <p><b>CURRENT USER</b></p>
+                <p>ID - {{ ctrl.currentUser.id }} </p>
+                <p>Name - {{ ctrl.currentUser.name }} </p>
+                <p>Role - {{ ctrl.currentUser.role }} </p>
+
+                <p><b>PROGRAMMER DEBUG LOG</b></p>
+                <p>task status: {{ctrl.task.status}}</p>
+                <p>status number: {{ctrl.statusNum}}</p>
+                <p>readOnly: {{ctrl.readOnly}}</p>
+                <p>canEdit: {{ctrl.currentUser.canEdit}} </p>
+                <p>userAction: {{ctrl.currentUser.userAction}}</p>
+            </div>
+            <div class="col-md-4">
+                <p><b>SECTION ACCESS - RESTRICTIONS</b></p>
+                <p>Job Information - {{ ctrl.ACL.section1 }} </p>
+                <p>Requestor - {{ ctrl.ACL.section2 }} </p>
+                <p>Specification - {{ ctrl.ACL.section3 }} </p>
+                <p>Materials - {{ ctrl.ACL.section3 }} </p>
+                <p>Instructions - {{ ctrl.ACL.section3 }} </p>
+                <p>Assignment Details - {{ ctrl.ACL.section4 }} </p>
+                <p>Designer - {{ ctrl.ACL.section5 }} </p>
+
+            </div>
+            <div class="col-md-4">
+                <p><b>SECTION ACCESS</b></p>
+                <p>AM - {{ ctrl.task.submitted_by_username }} </p>
+                <p>TH - {{ ctrl.task.cc_response_username }} </p>
+                <p>TC - {{ ctrl.task.team_head_username }} </p>
+            </div>
+        </div>
+    </section>
+</div>
+
+<input name="cc_response_username" class="form-control input-sm fld-att" type="hidden" ng-model="ctrl.job.cc_response_username">
+<input name="JobID" class="form-control input-sm fld-att" type="hidden" ng-model="ctrl.job.id">
+<input name="isValid" class="form-control input-sm fld-att" ng-model="ctrl.isValid" type="hidden" value="false">

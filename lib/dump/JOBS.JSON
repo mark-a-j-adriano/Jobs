@@ -1,0 +1,134 @@
+user = {
+	id: 'emsmaav1',
+	name: 'EMS Mark Anthony Adriano',	
+	phone: '87201251',
+	ext: '1685',
+	team: 'ITD',
+	role: '1',
+	
+	email: 'emsmaav1@sph.com.sg',
+};
+
+jobs = {
+	id: 12345,
+	jobID: null,
+	details: {
+		title: 'Test',
+		bookingType: null,
+		adSpent: 0,
+		adSpent: 0,
+		location: '8th Floor',
+		schedule: '11/04/2017 13:54',
+		instruction: '',
+		srcURL: '',
+		userName: '',
+		password: '',
+		createdDT: '',
+		status: 'draft',
+	},
+	requestor: {
+		salesID: 'emsmaav1',
+		submittedBy: 'EMS Mark Anthony Adriano',
+		emailSales: 'emsmaav1@sph.com.sg'
+		extNumber: '1685',
+		mobileNumber: '87201251',
+		team: 'ITD',
+		ccSales: 'teows',
+		ccSalesName: 'Wan Soon Teo',
+		ccExtNum: '1762',
+		ccNumber: '12345678',
+	},
+	materials: [{
+		fileName: 'Test.jpg',
+		dtModified: '11/04/2017'
+	}],
+	creatives: [{
+		fileName: 'Test.jpg',
+		dtModified: '11/04/2017'
+	}],
+	options: [{
+		briefOption: 'Press Ads',
+		isSelected: false,
+	}, {
+		briefOption: 'Advertorial Style Ad',
+		isSelected: false,
+	}, {
+		briefOption: 'Supplements',
+		isSelected: false,
+	}, {
+		briefOption: 'Mailer / eDM',
+		isSelected: false,
+	}, {
+		briefOption: 'Collaterals',
+		isSelected: false,
+	}],
+	members: [{
+		name: 'handi',
+		role: 'lead'
+	}, {
+		name: 'damon',
+		role: 'developer',
+	}],
+	trail: [{
+		name: 'mark',
+		description: 'created job',
+		dtModified: '11/04/2017'
+	}, {
+		name: 'mark',
+		description: 'create classified artwork',
+		dtModified: '11/04/2017'
+	}],
+}
+
+display = {
+	id: 12346,
+	jobID: 12345,
+	taskID: '12345-01',
+	details: {
+		coordinatorID: 'teows',
+		dtModified: '11-04-2017',
+		createdBy: 'Mark',
+		status: 'Draft',
+	}
+	specifications: {
+		Classication: [{
+			name: 'Test',
+			isSelected: false
+		}],
+		Publication: [{
+			name: 'Test',
+			isSelected: false
+		}],
+		Language: '',
+		Colour: '',
+		Other: '',
+	}
+	requestor: {
+		salesID: 'emsmaav1',
+		submittedBy: 'EMS Mark Anthony Adriano',
+		emailSales: 'emsmaav1@sph.com.sg'
+		extNumber: '1685',
+		mobileNumber: '87201251',
+		team: 'ITD',
+		ccSales: 'teows',
+		ccSalesName: 'Wan Soon Teo',
+		ccExtNum: '1762',
+		ccNumber: '12345678',
+	},
+	members: [{
+		name: 'handi',
+		role: 'lead'
+	}, {
+		name: 'damon',
+		role: 'developer',
+	}],
+	trail: [{
+		name: 'mark',
+		description: 'created job',
+		dtModified: '11/04/2017'
+	}, {
+		name: 'mark',
+		description: 'create classified artwork',
+		dtModified: '11/04/2017'
+	}],
+}

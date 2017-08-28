@@ -1,0 +1,48 @@
+<!-- form start -->
+<form class="form-horizontal">
+    <div class="col-md-12" style="margin: 0; padding-bottom: 0">
+        <div class="box box-solid" ng-class="ctrl.hdr_class">
+            <div class="box-header">
+                <h4>{{ctrl.formTitle | uppercase}}</h4>
+            </div>
+            <div class="box-body" style="cursor:pointer">
+                <div class="row" style="cursor:pointer">
+                    <div class="form-group" ng-hide="ctrl.isMultiple">
+                        <label class="col-sm-4 control-label">Choose a user :</label>
+                        <div class="col-sm-6">
+                            <select name="repeatSelect" id="repeatSelect" class="form-control input-sm select-att" ng-model="ctrl.selected" style="cursor:pointer">
+                            <option ng-repeat="option in ctrl.members" value="{{option.username}}">{{option.name}}</option>
+                        </select>
+                        </div>
+                        <div class="col-sm-2">&nbsp;</div>
+                    </div>
+                    <div class="form-group" ng-show="ctrl.isMultiple" style="cursor:pointer">
+                        <label class="col-sm-4 control-label" ng-show="ctrl.isMultiple">Choose user(s) :</label>
+                        <div class="col-sm-6">
+                            <div ng-dropdown-multiselect="" options="ctrl.inputList" selected-model="ctrl.outputList" extra-settings="{}" 
+                            style="width:250px;cursor:pointer">
+                            </div>
+                            <div ng-show="ctrl.outputList.length > 0">
+                                <br/>
+                                <p>Selected list: </p>
+                                <ul>
+                                    <li ng-repeat="x in ctrl.outputList">
+                                        {{ x.label }}
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">&nbsp;</div>
+                    </div>
+                </div>
+            </div>
+            <div class="box-footer">
+                <button type="button" class="btn btn-default" ng-click="ctrl.cancel()"><i class="fa fa-remove"></i> Close</button>
+                <div class="pull-right">
+                    <!--<button type="button" class="btn btn-default"><i class="fa fa-reply"></i> Request More Information </button>-->
+                    <button type="button" class="btn btn-default" ng-click="ctrl.ok()"><i class="fa fa-share"></i> OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

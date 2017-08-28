@@ -1,0 +1,75 @@
+<!-- form start -->
+<form class="form-horizontal">
+    <div class="col-md-12" style="margin: 0; padding-bottom: 0">
+        <div class="box box-solid" ng-class="ctrl.hdr_class">
+            <div class="box-header">
+                <h4>{{ctrl.formTitle | uppercase}}</h4>
+                <div class="box-tools pull-right">
+                    <button class="btn btn-box-tool" data-widget="remove" ng-click="ctrl.cancel()">
+                        <i class="fa fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="box-body" style="display: block;">
+                <label class="col-sm-12">{{ ctrl.msg_content }}  </label>
+                <div ng-show="ctrl.isChat &&  ctrl.msg_List.length > 0">
+                    <!-- Conversations are loaded here -->
+                    <div class="direct-chat-messages">
+                        <div ng-repeat="chat in ctrl.msg_List">
+                            <!-- Message. Default to the left -->
+                            <div class="direct-chat-msg" ng-hide="chat.sender_role == ctrl.userRole" ng-style="ctrl.roleColor(chat.sender_role);">
+                                <div class="direct-chat-info clearfix">
+                                    <span class="direct-chat-name pull-left">{{chat.sender}} -  <i>{{chat.sender_role}}</i></span>
+                                    <span class="direct-chat-timestamp pull-right">{{chat.sent_date}}</span>
+                                </div>
+                                <span class="direct-chat-img"><i class="fa fa-user fa-2x"></i></span>
+                                <!-- /.direct-chat-img -->
+                                <div class="direct-chat-text">
+                                    {{chat.msg}}
+                                </div>
+                            </div>
+                            <!-- /.direct-chat-msg -->
+
+                            <!-- Message to the right -->
+                            <div class="direct-chat-msg right" ng-show="chat.sender_role == ctrl.userRole" ng-style="ctrl.roleColor(chat.sender_role);">
+                                <div class="direct-chat-info clearfix">
+                                    <span class="direct-chat-name pull-left">{{chat.sender}} -  <i>{{chat.sender_role}}</span>
+                                    <span class="direct-chat-timestamp pull-right">{{chat.sent_date}}</span>
+                                </div>
+                                <span class="direct-chat-img"><i class="fa fa-odnoklassniki fa-2x"></i></span>
+                                <!-- /.direct-chat-img -->
+                                <div class="direct-chat-text" style="background-color: lightcyan;border: 1;">
+                                    {{chat.msg}}
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.direct-chat-msg -->
+                    </div>
+                    <!--/.direct-chat-messages-->
+                </div>
+            </div>
+            <div class="box-footer">
+                <div ng-hide="ctrl.isChat">
+                    <button type="button" class="btn btn-default" ng-click="ctrl.cancel()" ng-show="ctrl.isConfirmation">
+                        <i class="fa fa-remove"></i> Cancel 
+                    </button>
+                    <div class="pull-right">
+                        <button type="button" class="btn btn-default" ng-click="ctrl.ok()" ng-show="ctrl.isConfirmation">
+                            <i class="fa fa-share"></i>Confirm
+                        </button>
+                        <button type="button" class="btn btn-default" ng-click="ctrl.ok()" ng-hide="ctrl.isConfirmation">
+                            <i class="fa fa-share"></i>OK
+                        </button>
+                    </div>
+                </div>
+                <div class="input-group" ng-show="ctrl.isChat">
+                    <input type="text" name="message" placeholder="Type Message ..." class="form-control" ng-model="ctrl.msg_chat">
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-primary btn-flat" ng-click="ctrl.ok()">Send</button>
+                    </span>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</form>

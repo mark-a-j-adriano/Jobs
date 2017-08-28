@@ -1,0 +1,58 @@
+[
+    {
+        "title": "System Administrator",
+        "role": 1
+    },
+    {
+        "title": "Head Of Creative",
+        "role": 2
+    },
+    {
+        "title": "Creative Director",
+        "role": 3
+    },
+    {
+        "title": "Art Director",
+        "role": 4
+    },
+    {
+        "title": "Creative Traffic",
+        "role": 5
+    },
+    {
+        "title": "Asst Art Director",
+        "role": 6
+    },
+    {
+        "title": "Operations",
+        "role": 7
+    },
+    {
+        "title": "Art Supervisor",
+        "role": 8
+    },
+    {
+        "title": "Designer 1",
+        "role": 10
+    },
+    {
+        "title": "Designer 2 / Backup",
+        "role": 15
+    },
+    {
+        "title": "Freelancer",
+        "role": 16
+    },
+    {
+        "title": "Copy Writer",
+        "role": 20
+    },
+    {
+        "title": "Sales Team Lead",
+        "role": 25
+    },
+    {
+        "title": "Sales",
+        "role": 30
+    }
+]

@@ -1,0 +1,162 @@
+<!-- form start -->
+<form class="form-horizontal" ng-show="ctrl.isList">
+    <div class="col-md-12" style="margin: 0; padding-bottom: 0">
+        <div class="box box-solid box-display">
+            <div class="box-header">
+                <h4>{{ctrl.formTitle}}</h4>
+            </div>
+            <div class="box-body">
+                <div class="row">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">Publication :</label>
+                        <div class="col-sm-6">
+                            <select name="repeatSelect" id="repeatSelect" class="form-control input-sm select-att" ng-model="ctrl.product.pubID">
+                            <option ng-repeat="option in ctrl.pubOptions" value="{{option.product_code}}">{{option.product_name}}</option>
+                        </select>
+                        </div>
+                        <div class="col-sm-2">&nbsp;</div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">Publication Date :</label>
+                        <div class="col-sm-6">
+                            <p class="input-group">
+                                <input id="pubDate" type="text" class="form-control input-sm fld-att" datetime-picker="dd/MM/yyyy" datepicker-options="ctrl.dateTimePicker1.datepickerOptions"
+                                    enable-time="false" ng-model="ctrl.product.pubDate" is-open="ctrl.dateTimePicker1.open" close-on-date-selection="true"
+                                    readonly />
+                                <span class="input-group-btn">
+                                            <button type="button" class="btn btn-default fld-att"   
+                                            ng-click="ctrl.openCalendar($event, 'dateTimePicker1')" 
+                                            ng-disabled="ctrl.product.pubID == '' || ctrl.product.pubID==null">
+                                                <i class="fa fa-calendar"></i>
+                                            </button>
+                                        </span>
+                            </p>
+                        </div>
+                        <div class="col-sm-2">&nbsp;</div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">Presentation Date :</label>
+                        <div class="col-sm-6">
+                            <p class="input-group">
+                                <input id="presentationDate" type="text" class="form-control input-sm fld-att" datetime-picker="dd/MM/yyyy" datepicker-options="ctrl.dateTimePicker2.datepickerOptions"
+                                    enable-time="false" ng-model="ctrl.product.presentationDate" is-open="ctrl.dateTimePicker2.open"
+                                    close-on-date-selection="true" readonly />
+                                <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default fld-att"   
+                                        ng-click="ctrl.openCalendar($event, 'dateTimePicker2')" 
+                                        ng-disabled="ctrl.product.pubID == '' || ctrl.product.pubID==null">
+                                            <i class="fa fa-calendar"></i>
+                                        </button>
+                                </span>
+                            </p>
+                        </div>
+                        <div class="col-sm-2">&nbsp;</div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">ET Number :</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control input-sm fld-att" ng-model="ctrl.product.etNum" text-mask="ctrl.filter.etNum" ng-change="ctrl.clrField('etNum_tbd');">
+                        </div>
+                        <div class="col-sm-4">
+                            <input type="checkbox" name="etNum_tbd" id="etNum_tbd" ng-model="ctrl.product.etNum_tbd" ng-change="ctrl.clrField('etNum');">
+                            <label for="etNum_tbd">&emsp;TBA</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">ET Date :</label>
+                        <div class="col-sm-6">
+                            <p class="input-group">
+                                <input id="etDate" type="text" class="form-control input-sm fld-att" datetime-picker="dd/MM/yyyy" datepicker-options="ctrl.dateTimePicker3.datepickerOptions"
+                                    enable-time="false" ng-model="ctrl.product.etDate" is-open="ctrl.dateTimePicker3.open" close-on-date-selection="true"
+                                    readonly />
+                                <span class="input-group-btn">
+                                            <button type="button" class="btn btn-default fld-att"   
+                                            ng-click="ctrl.openCalendar($event, 'dateTimePicker3')" 
+                                            ng-disabled="ctrl.product.etNum == '' || ctrl.product.etNum==null">
+                                                <i class="fa fa-calendar"></i>
+                                            </button>
+                                        </span>
+                            </p>
+                        </div>
+                        <div class="col-sm-2">&nbsp;</div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">Status :</label>
+                        <div class="col-sm-6">
+                            <select name="repeatSelect" id="repeatSelect" class="form-control input-sm select-att" ng-model="ctrl.product.status">
+                            <option ng-repeat="option in ctrl.statusOptions" value="{{option}}">{{option}}</option>
+                        </select>
+                        </div>
+                        <div class="col-sm-2">&nbsp;</div>
+                    </div>
+                </div>
+                <div class="row" ng-show="ctrl.product.status=='In Progress' || ctrl.product.artwork!==null">
+                    <div class="form-group">
+                        <hr style=" border: 0;height: 1px; background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));">                      
+                        <label class="col-sm-4 control-label">Preview of Artwork :</label>
+                        <div class="col-sm-4">
+                            <a ng-href="{{ctrl.product.artwork.url}}" target="_blank"  
+                                style="color:blue; text-decoration: none;cursor:pointer">
+                                {{ctrl.product.artwork.name}}
+                            </a>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="btn btn-default" name="artwork" ngf-select="ctrl.uploadFiles($files, 'artwork')" 
+                            ngf-multiple="true" ngf-pattern="'image/*'" style="border: 1;font-weight: bold;">Upload
+                            </div>
+                        </div>                      
+                    </div>
+                </div>
+            </div>
+            <div class="box-footer">
+                <button type="button" class="btn btn-default" ng-click="ctrl.cancel()"><i class="fa fa-remove"></i> Close</button>
+                <div class="pull-right">
+                    <!--<button type="button" class="btn btn-default"><i class="fa fa-reply"></i> Request More Information </button>-->
+                    <button type="button" class="btn btn-default" ng-click="ctrl.ok()"><i class="fa fa-share"></i> OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<form class="form-horizontal" ng-hide="ctrl.isList">
+    <div class="col-md-12" style="margin: 0; padding-bottom: 0">
+        <div class="box box-solid box-display">
+            <div class="box-header">
+                <h4>{{ctrl.formTitle}}</h4>
+            </div>
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-sm-3">&nbsp;</div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Final Ad Spend :</label>
+                            <div class="input-group">
+                                <span class="input-group-addon fld-att">$</span>
+                                <input id='ad_spend' type="number" class="form-control input-sm fld-att" style="text-align:right;padding-right:10px;" ng-model="ctrl.final_ad_spend"
+                                    min="0.01" step="0.01">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Final Production Cost :</label>
+                            <div class="input-group">
+                                <span class="input-group-addon fld-att">$</span>
+                                <input id='production_cost' type="number" class="form-control input-sm fld-att" style="text-align:right;padding-right:10px;"
+                                    ng-model="ctrl.final_cost" min="0.01" step="0.01">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">&nbsp;</div>
+                </div>
+            </div>
+            <div class="box-footer">
+                <button type="button" class="btn btn-default" ng-click="ctrl.cancel()"><i class="fa fa-remove"></i> Close</button>
+                <div class="pull-right">
+                    <!--<button type="button" class="btn btn-default"><i class="fa fa-reply"></i> Request More Information </button>-->
+                    <button type="button" class="btn btn-default" ng-click="ctrl.ok()"><i class="fa fa-share"></i> OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,202 @@
+[
+    {
+        "Priority": 1,
+        "Status": "ET is due today, pls get approval TWO hours before ET"
+    },
+    {
+        "Priority": 2,
+        "Status": "Artwork is ready for collection"
+    },
+    {
+        "Priority": 3,
+        "Status": "Client  to revert eDM"
+    },
+    {
+        "Priority": 4,
+        "Status": "Client to revert Artwork"
+    },
+    {
+        "Priority": 5,
+        "Status": "Client to revert Logo"
+    },
+    {
+        "Priority": 6,
+        "Status": "Client to revert Visual"
+    },
+    {
+        "Priority": 7,
+        "Status": "Client to revert Concept"
+    },
+    {
+        "Priority": 8,
+        "Status": "Client to revert Chinese Copy"
+    },
+    {
+        "Priority": 9,
+        "Status": "Client to revert English Copy"
+    },
+    {
+        "Priority": 10,
+        "Status": "Client to revert Malay Copy"
+    },
+    {
+        "Priority": 11,
+        "Status": "Closed"
+    },
+    {
+        "Priority": 12,
+        "Status": "Collaterals"
+    },
+    {
+        "Priority": 13,
+        "Status": "Copy / Artwork"
+    },
+    {
+        "Priority": 14,
+        "Status": "Copy / Visual"
+    },
+    {
+        "Priority": 15,
+        "Status": "Job brief"
+    },
+    {
+        "Priority": 16,
+        "Status": "Job cancelled"
+    },
+    {
+        "Priority": 17,
+        "Status": "Logo Design"
+    },
+    {
+        "Priority": 18,
+        "Status": "Logo Design CTR"
+    },
+    {
+        "Priority": 19,
+        "Status": "On hold"
+    },
+    {
+        "Priority": 20,
+        "Status": "Ongoing"
+    },
+    {
+        "Priority": 21,
+        "Status": "Pending additional info"
+    },
+    {
+        "Priority": 22,
+        "Status": "Pending client’s copy"
+    },
+    {
+        "Priority": 23,
+        "Status": "Pending client’s logo"
+    },
+    {
+        "Priority": 24,
+        "Status": "Pending client’s pix"
+    },
+    {
+        "Priority": 25,
+        "Status": "Pending client’s re-brief"
+    },
+    {
+        "Priority": 26,
+        "Status": "Pending client’s soft copy"
+    },
+    {
+        "Priority": 27,
+        "Status": "Pending ET number"
+    },
+    {
+        "Priority": 28,
+        "Status": "Pending further instructions"
+    },
+    {
+        "Priority": 29,
+        "Status": "Pending new pub dates"
+    },
+    {
+        "Priority": 30,
+        "Status": "Presentation"
+    },
+    {
+        "Priority": 31,
+        "Status": "Printer"
+    },
+    {
+        "Priority": 32,
+        "Status": "Photography"
+    },
+    {
+        "Priority": 33,
+        "Status": "Ready to ET"
+    },
+    {
+        "Priority": 34,
+        "Status": "Revise Artwork"
+    },
+    {
+        "Priority": 35,
+        "Status": "Revise Copy"
+    },
+    {
+        "Priority": 36,
+        "Status": "Revise Visual"
+    },
+    {
+        "Priority": 37,
+        "Status": "Revise Visual Mock-up"
+    },
+    {
+        "Priority": 38,
+        "Status": "Revised Artwork 1 – CTR"
+    },
+    {
+        "Priority": 39,
+        "Status": "Revised Artwork 2 - CTR"
+    },
+    {
+        "Priority": 40,
+        "Status": "Revised Artwork 3 - CTR"
+    },
+    {
+        "Priority": 41,
+        "Status": "Revised Artwork 4 - CTR"
+    },
+    {
+        "Priority": 42,
+        "Status": "Revised Artwork 5 - CTR"
+    },
+    {
+        "Priority": 43,
+        "Status": "Revised Artwork 6 - CTR"
+    },
+    {
+        "Priority": 44,
+        "Status": "Revised Artwork 7 – CTR"
+    },
+    {
+        "Priority": 45,
+        "Status": "Redo Artwork"
+    },
+    {
+        "Priority": 46,
+        "Status": "Visual Mock-up"
+    },
+    {
+        "Priority": 47,
+        "Status": "Visual is ready for collection"
+    },
+    {
+        "Priority": 48,
+        "Status": "Writer [Chinese]"
+    },
+    {
+        "Priority": 49,
+        "Status": "Writer [English]"
+    },
+    {
+        "Priority": 50,
+        "Status": "Writer [Malay]"
+    }
+]

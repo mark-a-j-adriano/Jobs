@@ -1,0 +1,240 @@
+=================================================================
+1503560363
+=================================================================
+working directory : C:\xampp\htdocs\Creative\Jobs\service\tmp
+formType : job
+fileDesc : materials
+traceNum : emsmaav1-170824-001
+request : {"formType":"job","fileDesc":"materials","traceNum":"emsmaav1-170824-001"}
+Files : {"file":{"name":"images.jpg","type":"image\/jpeg","tmp_name":"C:\\xampp\\tmp\\php6807.tmp","error":0,"size":9623}}
+creating new directory : job/materials/emsmaav1-170824-001
+uploaded file[0] : C:\xampp\tmp\php6807.tmp
+uploaded file[1] : job/materials/emsmaav1-170824-001/images.jpg
+=================================================================
+1503560421
+=================================================================
+working directory : C:\xampp\htdocs\Creative\Jobs\service\tmp
+formType : job
+fileDesc : materials
+traceNum : emsmaav1-170824-001
+request : {"formType":"job","fileDesc":"materials","traceNum":"emsmaav1-170824-001"}
+Files : {"file":{"name":"Capture1.JPG","type":"image\/jpeg","tmp_name":"C:\\xampp\\tmp\\php4C5D.tmp","error":0,"size":57320}}
+directory already exist : job/materials/emsmaav1-170824-001
+uploaded file[3] : C:\xampp\tmp\php4C5D.tmp
+uploaded file[4] : job/materials/emsmaav1-170824-001/Capture1.JPG
+=================================================================
+1503560656
+=================================================================
+working directory : C:\xampp\htdocs\Creative\Jobs\service\tmp
+formType : job
+fileDesc : materials
+traceNum : emsmaav1-170824-001
+request : {"formType":"job","fileDesc":"materials","traceNum":"emsmaav1-170824-001"}
+Files : {"file":{"name":"images.jpg","type":"image\/jpeg","tmp_name":"C:\\xampp\\tmp\\phpE044.tmp","error":0,"size":9623}}
+directory already exist : job/materials/emsmaav1-170824-001
+uploaded file[3] : C:\xampp\tmp\phpE044.tmp
+uploaded file[4] : job/materials/emsmaav1-170824-001/images31.jpg
+=================================================================
+1503560667
+=================================================================
+working directory : C:\xampp\htdocs\Creative\Jobs\service\tmp
+formType : job
+fileDesc : materials
+traceNum : emsmaav1-170824-001
+request : {"formType":"job","fileDesc":"materials","traceNum":"emsmaav1-170824-001"}
+Files : {"file":{"name":"Capture1.JPG","type":"image\/jpeg","tmp_name":"C:\\xampp\\tmp\\phpCD0.tmp","error":0,"size":57320}}
+directory already exist : job/materials/emsmaav1-170824-001
+uploaded file[3] : C:\xampp\tmp\phpCD0.tmp
+uploaded file[4] : job/materials/emsmaav1-170824-001/Capture141.JPG
+=================================================================
+1503560667
+=================================================================
+working directory : C:\xampp\htdocs\Creative\Jobs\service\tmp
+formType : job
+fileDesc : materials
+traceNum : emsmaav1-170824-001
+request : {"formType":"job","fileDesc":"materials","traceNum":"emsmaav1-170824-001"}
+Files : {"file":{"name":"Capture2.JPG","type":"image\/jpeg","tmp_name":"C:\\xampp\\tmp\\phpD00.tmp","error":0,"size":61371}}
+directory already exist : job/materials/emsmaav1-170824-001
+uploaded file[3] : C:\xampp\tmp\phpD00.tmp
+uploaded file[4] : job/materials/emsmaav1-170824-001/Capture2.JPG
+=================================================================
+1503560667
+=================================================================
+working directory : C:\xampp\htdocs\Creative\Jobs\service\tmp
+formType : job
+fileDesc : materials
+traceNum : emsmaav1-170824-001
+request : {"formType":"job","fileDesc":"materials","traceNum":"emsmaav1-170824-001"}
+Files : {"file":{"name":"Company Logo.JPG","type":"image\/jpeg","tmp_name":"C:\\xampp\\tmp\\phpD01.tmp","error":0,"size":66415}}
+directory already exist : job/materials/emsmaav1-170824-001
+uploaded file[3] : C:\xampp\tmp\phpD01.tmp
+uploaded file[4] : job/materials/emsmaav1-170824-001/Company Logo.JPG
+=================================================================
+1503560667
+=================================================================
+working directory : C:\xampp\htdocs\Creative\Jobs\service\tmp
+formType : job
+fileDesc : materials
+traceNum : emsmaav1-170824-001
+request : {"formType":"job","fileDesc":"materials","traceNum":"emsmaav1-170824-001"}
+Files : {"file":{"name":"Obituary.JPG","type":"image\/jpeg","tmp_name":"C:\\xampp\\tmp\\phpD03.tmp","error":0,"size":69715}}
+directory already exist : job/materials/emsmaav1-170824-001
+uploaded file[3] : C:\xampp\tmp\phpD03.tmp
+uploaded file[4] : job/materials/emsmaav1-170824-001/Obituary.JPG
+=================================================================
+1503560667
+=================================================================
+working directory : C:\xampp\htdocs\Creative\Jobs\service\tmp
+formType : job
+fileDesc : materials
+traceNum : emsmaav1-170824-001
+request : {"formType":"job","fileDesc":"materials","traceNum":"emsmaav1-170824-001"}
+Files : {"file":{"name":"Pix from Advertiser.JPG","type":"image\/jpeg","tmp_name":"C:\\xampp\\tmp\\phpD04.tmp","error":0,"size":65484}}
+directory already exist : job/materials/emsmaav1-170824-001
+uploaded file[3] : C:\xampp\tmp\phpD04.tmp
+uploaded file[4] : job/materials/emsmaav1-170824-001/Pix from Advertiser.JPG
+=================================================================
+1503560667
+=================================================================
+working directory : C:\xampp\htdocs\Creative\Jobs\service\tmp
+formType : job
+fileDesc : materials
+traceNum : emsmaav1-170824-001
+request : {"formType":"job","fileDesc":"materials","traceNum":"emsmaav1-170824-001"}
+Files : {"file":{"name":"CS Homepage.JPG","type":"image\/jpeg","tmp_name":"C:\\xampp\\tmp\\phpD02.tmp","error":0,"size":140689}}
+directory already exist : job/materials/emsmaav1-170824-001
+uploaded file[3] : C:\xampp\tmp\phpD02.tmp
+uploaded file[4] : job/materials/emsmaav1-170824-001/CS Homepage.JPG
+=================================================================
+1503560667
+=================================================================
+working directory : C:\xampp\htdocs\Creative\Jobs\service\tmp
+formType : job
+fileDesc : materials
+traceNum : emsmaav1-170824-001
+request : {"formType":"job","fileDesc":"materials","traceNum":"emsmaav1-170824-001"}
+Files : {"file":{"name":"Tulips.jpg","type":"image\/jpeg","tmp_name":"C:\\xampp\\tmp\\phpD05.tmp","error":0,"size":620888}}
+directory already exist : job/materials/emsmaav1-170824-001
+uploaded file[3] : C:\xampp\tmp\phpD05.tmp
+uploaded file[4] : job/materials/emsmaav1-170824-001/Tulips.jpg
+=================================================================
+1503561152
+=================================================================
+working directory : C:\xampp\htdocs\Creative\Jobs\service\tmp
+formType : job
+fileDesc : materials
+traceNum : emsmaav1-170824-001
+request : {"formType":"job","fileDesc":"materials","traceNum":"emsmaav1-170824-001"}
+Files : {"file":{"name":"images.jpg","type":"image\/jpeg","tmp_name":"C:\\xampp\\tmp\\php720F.tmp","error":0,"size":9623}}
+directory already exist : job/materials/emsmaav1-170824-001
+uploaded file[3] : C:\xampp\tmp\php720F.tmp
+uploaded file[4] : job/materials/emsmaav1-170824-001/images57.jpg
+=================================================================
+1503562793
+=================================================================
+working directory : C:\xampp\htdocs\Creative\Jobs\service\tmp
+formType : job
+fileDesc : materials
+traceNum : emsmaav1-170824-001
+request : {"formType":"job","fileDesc":"materials","traceNum":"emsmaav1-170824-001"}
+Files : {"file":{"name":"images.jpg","type":"image\/jpeg","tmp_name":"C:\\xampp\\tmp\\php7C5D.tmp","error":0,"size":9623}}
+directory already exist : job/materials/emsmaav1-170824-001
+uploaded file[3] : C:\xampp\tmp\php7C5D.tmp
+uploaded file[4] : job/materials/emsmaav1-170824-001/images73.jpg
+=================================================================
+1503562955
+=================================================================
+working directory : C:\xampp\htdocs\Creative\Jobs\service\tmp
+formType : job
+fileDesc : materials
+traceNum : emsmaav1-170824-001
+request : {"formType":"job","fileDesc":"materials","traceNum":"emsmaav1-170824-001"}
+Files : {"file":{"name":"images.jpg","type":"image\/jpeg","tmp_name":"C:\\xampp\\tmp\\phpF728.tmp","error":0,"size":9623}}
+directory already exist : job/materials/emsmaav1-170824-001
+uploaded file[3] : C:\xampp\tmp\phpF728.tmp
+uploaded file[4] : job/materials/emsmaav1-170824-001/images35.jpg
+=================================================================
+1503563019
+=================================================================
+working directory : C:\xampp\htdocs\Creative\Jobs\service\tmp
+formType : job
+fileDesc : materials
+traceNum : emsmaav1-170824-001
+request : {"formType":"job","fileDesc":"materials","traceNum":"emsmaav1-170824-001"}
+Files : {"file":{"name":"images.jpg","type":"image\/jpeg","tmp_name":"C:\\xampp\\tmp\\phpEF0F.tmp","error":0,"size":9623}}
+directory already exist : job/materials/emsmaav1-170824-001
+uploaded file[3] : C:\xampp\tmp\phpEF0F.tmp
+uploaded file[4] : job/materials/emsmaav1-170824-001/images28.jpg
+=================================================================
+1503563264
+=================================================================
+working directory : C:\xampp\htdocs\Creative\Jobs\service\tmp
+formType : job
+fileDesc : materials
+traceNum : emsmaav1-170824-001
+request : {"formType":"job","fileDesc":"materials","traceNum":"emsmaav1-170824-001"}
+Files : {"file":{"name":"images.jpg","type":"image\/jpeg","tmp_name":"C:\\xampp\\tmp\\phpADBC.tmp","error":0,"size":9623}}
+directory already exist : job/materials/emsmaav1-170824-001
+uploaded file[3] : C:\xampp\tmp\phpADBC.tmp
+uploaded file[4] : job/materials/emsmaav1-170824-001/images81.jpg
+=================================================================
+1503563312
+=================================================================
+working directory : C:\xampp\htdocs\Creative\Jobs\service\tmp
+formType : job
+fileDesc : materials
+traceNum : emsmaav1-170824-001
+request : {"formType":"job","fileDesc":"materials","traceNum":"emsmaav1-170824-001"}
+Files : {"file":{"name":"images.jpg","type":"image\/jpeg","tmp_name":"C:\\xampp\\tmp\\php68B2.tmp","error":0,"size":9623}}
+directory already exist : job/materials/emsmaav1-170824-001
+uploaded file[3] : C:\xampp\tmp\php68B2.tmp
+uploaded file[4] : job/materials/emsmaav1-170824-001/images55.jpg
+=================================================================
+1503563339
+=================================================================
+working directory : C:\xampp\htdocs\Creative\Jobs\service\tmp
+formType : job
+fileDesc : materials
+traceNum : emsmaav1-170824-001
+request : {"formType":"job","fileDesc":"materials","traceNum":"emsmaav1-170824-001"}
+Files : {"file":{"name":"images.jpg","type":"image\/jpeg","tmp_name":"C:\\xampp\\tmp\\phpD0B9.tmp","error":0,"size":9623}}
+directory already exist : job/materials/emsmaav1-170824-001
+uploaded file[3] : C:\xampp\tmp\phpD0B9.tmp
+uploaded file[4] : job/materials/emsmaav1-170824-001/images14.jpg
+=================================================================
+1503563409
+=================================================================
+working directory : C:\xampp\htdocs\Creative\Jobs\service\tmp
+formType : job
+fileDesc : materials
+traceNum : emsmaav1-170824-001
+request : {"formType":"job","fileDesc":"materials","traceNum":"emsmaav1-170824-001"}
+Files : {"file":{"name":"images.jpg","type":"image\/jpeg","tmp_name":"C:\\xampp\\tmp\\phpE17C.tmp","error":0,"size":9623}}
+directory already exist : job/materials/emsmaav1-170824-001
+uploaded file[3] : C:\xampp\tmp\phpE17C.tmp
+uploaded file[4] : job/materials/emsmaav1-170824-001/images10.jpg
+=================================================================
+1503564502
+=================================================================
+working directory : C:\xampp\htdocs\Creative\Jobs\service\tmp
+formType : job
+fileDesc : materials
+traceNum : emsmaav1-170824-001
+request : {"formType":"job","fileDesc":"materials","traceNum":"emsmaav1-170824-001"}
+Files : {"file":{"name":"images.jpg","type":"image\/jpeg","tmp_name":"C:\\xampp\\tmp\\php9226.tmp","error":0,"size":9623}}
+directory already exist : job/materials/emsmaav1-170824-001
+uploaded file[3] : C:\xampp\tmp\php9226.tmp
+uploaded file[4] : job/materials/emsmaav1-170824-001/images85.jpg
+=================================================================
+1503658867
+=================================================================
+working directory : C:\xampp\htdocs\Creative\Jobs\service\tmp
+formType : task
+fileDesc : materials
+traceNum : emsmaav1-170801-001-6
+request : {"formType":"task","fileDesc":"materials","traceNum":"emsmaav1-170801-001-6"}
+Files : {"file":{"name":"images.jpg","type":"image\/jpeg","tmp_name":"C:\\xampp\\tmp\\php6256.tmp","error":0,"size":9623}}
+creating new directory : task/materials/emsmaav1-170801-001-6
+uploaded file[0] : C:\xampp\tmp\php6256.tmp
+uploaded file[1] : task/materials/emsmaav1-170801-001-6/images.jpg

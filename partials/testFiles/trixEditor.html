@@ -1,0 +1,74 @@
+<style>
+    figcaption {
+        visibility: hidden;
+    }
+
+    progress {
+        visibility: hidden;
+    }
+
+    trix-editor .caption-editing textarea {
+        display: none;
+    }
+
+    .trix-content .attachment.attachment-file {
+        display: none;
+    }
+</style>
+
+<trix-editor ng-model-options="{ updateOn: 'blur' }" spellcheck="false" class="trix-content" ng-model="ctrl.trix" angular-trix
+    trix-initialize="ctrl.trixInitialize(e, editor);" trix-change="trixChange(e, editor);" trix-selection-change="trixSelectionChange(e, editor);"
+    trix-focus="trixFocus(e, editor);" trix-blur="ctrl.trixBlur(e, editor);" trix-file-accept="trixFileAccept(e, editor);" trix-attachment-add="ctrl.trixAttachmentAdd(e, editor);"
+    trix-attachment-remove="ctrl.trixAttachmentRemove(e, editor);" placeholder="Write something.."></trix-editor>
+<br>
+<hr>
+<br>{{ctrl.trix}}<br>
+<hr>
+<br>
+<table class="table table-bordered">
+    <tr>
+        <td>name</td>
+        <td>url</td>
+        <td>uploadBy</td>
+        <td>uploadDt</td>
+        <td>height</td>
+        <td>width</td>
+        <td>type</td>
+        <td>blob</td>
+        <td>data</td>
+
+    </tr>
+    <tr ng-repeat="x in ctrl.blob">
+        <td>{{x.name}}</td>
+        <td>{{x.url}}</td>
+        <td>{{x.uploadBy}}</td>
+        <td>{{x.uploadDt}}</td>
+        <td>{{x.height}}</td>
+        <td>{{x.width}}</td>
+        <td>{{x.type}}</td>
+        <td>{{x.blob}}</td>
+        <td>{{x.base}}</td>
+    </tr>
+</table>
+<br>
+<img src='data:image/png;base64,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'
+/> Hello test﻿ ﻿ mark anthony ﻿ ﻿ adriano
+
+
+<div>
+    <!--block-->Hello<br>test<span data-trix-cursor-target="left" data-trix-serialize="false">﻿</span>
+    <figure class="attachment attachment-preview png" data-trix-attachment="{&quot;contentType&quot;:&quot;image/png&quot;,&quot;filename&quot;:&quot;image.png&quot;,&quot;filesize&quot;:5035,&quot;height&quot;:144,&quot;width&quot;:68}"
+        data-trix-content-type="image/png" data-trix-id="6582" data-trix-serialize="false" contenteditable="false"><img src="blob:http://localhost/b1c09842-f055-48ee-9c28-2babe48fc02a" data-trix-mutable="true" data-trix-serialized-attributes="{}"
+            width="68" height="144" data-trix-store-key="imageElement/6582/blob:http://localhost/b1c09842-f055-48ee-9c28-2babe48fc02a/68/144">
+        <figcaption class="caption">image.png <span class="size">4.92 KB</span></figcaption>
+        <progress class="progress" value="0" max="100" data-trix-mutable="true" data-trix-store-key="progressElement/6582"></progress>
+    </figure><span data-trix-cursor-target="right" data-trix-serialize="false">﻿</span><br>mark anthony <span data-trix-cursor-target="left"
+        data-trix-serialize="false">﻿</span>
+    <figure class="attachment attachment-preview png" data-trix-attachment="{&quot;contentType&quot;:&quot;image/png&quot;,&quot;filename&quot;:&quot;image.png&quot;,&quot;filesize&quot;:5035,&quot;height&quot;:144,&quot;width&quot;:68}"
+        data-trix-content-type="image/png" data-trix-id="6932" data-trix-serialize="false" contenteditable="false"><img src="blob:http://localhost/7a19ce70-c7b6-4fb5-8f44-06728846ea3f" data-trix-mutable="true" data-trix-serialized-attributes="{}"
+            width="68" height="144" data-trix-store-key="imageElement/6932/blob:http://localhost/7a19ce70-c7b6-4fb5-8f44-06728846ea3f/68/144">
+        <figcaption class="caption">image.png <span class="size">4.92 KB</span></figcaption>
+        <progress class="progress" value="0" max="100" data-trix-mutable="true" data-trix-store-key="progressElement/6932"></progress>
+    </figure><span data-trix-cursor-target="right" data-trix-serialize="false">﻿</span>
+    <br>adriano
+</div>
