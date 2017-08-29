@@ -1,0 +1,640 @@
+[
+    {
+        "job_class": "Classified front covers hotspots",
+        "category": "Other",
+        "language": "Chinese",
+        "coordinators": [
+            {
+                "uid": "chuaps",
+                "name": "Chua Puay Sze"
+            },
+            {
+                "uid": "hweeleng",
+                "name": "Tan Hwee Leng"
+            },
+            {
+                "uid": "wongccj",
+                "name": "Jenny Wong"
+            }
+        ]
+    },
+    {
+        "job_class": "Classified front covers hotspots",
+        "category": "Other",
+        "language": "English",
+        "coordinators": [
+            {
+                "uid": "latagn",
+                "name": "Latashni Gobi Nathan"
+            },
+            {
+                "uid": "mchin",
+                "name": "Michelle Chin"
+            },
+            {
+                "uid": "wongccj",
+                "name": "Jenny Wong"
+            }
+        ]
+    },
+    {
+        "job_class": "Advertorials",
+        "category": "Classified",
+        "language": "English",
+        "coordinators": [
+            {
+                "uid": "latagn",
+                "name": "Latashni Gobi Nathan"
+            },
+            {
+                "uid": "mchin",
+                "name": "Michelle Chin"
+            },
+            {
+                "uid": "wongccj",
+                "name": "Jenny Wong"
+            }
+        ]
+    },
+    {
+        "job_class": "Advertorials",
+        "category": "Classified",
+        "language": "Chinese",
+        "coordinators": [
+            {
+                "uid": "chuaps",
+                "name": "Chua Puay Sze"
+            },
+            {
+                "uid": "hweeleng",
+                "name": "Tan Hwee Leng"
+            },
+            {
+                "uid": "wongccj",
+                "name": "Jenny Wong"
+            }
+        ]
+    },
+    {
+        "job_class": "Advertorials",
+        "category": "Print",
+        "language": "Chinese",
+        "coordinators": [
+            {
+                "uid": "sereneg",
+                "name": "Serene Goh"
+            },
+            {
+                "uid": "cynloh",
+                "name": "Cynthia Loh"
+            },
+            {
+                "uid": "wongccj",
+                "name": "Jenny Wong"
+            }
+        ]
+    },
+    {
+        "job_class": "Advertorials",
+        "category": "Print",
+        "language": "English",
+        "coordinators": [
+            {
+                "uid": "sereneg",
+                "name": "Serene Goh"
+            },
+            {
+                "uid": "cynloh",
+                "name": "Cynthia Loh"
+            },
+            {
+                "uid": "wongccj",
+                "name": "Jenny Wong"
+            }
+        ]
+    },
+    {
+        "job_class": "Advertorials",
+        "category": "Digital",
+        "language": "English",
+        "coordinators": [
+            {
+                "uid": "sereneg",
+                "name": "Serene Goh"
+            },
+            {
+                "uid": "cynloh",
+                "name": "Cynthia Loh"
+            },
+            {
+                "uid": "wongccj",
+                "name": "Jenny Wong"
+            }
+        ]
+    },
+    {
+        "job_class": "Advertorials",
+        "category": "Digital",
+        "language": "Chinese",
+        "coordinators": [
+            {
+                "uid": "sereneg",
+                "name": "Serene Goh"
+            },
+            {
+                "uid": "cynloh",
+                "name": "Cynthia Loh"
+            },
+            {
+                "uid": "wongccj",
+                "name": "Jenny Wong"
+            }
+        ]
+    },
+    {
+        "job_class": "Supplements",
+        "category": "Print",
+        "language": "Chinese",
+        "coordinators": [
+            {
+                "uid": "sereneg",
+                "name": "Serene Goh"
+            },
+            {
+                "uid": "cynloh",
+                "name": "Cynthia Loh"
+            },
+            {
+                "uid": "wongccj",
+                "name": "Jenny Wong"
+            }
+        ]
+    },
+    {
+        "job_class": "Supplements",
+        "category": "Print",
+        "language": "English",
+        "coordinators": [
+            {
+                "uid": "sereneg",
+                "name": "Serene Goh"
+            },
+            {
+                "uid": "cynloh",
+                "name": "Cynthia Loh"
+            },
+            {
+                "uid": "wongccj",
+                "name": "Jenny Wong"
+            }
+        ]
+    },
+    {
+        "job_class": "Supplements",
+        "category": "Digital",
+        "language": "English",
+        "coordinators": [
+            {
+                "uid": "sereneg",
+                "name": "Serene Goh"
+            },
+            {
+                "uid": "cynloh",
+                "name": "Cynthia Loh"
+            },
+            {
+                "uid": "wongccj",
+                "name": "Jenny Wong"
+            }
+        ]
+    },
+    {
+        "job_class": "Supplements",
+        "category": "Digital",
+        "language": "Chinese",
+        "coordinators": [
+            {
+                "uid": "sereneg",
+                "name": "Serene Goh"
+            },
+            {
+                "uid": "cynloh",
+                "name": "Cynthia Loh"
+            },
+            {
+                "uid": "wongccj",
+                "name": "Jenny Wong"
+            }
+        ]
+    },
+    {
+        "job_class": "Branded content",
+        "category": "Print",
+        "language": "Chinese",
+        "coordinators": [
+            {
+                "uid": "sereneg",
+                "name": "Serene Goh"
+            },
+            {
+                "uid": "cynloh",
+                "name": "Cynthia Loh"
+            },
+            {
+                "uid": "wongccj",
+                "name": "Jenny Wong"
+            }
+        ]
+    },
+    {
+        "job_class": "Branded content",
+        "category": "Print",
+        "language": "English",
+        "coordinators": [
+            {
+                "uid": "sereneg",
+                "name": "Serene Goh"
+            },
+            {
+                "uid": "cynloh",
+                "name": "Cynthia Loh"
+            },
+            {
+                "uid": "wongccj",
+                "name": "Jenny Wong"
+            }
+        ]
+    },
+    {
+        "job_class": "Branded content",
+        "category": "Digital",
+        "language": "English",
+        "coordinators": [
+            {
+                "uid": "sereneg",
+                "name": "Serene Goh"
+            },
+            {
+                "uid": "cynloh",
+                "name": "Cynthia Loh"
+            },
+            {
+                "uid": "wongccj",
+                "name": "Jenny Wong"
+            }
+        ]
+    },
+    {
+        "job_class": "Branded content",
+        "category": "Digital",
+        "language": "Chinese",
+        "coordinators": [
+            {
+                "uid": "sereneg",
+                "name": "Serene Goh"
+            },
+            {
+                "uid": "cynloh",
+                "name": "Cynthia Loh"
+            },
+            {
+                "uid": "wongccj",
+                "name": "Jenny Wong"
+            }
+        ]
+    },
+    {
+        "job_class": "Sponsored series",
+        "category": "Print",
+        "language": "Chinese",
+        "coordinators": [
+            {
+                "uid": "sereneg",
+                "name": "Serene Goh"
+            },
+            {
+                "uid": "cynloh",
+                "name": "Cynthia Loh"
+            },
+            {
+                "uid": "wongccj",
+                "name": "Jenny Wong"
+            }
+        ]
+    },
+    {
+        "job_class": "Sponsored series",
+        "category": "Print",
+        "language": "English",
+        "coordinators": [
+            {
+                "uid": "sereneg",
+                "name": "Serene Goh"
+            },
+            {
+                "uid": "cynloh",
+                "name": "Cynthia Loh"
+            },
+            {
+                "uid": "wongccj",
+                "name": "Jenny Wong"
+            }
+        ]
+    },
+    {
+        "job_class": "Sponsored series",
+        "category": "Digital",
+        "language": "English",
+        "coordinators": [
+            {
+                "uid": "sereneg",
+                "name": "Serene Goh"
+            },
+            {
+                "uid": "cynloh",
+                "name": "Cynthia Loh"
+            },
+            {
+                "uid": "wongccj",
+                "name": "Jenny Wong"
+            }
+        ]
+    },
+    {
+        "job_class": "Sponsored series",
+        "category": "Digital",
+        "language": "Chinese",
+        "coordinators": [
+            {
+                "uid": "sereneg",
+                "name": "Serene Goh"
+            },
+            {
+                "uid": "cynloh",
+                "name": "Cynthia Loh"
+            },
+            {
+                "uid": "wongccj",
+                "name": "Jenny Wong"
+            }
+        ]
+    },
+    {
+        "job_class": "Editing/translation services",
+        "category": "Print",
+        "language": "Chinese",
+        "coordinators": [
+            {
+                "uid": "sereneg",
+                "name": "Serene Goh"
+            },
+            {
+                "uid": "cynloh",
+                "name": "Cynthia Loh"
+            },
+            {
+                "uid": "wongccj",
+                "name": "Jenny Wong"
+            }
+        ]
+    },
+    {
+        "job_class": "Editing/translation services",
+        "category": "Print",
+        "language": "English",
+        "coordinators": [
+            {
+                "uid": "sereneg",
+                "name": "Serene Goh"
+            },
+            {
+                "uid": "cynloh",
+                "name": "Cynthia Loh"
+            },
+            {
+                "uid": "wongccj",
+                "name": "Jenny Wong"
+            }
+        ]
+    },
+    {
+        "job_class": "Editing/translation services",
+        "category": "Digital",
+        "language": "English",
+        "coordinators": [
+            {
+                "uid": "sereneg",
+                "name": "Serene Goh"
+            },
+            {
+                "uid": "cynloh",
+                "name": "Cynthia Loh"
+            },
+            {
+                "uid": "wongccj",
+                "name": "Jenny Wong"
+            }
+        ]
+    },
+    {
+        "job_class": "Editing/translation services",
+        "category": "Digital",
+        "language": "Chinese",
+        "coordinators": [
+            {
+                "uid": "sereneg",
+                "name": "Serene Goh"
+            },
+            {
+                "uid": "cynloh",
+                "name": "Cynthia Loh"
+            },
+            {
+                "uid": "wongccj",
+                "name": "Jenny Wong"
+            }
+        ]
+    },
+    {
+        "job_class": "Curation",
+        "category": "Print",
+        "language": "Chinese",
+        "coordinators": [
+            {
+                "uid": "sereneg",
+                "name": "Serene Goh"
+            },
+            {
+                "uid": "cynloh",
+                "name": "Cynthia Loh"
+            },
+            {
+                "uid": "wongccj",
+                "name": "Jenny Wong"
+            }
+        ]
+    },
+    {
+        "job_class": "Curation",
+        "category": "Print",
+        "language": "English",
+        "coordinators": [
+            {
+                "uid": "sereneg",
+                "name": "Serene Goh"
+            },
+            {
+                "uid": "cynloh",
+                "name": "Cynthia Loh"
+            },
+            {
+                "uid": "wongccj",
+                "name": "Jenny Wong"
+            }
+        ]
+    },
+    {
+        "job_class": "Curation",
+        "category": "Digital",
+        "language": "English",
+        "coordinators": [
+            {
+                "uid": "sereneg",
+                "name": "Serene Goh"
+            },
+            {
+                "uid": "cynloh",
+                "name": "Cynthia Loh"
+            },
+            {
+                "uid": "wongccj",
+                "name": "Jenny Wong"
+            }
+        ]
+    },
+    {
+        "job_class": "Curation",
+        "category": "Digital",
+        "language": "Chinese",
+        "coordinators": [
+            {
+                "uid": "sereneg",
+                "name": "Serene Goh"
+            },
+            {
+                "uid": "cynloh",
+                "name": "Cynthia Loh"
+            },
+            {
+                "uid": "wongccj",
+                "name": "Jenny Wong"
+            }
+        ]
+    },
+    {
+        "job_class": "Videos/Scripting",
+        "category": "Digital",
+        "language": "Chinese",
+        "coordinators": [
+            {
+                "uid": "cynloh",
+                "name": "Cynthia Loh"
+            },
+            {
+                "uid": "wongccj",
+                "name": "Jenny Wong"
+            }
+        ]
+    },
+    {
+        "job_class": "Videos/Scripting",
+        "category": "Digital",
+        "language": "English",
+        "coordinators": [
+            {
+                "uid": "cynloh",
+                "name": "Cynthia Loh"
+            },
+            {
+                "uid": "wongccj",
+                "name": "Jenny Wong"
+            }
+        ]
+    },
+    {
+        "job_class": "Event coverage",
+        "category": "Classsified",
+        "language": "English",
+        "coordinators": [
+            {
+                "uid": "chuaps",
+                "name": "Chua Puay Sze"
+            },
+            {
+                "uid": "hweeleng",
+                "name": "Tan Hwee Leng"
+            },
+            {
+                "uid": "wongccj",
+                "name": "Jenny Wong"
+            }
+        ]
+    },
+    {
+        "job_class": "Event coverage",
+        "category": "Classsified",
+        "language": "Chinese",
+        "coordinators": [
+            {
+                "uid": "chuaps",
+                "name": "Chua Puay Sze"
+            },
+            {
+                "uid": "hweeleng",
+                "name": "Tan Hwee Leng"
+            },
+            {
+                "uid": "wongccj",
+                "name": "Jenny Wong"
+            }
+        ]
+    },
+    {
+        "job_class": "Ad hoc periodicals",
+        "category": "Print",
+        "language": "Chinese",
+        "coordinators": [
+            {
+                "uid": "sereneg",
+                "name": "Serene Goh"
+            },
+            {
+                "uid": "uma",
+                "name": "Uma Venkatraman"
+            },
+            {
+                "uid": "wongccj",
+                "name": "Jenny Wong"
+            }
+        ]
+    },
+    {
+        "job_class": "Ad hoc periodicals",
+        "category": "Print",
+        "language": "English",
+        "coordinators": [
+            {
+                "uid": "sereneg",
+                "name": "Serene Goh"
+            },
+            {
+                "uid": "uma",
+                "name": "Uma Venkatraman"
+            },
+            {
+                "uid": "wongccj",
+                "name": "Jenny Wong"
+            }
+        ]
+    }
+]

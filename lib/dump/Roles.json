@@ -36,12 +36,32 @@
         "role": 10
     },
     {
+        "title": "Digital Designer",
+        "role": 11
+    },
+    {
+        "title": "Display Designer",
+        "role": 12
+    },
+    {
+        "title": "Outdoor Designer",
+        "role": 13
+    },
+    {
+        "title": "Studio Designer",
+        "role": 14
+    },
+    {
         "title": "Designer 2 / Backup",
         "role": 15
     },
     {
         "title": "Freelancer",
         "role": 16
+    },
+    {
+        "title": "Display/Studio Designer",
+        "role": 17
     },
     {
         "title": "Copy Writer",

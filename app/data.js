@@ -1,117 +1,3 @@
-app.factory("StorageFactory", ["$localStorage", "$auth", function ($localStorage, $auth) {
-  var obj = {};
-  var win_URI = null;
-
-  obj.clearSessionData = function () {
-    delete $localStorage.winURI;
-    delete $localStorage.userStamp;
-    delete $localStorage.expireStamp;
-    delete $localStorage.dataStamp;
-    return null;
-  };
-
-  obj.getSessionData2 = function (dataFlag) {
-    var ret = null;
-
-    var d = new Date();
-    var current = d.getTime();
-    ////console.log('current : ' + JSON.stringify(current));
-
-    // Get Schedule
-    var stored_time = $localStorage.expireStamp;
-    if (stored_time == undefined || stored_time == "null") stored_time = 0;
-    if (stored_time < current) {
-      // Remove expired data
-      delete $localStorage.userStamp;
-      delete $localStorage.expireStamp;
-      delete $localStorage.dataStamp;
-      //$auth.removeToken();
-      return null;
-    } else {
-      //Renew expiry Stamp
-      d = new Date();
-      current = d.getTime();
-      $localStorage.expireStamp = current + 900000;
-
-      if (dataFlag) {
-        return $localStorage.dataStamp;
-      } else {
-        return $localStorage.userStamp;
-      }
-    }
-  };
-  obj.getSessionData = function (dataFlag) {
-    var ret = null;
-    if ($auth.isAuthenticated()) {
-      if (dataFlag) {
-        return $localStorage.dataStamp;
-      } else {
-        return $localStorage.userStamp;
-      }
-    } else {
-      var d = new Date();
-      var current = d.getTime();
-      ////console.log('current : ' + JSON.stringify(current));
-
-      // Get Schedule
-      var stored_time = $localStorage.expireStamp;
-      if (stored_time == undefined || stored_time == "null") stored_time = 0;
-      if (stored_time < current) {
-        // Remove expired data
-        delete $localStorage.userStamp;
-        delete $localStorage.expireStamp;
-        delete $localStorage.dataStamp;
-        $auth.removeToken();
-        return null;
-      } else {
-        //Renew expiry Stamp
-        d = new Date();
-        current = d.getTime();
-        $localStorage.expireStamp = current + 900000;
-
-        if (dataFlag) {
-          return $localStorage.dataStamp;
-        } else {
-          return $localStorage.userStamp;
-        }
-      }
-    }
-
-
-  };
-
-  obj.setSessionData = function (userData, tmpData) {
-    var d = new Date();
-    var current = d.getTime();
-    ////console.log('setSessionData UserData: ' + JSON.stringify(userData));
-    $localStorage.userStamp = userData;
-    $localStorage.expireStamp = current + 900000;
-    $localStorage.dataStamp = tmpData;
-    var dnsFlag = $localStorage.dnsURI;
-    if (_.isUndefined(dnsFlag) || _.isNull(dnsFlag)) { } else { delete $localStorage.dnsURI }
-  };
-
-  obj.setFlg = function () {
-    $localStorage.dnsURI = true;
-  }
-
-  obj.setURI = function (tmp) {
-    //console.log("originating URI : " + tmp);
-    var dnsFlag = $localStorage.dnsURI;
-    if (_.isUndefined(dnsFlag) || _.isNull(dnsFlag)) {
-      $localStorage.winURI = tmp;
-    }
-  };
-
-  obj.getURI = function () {
-    //console.log("get URI : " + $localStorage.winURI);
-    return $localStorage.winURI;
-  };
-
-  return obj;
-}
-]);
-
 app.factory("DataFactory", [
   "$http",
   "$timeout",
@@ -198,6 +84,12 @@ app.factory("DataFactory", [
       deferred.resolve(userData);
       return deferred.promise;
     };
+
+
+    obj.getContentGrp = function (type) {
+      var httpURL = "./lib/dump/contentGrp.json";
+      return $http.get(httpURL);
+    }
 
     obj.getImporterLogoGrp = function (type) {
       var httpURL = "";
@@ -460,6 +352,120 @@ app.factory("DataFactory", [
 
     return obj;
   }
+]);
+
+app.factory("StorageFactory", ["$localStorage", "$auth", function ($localStorage, $auth) {
+  var obj = {};
+  var win_URI = null;
+
+  obj.clearSessionData = function () {
+    delete $localStorage.winURI;
+    delete $localStorage.userStamp;
+    delete $localStorage.expireStamp;
+    delete $localStorage.dataStamp;
+    return null;
+  };
+
+  obj.getSessionData2 = function (dataFlag) {
+    var ret = null;
+
+    var d = new Date();
+    var current = d.getTime();
+    ////console.log('current : ' + JSON.stringify(current));
+
+    // Get Schedule
+    var stored_time = $localStorage.expireStamp;
+    if (stored_time == undefined || stored_time == "null") stored_time = 0;
+    if (stored_time < current) {
+      // Remove expired data
+      delete $localStorage.userStamp;
+      delete $localStorage.expireStamp;
+      delete $localStorage.dataStamp;
+      //$auth.removeToken();
+      return null;
+    } else {
+      //Renew expiry Stamp
+      d = new Date();
+      current = d.getTime();
+      $localStorage.expireStamp = current + 900000;
+
+      if (dataFlag) {
+        return $localStorage.dataStamp;
+      } else {
+        return $localStorage.userStamp;
+      }
+    }
+  };
+  obj.getSessionData = function (dataFlag) {
+    var ret = null;
+    if ($auth.isAuthenticated()) {
+      if (dataFlag) {
+        return $localStorage.dataStamp;
+      } else {
+        return $localStorage.userStamp;
+      }
+    } else {
+      var d = new Date();
+      var current = d.getTime();
+      ////console.log('current : ' + JSON.stringify(current));
+
+      // Get Schedule
+      var stored_time = $localStorage.expireStamp;
+      if (stored_time == undefined || stored_time == "null") stored_time = 0;
+      if (stored_time < current) {
+        // Remove expired data
+        delete $localStorage.userStamp;
+        delete $localStorage.expireStamp;
+        delete $localStorage.dataStamp;
+        $auth.removeToken();
+        return null;
+      } else {
+        //Renew expiry Stamp
+        d = new Date();
+        current = d.getTime();
+        $localStorage.expireStamp = current + 900000;
+
+        if (dataFlag) {
+          return $localStorage.dataStamp;
+        } else {
+          return $localStorage.userStamp;
+        }
+      }
+    }
+
+
+  };
+
+  obj.setSessionData = function (userData, tmpData) {
+    var d = new Date();
+    var current = d.getTime();
+    ////console.log('setSessionData UserData: ' + JSON.stringify(userData));
+    $localStorage.userStamp = userData;
+    $localStorage.expireStamp = current + 900000;
+    $localStorage.dataStamp = tmpData;
+    var dnsFlag = $localStorage.dnsURI;
+    if (_.isUndefined(dnsFlag) || _.isNull(dnsFlag)) { } else { delete $localStorage.dnsURI }
+  };
+
+  obj.setFlg = function () {
+    $localStorage.dnsURI = true;
+  }
+
+  obj.setURI = function (tmp) {
+    //console.log("originating URI : " + tmp);
+    var dnsFlag = $localStorage.dnsURI;
+    if (_.isUndefined(dnsFlag) || _.isNull(dnsFlag)) {
+      $localStorage.winURI = tmp;
+    }
+  };
+
+  obj.getURI = function () {
+    //console.log("get URI : " + $localStorage.winURI);
+    return $localStorage.winURI;
+  };
+
+  return obj;
+}
 ]);
 
 app.factory("DocumentResource", function ($scope, $resource, getHeaderFilename) {
