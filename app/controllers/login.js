@@ -96,22 +96,6 @@ app.controller('LoginCtrl', function ($auth, $state, $window, $stateParams, toas
                     });
             }
         }
-
-        /*
-        $auth.login(userInfor)
-           .then(
-           function (response) {
-               $auth.setToken(response);
-               $state.go('jobreq');
-           }).catch(
-           function (response) {
-               toastr.error(
-                   'Email or password not correct!', {
-                   closeButton: true
-                   }
-               );
-           })
-       */
     };
 
     vm.getRole = function (usrID) {
@@ -164,11 +148,20 @@ app.controller('LoginCtrl', function ($auth, $state, $window, $stateParams, toas
         $auth.authenticate(provider)
             .then(function (response) {
                 console.debug("success", response);
-                //$state.go('sales');
                 vm.getRole(userInfor.id);
+                //toastr.success('You have successfully signed in with ' + provider + '!');
+                //$location.path('/');
             })
-            .catch(function (response) {
-                console.debug("catch", response);
+            .catch(function (error) {
+                if (error.message) {
+                    // Satellizer promise reject error.
+                    toastr.error(error.message);
+                } else if (error.data) {
+                    // HTTP response error from server
+                    toastr.error(error.data.message, error.status);
+                } else {
+                    toastr.error(error);
+                }
             })
     };
 

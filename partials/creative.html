@@ -3,10 +3,9 @@
     <section class="content" style="background-color:white;min-height: 0px;padding:0">
         <div class="row">
             <div class="col-md-12">
-                <!--<img style="width:100%" src="./lib/img/jobs/JobReqBanner - Display.jpg">-->
                 <div class="box" style="margin-bottom:0px;">
                     <div class="box-header" style="background-image:url('./lib/img/jobs/JobReqBanner - CreativeLab.jpg');background-size: cover;min-height:65px;">
-                        <!--<img style="width:100%" src="./lib/img/jobs/JobReqBanner - Display.jpg">-->
+
                         <div class="box-tools pull-right">
                             <button type="button" class="btn btn-box-tool" title="Close Task" style="background-color:rgba(255,255,255,0.5);" ng-click="ctrl.gotoDash(false);">
 		                        <i class="fa fa-times"></i>
@@ -21,8 +20,7 @@
                 <span ng-hide="ctrl.job.status!='new'"><h4>Job Request</h4></span>
                 <span ng-hide="ctrl.job.status='new'"><h4>New Job Request</h4></span>
             </div>
-            <div class="col-md-6" style="text-align: right;">
-                <!--<span ng-show='ctrl.job.job_no!=null'><h4>Job Number: {{ ctrl.job.job_no }}</h4></span>-->
+            <div class="col-md-6" style="text-align: right;">              
                 <h4>Job Number: {{ctrl.job.job_no}}</h4>
             </div>
         </div>
@@ -115,7 +113,7 @@
                                 </span>
                             </p>
                         </div>
-
+                        <!--
                         <div class="form-group">
                             <label>CC Response :</label>
                             <p class="input-group">
@@ -127,17 +125,7 @@
                                     </button>
                                 </span>
                             </p>
-                        </div>
-                        <!--
-                        <div class="form-group">
-                            <label>Team :</label>
-                            <input id='team' class="form-control input-sm fld-att" type="text" ng-model="ctrl.job.team" ng-disabled="ctrl.readOnly">
-                        </div>                        
-                        <div class="form-group">
-                            <label>CC Response :</label>
-                            <input id='cc_response' class="form-control input-sm fld-att" type="text" ng-model="ctrl.job.cc_response" ng-disabled="ctrl.readOnly">
-                        </div>
-                        -->
+                        </div>                     
                         <div class="form-group" style="width:100%">
                             <div class="row">
                                 <div class="col-sm-4">
@@ -152,6 +140,7 @@
                                 </div>
                             </div>
                         </div>
+                        -->
                     </div>
                     <div class="overlay" ng-hide="ctrl.currentUser!=''">
                         <i class="fa fa-refresh fa-spin"></i>
@@ -208,8 +197,7 @@
                                 <div style="border:1px solid gray;">
                                     <div class="form-group">
                                         <b>&emsp; Instruction from Clients:</b><br>
-                                        <textarea id='instruction' class="form-control ng-pristine ng-valid ng-empty ng-touched ng-untouched fld-att" 
-                                            style="resize: horizontal; min-height: 350px;border:0;cursor:text;"
+                                        <textarea id='instruction' class="form-control ng-pristine ng-valid ng-empty ng-touched ng-untouched fld-att" style="resize: horizontal; min-height: 350px;border:0;cursor:text;"
                                             ng-model="ctrl.job.instruction" ng-readonly="ctrl.readOnly"></textarea>
                                     </div>
                                 </div>
@@ -329,21 +317,9 @@
                             <div class="box-footer" style="border-top:1px solid gray;">
                                 <span ng-if="ctrl.job.creative_briefs.length>0">{{ctrl.job.creative_briefs.length}} &nbsp; attachment(s)</span>
                                 <div class="pull-right">
-                                    <!--
-                                    <div class="btn btn-default" name="creative_briefs" ngf-select="ctrl.uploadFiles($files, 'creative_briefs')" 
-                                        ngf-multiple="true" ngf-pattern="'application/msword, application/vnd.ms-excel, application/vnd.ms-powerpoint,
-                                        text/plain, application/pdf, application/zip, application/x-rar-compressed, application/x-7z-compressed,application/octet-stream'"
-                                        style="border: 1;font-weight: bold;" ng-hide="ctrl.ACL.section8">Upload
-                                    </div>
-                                    -->
                                     <div class="btn btn-default" name="creative_briefs" ngf-select="ctrl.uploadFiles($files, 'creative_briefs')" ngf-multiple="true"
                                         ng-hide="ctrl.ACL.section8 || ctrl.readOnly">Upload
                                     </div>
-                                    <!--
-                                    <button type="button" class="btn btn-default" ng-click="alert('Function not yet available...');" ng-if="ctrl.job.creative_briefs.length>0"
-                                        style="margin-right:10px;margin-left:10px;color:white;background-color: black">Download
-                                    </button>
-                                    -->
                                 </div>
                             </div>
                             <div class="overlay" ng-hide='ctrl.creatives.length > 0'>
