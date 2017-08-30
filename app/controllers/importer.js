@@ -18,6 +18,7 @@ app.controller('importerCTRL', function ($sce, $state, $auth, $uibModal, $stateP
     vm.readOnly = true;
     vm.docHistory = [];
     vm.docMessages = [];
+    vm.cc_response_dsp = [];
     vm.base64 = null;
     vm.LogoGrps = null;
     vm.trixEditor1 = false;
@@ -66,10 +67,12 @@ app.controller('importerCTRL', function ($sce, $state, $auth, $uibModal, $stateP
     }
 
     vm.cleanArray = function (tmpArray) {
-        if (_.isArray(tmpArray)) {
-            var newArray = [];
-            if (_.isUndefined(tmpArray) || _.isNull(tmpArray)) {
-            } else {
+        //console.log("[cleanArray] tmpArray - ", tmpArray);
+        if (_.isUndefined(tmpArray) || _.isNull(tmpArray)) {
+            return null;
+        } else {
+            if (_.isArray(tmpArray)) {
+                var newArray = [];
                 for (i = 0, len = tmpArray.length; i < len; i++) {
                     if (_.isUndefined(tmpArray[i]) || _.isNull(tmpArray[i]) || _.isEmpty(tmpArray[i])) {
                     } else if (_.isDate(tmpArray[i])) {
@@ -78,12 +81,13 @@ app.controller('importerCTRL', function ($sce, $state, $auth, $uibModal, $stateP
                         newArray.push(tmpArray[i]);
                     }
                 }
+                return newArray;
+            } else {
+                return tmpArray.trim();
             }
-            return newArray;
-        } else {
-            return tmpArray.trim();
         }
     };
+
     vm.cleanTrix = function (tmpStr, type) {
         var str = _.replace(tmpStr, new RegExp('"', "g"), "'");
         str = _.replace(str, new RegExp("<strong>", "g"), "");
@@ -192,7 +196,11 @@ app.controller('importerCTRL', function ($sce, $state, $auth, $uibModal, $stateP
 
         var current_user = currentUser.id.toLowerCase().trim();
         var submitted_by = vm.task.submitted_by_username.toLowerCase().trim();
-        var cc_response = vm.task.cc_response_username.toLowerCase().trim();
+        var cc_response = "";
+        if (_.isNull(vm.task.cc_response_username)) {
+        } else {
+            var cc_response = vm.task.cc_response_username.toLowerCase().trim();
+        }
         var designer = '';
         if (_.isUndefined(vm.task.designer_username) || _.isNull(vm.task.designer_username)) {
         } else {
@@ -398,7 +406,7 @@ app.controller('importerCTRL', function ($sce, $state, $auth, $uibModal, $stateP
 
                         if (_.isUndefined(vm.task.materials[i].url) || _.isNull(vm.task.materials[i].url)) {
                         } else {
-                           // vm.filesForDeletion.push(vm.task.materials[i].url.trim());
+                            // vm.filesForDeletion.push(vm.task.materials[i].url.trim());
                         }
                         vm.task.materials[i] = null;
                     }
@@ -415,7 +423,7 @@ app.controller('importerCTRL', function ($sce, $state, $auth, $uibModal, $stateP
 
                         if (_.isUndefined(vm.task.artwork[i].url) || _.isNull(vm.task.artwork[i].url)) {
                         } else {
-                           // vm.filesForDeletion.push(vm.task.artwork[i].url.trim());
+                            // vm.filesForDeletion.push(vm.task.artwork[i].url.trim());
                         }
                         vm.task.artwork[i] = null;
                     }
@@ -651,7 +659,7 @@ app.controller('importerCTRL', function ($sce, $state, $auth, $uibModal, $stateP
                 vm.task.parent_id = $stateParams.orderID;
                 vm.task.logged_in_user = currentUser.id;
                 //vm.task.in_house = "No";
-
+                vm.cc_response_dsp = _.uniq(vm.task.cc_response.split(","));
                 var res = $stateParams.taskID.split('~');
                 vm.task.job_no = res[0];
                 //console.log('res : ' + JSON.stringify(res[0]));
@@ -760,7 +768,7 @@ app.controller('importerCTRL', function ($sce, $state, $auth, $uibModal, $stateP
                     if (vm.task.feature > 0) vm.task.feature = true;
                     vm.task.size_option = 'Other';
                     vm.productList = JSON.parse(vm.task.products);
-
+                    vm.cc_response_dsp = _.uniq(vm.task.cc_response.split(","));
 
                     if (_.isUndefined(vm.task.materials) || _.isNull(vm.task.materials) || _.isEmpty(vm.task.materials) || vm.task.materials == "" || vm.task.materials == "[]") {
                         vm.task.materials = [];
@@ -1583,8 +1591,8 @@ app.controller('importerCTRL', function ($sce, $state, $auth, $uibModal, $stateP
             )
         }
     };
-    
-     vm.revertTask = function (chatFlag) {
+
+    vm.revertTask = function (chatFlag) {
         var tmp = {
             frm_class: 'box-classified',
             frm_title: 'Request Re-Submission',
@@ -1658,7 +1666,7 @@ app.controller('importerCTRL', function ($sce, $state, $auth, $uibModal, $stateP
             },
         )
     };
-    
+
     vm.uploadFiles = function (files, type) {
         var details = {
             'formType': 'task',

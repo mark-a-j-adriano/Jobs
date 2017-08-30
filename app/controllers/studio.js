@@ -9,6 +9,7 @@ app.controller('studioCTRL', function ($state, $auth, $uibModal, $stateParams, $
     vm.pubSizes = [];
     vm.artwork_Types = [];
     vm.task = {};
+    vm.cc_response_dsp = [];
     vm.animationsEnabled = true;
     vm.statusNum = 0;
     vm.developerLog = false;
@@ -70,10 +71,12 @@ app.controller('studioCTRL', function ($state, $auth, $uibModal, $stateParams, $
     }
 
     vm.cleanArray = function (tmpArray) {
-        if (_.isArray(tmpArray)) {
-            var newArray = [];
-            if (_.isUndefined(tmpArray) || _.isNull(tmpArray)) {
-            } else {
+        //console.log("[cleanArray] tmpArray - ", tmpArray);
+        if (_.isUndefined(tmpArray) || _.isNull(tmpArray)) {
+            return null;
+        } else {
+            if (_.isArray(tmpArray)) {
+                var newArray = [];
                 for (i = 0, len = tmpArray.length; i < len; i++) {
                     if (_.isUndefined(tmpArray[i]) || _.isNull(tmpArray[i]) || _.isEmpty(tmpArray[i])) {
                     } else if (_.isDate(tmpArray[i])) {
@@ -82,10 +85,10 @@ app.controller('studioCTRL', function ($state, $auth, $uibModal, $stateParams, $
                         newArray.push(tmpArray[i]);
                     }
                 }
+                return newArray;
+            } else {
+                return tmpArray.trim();
             }
-            return newArray;
-        } else {
-            return tmpArray.trim();
         }
     };
 
@@ -222,10 +225,10 @@ app.controller('studioCTRL', function ($state, $auth, $uibModal, $stateParams, $
         }, function (evt) {
             file.progress = Math.min(100, parseInt(100.0 *
                 evt.loaded / evt.total));
-            if (type == "materials") {               
-                vm.spinners.materials.progress = file.progress;               
-            } else {               
-                vm.spinners.artwork.progress = file.progress;               
+            if (type == "materials") {
+                vm.spinners.materials.progress = file.progress;
+            } else {
+                vm.spinners.artwork.progress = file.progress;
             }
         });
 
@@ -341,31 +344,7 @@ app.controller('studioCTRL', function ($state, $auth, $uibModal, $stateParams, $
             vm.trixEditor2 = true;
         }
     };
-
-    /*
-    vm.trixAttachmentAdd = function (e, editor, type) {
-        console.info('attachment to add:', attachment);
-        console.info('attachment type:', type);
-        var attachment, base64;
-        attachment = e.attachment;
-        vm.base64 = null;
-        var fileReader = new FileReader();
-        fileReader.onload = function (event) {
-            vm.base64 = event.target.result;
-        };
-        //console.log('base64: ' + JSON.stringify(base64));
-
-        if (attachment.file) {
-            var ret = uploadAttachment(attachment, type);
-            if (attachment.file.type.includes("image")) {                              
-            } else {
-                editor.undo();
-                ret = null;
-            }
-            return ret;
-        }
-    }
-    */
+  
     vm.trixInitialize = function (e, editor, type) {
         /*
         vm.trixEditor =  editor;
@@ -410,7 +389,6 @@ app.controller('studioCTRL', function ($state, $auth, $uibModal, $stateParams, $
         //editor.insertLineBreak()
         */
     };
-
 
     /*
     if (currentUser) {
@@ -483,7 +461,11 @@ app.controller('studioCTRL', function ($state, $auth, $uibModal, $stateParams, $
 
         var current_user = currentUser.id.toLowerCase().trim();
         var submitted_by = vm.task.submitted_by_username.toLowerCase().trim();
-        var cc_response = vm.task.cc_response_username.toLowerCase().trim();
+        var cc_response = "";
+        if (_.isNull(vm.task.cc_response_username)) {
+        } else {
+            var cc_response = vm.task.cc_response_username.toLowerCase().trim();
+        }
         var designer = '';
         if (_.isUndefined(vm.task.designer_username) || _.isNull(vm.task.designer_username)) {
         } else {
@@ -691,7 +673,7 @@ app.controller('studioCTRL', function ($state, $auth, $uibModal, $stateParams, $
                 vm.task.job_no = res[0];
                 //console.log('res : ' + JSON.stringify(res[0]));
                 vm.task.task_no = res.join("-");
-
+                vm.cc_response_dsp = _.uniq(vm.task.cc_response.split(","));
                 vm.task.size_option = "Other";
                 vm.task.due_date = '';
                 vm.task.type = null;
@@ -792,6 +774,7 @@ app.controller('studioCTRL', function ($state, $auth, $uibModal, $stateParams, $
                     if (vm.task.urgent > 0) vm.task.urgent = true;
                     vm.task.size_option = 'Other';
                     vm.productList = JSON.parse(vm.task.products);
+                    vm.cc_response_dsp = _.uniq(vm.task.cc_response.split(","));
 
                     if (_.isUndefined(vm.task.materials) || _.isNull(vm.task.materials) || _.isEmpty(vm.task.materials) || vm.task.materials == "" || vm.task.materials == "[]") {
                         vm.task.materials = [];

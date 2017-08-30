@@ -100,19 +100,13 @@
                         </div>
                         <div class="form-group">
                             <label>CC Response :</label>
-                            <input class="form-control input-sm fld-att" ng-model="ctrl.task.cc_response" type="text" ng-readonly="ctrl.ACL.section0">
-                        </div>
-                        <div class="form-group" style="width:100%">
-                            <div class="row">
-                                <div class="col-sm-4">
-                                    <label>Extension :</label>
-                                    <input ng-model="ctrl.task.cc_extension" text-mask="ctrl.MaskConfig.extNum" type="text" class="form-control  input-sm fld-att"
-                                        ng-readonly="ctrl.ACL.section0" />
-                                </div>
-                                <div class="col-sm-8">
-                                    <label>Mobile Number :</label>
-                                    <input ng-model="ctrl.task.cc_mobile_no" text-mask="ctrl.MaskConfig.phone" type="text" class="form-control  input-sm fld-att"
-                                        ng-readonly="ctrl.ACL.section0" />
+                            <div class="row" style="margin-left: 5px; margin-right: 5px;">
+                                <div class="col-sm-12" style="background-color:#FFFAFC;height:60px;border: 1px solid #D2D6DE;overflow-y: scroll;">
+                                    <ul ng-show="ctrl.cc_response_dsp.length > 0;">
+                                        <li ng-repeat=" opt in ctrl.cc_response_dsp">
+                                            {{ opt }}
+                                        </li>
+                                    </ul>
                                 </div>
                             </div>
                         </div>

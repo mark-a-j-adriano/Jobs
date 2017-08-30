@@ -18,6 +18,7 @@ app.controller('displayCTRL', function ($state, $auth, $uibModal, $stateParams, 
     vm.readOnly = true;
     vm.docHistory = [];
     vm.docMessages = [];
+    vm.cc_response_dsp = [];
     vm.ACL = {
         //TRUE MEANS YOU ARE RESTRICTED
         section0: true,     //Permanent Read ONLY fields
@@ -57,20 +58,26 @@ app.controller('displayCTRL', function ($state, $auth, $uibModal, $stateParams, 
     }
 
     vm.cleanArray = function (tmpArray) {
-        var newArray = [];
+        //console.log("[cleanArray] tmpArray - ", tmpArray);
         if (_.isUndefined(tmpArray) || _.isNull(tmpArray)) {
+            return null;
         } else {
-            for (i = 0, len = tmpArray.length; i < len; i++) {
-                if (_.isUndefined(tmpArray[i]) || _.isNull(tmpArray[i]) || _.isEmpty(tmpArray[i])) {
-                } else if (_.isDate(tmpArray[i])) {
-                    newArray.push(moment(tmpArray[i]).format('YYYY-MM-DD'));
-                } else {
-                    newArray.push(tmpArray[i]);
+            if (_.isArray(tmpArray)) {
+                var newArray = [];
+                for (i = 0, len = tmpArray.length; i < len; i++) {
+                    if (_.isUndefined(tmpArray[i]) || _.isNull(tmpArray[i]) || _.isEmpty(tmpArray[i])) {
+                    } else if (_.isDate(tmpArray[i])) {
+                        newArray.push(moment(tmpArray[i]).format('YYYY-MM-DD'));
+                    } else {
+                        newArray.push(tmpArray[i]);
+                    }
                 }
+                return newArray;
+            } else {
+                return tmpArray.trim();
             }
         }
-        return newArray;
-    }
+    };
 
     vm.gotoDash = function () {
         var accessLVL = parseInt(currentUser.role);
@@ -109,7 +116,12 @@ app.controller('displayCTRL', function ($state, $auth, $uibModal, $stateParams, 
 
         var current_user = currentUser.id.toLowerCase().trim();
         var submitted_by = vm.task.submitted_by_username.toLowerCase().trim();
-        var cc_response = vm.task.cc_response_username.toLowerCase().trim();
+        var cc_response = "";
+        if (_.isNull(vm.task.cc_response_username)) {
+        } else {
+            var cc_response = vm.task.cc_response_username.toLowerCase().trim();
+        }
+
         var designer = '';
         if (_.isUndefined(vm.task.designer_username) || _.isNull(vm.task.designer_username)) {
         } else {
@@ -323,7 +335,7 @@ app.controller('displayCTRL', function ($state, $auth, $uibModal, $stateParams, 
                 vm.task.production_cost = 0;
                 vm.task.parent_id = $stateParams.orderID;
                 vm.task.logged_in_user = currentUser.id;
-
+                vm.cc_response_dsp = _.uniq(vm.task.cc_response.split(","));
                 var res = $stateParams.taskID.split('~');
                 vm.task.job_no = res[0];
                 //console.log('res : ' + JSON.stringify(res[0]));
@@ -427,9 +439,9 @@ app.controller('displayCTRL', function ($state, $auth, $uibModal, $stateParams, 
                     vm.task.production_cost = parseFloat(vm.task.production_cost);
                     vm.task.due_date = new Date(vm.task.due_date);
                     if (vm.task.urgent > 0) vm.task.urgent = true;
-                    vm.task.size_option = 'Other';
+                    //vm.task.size_option = ['Other'];
                     vm.productList = JSON.parse(vm.task.products);
-
+                    vm.cc_response_dsp = _.uniq(vm.task.cc_response.split(","));
                     if (_.isUndefined(vm.task.materials) || _.isNull(vm.task.materials) || _.isEmpty(vm.task.materials) || vm.task.materials == "" || vm.task.materials == "[]") {
                         vm.task.materials = [];
                     } else {
@@ -1090,7 +1102,7 @@ app.controller('displayCTRL', function ($state, $auth, $uibModal, $stateParams, 
     };
     vm.defineType = function (isChanged) {
         var param = { category: vm.task.pub_type };
-        //console.log('defineType : ' + vm.task.pub_type);
+        console.log('defineType : ' + vm.task.pub_type);
 
         DataFactory.getSize(param).then(
             //success

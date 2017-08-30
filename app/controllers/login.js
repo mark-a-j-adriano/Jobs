@@ -7,11 +7,13 @@ app.controller('LoginCtrl', function ($auth, $state, $window, $stateParams, toas
     vm.userName = '';
     vm.eMail = '';
     vm.passWord = '';
+    vm.userList = null;
     var userInfor = {};
     var ret_URI = StorageFactory.getURI();
-    //console.log('[LoginCtrl] origin URI : ' + JSON.stringify(ret_URI));
 
-    vm.userList = devUserList;
+
+    if (vm.isUAT) vm.userList = devUserList;
+
     vm.SignIn = function () {
         /*
         //console.log("[SignIn] isDev : " + vm.isDev);
@@ -104,7 +106,7 @@ app.controller('LoginCtrl', function ($auth, $state, $window, $stateParams, toas
             function (response) {
                 //console.log('response.data : ' + JSON.stringify(response.data));
                 ////console.log('response.status : ' + JSON.stringify(response.status));
-
+                userInfor.id = usrID;
                 userInfor.name = response.data.submitted_by;
                 userInfor.phone = response.data.mobile_no;
                 userInfor.ext = response.data.extension;
@@ -165,6 +167,17 @@ app.controller('LoginCtrl', function ($auth, $state, $window, $stateParams, toas
             })
     };
 
+    if (_.isUndefined(cookieActive) || _.isNull(cookieActive)) {
+    } else {
+        var poi = StorageFactory.getSessionData(false);
+        console.log("[LoginCtrl] - poi :", poi);
+        if (_.isUndefined(poi) || _.isNull(poi)) {
+            console.log("[LoginCtrl] - getToken :", $auth.getToken());
+            console.log("[LoginCtrl] - getPayload :", $auth.getPayload());
+        } else {
+            vm.getRole(poi.id);
+        }
+    }
 
 });
 
@@ -218,6 +231,7 @@ app.controller('memberModalCtrl', function ($uibModalInstance, focus, toastr, pa
     var vm = this;
 
     //console.log('[memberModalCtrl] - parentData : ' + JSON.stringify(parentData));
+    console.log('[memberModalCtrl] - members : ' + JSON.stringify(members));
     vm.hdr_class = parentData.frm_class;
     vm.formTitle = parentData.return_fld;
     vm.members = members;
@@ -226,6 +240,15 @@ app.controller('memberModalCtrl', function ($uibModalInstance, focus, toastr, pa
     vm.inputList = [];
     vm.outputList = [];
     vm.listSetting = { smartButtonMaxItems: 20 };
+    vm.showTeam = false;
+    vm.enableSearch = false;
+    vm.extraSettings = {
+        scrollableHeight: '400px',
+        scrollable: true,
+        styleActive: true,
+        selectedToTop: true,
+        enableSearch: (vm.members.length > 10) ? true : false,        
+    } 
 
     if (_.isUndefined(parentData.user_data.is_Multiple) || _.isNull(parentData.user_data.is_Multiple)) {
     } else if (parentData.user_data.is_Multiple == "1") {
@@ -266,8 +289,8 @@ app.controller('memberModalCtrl', function ($uibModalInstance, focus, toastr, pa
             }
 
             retVal = {
-                name: usrNm.join(", "),
-                username: usrID.join(", "),
+                name: _.uniq(usrNm).join(", "),
+                username: _.uniq(usrNm).join(", "),
             }
         } else {
             for (i = 0; i < vm.members.length; i++) {
@@ -277,6 +300,7 @@ app.controller('memberModalCtrl', function ($uibModalInstance, focus, toastr, pa
                 }
             }
         }
+
         $uibModalInstance.close(retVal);
     };
 

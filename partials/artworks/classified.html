@@ -118,19 +118,13 @@
                         </div>
                         <div class="form-group">
                             <label>CC Response :</label>
-                            <input class="form-control input-sm fld-att" ng-model="ctrl.task.cc_response" type="text" ng-readonly="ctrl.ACL.section0">
-                        </div>
-                        <div class="form-group" style="width:100%">
-                            <div class="row">
-                                <div class="col-sm-4">
-                                    <label>Extension :</label>
-                                    <input ng-model="ctrl.task.cc_extension" text-mask="ctrl.MaskConfig.extNum" type="text" class="form-control  input-sm fld-att"
-                                        ng-readonly="ctrl.ACL.section0" />
-                                </div>
-                                <div class="col-sm-8">
-                                    <label>Mobile Number :</label>
-                                    <input ng-model="ctrl.task.cc_mobile_no" text-mask="ctrl.MaskConfig.phone" type="text" class="form-control  input-sm fld-att"
-                                        ng-readonly="ctrl.ACL.section0" />
+                            <div class="row" style="margin-left: 5px; margin-right: 5px;">
+                                <div class="col-sm-12" style="background-color:#FFFAFC;height:60px;border: 1px solid #D2D6DE;overflow-y: scroll;">
+                                    <ul ng-show="ctrl.cc_response_dsp.length > 0;">
+                                        <li ng-repeat=" opt in ctrl.cc_response_dsp">
+                                            {{ opt }}
+                                        </li>
+                                    </ul>
                                 </div>
                             </div>
                         </div>
@@ -289,8 +283,7 @@
                                             <strong>Filename</strong>
                                         </label>
                                     </div>
-                                    <input id='filename' type="text" class="form-control input-sm" ng-model="ctrl.task.filename" 
-                                    ng-disabled="ctrl.ACL.section2 || ctrl.isFldDisabled">
+                                    <input id='filename' type="text" class="form-control input-sm" ng-model="ctrl.task.filename" ng-disabled="ctrl.ACL.section2 || ctrl.isFldDisabled">
                                 </div>
                             </div>
                         </div>
@@ -504,8 +497,7 @@
                     <div class="box-body">
                         <div style="border:1px solid gray;margin-top:10px;  ">
                             <div class="form-group">
-                                <textarea id="instruction" ng-model="ctrl.task.instruction" 
-                                    class="form-control ng-pristine ng-valid ng-empty ng-touched ng-untouched fld-att"
+                                <textarea id="instruction" ng-model="ctrl.task.instruction" class="form-control ng-pristine ng-valid ng-empty ng-touched ng-untouched fld-att"
                                     style="resize: horizontal; min-height: 190px;border:0;cursor:text;" ng-readonly="ctrl.ACL.section2">						            
                                 </textarea>
                             </div>
@@ -572,9 +564,8 @@
                 <div class="box box-solid box-none">
                     <div class="box-body" style="padding-top:0;padding-bottom:0;border:1px solid gray;">
                         <div class="form-group">
-                            <textarea ng-model="ctrl.task.editorial" ng-readonly="ctrl.ACL.section4 || ctrl.task.status!='In Progress'" 
-                            class="form-control ng-pristine ng-valid ng-empty ng-touched ng-untouched fld-att"
-                            style="resize: horizontal; min-height: 160px;border:0;cursor:text;" ></textarea>
+                            <textarea ng-model="ctrl.task.editorial" ng-readonly="ctrl.ACL.section4 || ctrl.task.status!='In Progress'" class="form-control ng-pristine ng-valid ng-empty ng-touched ng-untouched fld-att"
+                                style="resize: horizontal; min-height: 160px;border:0;cursor:text;"></textarea>
                         </div>
                     </div>
                 </div>
@@ -670,8 +661,7 @@
                     <div class="box-footer with-border">
                         <div style="border:1px solid gray;">
                             <div class="form-group">
-                                <textarea class="form-control ng-pristine ng-valid ng-empty ng-touched ng-untouched" 
-                                    style="resize: horizontal; min-height: 130px;border:0;cursor:text;"
+                                <textarea class="form-control ng-pristine ng-valid ng-empty ng-touched ng-untouched" style="resize: horizontal; min-height: 130px;border:0;cursor:text;"
                                     ng-model="ctrl.task.designer_comments" ng-readonly="ctrl.ACL.section5"></textarea>
                             </div>
                         </div>
@@ -708,8 +698,7 @@
                         <div class="box-body  with-border" style="padding-top:0;padding-bottom:0;">
                             <div style="border:1px solid gray;">
                                 <div class="form-group">
-                                    <textarea class="form-control ng-pristine ng-valid ng-empty ng-touched ng-untouched" 
-                                        style="resize: horizontal; min-height: 80px;border:0;cursor:text;"
+                                    <textarea class="form-control ng-pristine ng-valid ng-empty ng-touched ng-untouched" style="resize: horizontal; min-height: 80px;border:0;cursor:text;"
                                         ng-model="ctrl.task.sales_comment" ng-readonly="ctrl.ACL.section6"></textarea>
                                 </div>
                             </div>
@@ -754,8 +743,7 @@
                         <div class="box-body  with-border" style="padding-top:0;padding-bottom:0;">
                             <div style="border:1px solid gray;">
                                 <div class="form-group">
-                                    <textarea class="form-control ng-pristine ng-valid ng-empty ng-touched ng-untouched" 
-                                        style="resize: horizontal; min-height: 80px;border:0;cursor:text;"
+                                    <textarea class="form-control ng-pristine ng-valid ng-empty ng-touched ng-untouched" style="resize: horizontal; min-height: 80px;border:0;cursor:text;"
                                         ng-model="ctrl.task.sales_comment" ng-readonly="ctrl.ACL.section6"></textarea>
                                 </div>
                             </div>
@@ -799,11 +787,11 @@
 
                                     <td class="col-xs-2" style="text-align:center" ng-show="option.etNum_tbd">TBA</td>
                                     <td class="col-xs-2" style="text-align:center" ng-hide="option.etNum_tbd">{{option.etNum}}</td>
-                                   
+
 
                                     <td class="col-xs-2" style="text-align:center" ng-show="option.cashNum_tbd">TBA</td>
                                     <td class="col-xs-2" style="text-align:center" ng-hide="option.cashNum_tbd">{{option.cashNum}}</td>
-                                   
+
 
                                     <td class="col-xs-2" style="text-align:center">{{option.filename}}</td>
                                     <td class="col-xs-2" style="text-align:center" ng-show="ctrl.ACL.section9 || option == null">
@@ -911,15 +899,13 @@
                 </button>
             </div>
             <div class="col-md-1">
-                <button type="button" class="btn btn-primary bg-teal-gradient" ng-click="ctrl.revertTask();" 
-                ng-hide="(ctrl.task.status=='new' || ctrl.task.status=='Completed' || ctrl.task.status=='Cancelled')">
+                <button type="button" class="btn btn-primary bg-teal-gradient" ng-click="ctrl.revertTask();" ng-hide="(ctrl.task.status=='new' || ctrl.task.status=='Completed' || ctrl.task.status=='Cancelled')">
                          <i class="fa fa-comments-o"></i> Chat
                 </button>
             </div>
             <div class="col-md-5">
                 <div class="pull-right">
-                   <button type="button" class="btn btn-danger" ng-click="ctrl.revertTask('cancel');" 
-                    ng-show="(ctrl.currentUser.role>=25 || ctrl.currentUser.role<10) && ctrl.currentUser.canEdit!='' &&
+                    <button type="button" class="btn btn-danger" ng-click="ctrl.revertTask('cancel');" ng-show="(ctrl.currentUser.role>=25 || ctrl.currentUser.role<10) && ctrl.currentUser.canEdit!='' &&
                     !(ctrl.task.status == 0  || ctrl.statusNum > 5)">
                       <i class="fa fa-hand-stop-o"></i> &nbsp; Cancel Artwork Request
                     </button>
@@ -1017,8 +1003,7 @@
                 </div>
 
                 <div class="pull-right">
-                    <button type="button" class="btn btn-primary bg-teal-gradient pull-right" ng-click="ctrl.revertTask();" 
-                         ng-hide="(ctrl.task.status=='new' || ctrl.task.status=='Completed' || ctrl.task.status=='Cancelled')"
+                    <button type="button" class="btn btn-primary bg-teal-gradient pull-right" ng-click="ctrl.revertTask();" ng-hide="(ctrl.task.status=='new' || ctrl.task.status=='Completed' || ctrl.task.status=='Cancelled')"
                         style="margin-left: 10px;">
                          <i class="fa fa-comments-o"></i> Chat
                     </button>

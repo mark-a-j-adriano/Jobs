@@ -7,7 +7,7 @@ app.factory("DataFactory", [
   "Upload",
   function ($http, $timeout, $q, $location, StorageFactory, Upload) {
     var obj = {};
-    var base_url = "http://creativelab-dev.sphnet.com.sg";
+    var base_url = "https://creativelab-dev.sphnet.com.sg";
     /***  RESOLVABLE - START ***/
 
     // returns a PROMISE
@@ -400,40 +400,16 @@ app.factory("StorageFactory", ["$localStorage", "$auth", function ($localStorage
     var ret = null;
     if ($auth.isAuthenticated()) {
       if (dataFlag) {
-        return $localStorage.dataStamp;
+        ret = $localStorage.dataStamp;
       } else {
-        return $localStorage.userStamp;
+        ret = $localStorage.userStamp;
       }
     } else {
-      var d = new Date();
-      var current = d.getTime();
-      ////console.log('current : ' + JSON.stringify(current));
-
-      // Get Schedule
-      var stored_time = $localStorage.expireStamp;
-      if (stored_time == undefined || stored_time == "null") stored_time = 0;
-      if (stored_time < current) {
-        // Remove expired data
-        delete $localStorage.userStamp;
-        delete $localStorage.expireStamp;
-        delete $localStorage.dataStamp;
-        $auth.removeToken();
-        return null;
-      } else {
-        //Renew expiry Stamp
-        d = new Date();
-        current = d.getTime();
-        $localStorage.expireStamp = current + 900000;
-
-        if (dataFlag) {
-          return $localStorage.dataStamp;
-        } else {
-          return $localStorage.userStamp;
-        }
-      }
+      delete $localStorage.userStamp;
+      delete $localStorage.expireStamp;
+      delete $localStorage.dataStamp;
     }
-
-
+    return ret;
   };
 
   obj.setSessionData = function (userData, tmpData) {

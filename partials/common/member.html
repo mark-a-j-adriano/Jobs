@@ -4,6 +4,11 @@
         <div class="box box-solid" ng-class="ctrl.hdr_class">
             <div class="box-header">
                 <h4>{{ctrl.formTitle | uppercase}}</h4>
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" title="Close" ng-click="ctrl.cancel();">
+                        <i class="fa fa-times"></i>
+                    </button>
+                </div>
             </div>
             <div class="box-body" style="cursor:pointer">
                 <div class="row" style="cursor:pointer">
@@ -19,9 +24,6 @@
                     <div class="form-group" ng-show="ctrl.isMultiple" style="cursor:pointer">
                         <label class="col-sm-4 control-label" ng-show="ctrl.isMultiple">Choose user(s) :</label>
                         <div class="col-sm-6">
-                            <div ng-dropdown-multiselect="" options="ctrl.inputList" selected-model="ctrl.outputList" extra-settings="{}" 
-                            style="width:250px;cursor:pointer">
-                            </div>
                             <div ng-show="ctrl.outputList.length > 0">
                                 <br/>
                                 <p>Selected list: </p>
@@ -30,6 +32,8 @@
                                         {{ x.label }}
                                     </li>
                                 </ul>
+                            </div>
+                            <div ng-dropdown-multiselect="" options="ctrl.inputList" selected-model="ctrl.outputList" extra-settings="ctrl.extraSettings" style="width:250px;cursor:pointer">
                             </div>
                         </div>
                         <div class="col-sm-2">&nbsp;</div>

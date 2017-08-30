@@ -22,6 +22,8 @@ app.controller("creativeCTRL", function (
     id: null,
     job_no: null
   };
+
+  vm.cc_response_dsp = [];
   vm.creatives = [];
   vm.docHistory = [];
   vm.creativeMembers = [];
@@ -132,6 +134,7 @@ app.controller("creativeCTRL", function (
     }
   ];
 
+
   vm.cleanArray = function (tmpArray) {
     var newArray = [];
     if (_.isUndefined(tmpArray) || _.isNull(tmpArray)) {
@@ -154,8 +157,8 @@ app.controller("creativeCTRL", function (
     { text: "Creative Team", predicate: "creative_form", sortable: true },
     { text: "Job Classification", predicate: "artwork_type", sortable: true },
     { text: "Designer", predicate: "designer", sortable: true },
-    { text: "Copywriter", predicate: "writer", sortable: true,  dataType: "number" },
-    { text: "Date / Time Required", predicate: "due_date",  sortable: true,  dataType: "number" },
+    { text: "Copywriter", predicate: "writer", sortable: true, dataType: "number" },
+    { text: "Date / Time Required", predicate: "due_date", sortable: true, dataType: "number" },
     { text: "Status", predicate: "status", sortable: true },
     { text: "Action", predicate: "", sortable: false }
   ];
@@ -164,7 +167,11 @@ app.controller("creativeCTRL", function (
 
     var current_user = currentUser.id.toLowerCase().trim();
     var submitted_by = vm.job.submitted_by_username.toLowerCase().trim();
-    var cc_response = vm.job.cc_response_username.toLowerCase().trim();
+    var cc_response = "";
+    if (_.isNull(vm.job.cc_response_username)) {
+    } else {
+      var cc_response = vm.job.cc_response_username.toLowerCase().trim();
+    }
     /*
     //console.log('[accessControl] - currentUser : ' + JSON.stringify(currentUser));
     //console.log('[accessControl] - submitted_by_username : ' + JSON.stringify(vm.job.submitted_by_username));
@@ -319,6 +326,7 @@ app.controller("creativeCTRL", function (
           vm.job.tasks = [];
         }
 
+        vm.cc_response_dsp = vm.job.cc_response.split(",");
         vm.getTaskList(vm.job.id);
         vm.getDocHistory(vm.job.job_no);
         vm.getTaskIcons(vm.job.team);
@@ -929,6 +937,50 @@ app.controller("creativeCTRL", function (
       if (vm.artwork.preview)
         vm.MaterialDsp = vm.cleanArray(angular.copy(vm.job.materials));
     }
+  };
+
+  vm.selectUser = function (team, div, rol, retFld, order) {
+    var tmpData = {
+      team_name: team,
+      is_Multiple: "1",
+     
+      division: div,
+      role: rol,
+      primary: order,
+    };
+    
+    var default_val = vm.job[retFld + "_username"];
+    var modalInstance = $uibModal.open({
+      animation: vm.animationsEnabled,
+      templateUrl: 'partials/common/member.html',
+      controller: 'memberModalCtrl as ctrl',
+      resolve: {
+        parentData: function () {
+          var tmp = {
+            frm_class: 'box-creative',
+            return_fld: retFld,
+            user_data: tmpData,
+            default: default_val,
+          };
+          return tmp;
+        },
+        members: function (DataFactory) {
+          return DataFactory.getMembers(tmpData);
+        }
+      }
+    }).result.then(function (submitVar) {
+      console.log("submitted value inside parent controller", submitVar);      
+      if(_.isUndefined(submitVar.name)  || _.isNull(submitVar.name) || submitVar.name==""){
+        vm.job[retFld] = "";
+        vm.job[retFld + "_username"] = "";
+        vm.cc_response_dsp = [];
+      }else{
+        vm.job[retFld] = submitVar.name;
+        vm.job[retFld + "_username"] = submitVar.username;
+        vm.cc_response_dsp = _.uniq(submitVar.name.split(","));
+      }
+    })
+
   };
   //console.log("columnTitle : " + JSON.stringify(vm.columnTitle));
   //console.log("$stateParams.orderID : " + JSON.stringify(job_id));

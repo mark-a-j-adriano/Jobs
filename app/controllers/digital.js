@@ -18,6 +18,7 @@ app.controller('digitalCTRL', function ($state, $auth, $uibModal, $stateParams, 
     vm.readOnly = true;
     vm.docHistory = [];
     vm.docMessages = [];
+    vm.cc_response_dsp = [];
     vm.ACL = {
         //TRUE MEANS YOU ARE RESTRICTED
         section0: true,     //Permanent Read ONLY fields
@@ -56,20 +57,26 @@ app.controller('digitalCTRL', function ($state, $auth, $uibModal, $stateParams, 
     }
 
     vm.cleanArray = function (tmpArray) {
-        var newArray = [];
+        //console.log("[cleanArray] tmpArray - ", tmpArray);
         if (_.isUndefined(tmpArray) || _.isNull(tmpArray)) {
+            return null;
         } else {
-            for (i = 0, len = tmpArray.length; i < len; i++) {
-                if (_.isUndefined(tmpArray[i]) || _.isNull(tmpArray[i]) || _.isEmpty(tmpArray[i])) {
-                } else if (_.isDate(tmpArray[i])) {
-                    newArray.push(moment(tmpArray[i]).format('YYYY-MM-DD'));
-                } else {
-                    newArray.push(tmpArray[i]);
+            if (_.isArray(tmpArray)) {
+                var newArray = [];
+                for (i = 0, len = tmpArray.length; i < len; i++) {
+                    if (_.isUndefined(tmpArray[i]) || _.isNull(tmpArray[i]) || _.isEmpty(tmpArray[i])) {
+                    } else if (_.isDate(tmpArray[i])) {
+                        newArray.push(moment(tmpArray[i]).format('YYYY-MM-DD'));
+                    } else {
+                        newArray.push(tmpArray[i]);
+                    }
                 }
+                return newArray;
+            } else {
+                return tmpArray.trim();
             }
         }
-        return newArray;
-    }
+    };
 
     vm.gotoDash = function () {
         ////console.log('[gotoDash] - currentUser.role : ' + currentUser.role);
@@ -118,7 +125,11 @@ app.controller('digitalCTRL', function ($state, $auth, $uibModal, $stateParams, 
 
         var current_user = currentUser.id.toLowerCase().trim();
         var submitted_by = vm.task.submitted_by_username.toLowerCase().trim();
-        var cc_response = vm.task.cc_response_username.toLowerCase().trim();
+        var cc_response = "";
+        if (_.isNull(vm.task.cc_response_username)) {
+        } else {
+            var cc_response = vm.task.cc_response_username.toLowerCase().trim();
+        }
         var designer = '';
         if (_.isUndefined(vm.task.creative_team_username) || _.isNull(vm.task.creative_team_username)) {
         } else {
@@ -354,7 +365,7 @@ app.controller('digitalCTRL', function ($state, $auth, $uibModal, $stateParams, 
                 vm.task.production_cost = 0;
                 vm.task.parent_id = $stateParams.orderID;
                 vm.task.logged_in_user = currentUser.id;
-
+                vm.cc_response_dsp = _.uniq(vm.task.cc_response.split(","));
                 var res = $stateParams.taskID.split('~');
                 vm.task.job_no = res[0];
                 //console.log('res : ' + JSON.stringify(res[0]));
@@ -443,7 +454,7 @@ app.controller('digitalCTRL', function ($state, $auth, $uibModal, $stateParams, 
                     vm.task.due_date = new Date(vm.task.due_date);
                     vm.task.launch_date = new Date(vm.task.launch_date);
                     vm.creativeTypes = JSON.parse(vm.task.creative_types);
-
+                    vm.cc_response_dsp = _.uniq(vm.task.cc_response.split(","));
                     if (_.isUndefined(vm.task.materials) || _.isNull(vm.task.materials) || _.isEmpty(vm.task.materials)) {
                     } else {
                         vm.task.materials = vm.cleanArray(JSON.parse(vm.task.materials));

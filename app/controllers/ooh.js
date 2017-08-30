@@ -10,7 +10,7 @@ app.controller('oohCTRL', function ($state, $auth, $uibModal, $stateParams, $tim
     vm.animationsEnabled = true;
     vm.statusNum = 0;
     vm.developerLog = false;
-
+    vm.cc_response_dsp = [];
     vm.filesForDeletion = [];
     vm.qProductsError = false;
     vm.readOnly = true;
@@ -113,21 +113,29 @@ app.controller('oohCTRL', function ($state, $auth, $uibModal, $stateParams, $tim
     vm.openCalendar = function (e, picker) {
         vm[picker].open = true;
     };
+
     vm.cleanArray = function (tmpArray) {
-        var newArray = [];
+        //console.log("[cleanArray] tmpArray - ", tmpArray);
         if (_.isUndefined(tmpArray) || _.isNull(tmpArray)) {
+            return null;
         } else {
-            for (i = 0, len = tmpArray.length; i < len; i++) {
-                if (_.isUndefined(tmpArray[i]) || _.isNull(tmpArray[i]) || _.isEmpty(tmpArray[i])) {
-                } else if (_.isDate(tmpArray[i])) {
-                    newArray.push(moment(tmpArray[i]).format('YYYY-MM-DD'));
-                } else {
-                    newArray.push(tmpArray[i]);
+            if (_.isArray(tmpArray)) {
+                var newArray = [];
+                for (i = 0, len = tmpArray.length; i < len; i++) {
+                    if (_.isUndefined(tmpArray[i]) || _.isNull(tmpArray[i]) || _.isEmpty(tmpArray[i])) {
+                    } else if (_.isDate(tmpArray[i])) {
+                        newArray.push(moment(tmpArray[i]).format('YYYY-MM-DD'));
+                    } else {
+                        newArray.push(tmpArray[i]);
+                    }
                 }
+                return newArray;
+            } else {
+                return tmpArray.trim();
             }
         }
-        return newArray;
     };
+
     vm.artwork = {
         preview: false,
         noWrap: false,
@@ -176,7 +184,12 @@ app.controller('oohCTRL', function ($state, $auth, $uibModal, $stateParams, $tim
 
         var current_user = currentUser.id.toLowerCase().trim();
         var submitted_by = vm.task.submitted_by_username.toLowerCase().trim();
-        var cc_response = vm.task.cc_response_username.toLowerCase().trim();
+        var cc_response = "";
+        if (_.isNull(vm.task.cc_response_username)) {
+        } else {
+            var cc_response = vm.task.cc_response_username.toLowerCase().trim();
+        }
+
 
         var designer = '';
         if (_.isUndefined(vm.task.designer_username) || _.isNull(vm.task.designer_username)) {
@@ -247,7 +260,6 @@ app.controller('oohCTRL', function ($state, $auth, $uibModal, $stateParams, $tim
             if (vm.statusNum == 0) {
                 vm.ACL.section1 = false;
                 vm.ACL.section3 = false;
-                vm.ACL.section4 = false;
             }
         } else if (vm.currentUser.canEdit == 'writer') {
             //CopyWriter
@@ -363,13 +375,14 @@ app.controller('oohCTRL', function ($state, $auth, $uibModal, $stateParams, $tim
                 vm.task.type = null;
                 vm.task.pub_size = null;
                 vm.task.materials = [];
-
+                vm.cc_response_dsp = vm.task.cc_response.split(",");
                 var tmpData = {
                     team_name: 'OOH',
                     division: 'Creative',
                     role: '5',
                     primary: '1',
                 };
+
 
                 DataFactory.getMember(tmpData).then(
                     //success
@@ -432,7 +445,7 @@ app.controller('oohCTRL', function ($state, $auth, $uibModal, $stateParams, $tim
                     vm.task.pub_date = new Date(vm.task.pub_date);
                     if (vm.task.urgent > 0) vm.task.urgent = true;
                     vm.task.size_option = 'Other';
-
+                    vm.cc_response_dsp = vm.task.cc_response.split(",");
 
                     if (_.isUndefined(vm.task.materials) || _.isNull(vm.task.materials) || _.isEmpty(vm.task.materials)) {
                         vm.task.materials = [];
