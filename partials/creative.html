@@ -100,16 +100,22 @@
                                 </div>
                             </div>
                         </div>
-
                         <div class="form-group">
                             <label>Team : </label>
-                            <input id='team' class="form-control input-sm fld-att" type="text" ng-model="ctrl.job.team" ng-readonly="ctrl.readOnly">
+                            <p class="input-group">
+                                <input id='team' class="form-control input-sm fld-att" type="text" ng-model="ctrl.job.team" readonly>
+                                <span class="input-group-btn">
+                                            <button type="button" class="btn btn-default fld-att" ng-disabled="true" 
+                                            ng-click="ctrl.selectTeam();">
+                                                <i class="fa fa-users" aria-hidden="true"></i>
+                                            </button>
+                                        </span>
+                            </p>
                         </div>
-
                         <div class="form-group">
                             <label>CC Response :</label>
                             <div class="row" style="margin-left: 5px; margin-right: 5px;">
-                                <div class="col-sm-10" style="background-color:#FFFAFC;height:60px;border: 1px solid #D2D6DE;overflow-y: scroll;">                                    
+                                <div class="col-sm-10" style="background-color:#FFFAFC;height:60px;border: 1px solid #D2D6DE;overflow-y: scroll;">
                                     <ul ng-show="ctrl.cc_response_dsp.length > 0;">
                                         <li ng-repeat=" opt in ctrl.cc_response_dsp">
                                             {{ opt }}
@@ -122,7 +128,7 @@
                                     </button>
                                 </div>
                             </div>
-                        </div>                       
+                        </div>
                     </div>
                     <div class="overlay" ng-hide="ctrl.currentUser!=''">
                         <i class="fa fa-refresh fa-spin"></i>
@@ -409,8 +415,13 @@
                                     <td>{{c.status}}</td>
                                     <td style="width:100px">
                                         <div class="btn-group">
-                                            <button type="button" class="btn btn-default fa fa-edit" ng-click="ctrl.openTask(c);"></button>
-                                            <!--<button type="button" class="btn btn-danger fa fa-trash-o" ng-click="ctrl.deleteProduct(c);" ng-hide="ctrl.readOnly"></button>-->
+                                            <button type="button" class="btn btn-default fa fa-edit" tooltip-placement="left" uib-tooltip="Edit Task" ng-click="ctrl.openTask(c);"></button>
+                                            <!--
+                                             <button type="button" class="btn btn-default fa fa-clipboard" 
+                                            tooltip-placement="left" uib-tooltip="Copy Task" ng-click="ctrl.copyTask(c);"></button>
+                                            <button type="button" class="btn btn-danger fa fa-trash-o" ng-click="ctrl.deleteProduct(c);" 
+                                            ng-hide="ctrl.readOnly"></button>
+                                            -->
                                         </div>
                                     </td>
                                 </tr>
@@ -467,9 +478,9 @@
             <div class="col-md-12">
                 <button type="button" class="btn btn-default" ng-click="ctrl.gotoDash(false);"><i class="fa fa-remove"></i> Close</button>
                 <div class="pull-right" ng-show="ctrl.readOnly">
-                    <button type="button" class="btn btn-primary" ng-click="ctrl.editJob();" ng-show='ctrl.currentUser.canEdit'>
+                    <button type="button" class="btn btn-primary" ng-click="ctrl.editJob();" ng-show="ctrl.currentUser.canEdit || ctrl.job.status='Completed'">
                         <i class="fa fa-pencil-square-o"></i> Edit</button>
-                    <button type="button" class="btn btn-default btn-sm" ng-click="ctrl.developerLog=!ctrl.developerLog" style="border: 1px solid #a1a1a1;border-radius: 25px;background:white;">
+                    <button type="button" class="btn btn-default btn-sm" ng-click="ctrl.developerLog=!ctrl.developerLog" style="border: 1px solid #a1a1a1;border-radius: 25px;background:white;margin-left: 10px;margin-right: 10px;">
                         <i class="fa fa-question-circle"></i>
                     </button>
                 </div>

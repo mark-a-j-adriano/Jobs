@@ -351,7 +351,11 @@ app.controller('radioCTRL', function ($state, $auth, $uibModal, $stateParams, $t
                 vm.task.production_cost = 0;
                 vm.task.parent_id = $stateParams.orderID;
                 vm.task.logged_in_user = currentUser.id;
-                vm.cc_response_dsp = _.uniq(vm.task.cc_response.split(","));
+                if (_.isUndefined(vm.task.cc_response) || _.isNull(vm.task.cc_response)) {
+                    vm.cc_response_dsp = [];
+                } else {
+                    vm.cc_response_dsp = _.uniq(vm.task.cc_response.split(","));
+                }
                 var res = $stateParams.taskID.split('~');
                 vm.task.job_no = res[0];
                 //console.log('res : ' + JSON.stringify(res[0]));
@@ -438,7 +442,11 @@ app.controller('radioCTRL', function ($state, $auth, $uibModal, $stateParams, $t
                     vm.task.due_date = new Date(vm.task.due_date);
                     vm.task.launch_date = new Date(vm.task.launch_date);
                     vm.creativeTypes = JSON.parse(vm.task.creative_types);
-                    vm.cc_response_dsp = _.uniq(vm.task.cc_response.split(","));
+                    if (_.isUndefined(vm.task.cc_response) || _.isNull(vm.task.cc_response)) {
+                        vm.cc_response_dsp = [];
+                    } else {
+                        vm.cc_response_dsp = _.uniq(vm.task.cc_response.split(","));
+                    }
                     if (_.isUndefined(vm.task.materials) || _.isNull(vm.task.materials) || _.isEmpty(vm.task.materials)) {
                     } else {
                         vm.task.materials = vm.cleanArray(JSON.parse(vm.task.materials));

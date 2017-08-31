@@ -375,7 +375,11 @@ app.controller('oohCTRL', function ($state, $auth, $uibModal, $stateParams, $tim
                 vm.task.type = null;
                 vm.task.pub_size = null;
                 vm.task.materials = [];
-                vm.cc_response_dsp = vm.task.cc_response.split(",");
+                if (_.isUndefined(vm.task.cc_response) || _.isNull(vm.task.cc_response)) {
+                    vm.cc_response_dsp = [];
+                } else {
+                    vm.cc_response_dsp = _.uniq(vm.task.cc_response.split(","));
+                }
                 var tmpData = {
                     team_name: 'OOH',
                     division: 'Creative',
@@ -445,7 +449,11 @@ app.controller('oohCTRL', function ($state, $auth, $uibModal, $stateParams, $tim
                     vm.task.pub_date = new Date(vm.task.pub_date);
                     if (vm.task.urgent > 0) vm.task.urgent = true;
                     vm.task.size_option = 'Other';
-                    vm.cc_response_dsp = vm.task.cc_response.split(",");
+                    if (_.isUndefined(vm.task.cc_response) || _.isNull(vm.task.cc_response)) {
+                        vm.cc_response_dsp = [];
+                    } else {
+                        vm.cc_response_dsp = _.uniq(vm.task.cc_response.split(","));
+                    }
 
                     if (_.isUndefined(vm.task.materials) || _.isNull(vm.task.materials) || _.isEmpty(vm.task.materials)) {
                         vm.task.materials = [];

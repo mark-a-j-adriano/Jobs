@@ -13,7 +13,7 @@ app.controller('studioCTRL', function ($state, $auth, $uibModal, $stateParams, $
     vm.animationsEnabled = true;
     vm.statusNum = 0;
     vm.developerLog = false;
-    vm.pubTypes = [{ code: 'CLS', name: 'Classified (CLS)' }, { code: 'DSP', name: 'Display (DSP)' }, { code: 'GIF', name: ' Graphics Interchange Format (GIF)' }];
+    vm.pubTypes = [{ code: 'CLS', name: 'Classified' }, { code: 'DSP', name: 'Display' }, { code: 'GIF', name: 'Graphics Interchange Format' }];
     vm.filesForDeletion = [];
     vm.qProductsError = false;
     vm.readOnly = true;
@@ -344,7 +344,7 @@ app.controller('studioCTRL', function ($state, $auth, $uibModal, $stateParams, $
             vm.trixEditor2 = true;
         }
     };
-  
+
     vm.trixInitialize = function (e, editor, type) {
         /*
         vm.trixEditor =  editor;
@@ -673,7 +673,11 @@ app.controller('studioCTRL', function ($state, $auth, $uibModal, $stateParams, $
                 vm.task.job_no = res[0];
                 //console.log('res : ' + JSON.stringify(res[0]));
                 vm.task.task_no = res.join("-");
-                vm.cc_response_dsp = _.uniq(vm.task.cc_response.split(","));
+                if (_.isUndefined(vm.task.cc_response) || _.isNull(vm.task.cc_response)) {
+                    vm.cc_response_dsp = [];
+                } else {
+                    vm.cc_response_dsp = _.uniq(vm.task.cc_response.split(","));
+                }
                 vm.task.size_option = "Other";
                 vm.task.due_date = '';
                 vm.task.type = null;
@@ -774,7 +778,11 @@ app.controller('studioCTRL', function ($state, $auth, $uibModal, $stateParams, $
                     if (vm.task.urgent > 0) vm.task.urgent = true;
                     vm.task.size_option = 'Other';
                     vm.productList = JSON.parse(vm.task.products);
-                    vm.cc_response_dsp = _.uniq(vm.task.cc_response.split(","));
+                    if (_.isUndefined(vm.task.cc_response) || _.isNull(vm.task.cc_response)) {
+                        vm.cc_response_dsp = [];
+                    } else {
+                        vm.cc_response_dsp = _.uniq(vm.task.cc_response.split(","));
+                    }
 
                     if (_.isUndefined(vm.task.materials) || _.isNull(vm.task.materials) || _.isEmpty(vm.task.materials) || vm.task.materials == "" || vm.task.materials == "[]") {
                         vm.task.materials = [];

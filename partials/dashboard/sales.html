@@ -129,33 +129,44 @@
         <!-- ./col -->
     </div>
     <div class="row">
-        <div class="col-xs-12">
+        <div class="col-lg-12">
             <div class="box box-solid box-default">
-                <div class="box-header">
-                    <h3 class="box-title">Request List</h3>
-                    <div class="box-tools pull-right">
-                        <span>{{ ctrl.jobs.length }} records</span>
+                <div class="box-header" style="padding: 5px;">
+                    <div class="row">
+                        <div class="col-md-9">
+                            <h3 class="box-title">Request List</h3>
+                        </div>
+                        <div class="col-md-3">
+                            <button type="button" class="btn btn-primary bg-teal-gradient pull-right" ng-click="ctrl.openJobReq('00');" style="font-weight: bold; margin:0px;">
+                            <i class="fa fa-plus"></i> 
+                            Create New Job Order
+                        </button>
+                        </div>
                     </div>
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">
-                    <div class="form-inline" style="width:100%">
-                        <div class="form-group" style="width:100%">
-                            <label class="col-sm-1">Search Filter:</label>
-                            <div class="col-sm-10">
-                                <span class="input-icon">
-                                    <input placeholder="Filter Job Request list ..." class="nav-search-input" ng-model="ctrl.filterJobs" 
-                                    ng-change="ctrl.resetLimit();"  autocomplete="off" type="text" style="width:300px;" focus>
-                                    &nbsp;
-                                    <i class="search-icon fa fa-search nav-search-icon"></i>
-                                </span>
+                    <div class="row">
+                        <div class="col-md-9">
+                            <div class="form-inline" style="width:100%">
+                                <div class="form-group" style="width:100%">
+                                    <label class="col-sm-2">Search Filter:</label>
+                                    <div class="col-sm-10">
+                                        <span class="input-icon">
+                                            <input placeholder="Filter Job Request list ..." class="nav-search-input" ng-model="ctrl.filterJobs" 
+                                            ng-change="ctrl.resetLimit();"  autocomplete="off" type="text" style="width:300px;" focus> 
+                                            &nbsp;
+                                            <i class="search-icon fa fa-search nav-search-icon"></i>
+                                        </span>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-sm-1">
-                                <button type="button" class="btn btn-default pull-right" ng-click="ctrl.openJobReq('00');">
-                                    <i class="fa fa-plus"></i> 
-                                    Create New Job Order
-                                </button>
-                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <ul uib-pagination boundary-links="true" total-items="ctrl.totalItems" items-per-page="ctrl.pageSize" ng-model="ctrl.currentPage"
+                                class="pagination-sm pull-right" style="margin:0px;" previous-text="&lsaquo;" next-text="&rsaquo;"
+                                first-text="&laquo;" last-text="&raquo;"></ul>
+                            <span class="pull-right">{{ ctrl.jobs.length }} records &emsp;</span>
                         </div>
                     </div>
                 </div>
@@ -197,8 +208,8 @@
                         <tbody ng-repeat="c in ctrl.jobs | filter: ctrl.filterJobs | orderBy:'-id'" id="{{c.id}}" animate-on-change='c.packing + c.stock + c.price + c.description'
                             ng-animate="ctrl.animationsEnabled" ng-click="ctrl.go(c);">
                         -->
-                        <tbody ng-repeat="c in ctrl.jobs | filter: ctrl.filterJobs | orderBy:ctrl.orderByField:ctrl.reverseSort" id="{{c.id}}" animate-on-change='c.job_no + c.title + c.booking_type + c.status'
-                            ng-animate="ctrl.animationsEnabled" ng-click="ctrl.go(c);" ng-show='ctrl.jobs.length > 0'>
+                        <tbody id="{{c.id}}" ng-animate="ctrl.animationsEnabled" ng-click="ctrl.go(c);" ng-show='ctrl.jobs.length > 0' animate-on-change='c.job_no + c.title + c.booking_type + c.status'
+                            ng-repeat="c in ctrl.jobs | filter: ctrl.filterJobs | orderBy:ctrl.orderByField:ctrl.reverseSort | limitTo : ctrl.pageSize : (ctrl.currentPage - 1) * ctrl.pageSize">
                             <tr>
                                 <td class="pullright">
                                     <button type="btn btn-small" title="Click to show list of task for Job Order..." ng-click="jobData.showTaskList=!jobData.showTaskList"
@@ -262,7 +273,7 @@
                                                         <span>{{writer}}</span>
                                                     </p>
                                                 </td>
-                                                
+
                                                 <td style="border: 1px solid black;">{{task.submitted_date | date:"dd/MM/yyyy hh:mm a"}}</td>
                                                 <td style="border: 1px solid black;">{{task.status}}</td>
                                                 <td style="width:100px;border: 1px solid black; background-color:aliceblue; border-collapse: collapse;">

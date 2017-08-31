@@ -67,73 +67,44 @@ app.controller("creativeCTRL", function (
     $state.go("login");
   }
 
-  vm.iconList = [
-    {
-      priority: 1,
-      taskName: "display",
-      display: "DisplayLAB",
-      toolTip: "DisplayLAB",
-      pixPath: "lib/img/jobs/JobReqBanner Icons - Display.jpg",
-      isActive: false
-    },
-    {
-      priority: 2,
-      taskName: "radio",
-      display: "Radio",
-      toolTip: "Radio",
-      pixPath: "lib/img/jobs/JobReqBanner Icons - Radio.jpg",
-      isActive: false
-    },
-    {
-      priority: 3,
-      taskName: "studio",
-      display: "StudioLAB",
-      toolTip: "StudioLAB",
-      pixPath: "lib/img/jobs/JobReqBanner Icons - Studio.jpg",
-      isActive: false
-    },
-    {
-      priority: 4,
-      taskName: "ooh",
-      display: "OutdoorLab",
-      toolTip: "OutdoorLab",
-      pixPath: "lib/img/jobs/JobReqBanner Icons - OOH.jpg",
-      isActive: false
-    },
-    {
-      priority: 5,
-      taskName: "digital",
-      display: "DigitalLAB",
-      toolTip: "DigitalLAB",
-      pixPath: "lib/img/jobs/JobReqBanner Icons - Digital.jpg",
-      isActive: false
-    },
-    {
-      priority: 6,
-      taskName: "content",
-      display: "ContentLAB",
-      toolTip: "ContentLAB",
-      pixPath: "lib/img/jobs/JobReqBanner Icons - Content.jpg",
-      isActive: false
-    },
-    {
-      priority: 7,
-      taskName: "classified",
-      display: "ClassifiedLAB",
-      toolTip: "ClassifiedLAB",
-      pixPath: "lib/img/jobs/JobReqBanner Icons - Classified.jpg",
-      isActive: false
-    },
-    {
-      priority: 8,
-      taskName: "importer",
-      display: "Graphic Importer",
-      toolTip: "Graphic Importer",
-      pixPath: "lib/img/jobs/JobReqBanner Icons - Importer.jpg",
-      isActive: false
-    }
-  ];
+  vm.iconList = [];
+  vm.getIconList = function () {
+    DataFactory.getIconList().then(
+      //success
+      function (response) {
+        console.log("[getIconList] - response.data : " + JSON.stringify(response.data));
+        console.log("[getIconList] - response.status : " + JSON.stringify(response.status));
+        vm.iconList = response.data;
+      },
+      // error handler
+      function (response) {
+        //console.log("[getTaskIcons] Ooops, something went wrong..  \n " +    JSON.stringify(response) );
+      }
+    );
+  }
+  vm.getTaskIcons = function (salesTeam) {
+    DataFactory.getTaskIcons({ name: salesTeam }).then(
+      //success
+      function (response) {
+        //console.log("[getTaskIcons] - response.data : " + JSON.stringify(response.data));
+        //console.log("[getTaskIcons] - response.status : " + JSON.stringify(response.status));
 
+        angular.forEach(response.data[0], function (value, key) {
+          //console.log("key:", key);
+          //console.log("value:", value);
+          for (x = 0; x < vm.iconList.length; x++) {
+            var iconTmp = vm.iconList[x].taskName;
+            if (iconTmp.toLowerCase() == key.toLowerCase() && value > 0) vm.iconList[x].isActive = true;
+          }
+        });
+        //console.log("[getTaskIcons] updated List:" + JSON.stringify(vm.iconList));
+      },
+      // error handler
+      function (response) {
+        //console.log("[getTaskIcons] Ooops, something went wrong..  \n " +    JSON.stringify(response) );
+      }
+    );
+  };
 
   vm.cleanArray = function (tmpArray) {
     var newArray = [];
@@ -624,7 +595,7 @@ app.controller("creativeCTRL", function (
     return tmp;
   };
   vm.openPage = function (nam) {
-    //console.log("newPath : " + nam +" | jobNum : " + vm.job.job_no + " | tasks : " +  vm.taskList.length );
+    console.log("newPath : " + nam +" | jobNum : " + vm.job.job_no + " | tasks : " +  vm.taskList.length );
     //$location.path("/" + nam + "/ABC123/00/");
     $state.go(nam, {
       orderID: vm.job.id,
@@ -939,16 +910,49 @@ app.controller("creativeCTRL", function (
     }
   };
 
+  vm.selectTeam = function () {
+    var tmpData = {
+      team_name: null,
+      is_Multiple: "0",
+      division: null,
+      role: null,
+      primary: null,
+    };
+
+    var modalInstance = $uibModal.open({
+      animation: vm.animationsEnabled,
+      templateUrl: 'partials/common/member.html',
+      controller: 'memberModalCtrl as ctrl',
+      resolve: {
+        parentData: function () {
+          var tmp = {
+            frm_class: 'box-creative',
+            user_data: tmpData,
+            return_fld: 'team',
+            default: vm.job.team,
+          };
+          return tmp;
+        },
+        members: function (DataFactory) {
+          return DataFactory.getSalesTeam();
+        }
+      }
+    }).result.then(function (submitVar) {
+      console.log('[selectTeam] - submitVar', submitVar);
+      vm.job.team = submitVar
+    })
+  };
+
   vm.selectUser = function (team, div, rol, retFld, order) {
     var tmpData = {
       team_name: team,
       is_Multiple: "1",
-     
+
       division: div,
       role: rol,
       primary: order,
     };
-    
+
     var default_val = vm.job[retFld + "_username"];
     var modalInstance = $uibModal.open({
       animation: vm.animationsEnabled,
@@ -969,12 +973,12 @@ app.controller("creativeCTRL", function (
         }
       }
     }).result.then(function (submitVar) {
-      console.log("submitted value inside parent controller", submitVar);      
-      if(_.isUndefined(submitVar.name)  || _.isNull(submitVar.name) || submitVar.name==""){
+      console.log("submitted value inside parent controller", submitVar);
+      if (_.isUndefined(submitVar.name) || _.isNull(submitVar.name) || submitVar.name == "") {
         vm.job[retFld] = "";
         vm.job[retFld + "_username"] = "";
         vm.cc_response_dsp = [];
-      }else{
+      } else {
         vm.job[retFld] = submitVar.name;
         vm.job[retFld + "_username"] = submitVar.username;
         vm.cc_response_dsp = _.uniq(submitVar.name.split(","));
@@ -982,17 +986,25 @@ app.controller("creativeCTRL", function (
     })
 
   };
+
+
+  vm.copyTask = function(){
+    alert('Function not yet available!');
+  }
+
   //console.log("columnTitle : " + JSON.stringify(vm.columnTitle));
   //console.log("$stateParams.orderID : " + JSON.stringify(job_id));
   if (job_id > 0) {
     //console.log("job_id - 2");
     vm.currentUser.userAction = "Read";
+    vm.getIconList();
     vm.getJobRequest(job_id);
   } else {
     //console.log("job_id - 1");
     vm.readOnly = false;
     vm.currentUser.canEdit = true;
     vm.currentUser.userAction = "Create";
+    vm.getIconList();
     vm.getRequestor(vm.currentUser.id);
   }
 

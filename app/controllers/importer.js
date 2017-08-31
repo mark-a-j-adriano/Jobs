@@ -12,7 +12,7 @@ app.controller('importerCTRL', function ($sce, $state, $auth, $uibModal, $stateP
     vm.animationsEnabled = true;
     vm.statusNum = 0;
     vm.developerLog = false;
-    vm.pubTypes = [{ code: 'CLS', name: 'Classified (CLS)' }];
+    vm.pubTypes = [{ code: 'CLS', name: 'Classified' }];
     vm.filesForDeletion = [];
     vm.qProductsError = false;
     vm.readOnly = true;
@@ -768,7 +768,11 @@ app.controller('importerCTRL', function ($sce, $state, $auth, $uibModal, $stateP
                     if (vm.task.feature > 0) vm.task.feature = true;
                     vm.task.size_option = 'Other';
                     vm.productList = JSON.parse(vm.task.products);
-                    vm.cc_response_dsp = _.uniq(vm.task.cc_response.split(","));
+                    if (_.isUndefined(vm.task.cc_response) || _.isNull(vm.task.cc_response)) {
+                        vm.cc_response_dsp = [];
+                    } else {
+                        vm.cc_response_dsp = _.uniq(vm.task.cc_response.split(","));
+                    }
 
                     if (_.isUndefined(vm.task.materials) || _.isNull(vm.task.materials) || _.isEmpty(vm.task.materials) || vm.task.materials == "" || vm.task.materials == "[]") {
                         vm.task.materials = [];

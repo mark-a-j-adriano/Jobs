@@ -12,7 +12,7 @@ app.controller('displayCTRL', function ($state, $auth, $uibModal, $stateParams, 
     vm.animationsEnabled = true;
     vm.statusNum = 0;
     vm.developerLog = false;
-    vm.pubTypes = [{ code: 'CLS', name: 'Classified (CLS)' }, { code: 'DSP', name: 'Display (DSP)' }];
+    vm.pubTypes = [{ code: 'CLS', name: 'Classified' }, { code: 'DSP', name: 'Display' }];
     vm.filesForDeletion = [];
     vm.qProductsError = false;
     vm.readOnly = true;
@@ -335,7 +335,11 @@ app.controller('displayCTRL', function ($state, $auth, $uibModal, $stateParams, 
                 vm.task.production_cost = 0;
                 vm.task.parent_id = $stateParams.orderID;
                 vm.task.logged_in_user = currentUser.id;
-                vm.cc_response_dsp = _.uniq(vm.task.cc_response.split(","));
+                if (_.isUndefined(vm.task.cc_response) || _.isNull(vm.task.cc_response)) {
+                    vm.cc_response_dsp = [];
+                } else {
+                    vm.cc_response_dsp = _.uniq(vm.task.cc_response.split(","));
+                }
                 var res = $stateParams.taskID.split('~');
                 vm.task.job_no = res[0];
                 //console.log('res : ' + JSON.stringify(res[0]));
@@ -441,7 +445,11 @@ app.controller('displayCTRL', function ($state, $auth, $uibModal, $stateParams, 
                     if (vm.task.urgent > 0) vm.task.urgent = true;
                     //vm.task.size_option = ['Other'];
                     vm.productList = JSON.parse(vm.task.products);
-                    vm.cc_response_dsp = _.uniq(vm.task.cc_response.split(","));
+                    if (_.isUndefined(vm.task.cc_response) || _.isNull(vm.task.cc_response)) {
+                        vm.cc_response_dsp = [];
+                    } else {
+                        vm.cc_response_dsp = _.uniq(vm.task.cc_response.split(","));
+                    }
                     if (_.isUndefined(vm.task.materials) || _.isNull(vm.task.materials) || _.isEmpty(vm.task.materials) || vm.task.materials == "" || vm.task.materials == "[]") {
                         vm.task.materials = [];
                     } else {
@@ -594,7 +602,12 @@ app.controller('displayCTRL', function ($state, $auth, $uibModal, $stateParams, 
     };
     vm.submitTask = function (newStatus) {
         //console.log('[submitTask] - newStatus : ' + newStatus);
-        vm.isValid = vm.Validate();
+        if (newStatus == 'Draft') {
+            vm.isValid = true;
+        } else {
+            vm.isValid = vm.Validate();
+        }
+
         vm.task.write_log = true;
         var bkup = angular.copy(vm.task);
         var prevStats = vm.task.status;
@@ -1126,7 +1139,7 @@ app.controller('displayCTRL', function ($state, $auth, $uibModal, $stateParams, 
 
     vm.revertTask = function (chatFlag) {
         var tmp = {
-            frm_class: 'box-classified',
+            frm_class: 'box-display',
             frm_title: 'Request Re-Submission',
             isConfirm: false,
             isChat: true,
@@ -1137,9 +1150,9 @@ app.controller('displayCTRL', function ($state, $auth, $uibModal, $stateParams, 
         if (_.isUndefined(chatFlag) || _.isNull(chatFlag) || _.isEmpty(chatFlag) || chatFlag == '') {
             chatFlag = "";
             tmp.frm_title = "Conversation";
-        } else if (chatFlag == 'cancel') {
+        } else if (chatFlag == 'cancel' || chatFlag == 'direct cancel') {
             tmp.frm_title = "Cancellation Request";
-            tmp.msg = "Please enter your reason for cacelling this task.";
+            tmp.msg = "Please enter your reason for cancelling this task.";
         } else if (chatFlag == 'rejected') {
             tmp.frm_title = "Artwork for Revision";
             tmp.msg = "Please enter your reason for returning artwork.";
@@ -1187,6 +1200,9 @@ app.controller('displayCTRL', function ($state, $auth, $uibModal, $stateParams, 
                 } else if (chatFlag == 'cancel') {
                     //console.log("[revertTask] - 1");
                     vm.submitTask('Cancellation Request');
+                } else if (chatFlag == 'direct cancel') {
+                    //console.log("[revertTask] - 1");
+                    vm.submitTask('Cancelled');
                 } else {
                     //console.log("[revertTask] - 2");
                     vm.submitTask('Conversation reply');

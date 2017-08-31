@@ -556,20 +556,20 @@
             <div class="col-md-10">
 
                 <div class="pull-right" ng-show="ctrl.currentUser.canEdit == 'sales'">
-                    <button type="button" class="btn btn-primary" ng-click="ctrl.submitTask();" ng-show="ctrl.task.status=='new' || ctrl.task.status=='Draft'"
+                    <button type="button" class="btn btn-success" ng-click="ctrl.submitTask();" ng-show="ctrl.task.status=='new' || ctrl.task.status=='Draft'"
                         style="margin-left: 10px;">
                         <i class="fa fa-save"></i> &nbsp; Submit
                     </button>
-                    <button type="button" class="btn btn-primary" ng-click="ctrl.submitTask('Previous Status');" ng-show="ctrl.task.status=='Request Re-Submission'"
+                    <button type="button" class="btn btn-success" ng-click="ctrl.submitTask('Previous Status');" ng-show="ctrl.task.status=='Request Re-Submission'"
                         style="margin-left: 10px;">
                         <i class="fa fa-save"></i> &nbsp; Re-Submit
                     </button>
 
-                    <button type="button" class="btn btn-primary" ng-click="ctrl.revertTask('rejected');" ng-show="ctrl.task.status=='For Approval'"
+                    <button type="button" class="btn btn-warning" ng-click="ctrl.revertTask('rejected');" ng-show="ctrl.task.status=='For Approval'"
                         style="margin-left: 10px;">
                         <i class="fa fa-hand-o-left"></i> &nbsp; For Revision
                     </button>
-                    <button type="button" class="btn btn-primary" ng-click="ctrl.approveArtwork();" ng-show="ctrl.task.status=='For Approval'"
+                    <button type="button" class="btn btn-success" ng-click="ctrl.approveArtwork();" ng-show="ctrl.task.status=='For Approval'"
                         style="margin-left: 10px;">
                         <i class="fa fa-thumbs-up"></i> &nbsp; Approve
                     </button>
@@ -584,7 +584,7 @@
                 </div>
 
                 <div class="pull-right" ng-show="ctrl.currentUser.canEdit == 'designer'">
-                    <button type="button" class="btn btn-primary" ng-click="ctrl.revertTask('revert');" ng-show="ctrl.task.status=='In Progress'"
+                    <button type="button" class="btn btn-warning" ng-click="ctrl.revertTask('revert');" ng-show="ctrl.task.status=='In Progress'"
                         style="margin-left: 10px;">
                         <i class="fa fa-reply"></i> &nbsp; Request Re-submission
                     </button>
@@ -598,7 +598,7 @@
                         <i class="fa fa-save"></i> &nbsp; Save Updates
                     </button>
 
-                    <button type="button" class="btn btn-primary" ng-click="ctrl.closeDigitalTask();" ng-show="ctrl.task.status=='Pending Import'"
+                    <button type="button" class="btn btn-success" ng-click="ctrl.closeDigitalTask();" ng-show="ctrl.task.status=='Pending Import'"
                         style="margin-left: 10px;">
                         <i class="fa fa-check"></i> &nbsp; Task Completed
                     </button>
@@ -609,11 +609,11 @@
                         style="margin-left: 10px;">
                         <i class="fa fa-close"></i> &nbsp; Cancel Artwork
                     </button>
-                    <button type="button" class="btn btn-primary" ng-click="ctrl.revertTask('revert');" ng-show="ctrl.task.status=='Pending Assignment'"
+                    <button type="button" class="btn btn-warning" ng-click="ctrl.revertTask('revert');" ng-show="ctrl.task.status=='Pending Assignment'"
                         style="margin-left: 10px;">
                         <i class="fa fa-reply"></i> &nbsp; Request Re-submission
                     </button>
-                    <button type="button" class="btn btn-primary" ng-click="ctrl.isAssigned();" style="margin-left: 10px;" ng-show="ctrl.task.status=='Pending Assignment'"
+                    <button type="button" class="btn btn-success" ng-click="ctrl.isAssigned();" style="margin-left: 10px;" ng-show="ctrl.task.status=='Pending Assignment'"
                         style="margin-left: 10px;">
                         <i class="fa fa-save"></i> &nbsp; Save Assignments
                     </button>
@@ -621,18 +621,19 @@
                         ng-hide="ctrl.task.status=='Pending Assignment' || ctrl.task.status=='Cancelled' || ctrl.task.status=='Completed'">
                         <i class="fa fa-save"></i> &nbsp; Save Updates
                     </button>
-                    <button type="button" class="btn btn-primary" ng-click="ctrl.closeDigitalTask();" ng-show="ctrl.statusNum >= 2" style="margin-left: 10px;">
+                    <button type="button" class="btn btn-success" ng-click="ctrl.closeDigitalTask();" ng-show="ctrl.statusNum >= 2" style="margin-left: 10px;">
                         <i class="fa fa-check"></i> &nbsp; Task Completed
                     </button>
                 </div>
 
                 <div class="pull-right">
                     <button type="button" class="btn btn-primary bg-teal-gradient pull-right" ng-click="ctrl.revertTask();" ng-hide="(ctrl.task.status=='new' || ctrl.task.status=='Completed' || ctrl.task.status=='Cancelled')"
-                        style="margin-left: 10px;">
+                        style="margin-left: 10px;margin-right: 10px;">
                          <i class="fa fa-comments-o"></i> Chat
                     </button>
 
-                    <button type="button" class="btn btn-default btn-sm" ng-click="ctrl.developerLog=!ctrl.developerLog" style="border: 1px solid #a1a1a1;border-radius: 25px;background:white;">
+                    <button type="button" class="btn btn-default btn-sm" ng-click="ctrl.developerLog=!ctrl.developerLog" 
+                    style="border: 1px solid #a1a1a1;border-radius: 25px;background:white;margin-left: 10px;margin-right: 10px;">
                         <i class="fa fa-question-circle"></i>
                     </button>
                 </div>

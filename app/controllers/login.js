@@ -231,7 +231,7 @@ app.controller('memberModalCtrl', function ($uibModalInstance, focus, toastr, pa
     var vm = this;
 
     //console.log('[memberModalCtrl] - parentData : ' + JSON.stringify(parentData));
-    console.log('[memberModalCtrl] - members : ' + JSON.stringify(members));
+    //console.log('[memberModalCtrl] - members : ' + JSON.stringify(members));
     vm.hdr_class = parentData.frm_class;
     vm.formTitle = parentData.return_fld;
     vm.members = members;
@@ -243,9 +243,8 @@ app.controller('memberModalCtrl', function ($uibModalInstance, focus, toastr, pa
     vm.showTeam = false;
     vm.enableSearch = false;
     vm.extraSettings = {
-        scrollableHeight: '400px',
-        scrollable: true,
-        styleActive: true,
+        scrollableHeight: (vm.members.length > 10) ? '400px' : null,
+        scrollable: true,        
         selectedToTop: true,
         enableSearch: (vm.members.length > 10) ? true : false,        
     } 

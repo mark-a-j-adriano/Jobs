@@ -33,6 +33,26 @@ app.factory("DataFactory", [
     }
 
     // returns a PROMISE
+    obj.getSalesTeam = function () {
+      var deferred = $q.defer()
+      var httpURL = base_url + "/json/get-sales-teams";
+      $http.get(httpURL).then(
+        //success
+        function (response) {
+          //console.log("[getDevUserList] - response : " + JSON.stringify(response));
+          deferred.resolve(response.data);
+        },
+        // error handler
+        function (response) {
+          deferred.reject(response);
+          //console.log("[getDevUserList] Ooops, something went wrong..  \n " + JSON.stringify(response));
+        }
+      );
+
+      return deferred.promise;
+    };
+
+    // returns a PROMISE
     obj.getUserRoleList = function () {
       //C:\xampp\htdocs\Creative\Jobs\lib\docs\dump\userList.json
       var deferred = $q.defer();
@@ -85,6 +105,10 @@ app.factory("DataFactory", [
       return deferred.promise;
     };
 
+    obj.getIconList = function () {
+      var httpURL = "./lib/dump/iconList.json";
+      return $http.get(httpURL);
+    }
 
     obj.getContentGrp = function (type) {
       var httpURL = "./lib/dump/contentGrp.json";
@@ -191,6 +215,8 @@ app.factory("DataFactory", [
       var httpURL = base_url + "/jobs/get-requester-info";
       return $http.post(httpURL, { parent_id: filters });
     }
+
+
 
     obj.getArtworkTypes = function (filters) {
       var httpURL = base_url + "/json/artwork-types";

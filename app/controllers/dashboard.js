@@ -8,6 +8,9 @@ app.controller('salesDashCTRL', function ($state, $stateParams, $uibModal, toast
   vm.reverseSort = false;
   vm.stats = null;
   vm.animationsEnabled = true;
+  vm.pageSize = 30;
+  vm.currentPage = 1;
+  vm.totalItems = 0;
   vm.toggleAnimation = function () {
     vm.animationsEnabled = !vm.animationsEnabled;
   };
@@ -61,6 +64,7 @@ app.controller('salesDashCTRL', function ($state, $stateParams, $uibModal, toast
         ////console.log('[getJobList] - response.data : ' + JSON.stringify(response.data));
         ////console.log('[getJobList] - response.status : ' + JSON.stringify(response.status));
         vm.jobs = response.data;
+        vm.totalItems = vm.jobs.length;
         console.clear();
         for (x = 0; x < vm.jobs.length; x++) {
           vm.jobs[x].tasks = JSON.parse(vm.jobs[x].tasks);
@@ -190,7 +194,9 @@ app.controller('designerDashCTRL', function ($state, $stateParams, $uibModal, to
   vm.orderByField = 'task_no';
   vm.reverseSort = false;
   vm.stats = null;
-
+  vm.pageSize = 30;
+  vm.currentPage = 1;
+  vm.totalItems = 0;
   vm.animationsEnabled = true;
   vm.toggleAnimation = function () {
     vm.animationsEnabled = !vm.animationsEnabled;
@@ -247,7 +253,7 @@ app.controller('designerDashCTRL', function ($state, $stateParams, $uibModal, to
         //console.log('[getJobList] - response.data : ' + JSON.stringify(response.data));
         ////console.log('[getJobList] - response.status : ' + JSON.stringify(response.status));
         vm.tasks = response.data;
-
+        vm.totalItems = vm.tasks.length;
         for (i = 0; i < vm.tasks.length; i++) {
           if (_.isUndefined(vm.tasks[i].due_date) || _.isNull(vm.tasks[i].due_date) || vm.tasks[i].due_date == '') {
             vm.tasks[i].due_date = ''
@@ -345,6 +351,9 @@ app.controller('copywriterDashCTRL', function ($state, $stateParams, $uibModal, 
   ////console.log('copywriterDashCTRL : START');
 
   var vm = this;
+  vm.pageSize = 30;
+  vm.currentPage = 1;
+  vm.totalItems = 0;
   vm.tasks = [];
   vm.qResultError = false;
   vm.orderByField = 'task_no';
@@ -408,6 +417,7 @@ app.controller('copywriterDashCTRL', function ($state, $stateParams, $uibModal, 
         //console.log('[getJobList] - response.data : ' + JSON.stringify(response.data));
         ////console.log('[getJobList] - response.status : ' + JSON.stringify(response.status));
         vm.tasks = response.data;
+        vm.totalItems = vm.tasks.length;
 
         for (i = 0; i < vm.tasks.length; i++) {
           if (_.isUndefined(vm.tasks[i].due_date) || _.isNull(vm.tasks[i].due_date) || vm.tasks[i].due_date == '') {
@@ -510,6 +520,9 @@ app.controller('coordinatorDashCTRL', function ($state, $stateParams, $uibModal,
   vm.reverseSort = false;
   vm.stats = null;
   vm.jobs = [];
+  vm.pageSize = 30;
+  vm.currentPage = 1;
+  vm.totalItems = 0;
 
   vm.animationsEnabled = true;
   vm.toggleAnimation = function () {
@@ -568,7 +581,7 @@ app.controller('coordinatorDashCTRL', function ($state, $stateParams, $uibModal,
         //console.log('[getJobList] - response.data : ' + JSON.stringify(response.data));
         ////console.log('[getJobList] - response.status : ' + JSON.stringify(response.status));
         vm.tasks = response.data;
-
+        vm.totalItems = vm.tasks.length;
         for (i = 0; i < vm.tasks.length; i++) {
           if (_.isUndefined(vm.tasks[i].due_date) || _.isNull(vm.tasks[i].due_date) || vm.tasks[i].due_date == '') {
             vm.tasks[i].due_date = ''

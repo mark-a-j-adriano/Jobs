@@ -1,0 +1,66 @@
+[
+    {
+        "priority": 1,
+        "taskName": "display",
+        "display": "DisplayLAB",
+        "toolTip": "DisplayLAB",
+        "pixPath": "lib/img/jobs/JobReqBanner Icons - Display.jpg",
+        "isActive": false
+    },
+    {
+        "priority": 2,
+        "taskName": "ooh",
+        "display": "OutdoorLab",
+        "toolTip": "OutdoorLab",
+        "pixPath": "lib/img/jobs/JobReqBanner Icons - OOH.jpg",
+        "isActive": false
+    },
+    {
+        "priority": 3,
+        "taskName": "digital",
+        "display": "DigitalLAB",
+        "toolTip": "DigitalLAB",
+        "pixPath": "lib/img/jobs/JobReqBanner Icons - Digital.jpg",
+        "isActive": false
+    },
+    {
+        "priority": 4,
+        "taskName": "radio",
+        "display": "Radio",
+        "toolTip": "Radio",
+        "pixPath": "lib/img/jobs/JobReqBanner Icons - Radio.jpg",
+        "isActive": false
+    },
+    {
+        "priority": 5,
+        "taskName": "studio",
+        "display": "StudioLAB",
+        "toolTip": "StudioLAB",
+        "pixPath": "lib/img/jobs/JobReqBanner Icons - Studio.jpg",
+        "isActive": false
+    },
+    {
+        "priority": 6,
+        "taskName": "content",
+        "display": "ContentLAB",
+        "toolTip": "ContentLAB",
+        "pixPath": "lib/img/jobs/JobReqBanner Icons - Content.jpg",
+        "isActive": false
+    },
+    {
+        "priority": 7,
+        "taskName": "classified",
+        "display": "ClassifiedLAB",
+        "toolTip": "ClassifiedLAB",
+        "pixPath": "lib/img/jobs/JobReqBanner Icons - Classified.jpg",
+        "isActive": false
+    },
+    {
+        "priority": 8,
+        "taskName": "importer",
+        "display": "Graphic Importer",
+        "toolTip": "Graphic Importer",
+        "pixPath": "lib/img/jobs/JobReqBanner Icons - Importer.jpg",
+        "isActive": false
+    }
+]
