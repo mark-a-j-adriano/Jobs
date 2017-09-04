@@ -441,7 +441,7 @@ app.controller('studioCTRL', function ($state, $auth, $uibModal, $stateParams, $
         tmpStatus = tmpStatus.toLowerCase();
         var accessLVL = parseInt(currentUser.role);
 
-        if (tmpStatus == "new" || tmpStatus == "request re-submission") {
+        if (tmpStatus == "new" || tmpStatus == "draft" || tmpStatus == "request re-submission") {
             vm.statusNum = 0;
         } else if (tmpStatus == "pending assignment" || tmpStatus == "cancellation request") {
             vm.statusNum = 1;
@@ -942,7 +942,11 @@ app.controller('studioCTRL', function ($state, $auth, $uibModal, $stateParams, $
     };
     vm.submitTask = function (newStatus) {
         //console.log('[submitTask] - newStatus : ' + newStatus);
-        vm.isValid = vm.Validate();
+        if (newStatus == 'Draft') {
+            vm.isValid = true;
+        } else {
+            vm.isValid = vm.Validate();
+        }
         vm.task.write_log = true;
         var bkup = angular.copy(vm.task);
         var prevStats = vm.task.status;
@@ -997,7 +1001,11 @@ app.controller('studioCTRL', function ($state, $auth, $uibModal, $stateParams, $
             delete vm.task.type;
             delete vm.task.job_no;
             delete vm.task.default_due_date;
-            vm.task.due_date = moment(vm.task.due_date).format('YYYY-MM-DD HH:mm:ss');
+            if (_.isDate(vm.task.due_date)) {
+                vm.task.due_date = moment(vm.task.due_date).format('YYYY-MM-DD HH:mm:ss');
+            } else {
+                vm.task.due_date = null;
+            }
 
             var passedID = null;
             if ($stateParams.action != "create") {

@@ -289,7 +289,7 @@ app.controller('memberModalCtrl', function ($uibModalInstance, focus, toastr, pa
 
             retVal = {
                 name: _.uniq(usrNm).join(", "),
-                username: _.uniq(usrNm).join(", "),
+                username: _.uniq(usrID).join(", "),
             }
         } else {
             for (i = 0; i < vm.members.length; i++) {

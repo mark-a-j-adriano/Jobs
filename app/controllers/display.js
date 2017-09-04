@@ -102,7 +102,7 @@ app.controller('displayCTRL', function ($state, $auth, $uibModal, $stateParams, 
         tmpStatus = tmpStatus.toLowerCase();
         var accessLVL = parseInt(currentUser.role);
 
-        if (tmpStatus == "new" || tmpStatus == "request re-submission") {
+        if (tmpStatus == "new" || tmpStatus == "draft" || tmpStatus == "request re-submission") {
             vm.statusNum = 0;
         } else if (tmpStatus == "pending assignment") {
             vm.statusNum = 1;
@@ -431,14 +431,15 @@ app.controller('displayCTRL', function ($state, $auth, $uibModal, $stateParams, 
         DataFactory.getTask($stateParams.taskID, 'display').then(
             //success
             function (response) {
-                //console.log('[getTask] - response.data : ' + JSON.stringify(response.data));
-                ////console.log('response.status : ' + JSON.stringify(response.status));
+                console.log('[getTask] - response.data : ' + JSON.stringify(response.data));
+                console.log('response.status : ' + JSON.stringify(response.status));
                 vm.task = response.data;
                 vm.currentUser.canEdit = vm.accessControl();
                 vm.task.parent_id = vm.task.job_id;
                 if (vm.currentUser.canEdit == '') {
                     vm.gotoDash();
                 } else {
+
                     vm.task.ad_spend = parseFloat(vm.task.ad_spend);
                     vm.task.production_cost = parseFloat(vm.task.production_cost);
                     vm.task.due_date = new Date(vm.task.due_date);
@@ -514,6 +515,7 @@ app.controller('displayCTRL', function ($state, $auth, $uibModal, $stateParams, 
                     } else {
                         vm.editTask();
                     }
+
                 }
                 //console.log('[getTask] - final.data : ' + JSON.stringify(vm.task));
             },
@@ -647,7 +649,12 @@ app.controller('displayCTRL', function ($state, $auth, $uibModal, $stateParams, 
             delete vm.task.type;
             delete vm.task.job_no;
             delete vm.task.default_due_date;
-            vm.task.due_date = moment(vm.task.due_date).format('YYYY-MM-DD HH:mm:ss');
+
+            if (_.isDate(vm.task.due_date)) {
+                vm.task.due_date = moment(vm.task.due_date).format('YYYY-MM-DD HH:mm:ss');
+            } else {
+                vm.task.due_date = null;
+            }
 
             var passedID = null;
             if ($stateParams.action != "create") {
@@ -978,6 +985,7 @@ app.controller('displayCTRL', function ($state, $auth, $uibModal, $stateParams, 
         })
     };
     vm.selectUser = function (team, div, rol, retFld, order) {
+        console.log("[selectUser]");
         var tmpData = {
             team_name: team,
             is_Multiple: "0",
@@ -1025,8 +1033,8 @@ app.controller('displayCTRL', function ($state, $auth, $uibModal, $stateParams, 
                         return DataFactory.getMembers(tmpData);
                     }
                 }
-            }).result.then(function (submitVar) {
-                //console.log("submitted value inside parent controller", submitVar);
+            }).result.then(function (submitVar) {   
+                console.log("submitted value inside parent controller", submitVar);
                 vm.task[retFld] = submitVar.name;
                 vm.task[retFld + "_username"] = submitVar.username;
             })

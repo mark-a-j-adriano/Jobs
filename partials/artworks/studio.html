@@ -872,16 +872,16 @@
             <div class="col-md-10">
 
                 <div class="pull-right" ng-show="ctrl.currentUser.canEdit == 'sales'">
-                    <!--
-                    <button type="button" class="btn btn-primary" ng-click="ctrl.saveDraftTask();" ng-show="(ctrl.task.status=='new')">
+                    <button type="button" class="btn btn-warning" ng-click="ctrl.submitTask('Draft');" ng-show="(ctrl.statusNum==0) && ctrl.task.status!='Request Re-Submission'">
                         <i class="fa fa-save"></i> &nbsp; Save As Draft
                     </button>
-                    -->
-                    <button type="button" class="btn btn-success" ng-click="ctrl.submitTask();" ng-show="ctrl.task.status=='new' || ctrl.task.status=='Draft'"
+                    <button type="button" class="btn btn-success" ng-click="ctrl.submitTask();" 
+                    ng-show="(ctrl.statusNum==0) && ctrl.task.status!='Request Re-Submission'"
                         style="margin-left: 10px;">
                         <i class="fa fa-save"></i> &nbsp; Submit
                     </button>
-                    <button type="button" class="btn btn-success" ng-click="ctrl.submitTask('Previous Status');" ng-show="ctrl.task.status=='Request Re-Submission'"
+                    <button type="button" class="btn btn-success" ng-click="ctrl.submitTask('Previous Status');" 
+                    ng-show="(ctrl.statusNum==0) && ctrl.task.status=='Request Re-Submission'"
                         style="margin-left: 10px;">
                         <i class="fa fa-save"></i> &nbsp; Re-Submit
                     </button>
@@ -957,8 +957,7 @@
                          <i class="fa fa-comments-o"></i> Chat
                     </button>
 
-                    <button type="button" class="btn btn-default btn-sm" ng-click="ctrl.developerLog=!ctrl.developerLog" 
-                    style="border: 1px solid #a1a1a1;border-radius: 25px;background:white;margin-left: 10px;margin-right: 10px;">
+                    <button type="button" class="btn btn-default btn-sm" ng-click="ctrl.developerLog=!ctrl.developerLog" style="border: 1px solid #a1a1a1;border-radius: 25px;background:white;margin-left: 10px;margin-right: 10px;">
                         <i class="fa fa-question-circle"></i>
                     </button>
                 </div>

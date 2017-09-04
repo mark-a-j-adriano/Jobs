@@ -557,7 +557,11 @@ app.controller('radioCTRL', function ($state, $auth, $uibModal, $stateParams, $t
 
     vm.submitTask = function (newStatus) {
         //console.log('[submitTask] - newStatus : ' + newStatus);
-        vm.isValid = true;
+        if (newStatus == 'Draft') {
+            vm.isValid = true;
+        } else {
+            vm.isValid = vm.Validate();
+        }
         vm.task.write_log = true;
         var bkup = angular.copy(vm.task);
         //vm.isValid = vm.Validate();

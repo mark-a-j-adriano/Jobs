@@ -585,7 +585,11 @@ app.controller('oohCTRL', function ($state, $auth, $uibModal, $stateParams, $tim
     vm.submitTask = function (newStatus) {
         //console.log('[submitTask] - newStatus : ' + newStatus);
         //vm.isValid = true;
-        vm.isValid = vm.Validate();
+        if (newStatus == 'Draft') {
+            vm.isValid = true;
+        } else {
+            vm.isValid = vm.Validate();
+        }
         vm.task.write_log = true;
         var bkup = angular.copy(vm.task);
         var prevStats = vm.task.status;
@@ -625,8 +629,16 @@ app.controller('oohCTRL', function ($state, $auth, $uibModal, $stateParams, $tim
             delete vm.task.type;
             delete vm.task.job_no;
             delete vm.task.default_due_date;
-            vm.task.due_date = moment(vm.task.due_date).format('YYYY-MM-DD HH:mm:ss');
-            vm.task.pub_date = moment(vm.task.pub_date).format('YYYY-MM-DD HH:mm:ss');
+            if (_.isDate(vm.task.due_date)) {
+                vm.task.due_date = moment(vm.task.due_date).format('YYYY-MM-DD HH:mm:ss');
+            } else {
+                vm.task.due_date = null;
+            }
+            if (_.isDate(vm.task.pub_date)) {
+                vm.task.pub_date = moment(vm.task.pub_date).format('YYYY-MM-DD HH:mm:ss');
+            } else {
+                vm.task.pub_date = null;
+            }
 
             var passedID = null;
             if ($stateParams.action != "create") {

@@ -954,7 +954,11 @@ app.controller('importerCTRL', function ($sce, $state, $auth, $uibModal, $stateP
     };
     vm.submitTask = function (newStatus) {
         ////console.log('[submitTask] - newStatus : ' + newStatus);
-        vm.isValid = vm.Validate();
+        if (newStatus == 'Draft') {
+            vm.isValid = true;
+        } else {
+            vm.isValid = vm.Validate();
+        }
         vm.task.write_log = true;
         var bkup = angular.copy(vm.task);
         var prevStats = vm.task.status;
