@@ -1,10 +1,11 @@
-app.controller('oohCTRL', function ($state, $auth, $uibModal, $stateParams, $timeout, toastr, focus, Upload, DataFactory, StorageFactory, currentUser) {
+app.controller('oohCTRL', function ($state, $auth, $uibModal, $stateParams, $timeout, $filter, toastr, focus, Upload, DataFactory, StorageFactory, currentUser) {
     //console.log('START - oohCTRL');
 
     var vm = this;
     vm.isValid = true;
     vm.errorMsg = [];
     vm.task = {};
+    vm.display = { ad_spend: 0, production_cost: 0 };
     vm.task.digital_list = [];
     vm.task.static_list = [];
     vm.animationsEnabled = true;
@@ -445,11 +446,14 @@ app.controller('oohCTRL', function ($state, $auth, $uibModal, $stateParams, $tim
                 } else {
                     vm.task.ad_spend = parseFloat(vm.task.ad_spend);
                     vm.task.production_cost = parseFloat(vm.task.production_cost);
+                    vm.display.ad_spend = $filter('currency')(vm.task.ad_spend, "");
+                    vm.display.production_cost = $filter('currency')(vm.task.production_cost, "");
+
                     vm.task.due_date = new Date(vm.task.due_date);
                     vm.task.pub_date = new Date(vm.task.pub_date);
                     if (vm.task.urgent > 0) vm.task.urgent = true;
                     vm.task.size_option = 'Other';
-                    if (_.isUndefined(vm.task.cc_response) || _.isNull(vm.task.cc_response)) {
+                    if (_.isUndefined(vm.task.cc_response) || _.isNull(vm.task.cc_response) || _.isEmpty(vm.task.cc_response)) {
                         vm.cc_response_dsp = [];
                     } else {
                         vm.cc_response_dsp = _.uniq(vm.task.cc_response.split(","));

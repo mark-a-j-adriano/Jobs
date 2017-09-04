@@ -196,7 +196,10 @@ app.factory("DataFactory", [
         httpURL = base_url + "/content-artworks/" + filter;
       } else if (frm == 'display') {
         httpURL = base_url + "/display-artworks/" + filter;
+      } else if (frm == 'importer') {
+        httpURL = base_url + "/importer-artworks/" + filter;
       }
+
       return $http.get(httpURL);
     };
 

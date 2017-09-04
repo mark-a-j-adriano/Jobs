@@ -16,7 +16,7 @@ var app = angular.module('myApp', [
   'toastr',
   'angularjs-dropdown-multiselect',
   'angular.filter',
-  'underscore',
+  'underscore',  
   //'isteven-multi-select',  
   //'restangular',
   //'ng.ckeditor',

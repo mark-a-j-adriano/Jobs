@@ -4,6 +4,7 @@ app.controller("creativeCTRL", function (
   $uibModal,
   $stateParams,
   $timeout,
+  $filter,
   toastr,
   focus,
   Upload,
@@ -275,19 +276,7 @@ app.controller("creativeCTRL", function (
         } else {
           vm.job.creative_briefs = JSON.parse(vm.job.creative_briefs);
         }
-
-        /*
-          if (
-            _.isUndefined(vm.job.team_members) ||
-            _.isNull(vm.job.team_members) ||
-            _.isEmpty(vm.job.team_members) ||
-            (vm.job.team_members == "")
-          ) {
-            vm.job.team_members = "";
-          } else {
-            vm.job.team_members = JSON.parse(vm.job.team_members);
-          }
-        */
+        
         if (_.isUndefined(vm.job.tasks) ||
           _.isNull(vm.job.tasks) ||
           _.isEmpty(vm.job.team_members)
@@ -297,7 +286,15 @@ app.controller("creativeCTRL", function (
           vm.job.tasks = [];
         }
 
-        vm.cc_response_dsp = vm.job.cc_response.split(",");
+        vm.job.ad_spend = $filter('currency')(parseFloat(vm.job.ad_spend),"");
+        vm.job.production_cost =  $filter('currency')(parseFloat(vm.job.production_cost),"");
+
+        if(_.isUndefined(vm.job.cc_response) || _.isNull(vm.job.cc_response)){
+          vm.cc_response_dsp = [];
+        }else{
+          vm.cc_response_dsp = vm.job.cc_response.split(",");
+        }
+        
         vm.getTaskList(vm.job.id);
         vm.getDocHistory(vm.job.job_no);
         vm.getTaskIcons(vm.job.team);

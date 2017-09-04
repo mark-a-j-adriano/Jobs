@@ -232,7 +232,8 @@
                                     <label class="col-sm-1" style="padding:0px;">Category</label>
                                     <div class="col-sm-3" style="padding:0px;text-align:center;">
                                         <div class="checkbox">
-                                            <input type="radio" id="language" ng-model="ctrl.task.category" value="Company Logo" ng-disabled="ctrl.ACL.section2" ng-change="ctrl.getCategory();"
+                                            <input type="radio" id="language" ng-model="ctrl.task.category" value="Company Logo" 
+                                            ng-disabled="ctrl.ACL.section2" ng-change="ctrl.getCategory();"
                                             />
                                             <label style="cursor:default;"><span>&nbsp;&nbsp;&nbsp;</span>Company Logo</label>
                                         </div>
@@ -505,7 +506,7 @@
                                         <input id='designer' class="form-control input-sm fld-att" type="text" ng-model="ctrl.task.designer" ng-readonly="ctrl.ACL.section0">
                                         <span class="input-group-btn">
                                             <button type="button" class="btn btn-default fld-att" ng-disabled="ctrl.ACL.section3"
-                                            ng-click="ctrl.selectUser('StudioLAB', 'Creative', [5,10,15] , 'designer', '0');">
+                                            ng-click="ctrl.selectUser('ClassifiedLAB', 'Creative', [5,10,15] , 'designer', '0');">
                                                 <i class="fa fa-user"></i>
                                             </button>
                                         </span>

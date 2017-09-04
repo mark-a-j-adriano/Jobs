@@ -1,4 +1,4 @@
-app.controller('digitalCTRL', function ($state, $auth, $uibModal, $stateParams, $timeout, toastr, focus, Upload, DataFactory, StorageFactory, currentUser) {
+app.controller('digitalCTRL', function ($state, $auth, $uibModal, $stateParams, $timeout, $filter, toastr, focus, Upload, DataFactory, StorageFactory, currentUser) {
     //console.log('START - digitalCTRL');
 
     var vm = this;
@@ -10,6 +10,7 @@ app.controller('digitalCTRL', function ($state, $auth, $uibModal, $stateParams, 
     vm.artwork_Types = [];
     vm.creativeTypes = [];
     vm.task = {};
+    vm.display = { ad_spend: 0, production_cost: 0 };
     vm.animationsEnabled = true;
     vm.statusNum = 0;
     vm.developerLog = false;
@@ -455,10 +456,13 @@ app.controller('digitalCTRL', function ($state, $auth, $uibModal, $stateParams, 
                     //console.log('[getTask] - prepare Data');
                     vm.task.ad_spend = parseFloat(vm.task.ad_spend);
                     vm.task.production_cost = parseFloat(vm.task.production_cost);
+                    vm.display.ad_spend = $filter('currency')(vm.task.ad_spend, "");
+                    vm.display.production_cost = $filter('currency')(vm.task.production_cost, "");
+
                     vm.task.due_date = new Date(vm.task.due_date);
                     vm.task.launch_date = new Date(vm.task.launch_date);
                     vm.creativeTypes = JSON.parse(vm.task.creative_types);
-                    if (_.isUndefined(vm.task.cc_response) || _.isNull(vm.task.cc_response)) {
+                    if (_.isUndefined(vm.task.cc_response) || _.isNull(vm.task.cc_response) || _.isEmpty(vm.task.cc_response)) {
                         vm.cc_response_dsp = [];
                     } else {
                         vm.cc_response_dsp = _.uniq(vm.task.cc_response.split(","));
@@ -629,20 +633,20 @@ app.controller('digitalCTRL', function ($state, $auth, $uibModal, $stateParams, 
             if (!_.isUndefined(vm.task.job_no)) delete vm.task.job_no;
             if (!_.isUndefined(vm.task.default_due_date)) delete vm.task.default_due_date;
 
-           
-            
-            if(_.isDate(vm.task.due_date)) {
+
+
+            if (_.isDate(vm.task.due_date)) {
                 vm.task.due_date = moment(vm.task.due_date).format('YYYY-MM-DD HH:mm:ss');
-            }else{
+            } else {
                 vm.task.due_date = null;
             }
-            
-            if(_.isDate(vm.task.launch_date)) {
+
+            if (_.isDate(vm.task.launch_date)) {
                 vm.task.launch_date = moment(vm.task.launch_date).format('YYYY-MM-DD HH:mm:ss');
-            }else{
+            } else {
                 vm.task.launch_date = null;
             }
-            
+
 
             var passedID = null;
             if ($stateParams.action != "create") {

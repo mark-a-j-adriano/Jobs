@@ -173,7 +173,12 @@ app.controller('importerCTRL', function ($sce, $state, $auth, $uibModal, $stateP
     vm.accessControl = function () {
         var tmpFlag = '';
         var tmpStatus = vm.task.status;
-        tmpStatus = tmpStatus.toLowerCase();
+        if (_.isUndefined(tmpStatus) || _.isNull(tmpStatus)) {
+            tmpStatus = "";
+        } else {
+            tmpStatus = tmpStatus.toLowerCase();
+        }
+
         var accessLVL = parseInt(currentUser.role);
 
         if (tmpStatus == "new" || tmpStatus == "request re-submission") {
@@ -589,18 +594,8 @@ app.controller('importerCTRL', function ($sce, $state, $auth, $uibModal, $stateP
     vm.openCalendar = function (e, picker) {
         vm[picker].open = true;
     };
-    vm.getCategory = function () {
-        vm.task.colour = null;
-        vm.task.charge_option = null;
-        vm.task.logo_group = null;
-        vm.task.company = null;
-        vm.task.company_tag = null;
-        vm.task.description = null;
-        vm.task.departed_date = null;
-        vm.task.deceased_name = null;
-        vm.task.filename = null;
-        vm.LogoGrps = null;
-        //console.log('[getCategory] category : ' + vm.task.category);
+
+    vm.getImporterLogoGrp = function () {
         DataFactory.getImporterLogoGrp(vm.task.category).then(
             //success
             function (response) {
@@ -612,6 +607,21 @@ app.controller('importerCTRL', function ($sce, $state, $auth, $uibModal, $stateP
             function (response) {
                 //console.log('[getCategory] Ooops, something went wrong..  \n ' + JSON.stringify(response));
             });
+    }
+    vm.getCategory = function () {
+        vm.task.colour = null;
+        vm.task.charge_option = null;
+        vm.task.logo_group = null;
+        vm.task.company = null;
+        vm.task.company_tag = null;
+        vm.task.description = null;
+        vm.task.departed_date = null;
+        vm.task.deceased_name = null;
+        vm.task.filename = null;
+        vm.LogoGrps = null;
+        vm.productList = [];
+        //console.log('[getCategory] category : ' + vm.task.category);
+        vm.getImporterLogoGrp();
     };
     var isLetter = function (str) {
         return str.length === 1 && str.match(/[a-z]/i);
@@ -841,23 +851,8 @@ app.controller('importerCTRL', function ($sce, $state, $auth, $uibModal, $stateP
                             }
                         }
                     }
-                    /*
-                    if (_.isUndefined(vm.task.artwork_trix) || _.isNull(vm.task.artwork_trix) || _.isEmpty(vm.task.artwork_trix) || vm.task.artwork_trix == "" || vm.task.artwork_trix == "[]") {
-                    } else {
-                        vm.task.artwork_trix = vm.cleanArray(JSON.parse(vm.task.artwork_trix));
-                    }
 
-                    if (_.isUndefined(vm.task.materials_trix) || _.isNull(vm.task.materials_trix) || _.isEmpty(vm.task.materials_trix) || vm.task.materials_trix == "" || vm.task.materials_trix == "[]") {
-                    } else {
-                        vm.task.materials_trix = vm.cleanArray(JSON.parse(vm.task.materials_trix));
-                    }
-
-                    vm.trixInitialize(null, vm.trixEditor, "materials");
-                    vm.trixInitialize(null, vm.trixEditor, "artwork");
-                    */
-
-
-
+                    vm.getImporterLogoGrp();
                     vm.defineType(false);
                     vm.getDocHistory(vm.task.task_no);
                     vm.getChatHistory(vm.task.task_no);
@@ -978,24 +973,8 @@ app.controller('importerCTRL', function ($sce, $state, $auth, $uibModal, $stateP
                     vm.task.status = "Pending Assignment"
                 }
             } else if (newStatus == 'Conversation reply') {
-                //console.log('[submitTask] - 2');
                 vm.task.write_log = false;
             } else if (newStatus == 'Previous Status') {
-                //console.log('[submitTask] - 3');
-                /*
-               var oldStatus = '';               
-               //console.log('vm.docMessages.length : ' + vm.docMessages.length);
-               if (vm.docMessages.length > 0) {
-                   for (var i = vm.docMessages.length; i >= 0; i--) {
-                       if (vm.docMessages[i - 1].prev_status != 'Request Re-Submission') {
-                           oldStatus = vm.docMessages[i - 1].prev_status;
-                           break;
-                       }
-                   }
-               } else {
-                   oldStatus = newStatus;
-               }
-               */
                 vm.task.status = vm.task.prev_status;
             } else if (newStatus == 'In Progress') {
                 vm.task.final_size = angular.copy(vm.task.pub_size);
@@ -1229,14 +1208,6 @@ app.controller('importerCTRL', function ($sce, $state, $auth, $uibModal, $stateP
             vm.errorMsg.push({ id: 'due_date', msg: 'Due date is required.' });
         }
 
-        /*
-        if (vm.task.materials) {
-          if (_.isNull(vm.task.materials) || vm.task.materials.length < 1) vm.errorMsg.push({ id: 'materials', msg: 'Materials is required.' });
-        } else {
-          vm.errorMsg.push({ id: 'materials', msg: 'Materials is required.' });
-        }
-        */
-
         if (vm.task.instruction) {
             if (_.isNull(vm.task.instruction) || vm.task.instruction == '') vm.errorMsg.push({ id: 'instruction', msg: 'Instruction is required.' });
         } else {
@@ -1443,15 +1414,6 @@ app.controller('importerCTRL', function ($sce, $state, $auth, $uibModal, $stateP
             );
         } else {
             var default_val = vm.task[retFld + "_username"];
-            /*
-            if (retFld == 'designer') {
-                default_val = vm.task.designer_username;
-            } else if (retFld == 'writer') {
-                default_val = vm.task.writer_username;
-            } else {
-                default_val = vm.task.team_head_username;
-            }
-            */
             var modalInstance = $uibModal.open({
                 animation: vm.animationsEnabled,
                 templateUrl: 'partials/common/member.html',
@@ -1472,29 +1434,8 @@ app.controller('importerCTRL', function ($sce, $state, $auth, $uibModal, $stateP
                 }
             }).result.then(function (submitVar) {
                 //console.log("submitted value inside parent controller", submitVar);
-
                 vm.task[retFld] = submitVar.name;
                 vm.task[retFld + "_username"] = submitVar.username;
-
-                /*
-                if (retFld == 'designer') {
-                    vm.task.designer = submitVar.name;
-                    vm.task.designer_username = submitVar.username;
-                    vm.task.buddy = submitVar.backup_person;
-                    vm.task.buddy_username = submitVar.backup;
-                } else if (retFld == 'buddy') {
-                    vm.task.buddy = submitVar.name;
-                    vm.task.buddy_username = submitVar.username;
-                } else if (retFld == 'writer') {
-                    vm.task.writer = submitVar.name;
-                    vm.task.writer_username = submitVar.username;
-                } else if (retFld == 'team_head') {
-                    vm.task.team_head = submitVar.name;
-                    vm.task.team_head_username = submitVar.username;
-                } else {
-                    vm.getUser(submitVar.username, retFld);
-                }
-                */
             })
         }
     };

@@ -65,22 +65,44 @@
                             <label>Salesforce Number :</label>
                             <input class="form-control input-sm fld-att" ng-model="ctrl.task.salesforce_num" type="text" ng-readonly="ctrl.ACL.section1">
                         </div>
-                        <div class="form-group">
-                            <label>Ad Spend :</label>
-                            <div class="input-group">
-                                <span class="input-group-addon fld-att">$</span>
-                                <input id='production_cost' type="number" class="form-control input-sm fld-att" ng-model="ctrl.task.ad_spend" style="text-align:right;padding-right:10px;"
-                                    min="0.01" step="0.01" ng-readonly="ctrl.ACL.section1">
+
+                        <div ng-show="ctrl.readOnly">
+                            <div class="form-group" ng-hide="ctrl.currentUser.canEdit=='writer' || ctrl.currentUser.canEdit=='designer'">
+                                <label>Ad Spend :</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon fld-att">$</span>
+                                    <input id='ad_spend' type="text" class="form-control input-sm fld-att" style="text-align:right;padding-right:10px;" ng-model="ctrl.display.ad_spend"
+                                        ng-readonly="ctrl.ACL.section1">
+                                </div>
+                            </div>
+                            <div class="form-group" ng-hide="ctrl.currentUser.canEdit=='writer' || ctrl.currentUser.canEdit=='designer'">
+                                <label>Production Cost :</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon fld-att">$</span>
+                                    <input id='production_cost' type="text" class="form-control input-sm fld-att" style="text-align:right;padding-right:10px;"
+                                        ng-model="ctrl.display.production_cost" ng-readonly="ctrl.ACL.section1">
+                                </div>
                             </div>
                         </div>
-                        <div class="form-group" ng-hide="ctrl.currentUser.canEdit=='writer' || ctrl.currentUser.canEdit=='designer'">
-                            <label>Production Cost :</label>
-                            <div class="input-group">
-                                <span class="input-group-addon fld-att">$</span>
-                                <input id='production_cost' type="number" class="form-control input-sm fld-att" style="text-align:right;padding-right:10px;"
-                                    ng-model="ctrl.task.production_cost" min="0.01" step="0.01" ng-readonly="ctrl.ACL.section1">
+                        <div ng-hide="ctrl.readOnly">
+                            <div class="form-group" ng-hide="ctrl.currentUser.canEdit=='writer' || ctrl.currentUser.canEdit=='designer'">
+                                <label>Ad Spend :</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon fld-att">$</span>
+                                    <input id='ad_spend' type="number" class="form-control input-sm fld-att" style="text-align:right;padding-right:10px;" ng-model="ctrl.task.ad_spend"
+                                        min="0.01" step="0.01" ng-readonly="ctrl.ACL.section1">
+                                </div>
+                            </div>
+                            <div class="form-group" ng-hide="ctrl.currentUser.canEdit=='writer' || ctrl.currentUser.canEdit=='designer'">
+                                <label>Production Cost :</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon fld-att">$</span>
+                                    <input id='production_cost' type="number" class="form-control input-sm fld-att" style="text-align:right;padding-right:10px;"
+                                        ng-model="ctrl.task.production_cost" min="0.01" step="0.01" ng-readonly="ctrl.ACL.section1">
+                                </div>
                             </div>
                         </div>
+
                     </div>
                 </div>
                 <!-- Request Information - END -->

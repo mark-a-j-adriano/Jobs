@@ -65,14 +65,17 @@
                             <label>Ad Spend :</label>
                             <div class="input-group">
                                 <span class="input-group-addon">$</span>
-                                <input type="text" class="form-control input-sm fld-att" ng-model="ctrl.job.ad_spend" style='text-align:right' readonly>
+                                <input type="text" class="form-control input-sm fld-att" ng-model="ctrl.job.ad_spend"                                 
+                                
+                                    style='text-align:right' readonly>
                             </div>
                         </div>
                         <div class="form-group">
                             <label>Production Cost :</label>
                             <div class="input-group">
                                 <span class="input-group-addon">$</span>
-                                <input type="text" class="form-control input-sm fld-att" ng-model="ctrl.job.production_cost" style='text-align:right' readonly>
+                                <input type="text" class="form-control input-sm fld-att" ng-model="ctrl.job.production_cost"                                 
+                                    style='text-align:right' readonly>
                             </div>
                         </div>
                     </div>
@@ -478,7 +481,7 @@
             <div class="col-md-12">
                 <button type="button" class="btn btn-default" ng-click="ctrl.gotoDash(false);"><i class="fa fa-remove"></i> Close</button>
                 <div class="pull-right" ng-show="ctrl.readOnly">
-                    <button type="button" class="btn btn-primary" ng-click="ctrl.editJob();" ng-show="ctrl.currentUser.canEdit || ctrl.job.status='Completed'">
+                    <button type="button" class="btn btn-primary" ng-click="ctrl.editJob();" ng-show="ctrl.currentUser.canEdit || ctrl.job.status=='Completed'">
                         <i class="fa fa-pencil-square-o"></i> Edit</button>
                     <button type="button" class="btn btn-default btn-sm" ng-click="ctrl.developerLog=!ctrl.developerLog" style="border: 1px solid #a1a1a1;border-radius: 25px;background:white;margin-left: 10px;margin-right: 10px;">
                         <i class="fa fa-question-circle"></i>
