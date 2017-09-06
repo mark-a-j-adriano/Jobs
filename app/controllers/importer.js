@@ -1053,6 +1053,8 @@ app.controller('importerCTRL', function ($sce, $state, $auth, $uibModal, $stateP
             tmpTsk.article = JSON.stringify(tmpTsk.article);
             tmpTsk.materials_trix = JSON.stringify(tmpTsk.materials_trix);
             tmpTsk.artwork_trix = JSON.stringify(tmpTsk.artwork_trix);
+
+            delete tmpTsk.article;
             ////console.log('submitted vm.task : ' + JSON.stringify(tmpTsk));
 
             DataFactory.uploadTask(tmpTsk, 'importer', passedID).then(
@@ -1479,7 +1481,7 @@ app.controller('importerCTRL', function ($sce, $state, $auth, $uibModal, $stateP
         vm.task.default_due_date = d;
     };
     vm.defineLang = function () {
-        console.clear();
+        //console.clear();
         //console.log('publication : ' + vm.task.publication + ' | language : ' + vm.task.language);
         for (i = 0; i < vm.pubOptionsList.length; i++) {
             //console.log('product_code : ' + vm.pubOptionsList[i].product_code);
@@ -1554,9 +1556,9 @@ app.controller('importerCTRL', function ($sce, $state, $auth, $uibModal, $stateP
         if (_.isUndefined(chatFlag) || _.isNull(chatFlag) || _.isEmpty(chatFlag) || chatFlag == '') {
             chatFlag = "";
             tmp.frm_title = "Conversation";
-        } else if (chatFlag == 'cancel') {
+        } else if (chatFlag.includes('cancel')) {
             tmp.frm_title = "Cancellation Request";
-            tmp.msg = "Please enter your reason for cacelling this task.";
+            tmp.msg = "Please enter your reason for cancelling this task.";
         } else if (chatFlag == 'rejected') {
             tmp.frm_title = "Artwork for Revision";
             tmp.msg = "Please enter your reason for returning artwork.";
@@ -1604,6 +1606,9 @@ app.controller('importerCTRL', function ($sce, $state, $auth, $uibModal, $stateP
                 } else if (chatFlag == 'cancel') {
                     //console.log("[revertTask] - 1");
                     vm.submitTask('Cancellation Request');
+                } else if (chatFlag == 'direct cancel') {
+                    //console.log("[revertTask] - 1");
+                    vm.submitTask('Cancelled');
                 } else {
                     //console.log("[revertTask] - 2");
                     vm.submitTask('Conversation reply');

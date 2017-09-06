@@ -9,7 +9,7 @@ app.controller('studioCTRL', function ($state, $auth, $uibModal, $stateParams, $
     vm.pubSizes = [];
     vm.artwork_Types = [];
     vm.task = {};
-    vm.display={ad_spend:0,production_cost:0};    
+    vm.display = { ad_spend: 0, production_cost: 0 };
     vm.cc_response_dsp = [];
     vm.animationsEnabled = true;
     vm.statusNum = 0;
@@ -760,17 +760,17 @@ app.controller('studioCTRL', function ($state, $auth, $uibModal, $stateParams, $
                 if (vm.currentUser.canEdit == '') {
                     vm.gotoDash();
                 } else {
-                    vm.task.ad_spend =  parseFloat(vm.task.ad_spend);
+                    vm.task.ad_spend = parseFloat(vm.task.ad_spend);
                     vm.task.production_cost = parseFloat(vm.task.production_cost);
-                    vm.display.ad_spend = $filter('currency')(vm.task.ad_spend,"");
-                    vm.display.production_cost = $filter('currency')(vm.task.production_cost,"");   
+                    vm.display.ad_spend = $filter('currency')(vm.task.ad_spend, "");
+                    vm.display.production_cost = $filter('currency')(vm.task.production_cost, "");
                     console.log('[getTask] - vm.display : ', vm.display);
                     vm.task.due_date = new Date(vm.task.due_date);
                     if (vm.task.urgent > 0) vm.task.urgent = true;
                     vm.task.size_option = 'Other';
                     vm.productList = JSON.parse(vm.task.products);
                     if (_.isUndefined(vm.task.cc_response) || _.isNull(vm.task.cc_response) || _.isEmpty(vm.task.cc_response)) {
-                        vm.cc_response_dsp = [];                   
+                        vm.cc_response_dsp = [];
                     } else {
                         vm.cc_response_dsp = _.uniq(vm.task.cc_response.split(","));
                     }
@@ -1452,7 +1452,7 @@ app.controller('studioCTRL', function ($state, $auth, $uibModal, $stateParams, $
         vm.task.default_due_date = d;
     };
     vm.defineLang = function () {
-        console.clear();
+        //console.clear();
         //console.log('publication : ' + vm.task.publication + ' | language : ' + vm.task.language);
         for (i = 0; i < vm.pubOptionsList.length; i++) {
             //console.log('product_code : ' + vm.pubOptionsList[i].product_code);
@@ -1527,9 +1527,9 @@ app.controller('studioCTRL', function ($state, $auth, $uibModal, $stateParams, $
         if (_.isUndefined(chatFlag) || _.isNull(chatFlag) || _.isEmpty(chatFlag) || chatFlag == '') {
             chatFlag = "";
             tmp.frm_title = "Conversation";
-        } else if (chatFlag == 'cancel') {
+        } else if (chatFlag.includes('cancel')) {
             tmp.frm_title = "Cancellation Request";
-            tmp.msg = "Please enter your reason for cacelling this task.";
+            tmp.msg = "Please enter your reason for cancelling this task.";
         } else if (chatFlag == 'rejected') {
             tmp.frm_title = "Artwork for Revision";
             tmp.msg = "Please enter your reason for returning artwork.";
@@ -1577,6 +1577,9 @@ app.controller('studioCTRL', function ($state, $auth, $uibModal, $stateParams, $
                 } else if (chatFlag == 'cancel') {
                     //console.log("[revertTask] - 1");
                     vm.submitTask('Cancellation Request');
+                } else if (chatFlag == 'direct cancel') {
+                    //console.log("[revertTask] - 1");
+                    vm.submitTask('Cancelled');
                 } else {
                     //console.log("[revertTask] - 2");
                     vm.submitTask('Conversation reply');

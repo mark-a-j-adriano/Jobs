@@ -16,7 +16,7 @@ var app = angular.module('myApp', [
   'toastr',
   'angularjs-dropdown-multiselect',
   'angular.filter',
-  'underscore',  
+  'underscore',
   //'isteven-multi-select',  
   //'restangular',
   //'ng.ckeditor',
@@ -180,30 +180,6 @@ app.config(function ($stateProvider, $urlRouterProvider, $authProvider) {
           return DataFactory.getCurrentUser();
         }
       }
-    })
-    .state('chat', {
-      url: '/chat',
-      templateUrl: 'partials/common/chat.html',
-    })
-    .state('upload', {
-      url: '/upload',
-      templateUrl: 'partials/testFiles/uploadTest.html',
-      controller: 'uploadCtrl as ctrl',
-    })
-    .state('ckEditor', {
-      url: '/ckEditor',
-      templateUrl: 'partials/testFiles/ckEditor.html',
-      controller: 'ckEditorCtrl as ctrl',
-    })
-    .state('trixEditor', {
-      url: '/trixEditor',
-      templateUrl: 'partials/testFiles/trixEditor.html',
-      controller: 'trixEditorCtrl as ctrl',
-    })
-    .state('carousel', {
-      url: '/carousel',
-      templateUrl: 'partials/testFiles/carousel.html',
-      controller: 'CarouselDemoCtrl as ctrl',
     });
 
 
@@ -212,28 +188,18 @@ app.config(function ($stateProvider, $urlRouterProvider, $authProvider) {
 
 });
 
+
 app.run(function ($transitions, $rootScope, $auth, $state, $window, StorageFactory) {
-
-  var prevState = '';
-  $transitions.onEnter({}, function (transition, state) {
-    ////console.log("Entered " + state.name + " module while transitioning to " + transition.to().name + " from " + transition.from().name);
-    prevState = transition.from().name;
-    window.scrollTo(0, 0);
-  }),
-    $transitions.onStart({}, function (trans) {
-      var requiredLogin = true;
-      console.log("window.location : " + JSON.stringify(window.location));
-      console.log("Transitioning to " + trans.to().name + " from " + trans.from().name);
-      //var stateTo = trans.to().defaultSubstate;
-
-      if (requiredLogin && !$auth.isAuthenticated()) {
-        console.log('RUN - is NOT authenticated');
-        StorageFactory.setURI(window.location.href);
-        $state.go('login');
-      } else {
-        //console.log('RUN - is authenticated');
-      }
-    })
+  if ($auth.isAuthenticated()) {
+    $transitions.onEnter({}, function (transition, state) {
+      window.scrollTo(0, 0);
+    }),
+      $transitions.onStart({}, function (transition) {
+      })
+  } else {
+    StorageFactory.setURI(window.location.href);
+    $state.go('login');
+  }
 });
 
 app.filter('propercase', function () {

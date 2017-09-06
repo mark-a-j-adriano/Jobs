@@ -388,7 +388,7 @@
                                         <input id='designer' class="form-control input-sm fld-att" type="text" ng-model="ctrl.task.designer" ng-readonly="ctrl.ACL.section0">
                                         <span class="input-group-btn">
                                             <button type="button" class="btn btn-default fld-att" ng-disabled="ctrl.ACL.section3"
-                                            ng-click="ctrl.selectUser('StudioLAB', 'Creative', [5,10,15] , 'designer', '0');">
+                                            ng-click="ctrl.selectUser('ClassifiedLAB', 'Creative', [5,10,15] , 'designer', '0');">
                                                 <i class="fa fa-user"></i>
                                             </button>
                                         </span>
@@ -978,6 +978,10 @@
                 </div>
 
                 <div class="pull-right" ng-show="ctrl.currentUser.canEdit == 'coordinator'">
+                    <button type="button" class="btn btn-danger" ng-click="ctrl.revertTask('direct cancel');" ng-show="(ctrl.currentUser.role>=25 || ctrl.currentUser.role<10) && ctrl.currentUser.canEdit!='' &&
+                        !(ctrl.statusNum == 0  || ctrl.statusNum > 4) && ctrl.task.status!='Cancellation Request'">
+                        <i class="fa fa-hand-stop-o"></i> &nbsp; Cancel Artwork
+                    </button>
                     <button type="button" class="btn btn-danger" ng-click="ctrl.submitTask( 'Cancelled' );" ng-show="ctrl.task.status=='Cancellation Request'"
                         style="margin-left: 10px;">
                         <i class="fa fa-close"></i> &nbsp; Cancel Artwork
@@ -990,15 +994,27 @@
                         style="margin-left: 10px;">
                         <i class="fa fa-save"></i> &nbsp; Save Assignments
                     </button>
+                    <button type="button" class="btn btn-success" ng-click="ctrl.submitTask('For Approval');" ng-show="ctrl.statusNum==2" style="margin-left: 10px;">
+                        <i class="fa fa-save"></i> &nbsp; Request Artwork Approval
+                    </button>
                     <button type="button" class="btn btn-primary" ng-click="ctrl.submitTask( ctrl.task.status );" style="margin-left: 10px;"
                         ng-hide="ctrl.task.status=='Pending Assignment' || ctrl.task.status=='Cancelled' || ctrl.task.status=='Completed'">
                         <i class="fa fa-save"></i> &nbsp; Save Updates
+                    </button>
+                    <button type="button" class="btn btn-warning" ng-click="ctrl.revertTask('rejected');" ng-show="ctrl.task.status=='For Approval'"
+                        style="margin-left: 10px;">
+                        <i class="fa fa-hand-o-left"></i> &nbsp; For Revision
+                    </button>
+                    <button type="button" class="btn btn-success" ng-click="ctrl.approveArtwork();" ng-show="ctrl.task.status=='For Approval'"
+                        style="margin-left: 10px;">
+                        <i class="fa fa-thumbs-up"></i> &nbsp; Approve
                     </button>
                     <button type="button" class="btn btn-success" ng-click="ctrl.closeClassifiedTask();" ng-show="ctrl.task.status=='Pending Import'"
                         style="margin-left: 10px;">
                         <i class="fa fa-check"></i> &nbsp; Task Completed
                     </button>
                 </div>
+
 
                 <div class="pull-right">
                     <button type="button" class="btn btn-primary bg-teal-gradient pull-right" ng-click="ctrl.revertTask();" ng-hide="(ctrl.task.status=='new' || ctrl.task.status=='Completed' || ctrl.task.status=='Cancelled')"

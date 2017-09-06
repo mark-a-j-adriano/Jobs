@@ -31,12 +31,16 @@
 
 
     // using ldap bind
-    $ldaprdn  =  $request->username;
-    $ldappass  =  $request->password;
+    $clean = strtr( $_POST[$request->id], ' ', '+');
+    $ascii = base64_decode( $clean );
+    $ldaprdn  = $ascii;
+
+    $clean = strtr( $_POST[$request->code], ' ', '+');
+    $ascii = base64_decode( $clean );
+    $ldappass  =  $ascii;
     
 
-    // connect to ldap server
-   
+    // connect to ldap server   
    $ldapconn1 = ldap_connect("dmzldap.sphnet.com.sg", 389)
         or die("Could not connect to LDAP server.");
 

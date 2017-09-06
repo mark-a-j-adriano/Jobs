@@ -65,7 +65,7 @@ app.controller('salesDashCTRL', function ($state, $stateParams, $uibModal, toast
         ////console.log('[getJobList] - response.status : ' + JSON.stringify(response.status));
         vm.jobs = response.data;
         vm.totalItems = vm.jobs.length;
-        console.clear();
+        //console.clear();
         for (x = 0; x < vm.jobs.length; x++) {
           vm.jobs[x].tasks = JSON.parse(vm.jobs[x].tasks);
           for (y = 0; y < vm.jobs[x].tasks.length; y++) {

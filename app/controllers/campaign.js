@@ -1033,7 +1033,7 @@ app.controller('displayCTRL', function ($state, $auth, $uibModal, $stateParams, 
                         return DataFactory.getMembers(tmpData);
                     }
                 }
-            }).result.then(function (submitVar) {   
+            }).result.then(function (submitVar) {
                 console.log("submitted value inside parent controller", submitVar);
                 vm.task[retFld] = submitVar.name;
                 vm.task[retFld + "_username"] = submitVar.username;
@@ -1088,7 +1088,7 @@ app.controller('displayCTRL', function ($state, $auth, $uibModal, $stateParams, 
         vm.task.default_due_date = d;
     };
     vm.defineLang = function () {
-        console.clear();
+        //console.clear();
         //console.log('publication : ' + vm.task.publication + ' | language : ' + vm.task.language);
         for (i = 0; i < vm.pubOptionsList.length; i++) {
             //console.log('product_code : ' + vm.pubOptionsList[i].product_code);
@@ -1199,20 +1199,16 @@ app.controller('displayCTRL', function ($state, $auth, $uibModal, $stateParams, 
                 vm.task.chatMsg = JSON.stringify(chat);
                 //console.log("[revertTask] - " + JSON.stringify(vm.task));
 
-                if (chatFlag == 'revert') {
-                    //console.log("[revertTask] - 0");
+                if (chatFlag == 'revert') {                    
                     vm.submitTask('Request Re-Submission');
                 } else if (chatFlag == 'rejected') {
                     vm.task.sales_comment = submitVar;
                     vm.submitTask('For Revision');
-                } else if (chatFlag == 'cancel') {
-                    //console.log("[revertTask] - 1");
+                } else if (chatFlag == 'cancel') {                    
                     vm.submitTask('Cancellation Request');
-                } else if (chatFlag == 'direct cancel') {
-                    //console.log("[revertTask] - 1");
+                } else if (chatFlag == 'direct cancel') {                    
                     vm.submitTask('Cancelled');
-                } else {
-                    //console.log("[revertTask] - 2");
+                } else {                    
                     vm.submitTask('Conversation reply');
                 }
             },

@@ -956,9 +956,9 @@ app.controller('digitalCTRL', function ($state, $auth, $uibModal, $stateParams, 
         if (_.isUndefined(chatFlag) || _.isNull(chatFlag) || _.isEmpty(chatFlag) || chatFlag == '') {
             chatFlag = "";
             tmp.frm_title = "Conversation";
-        } else if (chatFlag == 'cancel') {
+        } else if (chatFlag.includes('cancel')) {
             tmp.frm_title = "Cancellation Request";
-            tmp.msg = "Please enter your reason for cacelling this task.";
+            tmp.msg = "Please enter your reason for cancelling this task.";
         } else if (chatFlag == 'rejected') {
             tmp.frm_title = "Artwork for Revision";
             tmp.msg = "Please enter your reason for returning artwork.";
@@ -1003,6 +1003,9 @@ app.controller('digitalCTRL', function ($state, $auth, $uibModal, $stateParams, 
                 } else if (chatFlag == 'rejected') {
                     vm.task.sales_comment = submitVar;
                     vm.submitTask('For Revision');
+                } else if (chatFlag == 'direct cancel') {
+                    //console.log("[revertTask] - 1");
+                    vm.submitTask('Cancelled');
                 } else if (chatFlag == 'cancel') {
                     //console.log("[revertTask] - 1");
                     vm.submitTask('Cancellation Request');

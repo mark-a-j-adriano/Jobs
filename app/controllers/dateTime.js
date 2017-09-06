@@ -247,7 +247,7 @@ app.controller('MyCtrl', ['$scope', 'Upload', '$timeout', function ($scope, Uplo
 }]);
 
 app.controller('uploadCtrl', ['$scope', 'Upload', '$timeout', function ($scope, Upload, $timeout) {
-    console.clear();
+    //console.clear();
     //console.log('uploadCtrl START');
     $scope.uploadFiles = function (file, errFiles) {
         //console.log('[uploadFiles] - file : ' + JSON.stringify(file));

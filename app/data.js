@@ -3,9 +3,10 @@ app.factory("DataFactory", [
   "$timeout",
   "$q",
   "$location",
+  "$auth",
   "StorageFactory",
   "Upload",
-  function ($http, $timeout, $q, $location, StorageFactory, Upload) {
+  function ($http, $timeout, $q, $location, $auth, StorageFactory, Upload) {
     var obj = {};
     var base_url = "https://creativelab-dev.sphnet.com.sg";
     /***  RESOLVABLE - START ***/
@@ -101,12 +102,66 @@ app.factory("DataFactory", [
     obj.getCurrentUser = function () {
       var deferred = $q.defer();
       var userData = StorageFactory.getSessionData(false);
-      deferred.resolve(userData);
+
+      exp = parseFloat(StorageFactory.getSessionExpiry() + '000');
+      var d = new Date();
+      var current = moment(d.getTime());      
+      var expiry = moment(new Date(exp));
+      var b4Expiry = moment(new Date(exp)).subtract(10, 'm');
+
+      //console.log('current : ' + moment(current).format("YYYY-MM-DD HH:mm:ss") + ' | current : ' + current);
+      //console.log('b4Expiry : ' + moment(b4Expiry).format("YYYY-MM-DD HH:mm:ss") + ' | b4Expiry : ' + b4Expiry);
+      //console.log('expiry : ' + moment(expiry).format("YYYY-MM-DD HH:mm:ss") + ' | expiry : ' + expiry);
+
+      if (current.isAfter(expiry)) {
+        console.log('Request Token');
+        deferred.resolve(null);
+      } else {
+        if (current.isBetween(b4Expiry, expiry)) {
+          console.log('Renew Token');
+          var httpURL = "./service/renew.php";
+          $http.post(httpURL, { 'id': userData.id }).then(
+            //success
+            function (response) {
+              //console.log("[getDevUserList] - response : " + JSON.stringify(response));
+              $auth.setStorageType('localStorage');
+              $auth.setToken(response.data);
+              StorageFactory.setSessionExpiry();
+              deferred.resolve(userData);
+            },
+            // error handler
+            function (response) {
+              deferred.reject(response);
+              //console.log("[getDevUserList] Ooops, something went wrong..  \n " + JSON.stringify(response));
+            }
+          )
+        } else {
+          console.log('ReUSE Token');
+          deferred.resolve(userData);
+        }
+      }
       return deferred.promise;
     };
 
     obj.getIconList = function () {
       var httpURL = "./lib/dump/iconList.json";
+      return $http.get(httpURL);
+    }
+
+    obj.getRadioList = function (type) {
+      var httpURL = "";
+      if (type == 'contracts') {
+        httpURL = "./lib/dump/radioContracts.json";
+      } else if (type == 'class') {
+        httpURL = "./lib/dump/radioJobClass.json";
+      } else {
+        httpURL = "./lib/dump/radioStations.json";
+      }
+      return $http.get(httpURL);
+    }
+
+    obj.getContentTypes = function () {
+      var httpURL = "./lib/dump/contentGrp.json";
       return $http.get(httpURL);
     }
 
@@ -362,6 +417,11 @@ app.factory("DataFactory", [
       return $http.post(httpURL, credentials)
     }
 
+    obj.refreshToken = function (credentials) {
+      var httpURL = "./service/renew.php";
+      return $http.post(httpURL, credentials)
+    }
+
     /* STUDIO APIs */
     obj.getCreativeTypes = function () {
       var httpURL = base_url + "/json/creative-types";
@@ -383,90 +443,86 @@ app.factory("DataFactory", [
   }
 ]);
 
-app.factory("StorageFactory", ["$localStorage", "$auth", function ($localStorage, $auth) {
+app.factory("StorageFactory", ["$localStorage", "$auth", "$window", "$state", function ($localStorage, $auth, $window, $state) {
   var obj = {};
   var win_URI = null;
 
   obj.clearSessionData = function () {
-    delete $localStorage.winURI;
-    delete $localStorage.userStamp;
-    delete $localStorage.expireStamp;
-    delete $localStorage.dataStamp;
+    delete $localStorage.uri;
+    delete $localStorage.user;
+    delete $localStorage.exp;
+    delete $localStorage.data;
     return null;
   };
 
-  obj.getSessionData2 = function (dataFlag) {
-    var ret = null;
-
-    var d = new Date();
-    var current = d.getTime();
-    ////console.log('current : ' + JSON.stringify(current));
-
-    // Get Schedule
-    var stored_time = $localStorage.expireStamp;
-    if (stored_time == undefined || stored_time == "null") stored_time = 0;
-    if (stored_time < current) {
-      // Remove expired data
-      delete $localStorage.userStamp;
-      delete $localStorage.expireStamp;
-      delete $localStorage.dataStamp;
-      //$auth.removeToken();
-      return null;
-    } else {
-      //Renew expiry Stamp
-      d = new Date();
-      current = d.getTime();
-      $localStorage.expireStamp = current + 900000;
-
-      if (dataFlag) {
-        return $localStorage.dataStamp;
-      } else {
-        return $localStorage.userStamp;
-      }
-    }
-  };
   obj.getSessionData = function (dataFlag) {
     var ret = null;
     if ($auth.isAuthenticated()) {
       if (dataFlag) {
-        ret = $localStorage.dataStamp;
+
+        try {
+          ret = JSON.parse(window.atob($localStorage.data));
+        } catch (e) {
+          console.log('[getSessionData] data is not a valid base64 String.');
+        }
+
       } else {
-        ret = $localStorage.userStamp;
+        try {
+          ret = JSON.parse(window.atob($localStorage.user));
+        } catch (e) {
+          console.log('[getSessionData] user is not a valid base64 String.');
+        }
       }
     } else {
-      delete $localStorage.userStamp;
-      delete $localStorage.expireStamp;
-      delete $localStorage.dataStamp;
+      delete $localStorage.user;
+      delete $localStorage.exp;
+      delete $localStorage.data;
     }
     return ret;
   };
 
+  obj.getSessionExpiry = function () {
+    return $localStorage.exp;
+  }
+
+  obj.setSessionExpiry = function () {
+    $localStorage.exp = $auth.getPayload().exp;
+  }
+
   obj.setSessionData = function (userData, tmpData) {
-    var d = new Date();
-    var current = d.getTime();
     ////console.log('setSessionData UserData: ' + JSON.stringify(userData));
-    $localStorage.userStamp = userData;
-    $localStorage.expireStamp = current + 900000;
-    $localStorage.dataStamp = tmpData;
-    var dnsFlag = $localStorage.dnsURI;
-    if (_.isUndefined(dnsFlag) || _.isNull(dnsFlag)) { } else { delete $localStorage.dnsURI }
+    if (_.isUndefined(userData) || _.isNull(userData)) userData = {};
+    if (_.isUndefined(tmpData) || _.isNull(tmpData)) tmpData = {};
+    $localStorage.user = window.btoa(JSON.stringify(userData));
+    $localStorage.data = window.btoa(JSON.stringify(tmpData));
+    console.log('getPayload: ' + JSON.stringify($auth.getPayload()));
+    $localStorage.exp = $auth.getPayload().exp;
+    //$localStorage.exp = window.btoa(JSON.stringify($auth.getPayload().exp));
+    var dnsFlag = $localStorage.uri;
+    if (_.isUndefined(dnsFlag) || _.isNull(dnsFlag)) { } else { delete $localStorage.uri }
   };
 
   obj.setFlg = function () {
-    $localStorage.dnsURI = true;
+    $localStorage.uri = '';
   }
 
   obj.setURI = function (tmp) {
     //console.log("originating URI : " + tmp);
-    var dnsFlag = $localStorage.dnsURI;
+    var dnsFlag = $localStorage.uri;
     if (_.isUndefined(dnsFlag) || _.isNull(dnsFlag)) {
-      $localStorage.winURI = tmp;
+      $localStorage.uri = window.btoa(JSON.stringify(tmp));
     }
   };
 
   obj.getURI = function () {
-    //console.log("get URI : " + $localStorage.winURI);
-    return $localStorage.winURI;
+    //console.log("get URI : " + $localStorage.uri);
+    var ret = null;
+    try {
+      ret = JSON.parse(window.atob($localStorage.uri));
+    } catch (e) {
+      console.log('[getSessionData] uri is not a valid base64 String.');
+    }
+    return ret;
   };
 
   return obj;

@@ -199,21 +199,21 @@ app.controller('oohCTRL', function ($state, $auth, $uibModal, $stateParams, $tim
         }
 
         var eng_writer = '';
-        if (_.isUndefined(vm.task.english_writer) || _.isNull(vm.task.english_writer)) {
+        if (_.isUndefined(vm.task.english_writer_username) || _.isNull(vm.task.english_writer_username)) {
         } else {
-            eng_writer = vm.task.english_writer.toLowerCase().trim();
+            eng_writer = vm.task.english_writer_username.toLowerCase().trim();
         }
 
         var chi_writer = '';
-        if (_.isUndefined(vm.task.chinese_writer) || _.isNull(vm.task.chinese_writer)) {
+        if (_.isUndefined(vm.task.chinese_writer_username) || _.isNull(vm.task.chinese_writer_username)) {
         } else {
-            chi_writer = vm.task.chinese_writer.toLowerCase().trim();
+            chi_writer = vm.task.chinese_writer_username.toLowerCase().trim();
         }
 
         var mal_writer = '';
-        if (_.isUndefined(vm.task.malay_writer) || _.isNull(vm.task.malay_writer)) {
+        if (_.isUndefined(vm.task.malay_writer_username) || _.isNull(vm.task.malay_writer_username)) {
         } else {
-            mal_writer = vm.task.malay_writer.toLowerCase().trim();
+            mal_writer = vm.task.malay_writer_username.toLowerCase().trim();
         }
         var writer = eng_writer + ", " + chi_writer + ", " + mal_writer;
 
@@ -1106,7 +1106,7 @@ app.controller('oohCTRL', function ($state, $auth, $uibModal, $stateParams, $tim
         vm.task.default_due_date = d;
     };
     vm.defineLang = function () {
-        console.clear();
+        //console.clear();
         //console.log('publication : ' + vm.task.publication + ' | language : ' + vm.task.language);
         for (i = 0; i < vm.pubOptionsList.length; i++) {
             //console.log('product_code : ' + vm.pubOptionsList[i].product_code);
@@ -1176,9 +1176,9 @@ app.controller('oohCTRL', function ($state, $auth, $uibModal, $stateParams, $tim
         if (_.isUndefined(chatFlag) || _.isNull(chatFlag) || _.isEmpty(chatFlag) || chatFlag == '') {
             chatFlag = "";
             tmp.frm_title = "Conversation";
-        } else if (chatFlag == 'cancel') {
+        } else if (chatFlag.includes('cancel')) {
             tmp.frm_title = "Cancellation Request";
-            tmp.msg = "Please enter your reason for cacelling this task.";
+            tmp.msg = "Please enter your reason for cancelling this task.";
         } else if (chatFlag == 'rejected') {
             tmp.frm_title = "Artwork for Revision";
             tmp.msg = "Please enter your reason for returning artwork.";
@@ -1226,6 +1226,9 @@ app.controller('oohCTRL', function ($state, $auth, $uibModal, $stateParams, $tim
                 } else if (chatFlag == 'cancel') {
                     //console.log("[revertTask] - 1");
                     vm.submitTask('Cancellation Request');
+                } else if (chatFlag == 'direct cancel') {
+                    //console.log("[revertTask] - 1");
+                    vm.submitTask('Cancelled');
                 } else {
                     //console.log("[revertTask] - 2");
                     vm.submitTask('Conversation reply');
@@ -1432,7 +1435,7 @@ app.controller('oohCTRL', function ($state, $auth, $uibModal, $stateParams, $tim
 app.controller('oohModalCtrl', function ($uibModalInstance, $filter, focus, toastr, preload, DataFactory) {
     var vm = this;
     vm.formTitle = '';
-    console.clear();
+    //console.clear();
     //console.log('[oohModalCtrl] - preload : ' + JSON.stringify(preload));
     vm.formType = preload.type;
 

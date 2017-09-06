@@ -47,8 +47,20 @@ app.controller('LoginCtrl', function ($auth, $state, $window, $stateParams, toas
 
         if (vm.isDev) {
             $auth.setStorageType('localStorage');
-            $auth.setToken('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkVNUyBNYXJrIEFudGhvbnkgQWRyaWFubyIsImFkbWluIjp0cnVlfQ.PCf3NxaUt0ZBziWE5rDN_nMDOA77_aLjKYOj6YCm27E');
-            vm.getRole(userInfor.id);
+            DataFactory.refreshToken({ 'id': window.btoa(userInfor.id) }).then(
+                //success
+                function (response) {
+                    console.log('[getSessionData] isDev - response : ' + JSON.stringify(response));
+                    $auth.setStorageType('localStorage');
+                    $auth.setToken(response.data);
+                    vm.getRole(userInfor.id);
+                },
+                // error handler
+                function (errorMsg) {
+                    console.log('[getSessionData] refreshToken - ' + JSON.stringify(errorMsg));
+                }
+            )
+            //$auth.setToken('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkVNUyBNYXJrIEFudGhvbnkgQWRyaWFubyIsImFkbWluIjp0cnVlfQ.PCf3NxaUt0ZBziWE5rDN_nMDOA77_aLjKYOj6YCm27E');            
         } else {
             if (userInfor.id == '') {
                 toastr.error(
@@ -63,7 +75,7 @@ app.controller('LoginCtrl', function ($auth, $state, $window, $stateParams, toas
                     }
                 );
             } else {
-                DataFactory.authenticateUser({ 'username': userInfor.id, 'password': userInfor.password }).then(
+                DataFactory.authenticateUser({ 'id': window.btoa(userInfor.id), 'code': window.btoa(userInfor.password) }).then(
                     //success
                     function (response) {
                         var str = JSON.stringify(response.data);
@@ -244,10 +256,10 @@ app.controller('memberModalCtrl', function ($uibModalInstance, focus, toastr, pa
     vm.enableSearch = false;
     vm.extraSettings = {
         scrollableHeight: (vm.members.length > 10) ? '400px' : null,
-        scrollable: true,        
+        scrollable: true,
         selectedToTop: true,
-        enableSearch: (vm.members.length > 10) ? true : false,        
-    } 
+        enableSearch: (vm.members.length > 10) ? true : false,
+    }
 
     if (_.isUndefined(parentData.user_data.is_Multiple) || _.isNull(parentData.user_data.is_Multiple)) {
     } else if (parentData.user_data.is_Multiple == "1") {
@@ -375,3 +387,5 @@ app.controller('chatModalCtrl', function ($uibModalInstance, focus, toastr, pare
     };
     //console.log('END - chatModalCtrl');
 });
+
+

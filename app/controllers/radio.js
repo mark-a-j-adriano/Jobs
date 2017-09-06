@@ -6,9 +6,9 @@ app.controller('radioCTRL', function ($state, $auth, $uibModal, $stateParams, $t
     vm.errorMsg = [];
     vm.productList = [];
     vm.pubOptionsList = [];
-    vm.pubSizes = [];
-    vm.artwork_Types = [];
-    vm.creativeTypes = [];
+    vm.Stations = [];
+    vm.Classifications = [];
+    vm.RadioContracts = [];
     vm.task = {};
     vm.animationsEnabled = true;
     vm.statusNum = 0;
@@ -122,9 +122,9 @@ app.controller('radioCTRL', function ($state, $auth, $uibModal, $stateParams, $t
             var cc_response = vm.task.cc_response_username.toLowerCase().trim();
         }
         var designer = '';
-        if (_.isUndefined(vm.task.creative_team_username) || _.isNull(vm.task.creative_team_username)) {
+        if (_.isUndefined(vm.task.team_members_username) || _.isNull(vm.task.team_members_username)) {
         } else {
-            designer = vm.task.creative_team_username.toLowerCase().trim();
+            designer = vm.task.team_members_username.toLowerCase().trim();
         }
 
         //console.log('accessLVL:' + accessLVL + ' | statusNum:' + vm.statusNum);
@@ -401,27 +401,6 @@ app.controller('radioCTRL', function ($state, $auth, $uibModal, $stateParams, $t
 
     };
 
-    vm.getCreativeTypes = function () {
-        DataFactory.getCreativeTypes().then(
-            //success
-            function (response) {
-                //console.log('response.data : ' + JSON.stringify(response.data));
-                ////console.log('response.status : ' + JSON.stringify(response.status));
-                var names = response.data;
-                for (i = 0; i < names.length; i++) {
-                    var option = {
-                        title: names[i].name,
-                        isSelected: false,
-                        text: "",
-                    };
-                    vm.creativeTypes.push(option);
-                }
-            },
-            // error handler
-            function (response) {
-                ////console.log('Ooops, something went wrong..  \n ' + JSON.stringify(response));
-            });
-    };
 
     vm.getTask = function () {
         DataFactory.getTask($stateParams.taskID, 'radio').then(
@@ -995,9 +974,9 @@ app.controller('radioCTRL', function ($state, $auth, $uibModal, $stateParams, $t
         if (_.isUndefined(chatFlag) || _.isNull(chatFlag) || _.isEmpty(chatFlag) || chatFlag == '') {
             chatFlag = "";
             tmp.frm_title = "Conversation";
-        } else if (chatFlag == 'cancel') {
+        } else if (chatFlag.includes('cancel')) {
             tmp.frm_title = "Cancellation Request";
-            tmp.msg = "Please enter your reason for cacelling this task.";
+            tmp.msg = "Please enter your reason for cancelling this task.";
         } else if (chatFlag == 'rejected') {
             tmp.frm_title = "Artwork for Revision";
             tmp.msg = "Please enter your reason for returning artwork.";
@@ -1045,6 +1024,9 @@ app.controller('radioCTRL', function ($state, $auth, $uibModal, $stateParams, $t
                 } else if (chatFlag == 'cancel') {
                     //console.log("[revertTask] - 1");
                     vm.submitTask('Cancellation Request');
+                } else if (chatFlag == 'direct cancel') {
+                    //console.log("[revertTask] - 1");
+                    vm.submitTask('Cancelled');
                 } else {
                     //console.log("[revertTask] - 2");
                     vm.submitTask('Conversation reply');
@@ -1260,12 +1242,64 @@ app.controller('radioCTRL', function ($state, $auth, $uibModal, $stateParams, $t
 
     }
 
+    vm.getRadioStations = function () {
+        DataFactory.getRadioList().then(
+            //success
+            function (response) {
+                //console.log('response.data : ' + JSON.stringify(response.data));
+                ////console.log('response.status : ' + JSON.stringify(response.status));
+                vm.Stations = response.data;
+            },
+            // error handler
+            function (response) {
+                ////console.log('Ooops, something went wrong..  \n ' + JSON.stringify(response));
+            });
+    };
+
+    vm.getJobClassification = function () {
+        DataFactory.getRadioList('class').then(
+            //success
+            function (response) {
+                //console.log('response.data : ' + JSON.stringify(response.data));
+                ////console.log('response.status : ' + JSON.stringify(response.status));
+                vm.Classifications = response.data;
+            },
+            // error handler
+            function (response) {
+                ////console.log('Ooops, something went wrong..  \n ' + JSON.stringify(response));
+            });
+    };
+
+    vm.getRadioContracts = function () {
+        DataFactory.getRadioList('contracts').then(
+            //success
+            function (response) {
+                //console.log('response.data : ' + JSON.stringify(response.data));
+                ////console.log('response.status : ' + JSON.stringify(response.status));
+                var names = response.data;
+                for (i = 0; i < names.length; i++) {
+                    var option = {
+                        title: names[i].contract,
+                        isSelected: false,
+                        text: "",
+                    };
+                    vm.RadioContracts.push(option);
+                }
+            },
+            // error handler
+            function (response) {
+                ////console.log('Ooops, something went wrong..  \n ' + JSON.stringify(response));
+            });
+    };
+
+    vm.getRadioStations();
+    vm.getRadioContracts();
+    vm.getJobClassification();
     if ($stateParams.action == "create") {
         //console.log('[radio] - create');
         vm.currentUser.canEdit = 'sales';
         vm.readOnly = false;
         vm.getTmpID();
-        vm.getCreativeTypes();
         //vm.getPubOptionsList();
         //vm.getArtworkTypes();
     } else {

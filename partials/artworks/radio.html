@@ -49,31 +49,51 @@
                     </div>
                     <div class="box-body">
                         <div class="form-group">
-                            <label>Client / Title:</label>
+                            <label>Advertiser :</label>
                             <input class="form-control input-sm fld-att" ng-model="ctrl.task.title" type="text" ng-readonly="ctrl.ACL.section0">
                         </div>
                         <div class="form-group">
-                            <label>MkgPackages :</label>
-                            <input class="form-control input-sm fld-att" ng-model="ctrl.task.mkg_packages" type="text" ng-readonly="ctrl.ACL.section1">
+                            <label>Campaign :</label>
+                            <input class="form-control input-sm fld-att" ng-model="ctrl.task.campaign" type="text" ng-readonly="ctrl.ACL.section1">
                         </div>
                         <div class="form-group">
-                            <label>Salesforce Number :</label>
-                            <input class="form-control input-sm fld-att" ng-model="ctrl.task.salesforce_num" type="text" ng-readonly="ctrl.ACL.section1">
+                            <label>Agency :</label>
+                            <input class="form-control input-sm fld-att" ng-model="ctrl.task.agency" type="text" ng-readonly="ctrl.ACL.section1">
                         </div>
-                        <div class="form-group">
-                            <label>Ad Spend :</label>
-                            <div class="input-group">
-                                <span class="input-group-addon fld-att">$</span>
-                                <input id='production_cost' type="number" class="form-control input-sm fld-att" ng-model="ctrl.task.ad_spend" style="text-align:right;padding-right:10px;"
-                                    min="0.01" step="0.01" ng-readonly="ctrl.ACL.section1">
+                        <div ng-show="ctrl.readOnly">
+                            <div class="form-group" ng-hide="ctrl.currentUser.canEdit=='writer' || ctrl.currentUser.canEdit=='designer'">
+                                <label>Ad Spend :</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon fld-att">$</span>
+                                    <input id='ad_spend' type="text" class="form-control input-sm fld-att" style="text-align:right;padding-right:10px;" ng-model="ctrl.display.ad_spend"
+                                        ng-readonly="ctrl.ACL.section1">
+                                </div>
+                            </div>
+                            <div class="form-group" ng-hide="ctrl.currentUser.canEdit=='writer' || ctrl.currentUser.canEdit=='designer'">
+                                <label>Production Cost :</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon fld-att">$</span>
+                                    <input id='production_cost' type="text" class="form-control input-sm fld-att" style="text-align:right;padding-right:10px;"
+                                        ng-model="ctrl.display.production_cost" ng-readonly="ctrl.ACL.section1">
+                                </div>
                             </div>
                         </div>
-                        <div class="form-group" ng-hide="ctrl.currentUser.canEdit=='writer' || ctrl.currentUser.canEdit=='designer'">
-                            <label>Production Cost :</label>
-                            <div class="input-group">
-                                <span class="input-group-addon fld-att">$</span>
-                                <input id='production_cost' type="number" class="form-control input-sm fld-att" style="text-align:right;padding-right:10px;"
-                                    ng-model="ctrl.task.production_cost" min="0.01" step="0.01" ng-readonly="ctrl.ACL.section1">
+                        <div ng-hide="ctrl.readOnly">
+                            <div class="form-group" ng-hide="ctrl.currentUser.canEdit=='writer' || ctrl.currentUser.canEdit=='designer'">
+                                <label>Ad Spend :</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon fld-att">$</span>
+                                    <input id='ad_spend' type="number" class="form-control input-sm fld-att" style="text-align:right;padding-right:10px;" ng-model="ctrl.task.ad_spend"
+                                        min="0.01" step="0.01" ng-readonly="ctrl.ACL.section1">
+                                </div>
+                            </div>
+                            <div class="form-group" ng-hide="ctrl.currentUser.canEdit=='writer' || ctrl.currentUser.canEdit=='designer'">
+                                <label>Production Cost :</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon fld-att">$</span>
+                                    <input id='production_cost' type="number" class="form-control input-sm fld-att" style="text-align:right;padding-right:10px;"
+                                        ng-model="ctrl.task.production_cost" min="0.01" step="0.01" ng-readonly="ctrl.ACL.section1">
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -125,69 +145,90 @@
                 <!-- Requested By  - END -->
             </div>
             <div class="col-md-8">
-                <!--  Creative Type - START -->
+                <!--  Specifications - START -->
                 <div class="box box-solid box-radio">
                     <div class="box-header curved">
-                        Creative Types
+                        Specifications
+                    </div>
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-6 col-sm-6">
+                                <div class="form-group">
+                                    <label>Job Classification</label>
+                                    <select name="job_classification" id="job_classification" class="form-control input-sm select-att" ng-model="ctrl.task.job_classification"
+                                        ng-disabled="ctrl.ACL.section2">
+                                        <option ng-repeat="option in ctrl.Classifications" value="{{option.class}}">{{option.class}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-6 col-sm-6">
+                                <div class="form-group">
+                                    <label>Station</label>
+                                    <select name="station" id="station" class="form-control input-sm select-att" ng-model="ctrl.task.station" ng-disabled="ctrl.ACL.section2">
+                                        <option ng-repeat="option in ctrl.Stations" value="{{option.station}}">{{option.station}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--  Specifications - END -->
+
+                <!--  Radio Contract - START -->
+                <div class="box box-solid box-radio">
+                    <div class="box-header curved">
+                        Radio Contract
                     </div>
                     <div class="box-body form-inline">
-                        <div class="form-group" ng-repeat="type in ctrl.creativeTypes track by $index" style='width:100%;padding-top:0px;'>
+                        <div class="form-group" ng-repeat="type in ctrl.RadioContracts track by $index" style='width:100%;padding-top:0px;'>
                             <div class="row" ng-if="$even" style='padding-top:15px;'>
-                                <!--
-                                <div class="col-sm-1"></div>
-                                <div class="col-sm-4" ng-hide="ctrl.creativeTypes[$index] == null || ctrl.creativeTypes[$index]==undefined">
-                                    <label class="checkbox"><input type="checkbox" ng-model="ctrl.creativeTypes[$index].isSelected" 
-                                     ng-readonly="ctrl.ACL.section3"></label>
-                                     &emsp;
-                                    <label style='padding-right:0px;'>{{ctrl.creativeTypes[$index].title}}</label>
-                                </div>
-                                 <div class="col-sm-2"></div>
-                                <div class="col-sm-4" ng-hide="ctrl.creativeTypes[$index + 1] == null || ctrl.creativeTypes[$index + 1]==undefined">
-                                    <label class="checkbox"><input type="checkbox" ng-model="ctrl.creativeTypes[$index  + 1].isSelected" 
-                                     ng-readonly="ctrl.ACL.section3"></label>
-                                     &emsp;
-                                    <label style='padding-right:0px;'>{{ctrl.creativeTypes[$index  + 1].title}}</label>
-                                </div>
-                                 <div class="col-sm-1"></div>
-                                -->
-                                <div class="col-sm-6" ng-hide="ctrl.creativeTypes[$index] == null || ctrl.creativeTypes[$index]==undefined">
-                                    <div class="input-group" style="width: 100%;padding:0%">
-                                        <span class="input-group-addon" style="width: 5%;">
-                                                <input type="checkbox" ng-model="ctrl.creativeTypes[$index].isSelected" 
-                                                ng-change="ctrl.focusText($index);" ng-readonly="ctrl.ACL.section3">
-                                            </span>
+                                <div class="col-sm-6" ng-hide="ctrl.RadioContracts[$index] == null || ctrl.RadioContracts[$index]==undefined">
+                                    <div class="row">
+                                        <div class="col-xs-5" style="padding-right: 0;font-weight: bold;">{{ctrl.RadioContracts[$index].title}}</div>
+                                        <div class="col-xs-7" style="padding-right: 0;">
+                                            <div class="input-group" style="width: 100%;padding:0%">
+                                                <span class="input-group-addon" style="width: 5%;">
+                                                        <input type="checkbox" ng-model="ctrl.RadioContracts[$index].isSelected" 
+                                                        ng-change="ctrl.focusText($index);" ng-disabled="ctrl.ACL.section3">
+                                                        <!--<i class="fa fa-check-square-o" aria-hidden="true" ng-show="ctrl.ACL.section3"></i>-->
+                                                </span>
 
-                                        <input class="form-control input-sm fld-att" type="text" ng-model="ctrl.creativeTypes[$index].text" style="width: 95%;padding-right: 0px;font-weight:bold;"
-                                            ng-value="ctrl.creativeTypes[$index].title" ng-readonly="ctrl.ACL.section0" id="details_{{$index}}">
+                                                <input class="form-control input-sm fld-att" type="text" ng-model="ctrl.RadioContracts[$index].text" style="width: 95%;padding-right: 0px;font-weight:bold;"
+                                                    ng-readonly="ctrl.ACL.section0" id="details_{{$index}}">
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
+                                <div class="col-sm-6" ng-hide="ctrl.RadioContracts[$index + 1] == null || ctrl.RadioContracts[$index + 1]==undefined">
+                                    <div class="row">
+                                        <div class="col-xs-5" style="padding-right: 0;font-weight: bold;">{{ctrl.RadioContracts[$index + 1].title}}</div>
+                                        <div class="col-xs-7" style="padding-right: 0;">
+                                            <div class="input-group" style="width: 100%;padding:0%">
+                                                <span class="input-group-addon" style="width: 5%;">
+                                                        <input type="checkbox" ng-model="ctrl.RadioContracts[$index + 1].isSelected" 
+                                                        ng-change="ctrl.focusText($index + 1);" ng-disabled="ctrl.ACL.section3">
+                                                        <!--<i class="fa fa-check-square-o" aria-hidden="true" ng-show="ctrl.ACL.section3"></i>-->
+                                                </span>
 
-                                <div class="col-sm-6" ng-hide="ctrl.creativeTypes[$index + 1] == null || ctrl.creativeTypes[$index + 1]==undefined">
-                                    <div class="input-group" style="width: 100%;padding:0%">
-                                        <span class="input-group-addon" style="width: 5%;">
-                                                <input type="checkbox" ng-model="ctrl.creativeTypes[$index + 1].isSelected" 
-                                                ng-change="ctrl.focusText($index + 1);" ng-readonly="ctrl.ACL.section3">
-                                            </span>
-
-                                        <input class="form-control input-sm fld-att" type="text" ng-model="ctrl.creativeTypes[$index + 1].text" style="width: 95%;padding-right: 0px;font-weight:bold;"
-                                            ng-value="ctrl.creativeTypes[$index + 1].title" ng-readonly="ctrl.ACL.section0" id="details_{{$index + 1}}">
+                                                <input class="form-control input-sm fld-att" type="text" ng-model="ctrl.RadioContracts[$index + 1].text" style="width: 95%;padding-right: 0px;font-weight:bold;"
+                                                    ng-readonly="ctrl.ACL.section0" id="details_{{$index + 1}}">
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 
                             </div>
                         </div>
+                    </div>                  
+                </div>
+                <!--  Radio Contract - END -->
+
+                <!--  Timeline - START -->
+                <div class="box box-solid box-radio">
+                    <div class="box-header curved">
+                        Timeline
                     </div>
-                    <div class="box-footer">
-                        <div class="row">
-                            <div class="col-12 col-sm-12">
-                                <div class="form-group">
-                                    <label>Details :</label>
-                                    <!--<input class="form-control input-sm fld-att" ng-model="ctrl.task.other_type" type="text" ng-readonly="ctrl.ACL.section1">-->
-                                    <textarea id="instruction" ng-model="ctrl.task.other_type" class="form-control ng-pristine ng-valid ng-empty ng-touched ng-untouched fld-att"
-                                        style="resize: horizontal; min-height: 200px;border:1;cursor:text;" ng-readonly="ctrl.ACL.section3"></textarea>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="box-body">
                         <div class="row">
                             <div class="col-6 col-sm-6">
                                 <div class="form-group">
@@ -207,7 +248,7 @@
                             </div>
                             <div class="col-6 col-sm-6">
                                 <div class="form-group">
-                                    <label>Online Launch Date :</label>
+                                    <label>OnAir Launch Date :</label>
                                     <p class="input-group">
                                         <input type="text" class="form-control input-sm fld-att" datetime-picker="dd/MM/yyyy  h:mm a" datepicker-options="ctrl.dateTimePicker2.datepickerOptions"
                                             ng-readonly="ctrl.ACL.section0" default-time="9:00" ng-model="ctrl.task.launch_date"
@@ -224,7 +265,7 @@
                         </div>
                     </div>
                 </div>
-                <!--  Creative Type - END -->
+                <!--  Timeline - END -->
 
                 <!--  Assignment Details - START -->
                 <div class="box box-solid box-radio">
@@ -235,31 +276,12 @@
                         <div class="row">
                             <div class="col-6 col-sm-6">
                                 <div class="form-group">
-                                    <label>Traffic Controller</label>
+                                    <label>Project Manager</label>
                                     <p class="input-group">
-                                        <input id='project_mgr' class="form-control input-sm fld-att" type="text" ng-model="ctrl.task.project_mgr" ng-readonly="ctrl.ACL.section0">
+                                        <input id='project_manager' class="form-control input-sm fld-att" type="text" ng-model="ctrl.task.project_manager" ng-readonly="ctrl.ACL.section0">
                                         <span class="input-group-btn">
                                             <button type="button" class="btn btn-default fld-att" ng-disabled="ctrl.ACL.section4" 
-                                            ng-click="ctrl.selectUser('RadioLAB', 'Creative', '5', 'project_mgr', '0');">
-                                                <i class="fa fa-user"></i>
-                                            </button>
-                                        </span>
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="col-6 col-sm-6">
-                                &nbsp;
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-6 col-sm-6">
-                                <div class="form-group">
-                                    <label>Creative Team Members</label>
-                                    <p class="input-group">
-                                        <input id='creative_team' class="form-control input-sm fld-att" type="text" ng-model="ctrl.task.creative_team" ng-readonly="ctrl.ACL.section0">
-                                        <span class="input-group-btn">
-                                            <button type="button" class="btn btn-default fld-att" ng-disabled="ctrl.ACL.section4" 
-                                            ng-click="ctrl.selectUser('RadioLAB', 'Creative', '10', 'creative_team', '0');">
+                                            ng-click="ctrl.selectUser('RadioLAB', 'Creative', '5', 'project_manager', '0');">
                                                 <i class="fa fa-user"></i>
                                             </button>
                                         </span>
@@ -268,12 +290,12 @@
                             </div>
                             <div class="col-6 col-sm-6">
                                 <div class="form-group">
-                                    <label>Campaign Team Members</label>
+                                    <label>Team Members</label>
                                     <p class="input-group">
-                                        <input id='campaign_team' class="form-control input-sm fld-att" type="text" ng-model="ctrl.task.campaign_team" ng-readonly="ctrl.ACL.section0">
+                                        <input id='team_members' class="form-control input-sm fld-att" type="text" ng-model="ctrl.task.team_members" ng-readonly="ctrl.ACL.section0">
                                         <span class="input-group-btn">
                                             <button type="button" class="btn btn-default fld-att" ng-disabled="ctrl.ACL.section4" 
-                                            ng-click="ctrl.selectUser('Radio Campaign Team', 'Sales', '30', 'campaign_team', '0');">
+                                            ng-click="ctrl.selectUser('RadioLAB', 'Creative', [5, 10], 'team_members', '0');">
                                                 <i class="fa fa-user"></i>
                                             </button>
                                         </span>
@@ -283,7 +305,8 @@
                         </div>
                     </div>
                 </div>
-                <!--  Assignment Details - START -->
+                <!--  Assignment Details - END -->
+
 
 
             </div>

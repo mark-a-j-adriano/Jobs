@@ -131,7 +131,7 @@
                                     <label>Job Classification</label>
                                     <select name="artwork_type" id="artwork_type" class="form-control input-sm select-att" ng-model="ctrl.task.artwork_type"
                                         ng-disabled="ctrl.ACL.section3">
-                                        <option ng-repeat="option in ctrl.artwork_Types" value="{{option.artwork_type}}">{{option.artwork_type}}</option>
+                                        <option ng-repeat="option in ctrl.artwork_Types | unique : 'job_class' | orderBy:'job_class'" value="{{option.job_class}}">{{option.job_class}}</option>
                                     </select>
                                 </div>
                             </div>
@@ -147,18 +147,18 @@
                             <div class="col-4 col-sm-4">
                                 <div class="form-group">
                                     <label>Other</label>
-                                    <input name="other_pub" id="other_pub" class="form-control input-sm fld-att" type="text" ng-model="ctrl.task.other_pub" ng-readonly="ctrl.ACL.section3"
-                                        ng-disabled="ctrl.task.publication != 'Other'">
+                                    <input name="other_pub" id="other_pub" class="form-control input-sm fld-att" type="text" 
+                                    ng-model="ctrl.task.other_pub" ng-readonly="ctrl.ACL.section3"
+                                    ng-disabled="ctrl.task.publication != 'Other'">
                                 </div>
                             </div>
                         </div>
-
                         <div class="row">
                             <div class="col-4 col-sm-4">
                                 <div class="form-group">
                                     <label>Type</label>
-                                    <select name="pub_type" id="pub_type" ng-model="ctrl.task.pub_type" ng-disabled="ctrl.ACL.section3" class="form-control input-sm select-att"
-                                        ng-change="ctrl.defineType(true);">
+                                    <select name="pub_type" id="pub_type" ng-model="ctrl.task.pub_type" ng-disabled="ctrl.ACL.section3 || ctrl.task.artwork_type==null"
+                                        class="form-control input-sm select-att" ng-change="ctrl.defineType(true);">
                                         <option ng-repeat="option in ctrl.pubTypes" value="{{option.code}}">{{option.name}}</option>
                                     </select>
                                 </div>
@@ -167,84 +167,92 @@
                                 <div class="form-group">
                                     <label>Pre-defined size</label>
                                     <select name="size_option" id="size_option" class="form-control input-sm select-att" ng-model="ctrl.task.size_option" ng-change="ctrl.defineSize();"
-                                        ng-disabled="ctrl.ACL.section3">
+                                        ng-disabled="ctrl.ACL.section3 || ctrl.task.pub_type==null">
                                         <option ng-repeat="option in ctrl.pubSizes" value="{{option.size}}">{{option.size}}</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="col-4 col-sm-4">
-                                <div class="form-group" ng-hide="ctrl.task.pub_type=='GIF'">
-                                    <!--<label>Size<span style="font-style: italic;font-size: smaller;">&nbsp;(cols x height)</span></label>-->
-                                    <label>Height x Cols</label>
+                                <div class="form-group">
+                                    <label>Height x Cols {{ctrl.task.size_option}}</label>
                                     <input name="pub_size" id="pub_size" class="form-control input-sm fld-att" type="text" ng-model="ctrl.task.pub_size" text-mask="ctrl.MaskConfig.size"
-                                        ng-readonly="ctrl.ACL.section3" ng-disabled="ctrl.task.size_option != 'Other'">
-                                </div>
-                                <div class="form-group" ng-show="ctrl.task.pub_type=='GIF'">
-                                    <!--<label>Size<span style="font-style: italic;font-size: smaller;">&nbsp;(cols x height)</span></label>-->
-                                    <label>Pixels</label>
-                                    <input name="pub_size" id="pub_size" class="form-control input-sm fld-att" type="text" ng-model="ctrl.task.pub_size" ng-readonly="ctrl.ACL.section3"
-                                        ng-disabled="ctrl.task.size_option != 'Other'">
+                                        ng-readonly="ctrl.ACL.section3 || ctrl.task.size_option != 'Other'  || ctrl.task.size_option=='' || ctrl.task.size_option==null">
                                 </div>
                             </div>
                         </div>
+                        <!--
                         <div class="row">
                             <div class="form-inline" style="width:100%;margin-left: 20px;">
                                 <div class="form-group" style="width:100%">
                                     <label class="col-sm-2" style="padding:0px;">Language : </label>
                                     <div class="col-sm-2" style="padding:0px;">
                                         <div class="checkbox">
-                                            <input type="radio" id="language" ng-model="ctrl.task.language" value="English" ng-disabled="ctrl.ACL.section3" />
+                                            <input type="radio" id="language" ng-model="ctrl.task.language" value="English" ng-disabled="ctrl.ACL.section2" />
                                             <label style="cursor:default;"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span>English</label>
                                         </div>
                                     </div>
                                     <div class="col-sm-2" style="padding:0px;">
                                         <div class="checkbox">
-                                            <input type="radio" id="language" ng-model="ctrl.task.language" value="Chinese" ng-disabled="ctrl.ACL.section3" />
+                                            <input type="radio" id="language" ng-model="ctrl.task.language" value="Chinese" ng-disabled="ctrl.ACL.section2" />
                                             <label style="cursor:default;"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span>Chinese</label>
                                         </div>
                                     </div>
                                     <div class="col-sm-2" style="padding:0px;">
                                         <div class="checkbox">
                                             <div class="checkbox">
-                                                <input type="radio" id="language" ng-model="ctrl.task.language" value="Malay" ng-disabled="ctrl.ACL.section3" />
+                                                <input type="radio" id="language" ng-model="ctrl.task.language" value="Malay" ng-disabled="ctrl.ACL.section2" />
                                                 <label style="cursor:default;"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span>Malay</label>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-sm-4">&nbsp; </div>
                                 </div>
-                                <div class="form-group" style="width:100%;padding-top:15px;">
-                                    <label class="col-sm-2" style="padding:0px;">Colour : </label>
-                                    <div class="col-sm-2" style="padding:0px;">
-                                        <div class="checkbox">
-                                            <input type="radio" id="colour" ng-model="ctrl.task.colour" value="B&W" ng-disabled="ctrl.ACL.section3" />
-                                            <label style="cursor:default;"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span>B&amp;W</label>
+                            </div>
+                        </div>
+                        -->
+                    </div>
+                    <div class="box-footer">
+                        <div class="row">
+                            <div class="col-5 col-sm-5">
+                                <div class="form-group" style="width:100%;padding-top:10px;margin-left:20px;">
+                                    <div class="row">
+                                        <label class="col-xs-4" style="padding:0px;"><b>Colour :</b></label>
+                                        <div class="col-xs-4" style="padding:0px;">
+                                            <div class="checkbox" style="margin-top: 0px;">
+                                                <input type="radio" id="colour" ng-model="ctrl.task.colour" value="B&W" ng-disabled="ctrl.ACL.section2" />
+                                                <label style="cursor:default;padding-left: 5px;">B&amp;W</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-4" style="padding:0px;">
+                                            <div class="checkbox" style="margin-top: 0px;">
+                                                <input type="radio" id="colour" ng-model="ctrl.task.colour" value="Colour" ng-disabled="ctrl.ACL.section2" />
+                                                <label style="cursor:default;padding-left: 5px;">Colour</label>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="col-sm-2" style="padding:0px;">
-                                        <div class="checkbox">
-                                            <input type="radio" id="colour" ng-model="ctrl.task.colour" value="Full colour" ng-disabled="ctrl.ACL.section3" />
-                                            <label style="cursor:default;"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span>Full colour</label>
+                                </div>
+                            </div>
+                            <div class="col-1 col-sm-1">&nbsp;</div>
+                            <div class="col-6 col-sm-6">
+                                <div class="form-group" style="width:100%;padding-top:10px;padding-left:10px;">
+                                    <div class="row">
+                                        <label class="col-xs-4" style="padding:0px;"><b>Language :</b></label>
+                                        <div class="col-xs-4" style="padding:0px;">
+                                            <div class="checkbox" style="margin-top: 0px;">
+                                                <input type="radio" id="language" ng-model="ctrl.task.language" value="English" ng-disabled="ctrl.ACL.section2" />
+                                                <label style="cursor:default;padding-left: 5px;">English</label>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="col-sm-2" style="padding:0px;">
-                                        <div class="checkbox">
-                                            <input type="radio" id="colour" ng-model="ctrl.task.colour" value="Spot Colour" ng-disabled="ctrl.ACL.section3" ng-click="ctrl.formatMe('colour');"
-                                            />
-                                            <label style="cursor:default;"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span>Spot Colour</label>
+                                        <div class="col-xs-4" style="padding:0px;">
+                                            <div class="checkbox" style="margin-top: 0px;">
+                                                <input type="radio" id="language" ng-model="ctrl.task.language" value="Chinese" ng-disabled="ctrl.ACL.section2" />
+                                                <label style="cursor:default;padding-left: 5px;">Chinese</label>
+                                            </div>
                                         </div>
-                                    </div>
-
-                                    <div class="col-sm-4" style="padding:0px;">
-                                        <input id='colour_option' name='colour_option' type="text" class="form-control input-sm fld-att" ng-model="ctrl.task.colour_option"
-                                            ng-hide="ctrl.task.colour!='Spot Colour'" style="border-top:0;border-left:0;border-right:0;position: relative;top: -5px;min-width:220px;"
-                                            ng-readonly="ctrl.ACL.section3">
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="box-footer">
                         <div class="row">
                             <div class="col-6 col-sm-6">
                                 <div class="form-group">
@@ -281,6 +289,8 @@
                     </div>
                 </div>
                 <!-- Specification  - END -->
+
+
                 <!-- Assignment Details  - START -->
                 <div class="box box-solid box-content">
                     <div class="box-header curved">
@@ -323,7 +333,7 @@
                             </div>
                             <div class="col-6 col-sm-6">
                                 <div class="form-group">
-                                    <label>Backup Designer / Buddy</label>
+                                    <label>Writer</label>
                                     <p class="input-group">
                                         <input id='writer' class="form-control input-sm fld-att" type="text" ng-model="ctrl.task.writer" ng-readonly="ctrl.ACL.section0">
                                         <span class="input-group-btn">

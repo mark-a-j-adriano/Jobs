@@ -130,21 +130,21 @@ app.controller('displayCTRL', function ($state, $auth, $uibModal, $stateParams, 
         }
 
         var eng_writer = '';
-        if (_.isUndefined(vm.task.english_writer) || _.isNull(vm.task.english_writer)) {
+        if (_.isUndefined(vm.task.english_writer_username) || _.isNull(vm.task.english_writer_username)) {
         } else {
-            eng_writer = vm.task.english_writer.toLowerCase().trim();
+            eng_writer = vm.task.english_writer_username.toLowerCase().trim();
         }
 
         var chi_writer = '';
-        if (_.isUndefined(vm.task.chinese_writer) || _.isNull(vm.task.chinese_writer)) {
+        if (_.isUndefined(vm.task.chinese_writer_username) || _.isNull(vm.task.chinese_writer_username)) {
         } else {
-            chi_writer = vm.task.chinese_writer.toLowerCase().trim();
+            chi_writer = vm.task.chinese_writer_username.toLowerCase().trim();
         }
 
         var mal_writer = '';
-        if (_.isUndefined(vm.task.malay_writer) || _.isNull(vm.task.malay_writer)) {
+        if (_.isUndefined(vm.task.malay_writer_username) || _.isNull(vm.task.malay_writer_username)) {
         } else {
-            mal_writer = vm.task.malay_writer.toLowerCase().trim();
+            mal_writer = vm.task.malay_writer_username.toLowerCase().trim();
         }
         var writer = eng_writer + ", " + chi_writer + ", " + mal_writer;
 
@@ -441,10 +441,10 @@ app.controller('displayCTRL', function ($state, $auth, $uibModal, $stateParams, 
                     vm.gotoDash();
                 } else {
 
-                    vm.task.ad_spend =  parseFloat(vm.task.ad_spend);
+                    vm.task.ad_spend = parseFloat(vm.task.ad_spend);
                     vm.task.production_cost = parseFloat(vm.task.production_cost);
-                    vm.display.ad_spend = $filter('currency')(vm.task.ad_spend,"");
-                    vm.display.production_cost = $filter('currency')(vm.task.production_cost,"");   
+                    vm.display.ad_spend = $filter('currency')(vm.task.ad_spend, "");
+                    vm.display.production_cost = $filter('currency')(vm.task.production_cost, "");
 
                     vm.task.due_date = new Date(vm.task.due_date);
                     if (vm.task.urgent > 0) vm.task.urgent = true;
@@ -1037,7 +1037,7 @@ app.controller('displayCTRL', function ($state, $auth, $uibModal, $stateParams, 
                         return DataFactory.getMembers(tmpData);
                     }
                 }
-            }).result.then(function (submitVar) {   
+            }).result.then(function (submitVar) {
                 console.log("submitted value inside parent controller", submitVar);
                 vm.task[retFld] = submitVar.name;
                 vm.task[retFld + "_username"] = submitVar.username;
@@ -1092,7 +1092,7 @@ app.controller('displayCTRL', function ($state, $auth, $uibModal, $stateParams, 
         vm.task.default_due_date = d;
     };
     vm.defineLang = function () {
-        console.clear();
+        //console.clear();
         //console.log('publication : ' + vm.task.publication + ' | language : ' + vm.task.language);
         for (i = 0; i < vm.pubOptionsList.length; i++) {
             //console.log('product_code : ' + vm.pubOptionsList[i].product_code);
