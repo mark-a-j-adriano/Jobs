@@ -232,8 +232,7 @@
                                     <label class="col-sm-1" style="padding:0px;">Category</label>
                                     <div class="col-sm-3" style="padding:0px;text-align:center;">
                                         <div class="checkbox">
-                                            <input type="radio" id="language" ng-model="ctrl.task.category" value="Company Logo" 
-                                            ng-disabled="ctrl.ACL.section2" ng-change="ctrl.getCategory();"
+                                            <input type="radio" id="language" ng-model="ctrl.task.category" value="Company Logo" ng-disabled="ctrl.ACL.section2" ng-change="ctrl.getCategory();"
                                             />
                                             <label style="cursor:default;"><span>&nbsp;&nbsp;&nbsp;</span>Company Logo</label>
                                         </div>
@@ -545,16 +544,14 @@
                     <div class="box-header curved">
                         Materials
                     </div>
-                    <div class="box-body" style="margin-top:10px;" ng-show="ctrl.ACL.section2">
-                        <div ng-bind-html="ctrl.task.materials_trix"></div>
-                    </div>
-                    <div class="box-body" style="margin-top:10px;" ng-hide="ctrl.ACL.section2">
+                    <div class="box-body" style="margin-top:10px;">
                         <trix-editor ng-model-options="{ updateOn: 'blur' }" spellcheck="false" class="trix-content" ng-model="ctrl.task.materials_trix"
                             angular-trix trix-initialize="ctrl.trixInitialize(e, editor, 'materials');" trix-change="trixChange(e, editor, 'materials');"
-                            trix-focus="trixFocus(e, editor, 'materials');" trix-selection-change="trixSelectionChange(e, editor, 'materials');"
-                            trix-attachment-remove="ctrl.trixAttachmentRemove(e, editor, 'materials');" trix-blur="ctrl.trixBlur(e,editor,'materials');"
-                            trix-file-accept="trixFileAccept(e, editor, 'materials');" trix-attachment-add="ctrl.trixAttachmentAdd(e, editor, 'materials');"
-                            ng-readonly="ctrl.ACL.section2" placeholder="" style='background-color:white;min-height:150px;'></trix-editor>
+                            trix-attachment-add="ctrl.trixAttachmentAdd(e, editor, 'materials');" trix-selection-change="trixSelectionChange(e, editor, 'materials');"
+                            trix-focus="trixFocus(e, editor, 'materials');" trix-attachment-remove="ctrl.trixAttachmentRemove(e, editor, 'materials');"
+                            trix-blur="ctrl.trixBlur(e,editor,'materials');" trix-file-accept="trixFileAccept(e, editor, 'materials');"
+                            style='background-color:white;min-height:150px;' ng-style="ctrl.ACL.section2 ? {'pointer-events':'none'}: {'pointer-events':'auto'};"
+                            placeholder="" ng-disabled="ctrl.ACL.section2"></trix-editor>
                     </div>
                     <div class="box-footer" style="margin-top:10px;">
                         <div class="row">
@@ -639,16 +636,14 @@
                 <div class="box box-solid box-none">
                     <div class="box-header" style="padding-top:0;padding-bottom:0;">
                     </div>
-                    <div class="box-body" style="margin-top:10px;" ng-show="ctrl.ACL.section5">
-                        <div ng-bind-html="ctrl.task.artwork_trix"></div>
-                    </div>
-                    <div class="box-body" style="margin-top:10px;" ng-hide="ctrl.ACL.section5">
-                        <trix-editor ng-model-options="{ updateOn: 'blur' }" spellcheck="false" class="trix-content" style='background-color:white;min-height:150px;'
-                            ng-model="ctrl.task.artwork_trix" angular-trix trix-initialize="ctrl.trixInitialize(e, editor, 'artwork');"
-                            trix-change="trixChange(e, editor, 'artwork');" trix-focus="trixFocus(e, editor, 'artwork');" trix-selection-change="trixSelectionChange(e, editor, 'artwork');"
-                            trix-attachment-remove="ctrl.trixAttachmentRemove(e, editor, 'artwork');" trix-blur="ctrl.trixBlur(e,editor,'artwork');"
-                            trix-file-accept="trixFileAccept(e, editor, 'artwork');" trix-attachment-add="ctrl.trixAttachmentAdd(e, editor, 'artwork');"
-                            placeholder="Write something.." ng-disabled="ctrl.ACL.section5"></trix-editor>
+                    <div class="box-body" style="margin-top:10px;">
+                        <trix-editor ng-model-options="{ updateOn: 'blur' }" spellcheck="false" class="trix-content" ng-model="ctrl.task.artwork_trix"
+                            angular-trix trix-initialize="ctrl.trixInitialize(e, editor, 'artwork');" trix-change="trixChange(e, editor, 'artwork');"
+                            trix-attachment-add="ctrl.trixAttachmentAdd(e, editor, 'artwork');" trix-selection-change="trixSelectionChange(e, editor, 'artwork');"
+                            trix-focus="trixFocus(e, editor, 'artwork');" trix-attachment-remove="ctrl.trixAttachmentRemove(e, editor, 'artwork');"
+                            trix-blur="ctrl.trixBlur(e,editor,'artwork');" trix-file-accept="trixFileAccept(e, editor, 'artwork');"
+                            style='background-color:white;min-height:150px;' ng-style="ctrl.ACL.section5 ? {'pointer-events':'none'}: {'pointer-events':'auto'};"
+                            placeholder="" ng-disabled="ctrl.ACL.section5"></trix-editor>
                     </div>
                     <div class="box-footer" style="margin-top:10px;">
                         <div class="row">
@@ -660,7 +655,7 @@
                                 <div class="box-tools pull-right">
                                     <div class="btn-group">
                                         <button type="button" class="btn btn-default" ngf-select="ctrl.uploadFiles($files, 'artwork')" ngf-multiple="true" style="background-color: white; color: black; border: 1px solid blue;"
-                                            ng-disabled="ctrl.ACL.section2">
+                                            ng-disabled="ctrl.ACL.section5">
                                             <i class="fa fa-paperclip"></i>
                                         </button>
                                     </div>
@@ -735,8 +730,7 @@
                     <div class="box-body  with-border" style="padding-top:0;padding-bottom:0;">
                         <div style="border:1px solid gray;">
                             <div class="form-group">
-                                <textarea class="form-control ng-pristine ng-valid ng-empty ng-touched ng-untouched" 
-                                        style="resize: horizontal; min-height: 80px;border:0;cursor:text;"
+                                <textarea class="form-control ng-pristine ng-valid ng-empty ng-touched ng-untouched" style="resize: horizontal; min-height: 80px;border:0;cursor:text;"
                                     ng-model="ctrl.task.sales_comment" ng-readonly="ctrl.ACL.section6"></textarea>
                             </div>
                         </div>
@@ -874,7 +868,7 @@
                 <button type="button" class="btn btn-default" ng-click="ctrl.gotoMain();"><i class="fa fa-remove"></i> Close</button>
             </div>
             <div class="col-md-1">
-                <button type="button" class="btn btn-default btn-sm" ng-click="ctrl.developerLog=!ctrl.developerLog" style="border: 1px solid #a1a1a1;border-radius: 25px;background:white;">
+                <button type="button" class="btn btn-default btn-sm" ng-click="ctrl.developerLog=!ctrl.developerLog" ng-show="ctrl.isLogEnabled" style="border: 1px solid #a1a1a1;border-radius: 25px;background:white;">
                      <i class="fa fa-question-circle"></i>
                 </button>
             </div>
@@ -978,7 +972,7 @@
                          <i class="fa fa-comments-o"></i> Chat
                     </button>
 
-                    <button type="button" class="btn btn-default btn-sm" ng-click="ctrl.developerLog=!ctrl.developerLog" style="border: 1px solid #a1a1a1;border-radius: 25px;background:white;margin-left: 10px;margin-right: 10px;">
+                    <button type="button" class="btn btn-default btn-sm" ng-click="ctrl.developerLog=!ctrl.developerLog" ng-show="ctrl.isLogEnabled" style="border: 1px solid #a1a1a1;border-radius: 25px;background:white;margin-left: 10px;margin-right: 10px;">
                         <i class="fa fa-question-circle"></i>
                     </button>
                 </div>

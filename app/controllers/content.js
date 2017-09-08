@@ -12,8 +12,8 @@ app.controller('contentCTRL', function ($state, $auth, $uibModal, $stateParams, 
     vm.animationsEnabled = true;
     vm.statusNum = 0;
     vm.developerLog = false;
-    vm.pubTypes = [{ code: 'CLS', name: 'Classified' }, { code: 'DSP', name: 'Display' }];
-    vm.pubTypes = [{ code: 'CLS', name: 'Classified' }, { code: 'PRINT', name: 'Print' }, { code: 'DIGITAL', name: 'Digital' }];
+    vm.isLogEnabled = StorageFactory.getAppSettings('LOG') ? true : false;
+    vm.pubTypes = [];
     vm.filesForDeletion = [];
     vm.qProductsError = false;
     vm.readOnly = true;
@@ -24,37 +24,12 @@ app.controller('contentCTRL', function ($state, $auth, $uibModal, $stateParams, 
         //TRUE MEANS YOU ARE RESTRICTED
         section0: true,     //Permanent Read ONLY fields
         section1: true,     //Requestor Information
-        section2: true,     //Requestor Information
-        section3: true,     //Specification 
-        section4: true,     //Assignment Details
-        section5: true,     //Materials
-        section6: true,     //Instructions
-        section7: true,     //Preview of Completed Write Up - Copywriter
-        section8: true,     //Preview of Completed Artwork  - Designer
-        section9: true,     //Product Details
+        section2: true,     //Specifications //Materials //Instructions
+        section3: true,     //Assignment Details
+        section4: true,     //Preview of Completed Write Up - Copywriter
+        section5: true,     //Preview of Completed Artwork  - Designer
+        section6: true,     //Product Details      
     };
-
-
-
-    if (_.isUndefined(currentUser) || _.isNull(currentUser)) {
-        var poi = StorageFactory.getSessionData(false);
-        if (_.isUndefined(poi) || _.isNull(poi)) {
-            //console.log('window.location.href : ' + JSON.stringify(window.location));
-            StorageFactory.setURI(window.location.href);
-            $state.go('login');
-        } else {
-            //console.log('currentUser[0] : ' + JSON.stringify(currentUser));
-            currentUser = poi;
-            vm.currentUser = poi;
-            vm.currentUser.canEdit = '';
-            vm.currentUser.userAction = $stateParams.action;
-        }
-    } else {
-        //console.log('currentUser[1] : ' + JSON.stringify(currentUser));
-        vm.currentUser = currentUser;
-        vm.currentUser.canEdit = '';
-        vm.currentUser.userAction = $stateParams.action;
-    }
 
     vm.cleanArray = function (tmpArray) {
         //console.log("[cleanArray] tmpArray - ", tmpArray);
@@ -126,7 +101,7 @@ app.controller('contentCTRL', function ($state, $auth, $uibModal, $stateParams, 
             vm.statusNum = 4;
         } else if (tmpStatus == "import completed") {
             vm.statusNum = 5;
-        } else if (tmpStatus == "completed") {
+        } else if (tmpStatus == "completed" || tmpStatus == "cancelled") {
             vm.statusNum = 6;
         } else {
             vm.statusNum = 0;
@@ -197,22 +172,19 @@ app.controller('contentCTRL', function ($state, $auth, $uibModal, $stateParams, 
             //SALES
             if (vm.statusNum == 0) {
                 vm.ACL.section1 = false;
-                vm.ACL.section3 = false;
-                vm.ACL.section4 = false;
-                vm.ACL.section5 = false;
+                vm.ACL.section2 = false;
                 vm.ACL.section6 = false;
-                vm.ACL.section9 = false;
             } else if (vm.statusNum == 3) {
-                vm.ACL.section8 = false;
-                vm.ACL.section9 = false;
+                vm.ACL.section6 = false;
+                vm.ACL.section7 = false;
             }
         } else if (vm.currentUser.canEdit == 'writer') {
             //CopyWriter
-            vm.ACL.section7 = false;
+            vm.ACL.section4 = false;
         } else if (vm.currentUser.canEdit == 'designer') {
             //Designer
-            vm.ACL.section8 = false;
-            //vm.ACL.section9 = false;
+            vm.ACL.section5 = false;
+            vm.ACL.section7 = false;
         } else if (vm.currentUser.canEdit == 'coordinator') {
             //System Administrator & Coordinator
             vm.ACL.section1 = false;
@@ -222,8 +194,6 @@ app.controller('contentCTRL', function ($state, $auth, $uibModal, $stateParams, 
             vm.ACL.section5 = false;
             vm.ACL.section6 = false;
             vm.ACL.section7 = false;
-            vm.ACL.section8 = false;
-            vm.ACL.section9 = false;
         } else {
             //default
             vm.ACL.section1 = true;
@@ -233,13 +203,11 @@ app.controller('contentCTRL', function ($state, $auth, $uibModal, $stateParams, 
             vm.ACL.section5 = true;
             vm.ACL.section6 = true;
             vm.ACL.section7 = true;
-            vm.ACL.section8 = true;
-            vm.ACL.section9 = true;
         }
     };
 
     vm.focusText = function (nam) {
-        //console.log('[focusText] - name : ' + nam);
+        console.log('[focusText] - name : ' + nam);
         focus(nam);
     }
 
@@ -248,6 +216,7 @@ app.controller('contentCTRL', function ($state, $auth, $uibModal, $stateParams, 
         vm.currentUser.userAction = 'edit';
         vm.sectionControl();
     };
+
     vm.getDocHistory = function (taskNum) {
         ////console.log('[getDocHistory] - jobNum : ' + jobNum);
         DataFactory.getDocHistory({ job_no: taskNum }).then(
@@ -263,6 +232,7 @@ app.controller('contentCTRL', function ($state, $auth, $uibModal, $stateParams, 
             }
         );
     };
+
     vm.getChatHistory = function (taskNum) {
         ////console.log('[getDocHistory] - jobNum : ' + jobNum);
         DataFactory.getChatHistory({ task_no: taskNum }).then(
@@ -347,6 +317,7 @@ app.controller('contentCTRL', function ($state, $auth, $uibModal, $stateParams, 
 
                 //console.log('[getTmpID] - response.data : ' + JSON.stringify(response.data));
                 //console.log('[getTmpID] - response.status : ' + JSON.stringify(response.status));
+                //console.log('[getTmpID] - currentUser : ' + JSON.stringify(vm.currentUser));
                 vm.task = response.data;
                 vm.task.creative_form = 'content';
                 vm.task.status = 'new';
@@ -354,7 +325,8 @@ app.controller('contentCTRL', function ($state, $auth, $uibModal, $stateParams, 
                 vm.task.ad_spend = 0;
                 vm.task.production_cost = 0;
                 vm.task.parent_id = $stateParams.orderID;
-                vm.task.logged_in_user = currentUser.id;
+                vm.task.logged_in_user = vm.currentUser.id;
+                vm.currentUser.canEdit = vm.accessControl();
                 if (_.isUndefined(vm.task.cc_response) || _.isNull(vm.task.cc_response)) {
                     vm.cc_response_dsp = [];
                 } else {
@@ -381,13 +353,13 @@ app.controller('contentCTRL', function ($state, $auth, $uibModal, $stateParams, 
                 DataFactory.getMember(tmpData).then(
                     //success
                     function (response) {
-                        ////console.log('[getTmpID - getMember] - response.data : ' + JSON.stringify(response.data));
-                        ////console.log('[getTmpID - getMember] - response.status : ' + JSON.stringify(response.status));
-                        vm.task.team_head = response.data[0].name;
-                        vm.task.team_head_username = response.data[0].username;
-
-                        //console.log('[getTmpID - team_head] : ' + vm.task.team_head);
-                        //console.log('[getTmpID - team_head_username] : ' + vm.task.team_head_username);
+                        //console.log('[getTmpID - getMember] - response.data : ' + JSON.stringify(response.data));
+                        //console.log('[getTmpID - getMember] - response.status : ' + JSON.stringify(response.status));
+                        if (_.isUndefined(response.data) || _.isNull(response.data) || _.isEmpty(response.data)) {
+                        } else {
+                            vm.task.team_head = response.data[0].name;
+                            vm.task.team_head_username = response.data[0].username;
+                        }
                     },
                     // error handler
                     function (response) {
@@ -543,6 +515,23 @@ app.controller('contentCTRL', function ($state, $auth, $uibModal, $stateParams, 
             }
         );
     };
+
+    vm.defineTypeOption = function () {
+        vm.task.pub_type = null;
+        var col = _.filter(vm.artwork_Types, { 'job_class': vm.task.artwork_type });
+        vm.pubTypes = _.uniq(_.flattenDeep(_.map(col, 'category')));
+        console.log('vm.pubTypes : ' + JSON.stringify(vm.pubTypes), vm.pubTypes);
+        var uniq = _.uniqBy(vm.pubTypes, 'name');
+        uniq = _.map(uniq, _.partialRight(_.pick, ['name', 'code']));
+        console.log('uniq : ' + JSON.stringify(uniq), uniq);
+
+
+        if (uniq.length == 1) {
+            vm.task.pub_type = uniq[0].code;
+            vm.defineType(true);
+        }
+    };
+
     vm.clearErrors = function () {
         ////console.log('set focus on : ' + vm.errorMsg[0].id);
         vm.isValid = true;
@@ -1122,6 +1111,7 @@ app.controller('contentCTRL', function ($state, $auth, $uibModal, $stateParams, 
                 break;
             }
         }
+        vm.getCoordinator();
         //console.log('language : ' + vm.task.language);
     };
     vm.defineSize = function () {
@@ -1166,6 +1156,7 @@ app.controller('contentCTRL', function ($state, $auth, $uibModal, $stateParams, 
                     }
                     vm.pubSizes = response.data;
                     vm.pubSizes.push({ size: 'Other', height: 0, width: 0 });
+                    vm.getCoordinator();
                 },
                 // error handler
                 function (response) {
@@ -1273,7 +1264,7 @@ app.controller('contentCTRL', function ($state, $auth, $uibModal, $stateParams, 
 
         angular.forEach(files, function (file) {
             file.upload = Upload.upload({
-                url: './service/upload.php',
+                url: StorageFactory.getAppSettings('UPL'),
                 method: 'POST',
                 file: file,
                 data: details,
@@ -1456,6 +1447,62 @@ app.controller('contentCTRL', function ($state, $auth, $uibModal, $stateParams, 
         vm.submitTask('Completed');
     }
 
+    vm.getCoordinator = function () {
+        console.log('artwork_type', vm.task.artwork_type);
+        console.log('pub_type', vm.task.pub_type);
+        console.log('language', vm.task.language);
+
+        //job_class
+        if (_.isUndefined(vm.task.artwork_type) || _.isNull(vm.task.artwork_type)) {
+            //category
+            console.log('1');
+            vm.task.team_head = "";
+            vm.task.team_head_username = "";
+        } else if (_.isUndefined(vm.task.pub_type) || _.isNull(vm.task.pub_type)) {
+            //language
+            console.log('2');
+            vm.task.team_head = "";
+            vm.task.team_head_username = "";
+        } else if (_.isUndefined(vm.task.language) || _.isNull(vm.task.language)) {
+            console.log('3');
+            vm.task.team_head = "";
+            vm.task.team_head_username = "";
+        } else {
+            console.log('4');
+            for (i = 0; i < vm.artwork_Types.length; i++) {
+                var str1 = vm.task.artwork_type.toLowerCase();
+                var str2 = vm.artwork_Types[i].job_class.toLowerCase();
+                //console.log(i + '| str1:' + str1 + ' | str2:' + str2);
+                if (str1 == str2) {
+                    //console.log('job_class', vm.artwork_Types[i].job_class);
+                    var str3 = JSON.stringify(vm.artwork_Types[i].category).toLowerCase();
+                    var str4 = vm.task.pub_type.toLowerCase();
+                    console.log(i + '| str3:' + str3 + ' | str4:' + str4);
+                    if (str3.indexOf(str4) > -1) {
+                        var str5 = JSON.stringify(vm.artwork_Types[i].language).toLowerCase();
+                        var str6 = vm.task.language.toLowerCase();
+                        console.log(i + '| str5:' + str5 + ' | str6:' + str6);
+                        if (str5.indexOf(str6) > -1) {
+                            console.log('language', vm.artwork_Types[i].language);
+                            var usrNm = _.map(vm.artwork_Types[i].coordinators, 'name');
+                            var usrID = _.map(vm.artwork_Types[i].coordinators, 'uid');
+                            /*                           
+                            console.log('coordinators', vm.artwork_Types[i].coordinators);
+                            for (ii = 0; ii < vm.artwork_Types[i].coordinators.length; i++) {
+                                usrNm.push(vm.artwork_Types[i].coordinators[ii].name);
+                                usrID.push(vm.artwork_Types[i].coordinators[ii].uid);
+                            }
+                            */
+                            vm.task.team_head = _.uniq(usrNm).join(", ");
+                            vm.task.team_head_username = _.uniq(usrID).join(", ");
+
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     vm.deleteRow = function (ndex) {
         ////console.log('[deleteRow] - index : ' + ndex);
         ////console.log('[deleteRow] - product list : ' + JSON.stringify(vm.productList));
@@ -1464,20 +1511,34 @@ app.controller('contentCTRL', function ($state, $auth, $uibModal, $stateParams, 
         //_.findLastIndex(array, {}) 
     }
 
-    if ($stateParams.action == "create") {
-        //console.log('[CONTENT] - create');
-        vm.currentUser.canEdit = 'sales';
-        vm.readOnly = false;
-        vm.getTmpID();
-        vm.getPubOptionsList();
-        vm.getArtworkTypes();
+    vm.firstAction = function () {
+        if ($stateParams.action == "create") {
+            //console.log('[CONTENT] - create');
+            //vm.currentUser.canEdit = 'sales';
+            //vm.currentUser.canEdit = vm.accessControl();
+            vm.readOnly = false;
+            vm.getTmpID();
+            vm.getPubOptionsList();
+            vm.getArtworkTypes();
+        } else {
+            //console.log('[CONTENT] - read');
+            vm.readOnly = true;
+            vm.getPubOptionsList();
+            vm.getArtworkTypes();
+            vm.getTask();
+        };
+    }
+
+     if (_.isUndefined(currentUser) || _.isNull(currentUser)) {
+        StorageFactory.setURI(window.location.href);
+        $state.go('login');
     } else {
-        //console.log('[CONTENT] - read');
-        vm.readOnly = true;
-        vm.getPubOptionsList();
-        vm.getArtworkTypes();
-        vm.getTask();
-    };
+        //console.log('currentUser[1] : ' + JSON.stringify(currentUser));
+        vm.currentUser = currentUser;
+        vm.currentUser.canEdit = '';
+        vm.currentUser.userAction = $stateParams.action;
+        vm.firstAction();
+    }
 
     ////console.log('$routeParams.orderId : ' + $routeParams.orderId);
     //console.log('END - contentCTRL');

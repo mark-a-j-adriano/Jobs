@@ -21,9 +21,18 @@ var app = angular.module('myApp', [
   //'restangular',
   //'ng.ckeditor',
   'angularTrix',
+  'ngIdle'
 ]);
 
-app.config(function ($stateProvider, $urlRouterProvider, $authProvider) {
+app.config(function ($stateProvider, $urlRouterProvider, $authProvider, IdleProvider, KeepaliveProvider) {
+  //idle(seconds) (integer, default is 20min)
+  IdleProvider.idle(1680);
+  //timeout(seconds) (integer, default is 30s): The amount of time the user has to respond (in seconds) 
+  IdleProvider.timeout(60);
+  //interval(seconds) (integer, default is 10 minutes): This specifies how often the Keepalive event is 
+  //triggered and the HTTP request is issued.
+  KeepaliveProvider.interval(30);
+
   // Google
   $authProvider.google({
     clientId: '822697465821-eu0eg8qv6k1apdcaqabo8qhvvhsd2ahf.apps.googleusercontent.com',
@@ -180,6 +189,11 @@ app.config(function ($stateProvider, $urlRouterProvider, $authProvider) {
           return DataFactory.getCurrentUser();
         }
       }
+    })
+    .state('ngIdle', {
+      url: '/ngIdle',
+      templateUrl: 'partials/testFiles/ngIdle.html',
+      controller: 'EventsCtrl as ctrl',
     });
 
 
@@ -189,8 +203,9 @@ app.config(function ($stateProvider, $urlRouterProvider, $authProvider) {
 });
 
 
-app.run(function ($transitions, $rootScope, $auth, $state, $window, StorageFactory) {
+app.run(function ($transitions, $rootScope, $auth, $state, $window, StorageFactory, Idle, Keepalive) {
   if ($auth.isAuthenticated()) {
+    //Idle.watch();
     $transitions.onEnter({}, function (transition, state) {
       window.scrollTo(0, 0);
     }),

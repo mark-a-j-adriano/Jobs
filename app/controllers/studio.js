@@ -14,6 +14,7 @@ app.controller('studioCTRL', function ($state, $auth, $uibModal, $stateParams, $
     vm.animationsEnabled = true;
     vm.statusNum = 0;
     vm.developerLog = false;
+    vm.isLogEnabled = StorageFactory.getAppSettings('LOG') ? true : false;
     vm.pubTypes = [{ code: 'CLS', name: 'Classified' }, { code: 'DSP', name: 'Display' }, { code: 'GIF', name: 'Graphics Interchange Format' }];
     vm.filesForDeletion = [];
     vm.qProductsError = false;
@@ -22,14 +23,14 @@ app.controller('studioCTRL', function ($state, $auth, $uibModal, $stateParams, $
     vm.docMessages = [];
     vm.trixEditor1 = false;
     vm.trixEditor2 = false;
-    var host = './service/upload.php';
+    var host = StorageFactory.getAppSettings('UPL');
     var createStorageKey, host, uploadAttachment;
     var events = ['trixInitialize', 'trixChange', 'trixSelectionChange', 'trixFocus',
         'trixBlur', 'trixFileAccept', 'trixAttachmentAdd', 'trixAttachmentRemove'];
 
     for (var i = 0; i < events.length; i++) {
         vm[events[i]] = function (e) {
-            console.info('Event type:', e.type);
+            //console.info('Event type:', e.type);
         }
     };
     vm.ACL = {
@@ -49,27 +50,6 @@ app.controller('studioCTRL', function ($state, $auth, $uibModal, $stateParams, $
         article: { visible: false, progress: 0 },
         creative: { visible: false, progress: 0 },
     };
-
-
-    if (_.isUndefined(currentUser) || _.isNull(currentUser)) {
-        var poi = StorageFactory.getSessionData(false);
-        if (_.isUndefined(poi) || _.isNull(poi)) {
-            //console.log('window.location.href : ' + JSON.stringify(window.location));
-            StorageFactory.setURI(window.location.href);
-            $state.go('login');
-        } else {
-            //console.log('currentUser[0] : ' + JSON.stringify(currentUser));
-            currentUser = poi;
-            vm.currentUser = poi;
-            vm.currentUser.canEdit = '';
-            vm.currentUser.userAction = $stateParams.action;
-        }
-    } else {
-        //console.log('currentUser[1] : ' + JSON.stringify(currentUser));
-        vm.currentUser = currentUser;
-        vm.currentUser.canEdit = '';
-        vm.currentUser.userAction = $stateParams.action;
-    }
 
     vm.cleanArray = function (tmpArray) {
         //console.log("[cleanArray] tmpArray - ", tmpArray);
@@ -143,8 +123,6 @@ app.controller('studioCTRL', function ($state, $auth, $uibModal, $stateParams, $
             }
         }
 
-        //console.log('newStr', newStr);
-        //return $sce.trustAsHtml(newStr);
         return newStr;
     }
 
@@ -170,7 +148,7 @@ app.controller('studioCTRL', function ($state, $auth, $uibModal, $stateParams, $
         };
         file = attachment.file;
         file.upload = Upload.upload({
-            url: './service/upload.php',
+            url: StorageFactory.getAppSettings('UPL'),
             method: 'POST',
             file: file,
             data: details,
@@ -684,8 +662,11 @@ app.controller('studioCTRL', function ($state, $auth, $uibModal, $stateParams, $
                     function (response) {
                         ////console.log('[getTmpID - getMember] - response.data : ' + JSON.stringify(response.data));
                         ////console.log('[getTmpID - getMember] - response.status : ' + JSON.stringify(response.status));
-                        vm.task.team_head = response.data[0].name;
-                        vm.task.team_head_username = response.data[0].username;
+                        if (_.isUndefined(response.data) || _.isNull(response.data) || _.isEmpty(response.data)) {
+                        } else {
+                            vm.task.team_head = response.data[0].name;
+                            vm.task.team_head_username = response.data[0].username;
+                        }
 
                         //console.log('[getTmpID - team_head] : ' + vm.task.team_head);
                         //console.log('[getTmpID - team_head_username] : ' + vm.task.team_head_username);
@@ -1620,7 +1601,7 @@ app.controller('studioCTRL', function ($state, $auth, $uibModal, $stateParams, $
 
         angular.forEach(files, function (file) {
             file.upload = Upload.upload({
-                url: './service/upload.php',
+                url: StorageFactory.getAppSettings('UPL'),
                 method: 'POST',
                 file: file,
                 data: details,
@@ -1859,20 +1840,34 @@ app.controller('studioCTRL', function ($state, $auth, $uibModal, $stateParams, $
         //_.findLastIndex(array, {}) 
     }
 
-    if ($stateParams.action == "create") {
-        //console.log('[STUDIO] - create');
-        vm.currentUser.canEdit = 'sales';
-        vm.readOnly = false;
-        vm.getTmpID();
-        vm.getPubOptionsList();
-        vm.getArtworkTypes();
+    vm.firstAction = function () {
+        if ($stateParams.orderTitle == "enableLogging") vm.isLogEnabled=true;
+        if ($stateParams.action == "create") {
+            //console.log('[STUDIO] - create');
+            vm.currentUser.canEdit = 'sales';
+            vm.readOnly = false;
+            vm.getTmpID();
+            vm.getPubOptionsList();
+            vm.getArtworkTypes();
+        } else {
+            //console.log('[STUDIO] - read');
+            vm.readOnly = true;
+            vm.getPubOptionsList();
+            vm.getArtworkTypes();
+            vm.getTask();
+        };
+    }
+
+    if (_.isUndefined(currentUser) || _.isNull(currentUser)) {
+        StorageFactory.setURI(window.location.href);
+        $state.go('login');
     } else {
-        //console.log('[STUDIO] - read');
-        vm.readOnly = true;
-        vm.getPubOptionsList();
-        vm.getArtworkTypes();
-        vm.getTask();
-    };
+        //console.log('currentUser[1] : ' + JSON.stringify(currentUser));
+        vm.currentUser = currentUser;
+        vm.currentUser.canEdit = '';
+        vm.currentUser.userAction = $stateParams.action;
+        vm.firstAction();
+    }
 
     ////console.log('$routeParams.orderId : ' + $routeParams.orderId);
     //console.log('END - studioCTRL');

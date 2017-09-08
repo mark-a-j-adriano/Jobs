@@ -13,6 +13,7 @@ app.controller('radioCTRL', function ($state, $auth, $uibModal, $stateParams, $t
     vm.animationsEnabled = true;
     vm.statusNum = 0;
     vm.developerLog = false;
+    vm.isLogEnabled = StorageFactory.getAppSettings('LOG') ? true : false;
     vm.qProductsError = false;
     vm.filesForDeletion = [];
     vm.readOnly = true;
@@ -22,32 +23,11 @@ app.controller('radioCTRL', function ($state, $auth, $uibModal, $stateParams, $t
     vm.ACL = {
         //TRUE MEANS YOU ARE RESTRICTED
         section0: true,     //Permanent Read ONLY fields
-        section1: true,     //Reques Information
-        section2: true,     //Requestor Information
-        section3: true,     //Specification //Materials //Instructions //Objective
-        section4: true,     //Assignment Details
-        section5: true,     //Preview of Completed Artwork  - team_members     
+        section1: true,     //Request Information        
+        section2: true,     //Specification //Radio Contract //Timeline //Objective //Materials //Instructions
+        section3: true,     //Assignment Details
+        section4: true,     //Preview of Completed Artwork  - team_members     
     };
-
-    if (_.isUndefined(currentUser) || _.isNull(currentUser)) {
-        var poi = StorageFactory.getSessionData(false);
-        if (_.isUndefined(poi) || _.isNull(poi)) {
-            //console.log('window.location.href : ' + JSON.stringify(window.location));
-            StorageFactory.setURI(window.location.href);
-            $state.go('login');
-        } else {
-            //console.log('currentUser[0] : ' + JSON.stringify(currentUser));
-            currentUser = poi;
-            vm.currentUser = poi;
-            vm.currentUser.canEdit = '';
-            vm.currentUser.userAction = $stateParams.action;
-        }
-    } else {
-        //console.log('currentUser[1] : ' + JSON.stringify(currentUser));
-        vm.currentUser = currentUser;
-        vm.currentUser.canEdit = '';
-        vm.currentUser.userAction = $stateParams.action;
-    }
 
     vm.cleanArray = function (tmpArray) {
         //console.log("[cleanArray] tmpArray - ", tmpArray);
@@ -108,7 +88,7 @@ app.controller('radioCTRL', function ($state, $auth, $uibModal, $stateParams, $t
             vm.statusNum = 4;
         } else if (tmpStatus == "import completed") {
             vm.statusNum = 5;
-        } else if (tmpStatus == "completed") {
+        } else if (tmpStatus == "completed" || tmpStatus == "cancelled") {
             vm.statusNum = 6;
         } else {
             vm.statusNum = 0;
@@ -170,21 +150,19 @@ app.controller('radioCTRL', function ($state, $auth, $uibModal, $stateParams, $t
             //SALES
             if (vm.statusNum == 0) {
                 vm.ACL.section1 = false;
-                vm.ACL.section3 = false;
-                vm.ACL.section4 = false;
+                vm.ACL.section2 = false;
             }
         } else if (vm.currentUser.canEdit == 'writer') {
             //CopyWriter           
         } else if (vm.currentUser.canEdit == 'designer') {
             //team_members
-            vm.ACL.section5 = false;
-            //vm.ACL.section9 = false;
+            vm.ACL.section4 = false;
         } else if (vm.currentUser.canEdit == 'coordinator') {
             //System Administrator & Coordinator
             vm.ACL.section1 = false;
+            vm.ACL.section2 = false;
             vm.ACL.section3 = false;
             vm.ACL.section4 = false;
-            vm.ACL.section5 = false;
         } else {
             //default
             vm.ACL.section0 = true;
@@ -192,11 +170,6 @@ app.controller('radioCTRL', function ($state, $auth, $uibModal, $stateParams, $t
             vm.ACL.section2 = true;
             vm.ACL.section3 = true;
             vm.ACL.section4 = true;
-            vm.ACL.section5 = true;
-            vm.ACL.section6 = true;
-            vm.ACL.section7 = true;
-            vm.ACL.section8 = true;
-            vm.ACL.section9 = true;
         }
     };
 
@@ -243,8 +216,12 @@ app.controller('radioCTRL', function ($state, $auth, $uibModal, $stateParams, $t
     };
 
     vm.focusText = function (index) {
-        if (vm.creativeTypes[index].isSelected) {
+
+        console.log('vm.RadioContracts[index].isSelected : ' + vm.RadioContracts[index].isSelected);
+        if (vm.RadioContracts[index].isSelected) {
             focus('details_' + index);
+        } else {
+            vm.RadioContracts[index].text = "";
         }
     }
 
@@ -379,9 +356,11 @@ app.controller('radioCTRL', function ($state, $auth, $uibModal, $stateParams, $t
                     function (response) {
                         ////console.log('[getTmpID - getMember] - response.data : ' + JSON.stringify(response.data));
                         ////console.log('[getTmpID - getMember] - response.status : ' + JSON.stringify(response.status));
-                        vm.task.project_mgr = response.data[0].name;
-                        vm.task.project_mgr_username = response.data[0].username;
-
+                        if (_.isUndefined(response.data) || _.isNull(response.data) || _.isEmpty(response.data)) {
+                        } else {
+                            vm.task.project_mgr = response.data[0].name;
+                            vm.task.project_mgr_username = response.data[0].username;
+                        }
                         //console.log('[getTmpID - project_mgr] : ' + vm.task.project_mgr);
                         //console.log('[getTmpID - project_mgr_username] : ' + vm.task.project_mgr_username);
                     },
@@ -1059,7 +1038,7 @@ app.controller('radioCTRL', function ($state, $auth, $uibModal, $stateParams, $t
 
         angular.forEach(files, function (file) {
             file.upload = Upload.upload({
-                url: './service/upload.php',
+                url: StorageFactory.getAppSettings('UPL'),
                 method: 'POST',
                 file: file,
                 data: details,
@@ -1295,21 +1274,34 @@ app.controller('radioCTRL', function ($state, $auth, $uibModal, $stateParams, $t
     vm.getRadioStations();
     vm.getRadioContracts();
     vm.getJobClassification();
-    if ($stateParams.action == "create") {
-        //console.log('[radio] - create');
-        vm.currentUser.canEdit = 'sales';
-        vm.readOnly = false;
-        vm.getTmpID();
-        //vm.getPubOptionsList();
-        //vm.getArtworkTypes();
-    } else {
-        //console.log('[radio] - read');
-        vm.readOnly = true;
-        //vm.getPubOptionsList();
-        //vm.getArtworkTypes();
-        vm.getTask();
-    };
 
+    vm.firstAction = function () {
+        if ($stateParams.action == "create") {
+            //console.log('[radio] - create');
+            vm.currentUser.canEdit = 'sales';
+            vm.readOnly = false;
+            vm.getTmpID();
+            //vm.getPubOptionsList();
+            //vm.getArtworkTypes();
+        } else {
+            //console.log('[radio] - read');
+            vm.readOnly = true;
+            //vm.getPubOptionsList();
+            //vm.getArtworkTypes();
+            vm.getTask();
+        };
+    }
+
+    if (_.isUndefined(currentUser) || _.isNull(currentUser)) {
+        StorageFactory.setURI(window.location.href);
+        $state.go('login');
+    } else {
+        //console.log('currentUser[1] : ' + JSON.stringify(currentUser));
+        vm.currentUser = currentUser;
+        vm.currentUser.canEdit = '';
+        vm.currentUser.userAction = $stateParams.action;
+        vm.firstAction();
+    }
     ////console.log('$routeParams.orderId : ' + $routeParams.orderId);
     //console.log('END - radioCTRL');
 });

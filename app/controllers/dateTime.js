@@ -255,7 +255,7 @@ app.controller('uploadCtrl', ['$scope', 'Upload', '$timeout', function ($scope, 
         $scope.errFile = errFiles && errFiles[0];
         if (file) {
             file.upload = Upload.upload({
-                url: './service/upload.php',
+                url: StorageFactory.getAppSettings('UPL'),
                 //data: { file: file }
                 method: 'POST',
                 file: file,
@@ -286,7 +286,7 @@ app.controller('uploadCtrl', ['$scope', 'Upload', '$timeout', function ($scope, 
     $scope.uploadPic = function (file) {
         //console.log('[uploadPic] - file : ' + JSON.stringify(file));
         file.upload = Upload.upload({
-            url: './service/upload.php',
+            url: StorageFactory.getAppSettings('UPL'),
             data: { username: 'emsmaav1', file: file },
         });
 
@@ -312,7 +312,7 @@ app.controller('uploadCtrl', ['$scope', 'Upload', '$timeout', function ($scope, 
         $scope.files = files;
         if (files && files.length) {
             Upload.upload({
-                url: './service/upload.php',
+                url: StorageFactory.getAppSettings('UPL'),
                 method: 'POST',
                 file: files,
                 data: {
@@ -352,7 +352,7 @@ app.controller('uploadCtrl', ['$scope', 'Upload', '$timeout', function ($scope, 
 
             //console.log('[uploadFiles3] - file : ' + JSON.stringify(file));
             file.upload = Upload.upload({
-                url: './service/upload.php',
+                url: StorageFactory.getAppSettings('UPL'),
                 method: 'POST',
                 file: file,
                 data: {
@@ -457,8 +457,8 @@ app.controller('trixEditorCtrl', function (Upload, $timeout, $scope) {
     var vm = this;
     vm.blob = [];
     vm.base64 = null;
-    vm.trix = '';   
-    var host = './service/upload.php';
+    vm.trix = '';
+    var host = StorageFactory.getAppSettings('UPL');
     var createStorageKey, host, uploadAttachment;
     var events = ['trixInitialize', 'trixChange', 'trixSelectionChange', 'trixFocus',
         'trixBlur', 'trixFileAccept', 'trixAttachmentAdd', 'trixAttachmentRemove'];
@@ -504,23 +504,23 @@ app.controller('trixEditorCtrl', function (Upload, $timeout, $scope) {
 
     }
 
-  
+
     vm.trixAttachmentAdd = function (e) {
-        var attachment, base64;       
+        var attachment, base64;
         attachment = e.attachment;
         console.info('attachment to add:', attachment);
-        
+
         var fileReader = new FileReader();
         fileReader.onload = function (event) {
-            vm.base64  = event.target.result;
+            vm.base64 = event.target.result;
             ////console.log('base64: ' + JSON.stringify( base64 ));
         };
-        
+
         if (attachment.file) {
             fileReader.readAsDataURL(attachment.file);
             ////console.log('base64 : ' + JSON.stringify( vm.base64 ));
             return uploadAttachment(attachment, base64);
-            
+
         }
     }
 
@@ -534,7 +534,7 @@ app.controller('trixEditorCtrl', function (Upload, $timeout, $scope) {
         console.info('uploadAttachment to add:', attachment);
         file = attachment.file;
         file.upload = Upload.upload({
-            url: './service/upload.php',
+            url: StorageFactory.getAppSettings('UPL'),
             method: 'POST',
             file: file,
             data: details,
@@ -706,9 +706,63 @@ app.controller('trixEditorCtrl', function (Upload, $timeout, $scope) {
 
     }
 
-    
+
 
     vm.trixBlur = function (e) {
         //console.log('[trixBlur] vm.trix', vm.trix)
     }
 });
+
+
+app.controller('EventsCtrl', function ($scope, Idle, Keepalive, $uibModal) {
+    console.log("START - EventsCtrl");
+    var vm = this;
+    $scope.started = false;
+
+    function closeModals() {
+        if ($scope.warning) {
+            $scope.warning.close();
+            $scope.warning = null;
+        }
+
+        if ($scope.timedout) {
+            $scope.timedout.close();
+            $scope.timedout = null;
+        }
+    }
+
+    $scope.$on('IdleStart', function () {
+        closeModals();
+
+        $scope.warning = $uibModal.open({
+            templateUrl: 'warning-dialog.html',
+            windowClass: 'modal-danger'
+        });
+    });
+
+    $scope.$on('IdleEnd', function () {
+        closeModals();
+    });
+
+    $scope.$on('IdleTimeout', function () {
+        closeModals();
+        $scope.timedout = $uibModal.open({
+            templateUrl: 'timedout-dialog.html',
+            windowClass: 'modal-danger'
+        });
+    });
+
+    $scope.start = function () {
+        closeModals();
+        Idle.watch();
+        $scope.started = true;
+    };
+
+    $scope.stop = function () {
+        closeModals();
+        Idle.unwatch();
+        $scope.started = false;
+
+    };
+    console.log("END - EventsCtrl");
+})

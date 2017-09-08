@@ -2,7 +2,10 @@
     {
         "job_class": "Classified front covers hotspots",
         "category": [
-            "Classified"
+            {
+                "code": "CLS",
+                "name": "Classified"
+            }
         ],
         "language": [
             "Chinese"
@@ -25,7 +28,10 @@
     {
         "job_class": "Classified front covers hotspots",
         "category": [
-            "Classified"
+            {
+                "code": "CLS",
+                "name": "Classified"
+            }
         ],
         "language": [
             "English"
@@ -48,7 +54,10 @@
     {
         "job_class": "Advertorials",
         "category": [
-            "Classified"
+            {
+                "code": "CLS",
+                "name": "Classified"
+            }
         ],
         "language": [
             "English"
@@ -71,7 +80,10 @@
     {
         "job_class": "Advertorials",
         "category": [
-            "Classified"
+            {
+                "code": "CLS",
+                "name": "Classified"
+            }
         ],
         "language": [
             "Chinese"
@@ -94,7 +106,10 @@
     {
         "job_class": "Advertorials",
         "category": [
-            "Print"
+            {
+                "code": "PRT",
+                "name": "Print"
+            }
         ],
         "language": [
             "Chinese",
@@ -118,7 +133,10 @@
     {
         "job_class": "Advertorials",
         "category": [
-            "Digital"
+            {
+                "code": "DGT",
+                "name": "Digital"
+            }
         ],
         "language": [
             "Chinese",
@@ -142,7 +160,10 @@
     {
         "job_class": "Supplements",
         "category": [
-            "Classified"
+            {
+                "code": "CLS",
+                "name": "Classified"
+            }
         ],
         "language": [
             "English"
@@ -165,7 +186,10 @@
     {
         "job_class": "Supplements",
         "category": [
-            "Classified"
+            {
+                "code": "CLS",
+                "name": "Classified"
+            }
         ],
         "language": [
             "Chinese"
@@ -188,7 +212,10 @@
     {
         "job_class": "Supplements",
         "category": [
-            "Print"
+            {
+                "code": "PRT",
+                "name": "Print"
+            }
         ],
         "language": [
             "Chinese",
@@ -212,7 +239,10 @@
     {
         "job_class": "Supplements",
         "category": [
-            "Digital"
+            {
+                "code": "DGT",
+                "name": "Digital"
+            }
         ],
         "language": [
             "Chinese",
@@ -236,7 +266,10 @@
     {
         "job_class": "Branded content",
         "category": [
-            "Classified"
+            {
+                "code": "CLS",
+                "name": "Classified"
+            }
         ],
         "language": [
             "English"
@@ -259,7 +292,10 @@
     {
         "job_class": "Branded content",
         "category": [
-            "Classified"
+            {
+                "code": "CLS",
+                "name": "Classified"
+            }
         ],
         "language": [
             "Chinese"
@@ -281,7 +317,12 @@
     },
     {
         "job_class": "Branded content",
-        "category": "Print",
+        "category": [
+            {
+                "code": "PRT",
+                "name": "Print"
+            }
+        ],
         "language": [
             "Chinese",
             "English"
@@ -303,7 +344,12 @@
     },
     {
         "job_class": "Branded content",
-        "category": "Digital",
+        "category": [
+            {
+                "code": "DGT",
+                "name": "Digital"
+            }
+        ],
         "language": [
             "Chinese",
             "English"
@@ -326,7 +372,10 @@
     {
         "job_class": "Sponsored series",
         "category": [
-            "Classified"
+            {
+                "code": "CLS",
+                "name": "Classified"
+            }
         ],
         "language": [
             "English"
@@ -349,7 +398,10 @@
     {
         "job_class": "Sponsored series",
         "category": [
-            "Classified"
+            {
+                "code": "CLS",
+                "name": "Classified"
+            }
         ],
         "language": [
             "Chinese"
@@ -372,7 +424,10 @@
     {
         "job_class": "Sponsored series",
         "category": [
-            "Print"
+            {
+                "code": "PRT",
+                "name": "Print"
+            }
         ],
         "language": [
             "Chinese",
@@ -396,7 +451,10 @@
     {
         "job_class": "Sponsored series",
         "category": [
-            "Digital"
+            {
+                "code": "DGT",
+                "name": "Digital"
+            }
         ],
         "language": [
             "Chinese",
@@ -420,7 +478,10 @@
     {
         "job_class": "Editing/translation services",
         "category": [
-            "Classified"
+            {
+                "code": "CLS",
+                "name": "Classified"
+            }
         ],
         "language": [
             "English"
@@ -443,7 +504,10 @@
     {
         "job_class": "Editing/translation services",
         "category": [
-            "Classified"
+            {
+                "code": "CLS",
+                "name": "Classified"
+            }
         ],
         "language": [
             "Chinese"
@@ -466,7 +530,10 @@
     {
         "job_class": "Editing/translation services",
         "category": [
-            "Print"
+            {
+                "code": "PRT",
+                "name": "Print"
+            }
         ],
         "language": [
             "Chinese",
@@ -490,7 +557,10 @@
     {
         "job_class": "Editing/translation services",
         "category": [
-            "Digital"
+            {
+                "code": "DGT",
+                "name": "Digital"
+            }
         ],
         "language": [
             "Chinese",
@@ -514,7 +584,10 @@
     {
         "job_class": "Curation",
         "category": [
-            "Classified"
+            {
+                "code": "CLS",
+                "name": "Classified"
+            }
         ],
         "language": [
             "English"
@@ -537,7 +610,10 @@
     {
         "job_class": "Curation",
         "category": [
-            "Classified"
+            {
+                "code": "CLS",
+                "name": "Classified"
+            }
         ],
         "language": [
             "Chinese"
@@ -560,7 +636,10 @@
     {
         "job_class": "Curation",
         "category": [
-            "Print"
+            {
+                "code": "PRT",
+                "name": "Print"
+            }
         ],
         "language": [
             "Chinese",
@@ -584,7 +663,10 @@
     {
         "job_class": "Curation",
         "category": [
-            "Digital"
+            {
+                "code": "DGT",
+                "name": "Digital"
+            }
         ],
         "language": [
             "Chinese",
@@ -608,7 +690,10 @@
     {
         "job_class": "Videos/Scripting",
         "category": [
-            "Digital"
+            {
+                "code": "DGT",
+                "name": "Digital"
+            }
         ],
         "language": [
             "Chinese",
@@ -628,7 +713,7 @@
     {
         "job_class": "Event coverage",
         "category": [
-            "Classsified"
+            { "code": "CLS", "name": "Classified" }
         ],
         "language": [
             "Chinese",
@@ -652,7 +737,10 @@
     {
         "job_class": "Ad hoc periodicals",
         "category": [
-            "Print"
+            {
+                "code": "PRT",
+                "name": "Print"
+            }
         ],
         "language": [
             "Chinese",
@@ -676,8 +764,14 @@
     {
         "job_class": "CreativeLAB",
         "category": [
-            "Display",
-            "Classified"
+            {
+                "code": "DSP",
+                "name": "Display"
+            },
+            {
+                "code": "CLS",
+                "name": "Classified"
+            }
         ],
         "language": [
             "Chinese",

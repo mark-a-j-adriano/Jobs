@@ -74,7 +74,7 @@
                     <li>
                     </li>
                     <li class="footer" ng-if="ctrl.isAuthenticated();">
-                      <a ng-click="ctrl.logOut();">Log Out</a>
+                      <a ng-click="ctrl.logOut(true);">Log Out</a>
                     </li>
                   </ul>
                 </li>
@@ -159,6 +159,7 @@
   <!-- Date / Time field masking -\  https://github.com/Gillardo/bootstrap-ui-datetime-picker -->
   <script src="lib/angularAddOn/datetime-picker.min.js"></script>
   <script src="lib/js/angular-filter.min.js"></script>
+  <script src="lib/js/angular-idle.min.js"></script>
 
   <!--Lodash - A modern JavaScript utility library delivering modularity, performance & extras. -->
   <script src="lib/js/lodash.min.js"></script>

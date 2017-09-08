@@ -9,12 +9,15 @@ app.controller("creativeCTRL", function (
   focus,
   Upload,
   DataFactory,
+  StorageFactory,
   currentUser,
   orderID
 ) {
   ////console.log('creativeCTRL : START');
 
   var vm = this;
+  vm.developerLog = false;
+  vm.isLogEnabled = StorageFactory.getAppSettings('LOG') ? true : false;
   vm.filesForDeletion = [];
   vm.isValid = true;
   vm.errorMsg = [];
@@ -53,20 +56,6 @@ app.controller("creativeCTRL", function (
     interval: 5000,
     active: 0
   };
-
-  if (currentUser) {
-    if (_.isNull(currentUser)) {
-      $state.go("login");
-    } else {
-      //vm.currentUser = currentUser.id;
-      //console.log("currentUser : " + JSON.stringify(currentUser.name));
-      vm.currentUser = currentUser;
-      vm.currentUser.canEdit = false;
-      vm.currentUser.userAction = "";
-    }
-  } else {
-    $state.go("login");
-  }
 
   vm.iconList = [];
   vm.getIconList = function () {
@@ -276,7 +265,7 @@ app.controller("creativeCTRL", function (
         } else {
           vm.job.creative_briefs = JSON.parse(vm.job.creative_briefs);
         }
-        
+
         if (_.isUndefined(vm.job.tasks) ||
           _.isNull(vm.job.tasks) ||
           _.isEmpty(vm.job.team_members)
@@ -286,15 +275,15 @@ app.controller("creativeCTRL", function (
           vm.job.tasks = [];
         }
 
-        vm.job.ad_spend = $filter('currency')(parseFloat(vm.job.ad_spend),"");
-        vm.job.production_cost =  $filter('currency')(parseFloat(vm.job.production_cost),"");
+        vm.job.ad_spend = $filter('currency')(parseFloat(vm.job.ad_spend), "");
+        vm.job.production_cost = $filter('currency')(parseFloat(vm.job.production_cost), "");
 
-        if(_.isUndefined(vm.job.cc_response) || _.isNull(vm.job.cc_response)){
+        if (_.isUndefined(vm.job.cc_response) || _.isNull(vm.job.cc_response)) {
           vm.cc_response_dsp = [];
-        }else{
+        } else {
           vm.cc_response_dsp = vm.job.cc_response.split(",");
         }
-        
+
         vm.getTaskList(vm.job.id);
         vm.getDocHistory(vm.job.job_no);
         vm.getTaskIcons(vm.job.team);
@@ -592,7 +581,7 @@ app.controller("creativeCTRL", function (
     return tmp;
   };
   vm.openPage = function (nam) {
-    console.log("newPath : " + nam +" | jobNum : " + vm.job.job_no + " | tasks : " +  vm.taskList.length );
+    console.log("newPath : " + nam + " | jobNum : " + vm.job.job_no + " | tasks : " + vm.taskList.length);
     //$location.path("/" + nam + "/ABC123/00/");
     $state.go(nam, {
       orderID: vm.job.id,
@@ -761,7 +750,7 @@ app.controller("creativeCTRL", function (
 
     angular.forEach(files, function (file) {
       file.upload = Upload.upload({
-        url: "./service/upload.php",
+        url: StorageFactory.getAppSettings('UPL'),
         method: "POST",
         file: file,
         data: details
@@ -984,26 +973,39 @@ app.controller("creativeCTRL", function (
 
   };
 
-
-  vm.copyTask = function(){
+  vm.copyTask = function () {
     alert('Function not yet available!');
   }
 
-  //console.log("columnTitle : " + JSON.stringify(vm.columnTitle));
-  //console.log("$stateParams.orderID : " + JSON.stringify(job_id));
-  if (job_id > 0) {
-    //console.log("job_id - 2");
-    vm.currentUser.userAction = "Read";
-    vm.getIconList();
-    vm.getJobRequest(job_id);
-  } else {
-    //console.log("job_id - 1");
-    vm.readOnly = false;
-    vm.currentUser.canEdit = true;
-    vm.currentUser.userAction = "Create";
-    vm.getIconList();
-    vm.getRequestor(vm.currentUser.id);
+  vm.firstAction = function () {
+    //console.log("columnTitle : " + JSON.stringify(vm.columnTitle));
+    //console.log("$stateParams.orderID : " + JSON.stringify(job_id));
+    if (job_id > 0) {
+      //console.log("job_id - 2");
+      vm.currentUser.userAction = "Read";
+      vm.getIconList();
+      vm.getJobRequest(job_id);
+    } else {
+      //console.log("job_id - 1");
+      vm.readOnly = false;
+      vm.currentUser.canEdit = true;
+      vm.currentUser.userAction = "Create";
+      vm.getIconList();
+      vm.getRequestor(vm.currentUser.id);
+    }
   }
+
+  if (_.isUndefined(currentUser) || _.isNull(currentUser)) {
+    StorageFactory.setURI(window.location.href);
+    $state.go('login');
+  } else {
+    //console.log('currentUser[1] : ' + JSON.stringify(currentUser));
+    vm.currentUser = currentUser;
+    vm.currentUser.canEdit = '';
+    vm.currentUser.userAction = $stateParams.action;
+    vm.firstAction();
+  }
+
 
   ////console.log('creativeCTRL : END');
 });

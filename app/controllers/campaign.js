@@ -1247,7 +1247,7 @@ app.controller('displayCTRL', function ($state, $auth, $uibModal, $stateParams, 
 
         angular.forEach(files, function (file) {
             file.upload = Upload.upload({
-                url: './service/upload.php',
+                url: StorageFactory.getAppSettings('UPL'),
                 method: 'POST',
                 file: file,
                 data: details,
@@ -1654,7 +1654,7 @@ app.controller('displayModalCtrl', function ($timeout, $uibModalInstance, focus,
         angular.forEach(files, function (file) {
             //console.log('[uploadFiles] - file : ', file);
             file.upload = Upload.upload({
-                url: './service/upload.php',
+                url: StorageFactory.getAppSettings('UPL'),
                 method: 'POST',
                 file: file,
                 data: details,

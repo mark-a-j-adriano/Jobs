@@ -14,6 +14,7 @@ app.controller('digitalCTRL', function ($state, $auth, $uibModal, $stateParams, 
     vm.animationsEnabled = true;
     vm.statusNum = 0;
     vm.developerLog = false;
+    vm.isLogEnabled = StorageFactory.getAppSettings('LOG') ? true : false;
     vm.qProductsError = false;
     vm.filesForDeletion = [];
     vm.readOnly = true;
@@ -35,26 +36,6 @@ app.controller('digitalCTRL', function ($state, $auth, $uibModal, $stateParams, 
         artwork: { visible: false, progress: 0 },
         article: { visible: false, progress: 0 },
         creative: { visible: false, progress: 0 },
-    }
-
-    if (_.isUndefined(currentUser) || _.isNull(currentUser)) {
-        var poi = StorageFactory.getSessionData(false);
-        if (_.isUndefined(poi) || _.isNull(poi)) {
-            //console.log('window.location.href : ' + JSON.stringify(window.location));
-            StorageFactory.setURI(window.location.href);
-            $state.go('login');
-        } else {
-            //console.log('currentUser[0] : ' + JSON.stringify(currentUser));
-            currentUser = poi;
-            vm.currentUser = poi;
-            vm.currentUser.canEdit = '';
-            vm.currentUser.userAction = $stateParams.action;
-        }
-    } else {
-        //console.log('currentUser[1] : ' + JSON.stringify(currentUser));
-        vm.currentUser = currentUser;
-        vm.currentUser.canEdit = '';
-        vm.currentUser.userAction = $stateParams.action;
     }
 
     vm.cleanArray = function (tmpArray) {
@@ -393,10 +374,14 @@ app.controller('digitalCTRL', function ($state, $auth, $uibModal, $stateParams, 
                 DataFactory.getMember(tmpData).then(
                     //success
                     function (response) {
-                        ////console.log('[getTmpID - getMember] - response.data : ' + JSON.stringify(response.data));
-                        ////console.log('[getTmpID - getMember] - response.status : ' + JSON.stringify(response.status));
-                        vm.task.project_mgr = response.data[0].name;
-                        vm.task.project_mgr_username = response.data[0].username;
+                        //console.log('[getTmpID - getMember] - response.data : ' + JSON.stringify(response.data));
+                        //console.log('[getTmpID - getMember] - response.status : ' + JSON.stringify(response.status));
+
+                        if (_.isUndefined(response.data) || _.isNull(response.data) || _.isEmpty(response.data)) {
+                        } else {
+                            vm.task.project_mgr = response.data[0].name;
+                            vm.task.project_mgr_username = response.data[0].username;
+                        }
 
                         //console.log('[getTmpID - project_mgr] : ' + vm.task.project_mgr);
                         //console.log('[getTmpID - project_mgr_username] : ' + vm.task.project_mgr_username);
@@ -1045,7 +1030,7 @@ app.controller('digitalCTRL', function ($state, $auth, $uibModal, $stateParams, 
 
         angular.forEach(files, function (file) {
             file.upload = Upload.upload({
-                url: './service/upload.php',
+                url: StorageFactory.getAppSettings('UPL'),
                 method: 'POST',
                 file: file,
                 data: details,
@@ -1241,21 +1226,34 @@ app.controller('digitalCTRL', function ($state, $auth, $uibModal, $stateParams, 
 
     }
 
-    if ($stateParams.action == "create") {
-        //console.log('[DIGITAL] - create');
-        vm.currentUser.canEdit = 'sales';
-        vm.readOnly = false;
-        vm.getTmpID();
-        vm.getCreativeTypes();
-        //vm.getPubOptionsList();
-        //vm.getArtworkTypes();
+    vm.firstAction = function () {
+        if ($stateParams.action == "create") {
+            //console.log('[DIGITAL] - create');
+            vm.currentUser.canEdit = 'sales';
+            vm.readOnly = false;
+            vm.getTmpID();
+            vm.getCreativeTypes();
+            //vm.getPubOptionsList();
+            //vm.getArtworkTypes();
+        } else {
+            //console.log('[DIGITAL] - read');
+            vm.readOnly = true;
+            //vm.getPubOptionsList();
+            //vm.getArtworkTypes();
+            vm.getTask();
+        };
+    }
+
+    if (_.isUndefined(currentUser) || _.isNull(currentUser)) {
+        StorageFactory.setURI(window.location.href);
+        $state.go('login');
     } else {
-        //console.log('[DIGITAL] - read');
-        vm.readOnly = true;
-        //vm.getPubOptionsList();
-        //vm.getArtworkTypes();
-        vm.getTask();
-    };
+        //console.log('currentUser[1] : ' + JSON.stringify(currentUser));
+        vm.currentUser = currentUser;
+        vm.currentUser.canEdit = '';
+        vm.currentUser.userAction = $stateParams.action;
+        vm.firstAction();
+    }
 
     ////console.log('$routeParams.orderId : ' + $routeParams.orderId);
     //console.log('END - digitalCTRL');

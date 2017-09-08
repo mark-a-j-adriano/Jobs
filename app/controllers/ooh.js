@@ -11,6 +11,7 @@ app.controller('oohCTRL', function ($state, $auth, $uibModal, $stateParams, $tim
     vm.animationsEnabled = true;
     vm.statusNum = 0;
     vm.developerLog = false;
+    vm.isLogEnabled = StorageFactory.getAppSettings('LOG') ? true : false;
     vm.cc_response_dsp = [];
     vm.filesForDeletion = [];
     vm.qProductsError = false;
@@ -36,25 +37,6 @@ app.controller('oohCTRL', function ($state, $auth, $uibModal, $stateParams, $tim
         creative: { visible: false, progress: 0 },
     }
 
-    if (_.isUndefined(currentUser) || _.isNull(currentUser)) {
-        var poi = StorageFactory.getSessionData(false);
-        if (_.isUndefined(poi) || _.isNull(poi)) {
-            //console.log('window.location.href : ' + JSON.stringify(window.location));
-            StorageFactory.setURI(window.location.href);
-            $state.go('login');
-        } else {
-            //console.log('currentUser[0] : ' + JSON.stringify(currentUser));
-            currentUser = poi;
-            vm.currentUser = poi;
-            vm.currentUser.canEdit = '';
-            vm.currentUser.userAction = $stateParams.action;
-        }
-    } else {
-        //console.log('currentUser[1] : ' + JSON.stringify(currentUser));
-        vm.currentUser = currentUser;
-        vm.currentUser.canEdit = '';
-        vm.currentUser.userAction = $stateParams.action;
-    }
 
     // date and time picker
     vm.MaskConfig = DataFactory.getFilters();
@@ -394,8 +376,11 @@ app.controller('oohCTRL', function ($state, $auth, $uibModal, $stateParams, $tim
                     function (response) {
                         //console.log('[getTmpID - getMember] - response.data : ' + JSON.stringify(response.data));
                         //console.log('[getTmpID - getMember] - response.status : ' + JSON.stringify(response.status));
-                        vm.task.team_head = response.data[0].name;
-                        vm.task.team_head_username = response.data[0].username;
+                        if (_.isUndefined(response.data) || _.isNull(response.data) || _.isEmpty(response.data)) {
+                        } else {
+                            vm.task.team_head = response.data[0].name;
+                            vm.task.team_head_username = response.data[0].username;
+                        }
 
                         //console.log('[getTmpID - team_head] : ' + vm.task.team_head);
                         //console.log('[getTmpID - team_head_username] : ' + vm.task.team_head_username);
@@ -1266,7 +1251,7 @@ app.controller('oohCTRL', function ($state, $auth, $uibModal, $stateParams, $tim
 
         angular.forEach(files, function (file) {
             file.upload = Upload.upload({
-                url: './service/upload.php',
+                url: StorageFactory.getAppSettings('UPL'),
                 method: 'POST',
                 file: file,
                 data: details,
@@ -1414,20 +1399,33 @@ app.controller('oohCTRL', function ($state, $auth, $uibModal, $stateParams, $tim
         }
     }
 
-    if ($stateParams.action == "create") {
-        //console.log('[ooh] - create');
-        vm.currentUser.canEdit = 'sales';
-        vm.readOnly = false;
-        vm.getTmpID();
-        //vm.getPubOptionsList();
-        //vm.getArtworkTypes();
+    vm.firstAction = function () {
+        if ($stateParams.action == "create") {
+            //console.log('[ooh] - create');
+            vm.currentUser.canEdit = 'sales';
+            vm.readOnly = false;
+            vm.getTmpID();
+            //vm.getPubOptionsList();
+            //vm.getArtworkTypes();
+        } else {
+            //console.log('[ooh] - read');
+            vm.readOnly = true;
+            //vm.getPubOptionsList();
+            //vm.getArtworkTypes();
+            vm.getTask();
+        };
+    }
+
+    if (_.isUndefined(currentUser) || _.isNull(currentUser)) {
+        StorageFactory.setURI(window.location.href);
+        $state.go('login');
     } else {
-        //console.log('[ooh] - read');
-        vm.readOnly = true;
-        //vm.getPubOptionsList();
-        //vm.getArtworkTypes();
-        vm.getTask();
-    };
+        //console.log('currentUser[1] : ' + JSON.stringify(currentUser));
+        vm.currentUser = currentUser;
+        vm.currentUser.canEdit = '';
+        vm.currentUser.userAction = $stateParams.action;
+        vm.firstAction();
+    }
 
     ////console.log('$routeParams.orderId : ' + $routeParams.orderId);
     //console.log('END - oohCTRL');

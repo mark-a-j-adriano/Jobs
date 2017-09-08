@@ -38,7 +38,6 @@
 
     <!-- Main content -->
     <section class="content" style="background-color:white;padding-top:0">
-
         <!-- Task Details - START -->
         <div class="row">
             <div class="col-md-4">
@@ -52,21 +51,40 @@
                             <label>Client / Title:</label>
                             <input class="form-control input-sm fld-att" ng-model="ctrl.task.title" type="text" ng-readonly="ctrl.ACL.section0">
                         </div>
-
-                        <div class="form-group" ng-hide="ctrl.currentUser.canEdit=='writer' || ctrl.currentUser.canEdit=='designer'">
-                            <label>Ad Spend :</label>
-                            <div class="input-group">
-                                <span class="input-group-addon fld-att">$</span>
-                                <input id='ad_spend' type="number" class="form-control input-sm fld-att" style="text-align:right;padding-right:10px;" ng-model="ctrl.task.ad_spend"
-                                    min="0.01" step="0.01" ng-readonly="ctrl.ACL.section1">
+                        <div ng-show="ctrl.readOnly">
+                            <div class="form-group" ng-hide="ctrl.currentUser.canEdit=='writer' || ctrl.currentUser.canEdit=='designer'">
+                                <label>Ad Spend :</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon fld-att">$</span>
+                                    <input id='ad_spend' type="text" class="form-control input-sm fld-att" style="text-align:right;padding-right:10px;" ng-model="ctrl.display.ad_spend"
+                                        ng-readonly="ctrl.ACL.section1">
+                                </div>
+                            </div>
+                            <div class="form-group" ng-hide="ctrl.currentUser.canEdit=='writer' || ctrl.currentUser.canEdit=='designer'">
+                                <label>Production Cost :</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon fld-att">$</span>
+                                    <input id='production_cost' type="text" class="form-control input-sm fld-att" style="text-align:right;padding-right:10px;"
+                                        ng-model="ctrl.display.production_cost" ng-readonly="ctrl.ACL.section1">
+                                </div>
                             </div>
                         </div>
-                        <div class="form-group" ng-hide="ctrl.currentUser.canEdit=='writer' || ctrl.currentUser.canEdit=='designer'">
-                            <label>Production Cost :</label>
-                            <div class="input-group">
-                                <span class="input-group-addon fld-att">$</span>
-                                <input id='production_cost' type="number" class="form-control input-sm fld-att" style="text-align:right;padding-right:10px;"
-                                    ng-model="ctrl.task.production_cost" min="0.01" step="0.01" ng-readonly="ctrl.ACL.section1">
+                        <div ng-hide="ctrl.readOnly">
+                            <div class="form-group" ng-hide="ctrl.currentUser.canEdit=='writer' || ctrl.currentUser.canEdit=='designer'">
+                                <label>Ad Spend :</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon fld-att">$</span>
+                                    <input id='ad_spend' type="number" class="form-control input-sm fld-att" style="text-align:right;padding-right:10px;" ng-model="ctrl.task.ad_spend"
+                                        min="0.01" step="0.01" ng-readonly="ctrl.ACL.section1">
+                                </div>
+                            </div>
+                            <div class="form-group" ng-hide="ctrl.currentUser.canEdit=='writer' || ctrl.currentUser.canEdit=='designer'">
+                                <label>Production Cost :</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon fld-att">$</span>
+                                    <input id='production_cost' type="number" class="form-control input-sm fld-att" style="text-align:right;padding-right:10px;"
+                                        ng-model="ctrl.task.production_cost" min="0.01" step="0.01" ng-readonly="ctrl.ACL.section1">
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -130,8 +148,9 @@
                                 <div class="form-group">
                                     <label>Job Classification</label>
                                     <select name="artwork_type" id="artwork_type" class="form-control input-sm select-att" ng-model="ctrl.task.artwork_type"
-                                        ng-disabled="ctrl.ACL.section3">
-                                        <option ng-repeat="option in ctrl.artwork_Types | unique : 'job_class' | orderBy:'job_class'" value="{{option.job_class}}">{{option.job_class}}</option>
+                                        ng-disabled="ctrl.ACL.section2" ng-change="ctrl.defineTypeOption();">
+                                        <option ng-repeat="option in ctrl.artwork_Types | unique : 'job_class' | orderBy:'job_class'" 
+                                        value="{{option.job_class}}">{{option.job_class}}</option>
                                     </select>
                                 </div>
                             </div>
@@ -139,7 +158,7 @@
                                 <div class="form-group">
                                     <label>Publication</label>
                                     <select name="publication" id="publication" class="form-control input-sm select-att" ng-model="ctrl.task.publication" ng-change="ctrl.defineLang();"
-                                        ng-disabled="ctrl.ACL.section3">
+                                        ng-disabled="ctrl.ACL.section2">
                                         <option ng-repeat="option in ctrl.pubOptions" value="{{option.product_code}}">{{option.product_name}}</option>
                                     </select>
                                 </div>
@@ -147,9 +166,8 @@
                             <div class="col-4 col-sm-4">
                                 <div class="form-group">
                                     <label>Other</label>
-                                    <input name="other_pub" id="other_pub" class="form-control input-sm fld-att" type="text" 
-                                    ng-model="ctrl.task.other_pub" ng-readonly="ctrl.ACL.section3"
-                                    ng-disabled="ctrl.task.publication != 'Other'">
+                                    <input name="other_pub" id="other_pub" class="form-control input-sm fld-att" type="text" ng-model="ctrl.task.other_pub" ng-readonly="ctrl.ACL.section2"
+                                        ng-disabled="ctrl.task.publication != 'Other'">
                                 </div>
                             </div>
                         </div>
@@ -157,9 +175,9 @@
                             <div class="col-4 col-sm-4">
                                 <div class="form-group">
                                     <label>Type</label>
-                                    <select name="pub_type" id="pub_type" ng-model="ctrl.task.pub_type" ng-disabled="ctrl.ACL.section3 || ctrl.task.artwork_type==null"
+                                    <select name="pub_type" id="pub_type" ng-model="ctrl.task.pub_type" ng-disabled="ctrl.ACL.section2 || ctrl.task.artwork_type==null"
                                         class="form-control input-sm select-att" ng-change="ctrl.defineType(true);">
-                                        <option ng-repeat="option in ctrl.pubTypes" value="{{option.code}}">{{option.name}}</option>
+                                        <option ng-repeat="option in ctrl.pubTypes | unique:'name'" value="{{option.code}}">{{option.name}}</option>
                                     </select>
                                 </div>
                             </div>
@@ -167,49 +185,19 @@
                                 <div class="form-group">
                                     <label>Pre-defined size</label>
                                     <select name="size_option" id="size_option" class="form-control input-sm select-att" ng-model="ctrl.task.size_option" ng-change="ctrl.defineSize();"
-                                        ng-disabled="ctrl.ACL.section3 || ctrl.task.pub_type==null">
+                                        ng-disabled="ctrl.ACL.section2 || ctrl.task.pub_type==null">
                                         <option ng-repeat="option in ctrl.pubSizes" value="{{option.size}}">{{option.size}}</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="col-4 col-sm-4">
                                 <div class="form-group">
-                                    <label>Height x Cols {{ctrl.task.size_option}}</label>
-                                    <input name="pub_size" id="pub_size" class="form-control input-sm fld-att" type="text" ng-model="ctrl.task.pub_size" text-mask="ctrl.MaskConfig.size"
-                                        ng-readonly="ctrl.ACL.section3 || ctrl.task.size_option != 'Other'  || ctrl.task.size_option=='' || ctrl.task.size_option==null">
+                                    <label>Size</label>
+                                    <input name="pub_size" id="pub_size" class="form-control input-sm fld-att" type="text" ng-model="ctrl.task.pub_size" ng-readonly="ctrl.ACL.section2 || ctrl.task.size_option != 'Other'  || ctrl.task.size_option=='' || ctrl.task.size_option==null">
                                 </div>
                             </div>
                         </div>
-                        <!--
-                        <div class="row">
-                            <div class="form-inline" style="width:100%;margin-left: 20px;">
-                                <div class="form-group" style="width:100%">
-                                    <label class="col-sm-2" style="padding:0px;">Language : </label>
-                                    <div class="col-sm-2" style="padding:0px;">
-                                        <div class="checkbox">
-                                            <input type="radio" id="language" ng-model="ctrl.task.language" value="English" ng-disabled="ctrl.ACL.section2" />
-                                            <label style="cursor:default;"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span>English</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-2" style="padding:0px;">
-                                        <div class="checkbox">
-                                            <input type="radio" id="language" ng-model="ctrl.task.language" value="Chinese" ng-disabled="ctrl.ACL.section2" />
-                                            <label style="cursor:default;"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span>Chinese</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-2" style="padding:0px;">
-                                        <div class="checkbox">
-                                            <div class="checkbox">
-                                                <input type="radio" id="language" ng-model="ctrl.task.language" value="Malay" ng-disabled="ctrl.ACL.section2" />
-                                                <label style="cursor:default;"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span>Malay</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-4">&nbsp; </div>
-                                </div>
-                            </div>
-                        </div>
-                        -->
+
                     </div>
                     <div class="box-footer">
                         <div class="row">
@@ -219,7 +207,8 @@
                                         <label class="col-xs-4" style="padding:0px;"><b>Colour :</b></label>
                                         <div class="col-xs-4" style="padding:0px;">
                                             <div class="checkbox" style="margin-top: 0px;">
-                                                <input type="radio" id="colour" ng-model="ctrl.task.colour" value="B&W" ng-disabled="ctrl.ACL.section2" />
+                                                <input type="radio" id="colour" ng-model="ctrl.task.colour" value="B&W" ng-change="ctrl.getCoordinator();" ng-disabled="ctrl.ACL.section2"
+                                                />
                                                 <label style="cursor:default;padding-left: 5px;">B&amp;W</label>
                                             </div>
                                         </div>
@@ -239,13 +228,15 @@
                                         <label class="col-xs-4" style="padding:0px;"><b>Language :</b></label>
                                         <div class="col-xs-4" style="padding:0px;">
                                             <div class="checkbox" style="margin-top: 0px;">
-                                                <input type="radio" id="language" ng-model="ctrl.task.language" value="English" ng-disabled="ctrl.ACL.section2" />
+                                                <input type="radio" id="language" ng-model="ctrl.task.language" value="English" ng-disabled="ctrl.ACL.section2" ng-change="ctrl.getCoordinator();"
+                                                />
                                                 <label style="cursor:default;padding-left: 5px;">English</label>
                                             </div>
                                         </div>
                                         <div class="col-xs-4" style="padding:0px;">
                                             <div class="checkbox" style="margin-top: 0px;">
-                                                <input type="radio" id="language" ng-model="ctrl.task.language" value="Chinese" ng-disabled="ctrl.ACL.section2" />
+                                                <input type="radio" id="language" ng-model="ctrl.task.language" value="Chinese" ng-disabled="ctrl.ACL.section2" ng-change="ctrl.getCoordinator();"
+                                                />
                                                 <label style="cursor:default;padding-left: 5px;">Chinese</label>
                                             </div>
                                         </div>
@@ -263,7 +254,7 @@
                                             ng-readonly="ctrl.ACL.section0" />
                                         <span class="input-group-btn">
                                             <button type="button" class="btn btn-default fld-att"   
-                                            ng-click="ctrl.openCalendar($event, 'dateTimePicker')" ng-disabled="ctrl.ACL.section3">
+                                            ng-click="ctrl.openCalendar($event, 'dateTimePicker')" ng-disabled="ctrl.ACL.section2">
                                                 <i class="fa fa-calendar"></i>
                                             </button>
                                         </span>
@@ -277,10 +268,10 @@
                                     <div class="input-group" style="width: 100%;">
                                         <span class="input-group-addon" style="width: 5%;">
                                                 <input type="checkbox" ng-model="ctrl.task.urgent" 
-                                                ng-change="ctrl.focusText('urgent_reason');" ng-readonly="ctrl.ACL.section3">
+                                                ng-change="ctrl.focusText('urgent_reason');" ng-readonly="ctrl.ACL.section2">
                                         </span>
                                         <input id="urgent_reason" type="text" class="form-control input-sm fld-att" style="width: 95%;padding-right: 0px;" ng-model="ctrl.task.urgent_reason"
-                                            ng-disabled="!ctrl.task.urgent" ng-readonly="ctrl.ACL.section3">
+                                            ng-disabled="!ctrl.task.urgent" ng-readonly="ctrl.ACL.section2">
                                     </div>
                                 </div>
                             </div>
@@ -304,7 +295,7 @@
                                     <p class="input-group">
                                         <input id='team_head' class="form-control input-sm fld-att" type="text" ng-model="ctrl.task.team_head" ng-readonly="ctrl.ACL.section0">
                                         <span class="input-group-btn">
-                                            <button type="button" class="btn btn-default fld-att" ng-disabled="ctrl.ACL.section4" 
+                                            <button type="button" class="btn btn-default fld-att" ng-disabled="ctrl.ACL.section3" 
                                             ng-click="ctrl.selectUser('ContentLAB', 'Creative', '5', 'team_head', '0');">
                                                 <i class="fa fa-user"></i>
                                             </button>
@@ -323,7 +314,7 @@
                                     <p class="input-group">
                                         <input id='designer' class="form-control input-sm fld-att" type="text" ng-model="ctrl.task.designer" ng-readonly="ctrl.ACL.section0">
                                         <span class="input-group-btn">
-                                            <button type="button" class="btn btn-default fld-att" ng-disabled="ctrl.ACL.section4"
+                                            <button type="button" class="btn btn-default fld-att" ng-disabled="ctrl.ACL.section3"
                                             ng-click="ctrl.selectUser('ContentLAB', 'Creative', '10', 'designer', '0');">
                                                 <i class="fa fa-user"></i>
                                             </button>
@@ -337,7 +328,7 @@
                                     <p class="input-group">
                                         <input id='writer' class="form-control input-sm fld-att" type="text" ng-model="ctrl.task.writer" ng-readonly="ctrl.ACL.section0">
                                         <span class="input-group-btn">
-                                            <button type="button" class="btn btn-default fld-att" ng-disabled="ctrl.ACL.section4"
+                                            <button type="button" class="btn btn-default fld-att" ng-disabled="ctrl.ACL.section3"
                                             ng-click="ctrl.selectUser('ContentLAB', 'Creative', '20', 'writer', '0');">
                                                 <i class="fa fa-user"></i>
                                             </button>
@@ -362,16 +353,14 @@
                     <div class="box-header curved">
                         Materials
                     </div>
-                    <div class="box-body" style="margin-top:10px;" ng-show="ctrl.ACL.section2">
-                        <div ng-bind-html="ctrl.task.materials_trix"></div>
-                    </div>
-                    <div class="box-body" style="margin-top:10px;" ng-hide="ctrl.ACL.section2">
+                    <div class="box-body" style="margin-top:10px;">
                         <trix-editor ng-model-options="{ updateOn: 'blur' }" spellcheck="false" class="trix-content" ng-model="ctrl.task.materials_trix"
                             angular-trix trix-initialize="ctrl.trixInitialize(e, editor, 'materials');" trix-change="trixChange(e, editor, 'materials');"
-                            trix-focus="trixFocus(e, editor, 'materials');" trix-selection-change="trixSelectionChange(e, editor, 'materials');"
-                            trix-attachment-remove="ctrl.trixAttachmentRemove(e, editor, 'materials');" trix-blur="ctrl.trixBlur(e,editor,'materials');"
-                            trix-file-accept="trixFileAccept(e, editor, 'materials');" trix-attachment-add="ctrl.trixAttachmentAdd(e, editor, 'materials');"
-                            ng-readonly="ctrl.ACL.section2" placeholder="" style='background-color:white;min-height:150px;'></trix-editor>
+                            trix-attachment-add="ctrl.trixAttachmentAdd(e, editor, 'materials');" trix-selection-change="trixSelectionChange(e, editor, 'materials');"
+                            trix-focus="trixFocus(e, editor, 'materials');" trix-attachment-remove="ctrl.trixAttachmentRemove(e, editor, 'materials');"
+                            trix-blur="ctrl.trixBlur(e,editor,'materials');" trix-file-accept="trixFileAccept(e, editor, 'materials');"
+                            style='background-color:white;min-height:150px;' ng-style="ctrl.ACL.section2 ? {'pointer-events':'none'}: {'pointer-events':'auto'};"
+                            placeholder="" ng-disabled="ctrl.ACL.section2"></trix-editor>
                     </div>
                     <div class="box-footer" style="margin-top:10px;">
                         <div class="row">
@@ -448,6 +437,76 @@
         </div>
         <!-- Materials & Instructions - END -->
 
+        <!-- Preview of Completed ARTICLE - START -->
+        <div class="row" ng-show="ctrl.statusNum > 1">
+            <div class="col-md-12">
+                <div class="box box-solid box-studio" style="margin-bottom: 10px;">
+                    <div class="box-header curved">
+                        <i>Text</i>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="box box-solid box-none">
+                    <div class="box-body" style="min-height: 150px;margin: 0;padding-top:5px;padding-bottom:0;">
+                        <table style="width:350px;border:0px solid gray;">
+                            <thead style="display: block;border-bottom:1px solid lightgray; ">
+                                <tr>
+                                    <th colspan="3" style="width:350px; text-align:left;"><i>Article attachment</i></th>
+                                </tr>
+                            </thead>
+                            <tbody style="display: block;overflow-y: auto;overflow-x: hidden;max-height: 100px;min-height: 100px;">
+                                <tr ng-repeat="file in ctrl.task.article" ng-class-odd="'stripedTableRow'">
+                                    <td style="width:200px;text-align:left;">
+                                        <a ng-href="{{file.url}}" target="_blank">{{file.name}}</a>
+                                    </td>
+                                    <td style="width:75px;text-align:center;">
+                                        {{file.uploadDt}}
+                                    </td>
+                                    <td style="width:75px;text-align:right;">
+                                        <a target="_self" ng-href="{{file.url}}" download="{{file.name}}">
+                                            <button   ng-show="file">                                                    
+                                                <i class="fa fa-download"></i>
+                                            </button>
+                                        </a>
+                                        <button ng-click="ctrl.deleteFile(file, 'article')" ng-hide="ctrl.ACL.section4" style="color:red;">
+                                             <i class="fa fa-trash-o"></i>	
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="box-footer" style="border-top:1px solid lightgray;padding-top:5px;margin:0;">
+                        <span ng-if="ctrl.task.article.length>0">{{ctrl.task.article.length}} &nbsp; attachment(s)</span>
+                        <div class="pull-right">
+                            <div class="btn btn-default" name="article" ngf-select="ctrl.uploadFiles($files, 'article')" ngf-multiple="true" style="border: 1;font-weight: bold;"
+                                ng-hide="ctrl.ACL.section4">Upload
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="overlay" ng-show='ctrl.spinners.article.visible'>
+                        <i class="fa fa-spinner fa-pulse fa-2x fa-fw text-danger"></i>
+                        <uib-progressbar class="progress-striped active" value="dynamic" type="warning">
+                            <b>{{ctrl.spinners.article.progress}}%</b>
+                        </uib-progressbar>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="box box-solid box-none">
+                    <div class="box-body" style="padding-top:0;padding-bottom:0;border:1px solid gray;">
+                        <div class="form-group">
+                            <textarea class="form-control ng-pristine ng-valid ng-empty ng-touched ng-untouched fld-att" style="resize: horizontal; min-height: 160px;border:0;cursor:text;"
+                                ng-model="ctrl.task.editorial" ng-readonly="ctrl.ACL.section4 || ctrl.task.status!='In Progress'"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Preview of Completed ARTICLE - END -->
+
         <!-- Preview of Completed Artwork - START  -->
         <div class="row" ng-if="ctrl.statusNum > 1">
             <div class="col-md-12">
@@ -459,16 +518,14 @@
             </div>
             <div class="col-md-8">
                 <div class="box box-solid">
-                    <div class="box-body" style="margin-top:10px;" ng-show="ctrl.ACL.section5">
-                        <div ng-bind-html="ctrl.task.artwork_trix"></div>
-                    </div>
-                    <div class="box-body" style="margin-top:10px;" ng-hide="ctrl.ACL.section5">
+                    <div class="box-body" style="margin-top:10px;">
                         <trix-editor ng-model-options="{ updateOn: 'blur' }" spellcheck="false" class="trix-content" ng-model="ctrl.task.artwork_trix"
                             angular-trix trix-initialize="ctrl.trixInitialize(e, editor, 'artwork');" trix-change="trixChange(e, editor, 'artwork');"
-                            trix-focus="trixFocus(e, editor, 'artwork');" trix-selection-change="trixSelectionChange(e, editor, 'artwork');"
-                            trix-attachment-remove="ctrl.trixAttachmentRemove(e, editor, 'artwork');" trix-blur="ctrl.trixBlur(e,editor,'artwork');"
-                            trix-file-accept="trixFileAccept(e, editor, 'artwork');" trix-attachment-add="ctrl.trixAttachmentAdd(e, editor, 'artwork');"
-                            ng-readonly="ctrl.ACL.section5" placeholder="" style='background-color:white;min-height:150px;'></trix-editor>
+                            trix-attachment-add="ctrl.trixAttachmentAdd(e, editor, 'artwork');" trix-selection-change="trixSelectionChange(e, editor, 'artwork');"
+                            trix-focus="trixFocus(e, editor, 'artwork');" trix-attachment-remove="ctrl.trixAttachmentRemove(e, editor, 'artwork');"
+                            trix-blur="ctrl.trixBlur(e,editor,'artwork');" trix-file-accept="trixFileAccept(e, editor, 'artwork');"
+                            style='background-color:white;min-height:150px;' ng-style="ctrl.ACL.section5 ? {'pointer-events':'none'}: {'pointer-events':'auto'};"
+                            placeholder="" ng-disabled="ctrl.ACL.section5"></trix-editor>
                     </div>
                     <div class="box-footer" style="margin-top:10px;">
                         <div class="row">
@@ -545,7 +602,7 @@
                         <div style="border:1px solid gray;">
                             <div class="form-group">
                                 <textarea class="form-control ng-pristine ng-valid ng-empty ng-touched ng-untouched" style="resize: horizontal; min-height: 130px;border:0;cursor:text;"
-                                    ng-model="ctrl.task.designer_comments" ng-readonly="ctrl.ACL.section5"></textarea>
+                                    ng-model="ctrl.task.designer_comment" ng-readonly="ctrl.ACL.section5"></textarea>
                             </div>
                         </div>
                     </div>
@@ -664,8 +721,8 @@
                                     </td>
 
                                     <td class="col-xs-3" style="text-align:center; color: black;" ng-hide="ctrl.ACL.section7 || option == null">
-                                        <button type="button" class="btn btn-danger pull-right" ng-show="vm.statusNum <= 2 || " ng-click="ctrl.deleteRow($index);"
-                                            style="text-align:center; color: black;" popover="Delete" popover-trigger="mouseenter">
+                                        <button type="button" class="btn btn-danger pull-right" ng-show="vm.statusNum <= 2" ng-click="ctrl.deleteRow($index);" style="text-align:center; color: black;"
+                                            popover="Delete" popover-trigger="mouseenter">
 											<i class="fa fa-trash-o"></i>													 
 										</button>
                                         <button type="button" class="btn btn-info pull-right" ng-click="ctrl.editRow(option, $index);" popover="Edit" popover-trigger="mouseenter"
@@ -763,7 +820,7 @@
                 <button type="button" class="btn btn-default" ng-click="ctrl.gotoMain();"><i class="fa fa-remove"></i> Close</button>
             </div>
             <div class="col-md-1">
-                <button type="button" class="btn btn-default btn-sm" ng-click="ctrl.developerLog=!ctrl.developerLog" style="border: 1px solid #a1a1a1;border-radius: 25px;background:white;">
+                <button type="button" class="btn btn-default btn-sm" ng-click="ctrl.developerLog=!ctrl.developerLog" ng-show="ctrl.isLogEnabled" style="border: 1px solid #a1a1a1;border-radius: 25px;background:white;">
                      <i class="fa fa-question-circle"></i>
                 </button>
             </div>
@@ -875,7 +932,7 @@
                          <i class="fa fa-comments-o"></i> Chat
                     </button>
 
-                    <button type="button" class="btn btn-default btn-sm" ng-click="ctrl.developerLog=!ctrl.developerLog" style="border: 1px solid #a1a1a1;border-radius: 25px;background:white;margin-left: 10px;margin-right: 10px;">
+                    <button type="button" class="btn btn-default btn-sm" ng-click="ctrl.developerLog=!ctrl.developerLog" ng-show="ctrl.isLogEnabled" style="border: 1px solid #a1a1a1;border-radius: 25px;background:white;margin-left: 10px;margin-right: 10px;">
                         <i class="fa fa-question-circle"></i>
                     </button>
                 </div>

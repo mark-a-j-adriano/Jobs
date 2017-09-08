@@ -1,9 +1,9 @@
-app.controller('LoginCtrl', function ($auth, $state, $window, $stateParams, toastr, DataFactory, StorageFactory, devUserList, cookieActive) {
+app.controller('LoginCtrl', function ($auth, $state, $window, $stateParams, toastr, DataFactory, StorageFactory, devUserList, cookieActive, Idle) {
     var vm = this;
     vm.isDev = false;
     //console.log('hostname:'+ JSON.stringify($window.location.hostname));
     //vm.isUAT = (window.location.hostname.includes("-dev") || window.location.hostname.includes("localhost")) ? true : false;
-    vm.isUAT = true;
+    vm.isUAT = StorageFactory.getAppSettings('ENV')=='UAT' ? true : false;
     vm.userName = '';
     vm.eMail = '';
     vm.passWord = '';
@@ -11,7 +11,7 @@ app.controller('LoginCtrl', function ($auth, $state, $window, $stateParams, toas
     var userInfor = {};
     var ret_URI = StorageFactory.getURI();
 
-
+    Idle.unwatch();
     if (vm.isUAT) vm.userList = devUserList;
 
     vm.SignIn = function () {
@@ -116,8 +116,8 @@ app.controller('LoginCtrl', function ($auth, $state, $window, $stateParams, toas
         DataFactory.getRequestor(usrID).then(
             //success
             function (response) {
-                //console.log('response.data : ' + JSON.stringify(response.data));
-                ////console.log('response.status : ' + JSON.stringify(response.status));
+                console.log('response.data : ' + JSON.stringify(response.data));
+                console.log('response.status : ' + JSON.stringify(response.status));
                 userInfor.id = usrID;
                 userInfor.name = response.data.submitted_by;
                 userInfor.phone = response.data.mobile_no;
@@ -129,8 +129,7 @@ app.controller('LoginCtrl', function ($auth, $state, $window, $stateParams, toas
                 delete userInfor.ext;
 
 
-                ////console.log('userInfor : ' + JSON.stringify(userInfor));
-                //UserData.setUserData(userInfor);
+                console.log('userInfor : ' + JSON.stringify(userInfor));
                 StorageFactory.setSessionData(userInfor, null);
                 if (_.isUndefined(ret_URI) || _.isNull(ret_URI) || ret_URI == '' || ret_URI.includes("login")) {
                     var accessLVL = parseInt(userInfor.role);
@@ -193,48 +192,101 @@ app.controller('LoginCtrl', function ($auth, $state, $window, $stateParams, toas
 
 });
 
-app.controller('NavCtrl', function ($auth, $state, toastr, StorageFactory) {
+app.controller('NavCtrl', function ($auth, $state, $scope, $uibModal, toastr, StorageFactory, Idle, Keepalive, DataFactory) {
     var vm = this;
     vm.fullName = "";
+    vm.role = null;
+
+    $scope.started = false;
+    function closeModals() {
+        if ($scope.warning) {
+            $scope.warning.close();
+            $scope.warning = null;
+        }
+
+        if ($scope.timedout) {
+            $scope.timedout.close();
+            $scope.timedout = null;
+        }
+    }
+
+    $scope.$on('IdleStart', function () {
+        closeModals();
+
+        $scope.warning = $uibModal.open({
+            templateUrl: 'partials/common/warning.html',
+            windowClass: 'modal-warning'
+        });
+    });
+
+    $scope.$on('IdleEnd', function () {
+        closeModals();
+        DataFactory.getCurrentUser();
+    });
+
+    $scope.$on('IdleTimeout', function () {
+        closeModals();
+        $scope.timedout = $uibModal.open({
+            templateUrl: 'partials/common/timeout.html',
+            windowClass: 'modal-danger'
+        });
+        vm.logOut(false);
+    });
+
+    $scope.start = function () {
+        closeModals();
+        Idle.watch();
+        $scope.started = true;
+    };
+
+    $scope.stop = function () {
+        closeModals();
+        Idle.unwatch();
+        $scope.started = false;
+
+    };
 
     vm.isAuthenticated = function () {
-        var userData = StorageFactory.getSessionData(false);
-        ////console.log('userData : ' + JSON.stringify(userData));
-        if (_.isUndefined(userData) || _.isNull(userData)) { } else {
-            if (_.isUndefined(userData.name) || _.isNull(userData.name)) { } else {
-                vm.fullName = userData.name
-                var accessLVL = parseInt(userData.role);
-                if (accessLVL > 29) {
-                    vm.role = "Sales"
-                } else if (accessLVL > 24) {
-                    vm.role = "Sales Team Lead"
-                } else if (accessLVL > 19) {
-                    vm.role = "Copywriter"
-                } else if (accessLVL > 9) {
-                    vm.role = "Designer"
-                } else if (accessLVL > 4) {
-                    vm.role = "Coordinator"
-                } else {
-                    vm.role = "Administrator"
+        if ($auth.isAuthenticated()) {
+            var userData = StorageFactory.getSessionData(false);
+            ////console.log('userData : ' + JSON.stringify(userData));
+            if (_.isUndefined(userData) || _.isNull(userData)) { } else {
+                if (_.isUndefined(userData.name) || _.isNull(userData.name)) { } else {
+                    vm.fullName = userData.name
+                    var accessLVL = parseInt(userData.role);
+                    if (accessLVL > 29) {
+                        vm.role = "Sales"
+                    } else if (accessLVL > 24) {
+                        vm.role = "Sales Team Lead"
+                    } else if (accessLVL > 19) {
+                        vm.role = "Copywriter"
+                    } else if (accessLVL > 9) {
+                        vm.role = "Designer"
+                    } else if (accessLVL > 4) {
+                        vm.role = "Coordinator"
+                    } else {
+                        vm.role = "Administrator"
+                    }                    
                 }
-                vm.role
-            }
-        };
+            };
+            $scope.start();
+
+        }
+
         return $auth.isAuthenticated();
     };
 
-    vm.logOut = function () {
+    vm.logOut = function (flg) {
         vm.fullName = "";
         $auth.logout();
         StorageFactory.clearSessionData();
-        toastr.info('You have been logged out', { closeButton: true });
+        if (flg) toastr.info('You have been logged out', { closeButton: true });
         StorageFactory.setFlg();
-        //StorageFactory.setURI(null);
-        //var orig_URI = window.location.href;
-        //var res = orig_URI.split("/#!/");
-        //window.location.href = res[0];
+        $scope.stop();
         $state.go('login');
     };
+
+
 
 });
 

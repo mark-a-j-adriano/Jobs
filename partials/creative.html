@@ -483,14 +483,14 @@
                 <div class="pull-right" ng-show="ctrl.readOnly">
                     <button type="button" class="btn btn-primary" ng-click="ctrl.editJob();" ng-show="ctrl.currentUser.canEdit || ctrl.job.status=='Completed'">
                         <i class="fa fa-pencil-square-o"></i> Edit</button>
-                    <button type="button" class="btn btn-default btn-sm" ng-click="ctrl.developerLog=!ctrl.developerLog" style="border: 1px solid #a1a1a1;border-radius: 25px;background:white;margin-left: 10px;margin-right: 10px;">
+                    <button type="button" class="btn btn-default btn-sm" ng-click="ctrl.developerLog=!ctrl.developerLog" ng-show="ctrl.isLogEnabled" style="border: 1px solid #a1a1a1;border-radius: 25px;background:white;margin-left: 10px;margin-right: 10px;">
                         <i class="fa fa-question-circle"></i>
                     </button>
                 </div>
                 <div class="pull-right" ng-hide="ctrl.readOnly">
                     <button type="button" class="btn btn-primary" ng-click="ctrl.checkValidity();" ng-show='ctrl.currentUser.canEdit'>
                         <i class="fa fa-save"></i> Save</button>
-                    <button type="button" class="btn btn-default btn-sm" ng-click="ctrl.developerLog=!ctrl.developerLog" style="border: 1px solid #a1a1a1;border-radius: 25px;background:white;">
+                    <button type="button" class="btn btn-default btn-sm" ng-click="ctrl.developerLog=!ctrl.developerLog" ng-show="ctrl.isLogEnabled" style="border: 1px solid #a1a1a1;border-radius: 25px;background:white;">
                         <i class="fa fa-question-circle"></i>
                     </button>
                 </div>

@@ -12,7 +12,8 @@ app.controller('displayCTRL', function ($state, $auth, $uibModal, $stateParams, 
     vm.task = {};
     vm.animationsEnabled = true;
     vm.statusNum = 0;
-    vm.developerLog = false;
+    vm.developerLog = false;    
+    vm.isLogEnabled = StorageFactory.getAppSettings('LOG') ? true : false;
     vm.pubTypes = [{ code: 'CLS', name: 'Classified' }, { code: 'DSP', name: 'Display' }];
     vm.filesForDeletion = [];
     vm.qProductsError = false;
@@ -36,26 +37,6 @@ app.controller('displayCTRL', function ($state, $auth, $uibModal, $stateParams, 
         artwork: { visible: false, progress: 0 },
         article: { visible: false, progress: 0 },
         creative: { visible: false, progress: 0 },
-    }
-
-    if (_.isUndefined(currentUser) || _.isNull(currentUser)) {
-        var poi = StorageFactory.getSessionData(false);
-        if (_.isUndefined(poi) || _.isNull(poi)) {
-            //console.log('window.location.href : ' + JSON.stringify(window.location));
-            StorageFactory.setURI(window.location.href);
-            $state.go('login');
-        } else {
-            //console.log('currentUser[0] : ' + JSON.stringify(currentUser));
-            currentUser = poi;
-            vm.currentUser = poi;
-            vm.currentUser.canEdit = '';
-            vm.currentUser.userAction = $stateParams.action;
-        }
-    } else {
-        //console.log('currentUser[1] : ' + JSON.stringify(currentUser));
-        vm.currentUser = currentUser;
-        vm.currentUser.canEdit = '';
-        vm.currentUser.userAction = $stateParams.action;
     }
 
     vm.cleanArray = function (tmpArray) {
@@ -366,6 +347,12 @@ app.controller('displayCTRL', function ($state, $auth, $uibModal, $stateParams, 
                         ////console.log('[getTmpID - getMember] - response.status : ' + JSON.stringify(response.status));
                         vm.task.operations = response.data[0].name;
                         vm.task.operations_username = response.data[0].username;
+
+                        if (_.isUndefined(response.data) || _.isNull(response.data) || _.isEmpty(response.data)) {
+                        } else {
+                            vm.task.operations = response.data[0].name;
+                            vm.task.operations_username = response.data[0].username;
+                        }
 
                         //console.log('[getTmpID - operations] : ' + vm.task.operations);
                         //console.log('[getTmpID - operations_username] : ' + vm.task.operations_username);
@@ -1255,7 +1242,7 @@ app.controller('displayCTRL', function ($state, $auth, $uibModal, $stateParams, 
 
         angular.forEach(files, function (file) {
             file.upload = Upload.upload({
-                url: './service/upload.php',
+                url: StorageFactory.getAppSettings('UPL'),
                 method: 'POST',
                 file: file,
                 data: details,
@@ -1457,25 +1444,38 @@ app.controller('displayCTRL', function ($state, $auth, $uibModal, $stateParams, 
         //_.findLastIndex(array, {}) 
     };
 
-    if ($stateParams.action == "create") {
-        //console.log('[DISPLAY] - create');
-        vm.currentUser.canEdit = 'sales';
-        vm.readOnly = false;
-        vm.getTmpID();
-        vm.getPubOptionsList();
-        vm.getArtworkTypes();
-    } else {
-        //console.log('[DISPLAY] - read');
-        vm.readOnly = true;
-        vm.getPubOptionsList();
-        vm.getArtworkTypes();
-        vm.getTask();
+    vm.firstAction = function () {
+        if ($stateParams.action == "create") {
+            //console.log('[DISPLAY] - create');
+            vm.currentUser.canEdit = 'sales';
+            vm.readOnly = false;
+            vm.getTmpID();
+            vm.getPubOptionsList();
+            vm.getArtworkTypes();
+        } else {
+            //console.log('[DISPLAY] - read');
+            vm.readOnly = true;
+            vm.getPubOptionsList();
+            vm.getArtworkTypes();
+            vm.getTask();
+        };
     };
+
+    if (_.isUndefined(currentUser) || _.isNull(currentUser)) {
+        StorageFactory.setURI(window.location.href);
+        $state.go('login');
+    } else {
+        //console.log('currentUser[1] : ' + JSON.stringify(currentUser));
+        vm.currentUser = currentUser;
+        vm.currentUser.canEdit = '';
+        vm.currentUser.userAction = $stateParams.action;
+        vm.firstAction();
+    }
 
     ////console.log('$routeParams.orderId : ' + $routeParams.orderId);
     //console.log('END - displayCTRL');
 });
-app.controller('displayModalCtrl', function ($timeout, $uibModalInstance, focus, toastr, parentData, product, Upload) {
+app.controller('displayModalCtrl', function ($timeout, $uibModalInstance, focus, toastr, parentData, product, Upload, StorageFactory) {
     var vm = this;
     vm.pubOptions = parentData.items;
     vm.filter = parentData.filters;
@@ -1662,7 +1662,7 @@ app.controller('displayModalCtrl', function ($timeout, $uibModalInstance, focus,
         angular.forEach(files, function (file) {
             //console.log('[uploadFiles] - file : ', file);
             file.upload = Upload.upload({
-                url: './service/upload.php',
+                url: StorageFactory.getAppSettings('UPL'),
                 method: 'POST',
                 file: file,
                 data: details,

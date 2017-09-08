@@ -13,6 +13,7 @@ app.controller('classifiedCTRL', function ($sce, $state, $auth, $uibModal, $stat
     vm.isFldDisabled = true;
     vm.statusNum = 0;
     vm.developerLog = false;
+    vm.isLogEnabled = StorageFactory.getAppSettings('LOG') ? true : false;
     vm.pubTypes = [{ code: 'CLS', name: 'Classified' }, { code: 'DSP', name: 'Display' }];
     vm.filesForDeletion = [];
     vm.qProductsError = false;
@@ -23,14 +24,14 @@ app.controller('classifiedCTRL', function ($sce, $state, $auth, $uibModal, $stat
     vm.trixEditor1 = false;
     vm.trixEditor2 = false;
     vm.cc_response_dsp = [];
-    var host = './service/upload.php';
+    var host = StorageFactory.getAppSettings('UPL');
     var createStorageKey, host, uploadAttachment;
     var events = ['trixInitialize', 'trixChange', 'trixSelectionChange', 'trixFocus',
         'trixBlur', 'trixFileAccept', 'trixAttachmentAdd', 'trixAttachmentRemove'];
 
     for (var i = 0; i < events.length; i++) {
         vm[events[i]] = function (e) {
-            console.info('Event type:', e.type);
+            //console.info('Event type:', e.type);
         }
     };
 
@@ -45,26 +46,6 @@ app.controller('classifiedCTRL', function ($sce, $state, $auth, $uibModal, $stat
         section6: true,     //Preview of Completed Artwork  - APPROVAL - sales
         section7: true,     //Product Details      
     };
-
-    if (_.isUndefined(currentUser) || _.isNull(currentUser)) {
-        var poi = StorageFactory.getSessionData(false);
-        if (_.isUndefined(poi) || _.isNull(poi)) {
-            //console.log('window.location.href : ' + JSON.stringify(window.location));
-            StorageFactory.setURI(window.location.href);
-            $state.go('login');
-        } else {
-            //console.log('currentUser[0] : ' + JSON.stringify(currentUser));
-            currentUser = poi;
-            vm.currentUser = poi;
-            vm.currentUser.canEdit = '';
-            vm.currentUser.userAction = $stateParams.action;
-        }
-    } else {
-        //console.log('currentUser[1] : ' + JSON.stringify(currentUser));
-        vm.currentUser = currentUser;
-        vm.currentUser.canEdit = '';
-        vm.currentUser.userAction = $stateParams.action;
-    }
 
     vm.cleanArray = function (tmpArray) {
         //console.log("[cleanArray] tmpArray - ", tmpArray);
@@ -314,7 +295,7 @@ app.controller('classifiedCTRL', function ($sce, $state, $auth, $uibModal, $stat
         };
         file = attachment.file;
         file.upload = Upload.upload({
-            url: './service/upload.php',
+            url: StorageFactory.getAppSettings('UPL'),
             method: 'POST',
             file: file,
             data: details,
@@ -691,8 +672,11 @@ app.controller('classifiedCTRL', function ($sce, $state, $auth, $uibModal, $stat
                     function (response) {
                         ////console.log('[getTmpID - getMember] - response.data : ' + JSON.stringify(response.data));
                         ////console.log('[getTmpID - getMember] - response.status : ' + JSON.stringify(response.status));
-                        vm.task.team_head = response.data[0].name;
-                        vm.task.team_head_username = response.data[0].username;
+                        if (_.isUndefined(response.data) || _.isNull(response.data) || _.isEmpty(response.data)) {
+                        } else {
+                            vm.task.team_head = response.data[0].name;
+                            vm.task.team_head_username = response.data[0].username;
+                        }
 
                         //console.log('[getTmpID - team_head] : ' + vm.task.team_head);
                         //console.log('[getTmpID - team_head_username] : ' + vm.task.team_head_username);
@@ -799,7 +783,8 @@ app.controller('classifiedCTRL', function ($sce, $state, $auth, $uibModal, $stat
                         vm.task.artwork = vm.cleanArray(JSON.parse(vm.task.artwork));
                     }
 
-                    if (_.isUndefined(vm.task.artwork_trix) || _.isNull(vm.task.artwork_trix) || _.isEmpty(vm.task.artwork_trix) || vm.task.artwork_trix == "" || vm.task.artwork_trix == "[]" || vm.task.artwork_trix == "{}") {
+                    if (_.isUndefined(vm.task.artwork_trix) || _.isNull(vm.task.artwork_trix) || _.isEmpty(vm.task.artwork_trix) ||
+                        vm.task.artwork_trix == "" || vm.task.artwork_trix == "[]" || vm.task.artwork_trix == "{}") {
                         vm.task.artwork_trix = "";
                     } else {
                         vm.task.artwork_trix = JSON.parse(vm.task.artwork_trix);
@@ -1392,15 +1377,6 @@ app.controller('classifiedCTRL', function ($sce, $state, $auth, $uibModal, $stat
             );
         } else {
             var default_val = vm.task[retFld + "_username"];
-            /*
-            if (retFld == 'designer') {
-                default_val = vm.task.designer_username;
-            } else if (retFld == 'writer') {
-                default_val = vm.task.writer_username;
-            } else {
-                default_val = vm.task.team_head_username;
-            }
-            */
             var modalInstance = $uibModal.open({
                 animation: vm.animationsEnabled,
                 templateUrl: 'partials/common/member.html',
@@ -1425,25 +1401,6 @@ app.controller('classifiedCTRL', function ($sce, $state, $auth, $uibModal, $stat
                 vm.task[retFld] = submitVar.name;
                 vm.task[retFld + "_username"] = submitVar.username;
 
-                /*
-                if (retFld == 'designer') {
-                    vm.task.designer = submitVar.name;
-                    vm.task.designer_username = submitVar.username;
-                    vm.task.buddy = submitVar.backup_person;
-                    vm.task.buddy_username = submitVar.backup;
-                } else if (retFld == 'buddy') {
-                    vm.task.buddy = submitVar.name;
-                    vm.task.buddy_username = submitVar.username;
-                } else if (retFld == 'writer') {
-                    vm.task.writer = submitVar.name;
-                    vm.task.writer_username = submitVar.username;
-                } else if (retFld == 'team_head') {
-                    vm.task.team_head = submitVar.name;
-                    vm.task.team_head_username = submitVar.username;
-                } else {
-                    vm.getUser(submitVar.username, retFld);
-                }
-                */
             })
         }
     };
@@ -1658,7 +1615,7 @@ app.controller('classifiedCTRL', function ($sce, $state, $auth, $uibModal, $stat
 
         angular.forEach(files, function (file) {
             file.upload = Upload.upload({
-                url: './service/upload.php',
+                url: StorageFactory.getAppSettings('UPL'),
                 method: 'POST',
                 file: file,
                 data: details,
@@ -1807,20 +1764,34 @@ app.controller('classifiedCTRL', function ($sce, $state, $auth, $uibModal, $stat
         vm.productList = vm.cleanArray(vm.productList);
         //_.findLastIndex(array, {}) 
     };
-    if ($stateParams.action == "create") {
-        //console.log('[CLASSIFIED] - create');
-        vm.currentUser.canEdit = 'sales';
-        vm.readOnly = false;
-        vm.getTmpID();
-        vm.getPubOptionsList();
-        vm.getArtworkTypes();
-    } else {
-        //console.log('[CLASSIFIED] - read');
-        vm.readOnly = true;
-        vm.getPubOptionsList();
-        vm.getArtworkTypes();
-        vm.getTask();
+
+    vm.firstAction = function () {
+        if ($stateParams.action == "create") {
+            //console.log('[CLASSIFIED] - create');
+            vm.currentUser.canEdit = 'sales';
+            vm.readOnly = false;
+            vm.getTmpID();
+            vm.getPubOptionsList();
+            vm.getArtworkTypes();
+        } else {
+            //console.log('[CLASSIFIED] - read');
+            vm.readOnly = true;
+            vm.getPubOptionsList();
+            vm.getArtworkTypes();
+            vm.getTask();
+        };
     };
+
+    if (_.isUndefined(currentUser) || _.isNull(currentUser)) {
+        StorageFactory.setURI(window.location.href);
+        $state.go('login');
+    } else {
+        //console.log('currentUser[1] : ' + JSON.stringify(currentUser));
+        vm.currentUser = currentUser;
+        vm.currentUser.canEdit = '';
+        vm.currentUser.userAction = $stateParams.action;
+        vm.firstAction();
+    }
 
     ////console.log('$routeParams.orderId : ' + $routeParams.orderId);
     //console.log('END - classifiedCTRL');
@@ -2023,41 +1994,6 @@ app.controller('classifiedModalCtrl', function ($uibModalInstance, focus, toastr
                 vm.isActive2 = false;
             }
         }
-        /*
-        if (fld == 'etNum') {
-            vm.product.etNum = null;
-            vm.product.cashNum = null;
-            vm.product.cashNum_tbd = null;
-            vm.product.cashDate = null;
-            vm.product.filename = vm.product.etNum;
-            vm.isActive2 = true;
-            vm.isActive1 = false;
-        } else if (fld == 'etNum_tbd') {
-            vm.product.etNum_tbd = null;
-            vm.product.cashNum = null;
-            vm.product.cashNum_tbd = null;
-            vm.product.cashDate = null;
-            vm.product.filename = vm.product.etNum;
-            vm.isActive2 = true;
-            vm.isActive1 = false;
-        } else if (fld == 'cashNum_tbd') {
-            vm.product.cashNum_tbd = null;
-            vm.product.etNum = null;
-            vm.product.etNum_tbd = null;
-            vm.product.etDate = null;
-            vm.product.filename = vm.product.cashNum;
-            vm.isActive1 = true;
-            vm.isActive2 = false;
-        } else {
-            vm.product.cashNum = null;
-            vm.product.etNum = null;
-            vm.product.etNum_tbd = null;
-            vm.product.etDate = null;
-            vm.product.filename = vm.product.cashNum;
-            vm.isActive1 = true;
-            vm.isActive2 = false;
-        }
-        */
     };
 
     vm.ok = function () {

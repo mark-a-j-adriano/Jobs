@@ -189,12 +189,13 @@
                                             <div class="input-group" style="width: 100%;padding:0%">
                                                 <span class="input-group-addon" style="width: 5%;">
                                                         <input type="checkbox" ng-model="ctrl.RadioContracts[$index].isSelected" 
-                                                        ng-change="ctrl.focusText($index);" ng-disabled="ctrl.ACL.section3">
+                                                        ng-change="ctrl.focusText($index);" ng-disabled="ctrl.ACL.section2">
                                                         <!--<i class="fa fa-check-square-o" aria-hidden="true" ng-show="ctrl.ACL.section3"></i>-->
                                                 </span>
 
-                                                <input class="form-control input-sm fld-att" type="text" ng-model="ctrl.RadioContracts[$index].text" style="width: 95%;padding-right: 0px;font-weight:bold;"
-                                                    ng-readonly="ctrl.ACL.section0" id="details_{{$index}}">
+                                                <input class="form-control input-sm fld-att" type="text" ng-model="ctrl.RadioContracts[$index].text" 
+                                                style="width: 95%;padding-right: 0px;font-weight:bold;cursor:text"
+                                                    ng-readonly="ctrl.ACL.section2 || !ctrl.RadioContracts[$index].isSelected" id="details_{{$index}}">
                                             </div>
                                         </div>
                                     </div>
@@ -206,12 +207,13 @@
                                             <div class="input-group" style="width: 100%;padding:0%">
                                                 <span class="input-group-addon" style="width: 5%;">
                                                         <input type="checkbox" ng-model="ctrl.RadioContracts[$index + 1].isSelected" 
-                                                        ng-change="ctrl.focusText($index + 1);" ng-disabled="ctrl.ACL.section3">
+                                                        ng-change="ctrl.focusText($index + 1);" ng-disabled="ctrl.ACL.section2">
                                                         <!--<i class="fa fa-check-square-o" aria-hidden="true" ng-show="ctrl.ACL.section3"></i>-->
                                                 </span>
 
-                                                <input class="form-control input-sm fld-att" type="text" ng-model="ctrl.RadioContracts[$index + 1].text" style="width: 95%;padding-right: 0px;font-weight:bold;"
-                                                    ng-readonly="ctrl.ACL.section0" id="details_{{$index + 1}}">
+                                                <input class="form-control input-sm fld-att" type="text" ng-model="ctrl.RadioContracts[$index + 1].text" 
+                                                    style="width: 95%;padding-right: 0px;font-weight:bold;cursor:text;"
+                                                    ng-readonly="ctrl.ACL.section2 || !ctrl.RadioContracts[$index + 1].isSelected" id="details_{{$index + 1}}">
                                             </div>
                                         </div>
                                     </div>
@@ -239,7 +241,7 @@
                                             is-open="ctrl.dateTimePicker1.open" />
                                         <span class="input-group-btn">
                                             <button type="button" class="btn btn-default fld-att"   
-                                            ng-click="ctrl.openCalendar($event, 'dateTimePicker1')" ng-disabled="ctrl.ACL.section3">
+                                            ng-click="ctrl.openCalendar($event, 'dateTimePicker1')" ng-disabled="ctrl.ACL.section2">
                                                 <i class="fa fa-calendar"></i>
                                             </button>
                                         </span>
@@ -255,7 +257,7 @@
                                             is-open="ctrl.dateTimePicker2.open" />
                                         <span class="input-group-btn">
                                             <button type="button" class="btn btn-default fld-att"   
-                                            ng-click="ctrl.openCalendar($event, 'dateTimePicker2')" ng-disabled="ctrl.ACL.section3">
+                                            ng-click="ctrl.openCalendar($event, 'dateTimePicker2')" ng-disabled="ctrl.ACL.section2">
                                                 <i class="fa fa-calendar"></i>
                                             </button>
                                         </span>
@@ -280,7 +282,7 @@
                                     <p class="input-group">
                                         <input id='project_manager' class="form-control input-sm fld-att" type="text" ng-model="ctrl.task.project_manager" ng-readonly="ctrl.ACL.section0">
                                         <span class="input-group-btn">
-                                            <button type="button" class="btn btn-default fld-att" ng-disabled="ctrl.ACL.section4" 
+                                            <button type="button" class="btn btn-default fld-att" ng-disabled="ctrl.ACL.section3" 
                                             ng-click="ctrl.selectUser('RadioLAB', 'Creative', '5', 'project_manager', '0');">
                                                 <i class="fa fa-user"></i>
                                             </button>
@@ -294,7 +296,7 @@
                                     <p class="input-group">
                                         <input id='team_members' class="form-control input-sm fld-att" type="text" ng-model="ctrl.task.team_members" ng-readonly="ctrl.ACL.section0">
                                         <span class="input-group-btn">
-                                            <button type="button" class="btn btn-default fld-att" ng-disabled="ctrl.ACL.section4" 
+                                            <button type="button" class="btn btn-default fld-att" ng-disabled="ctrl.ACL.section3" 
                                             ng-click="ctrl.selectUser('RadioLAB', 'Creative', [5, 10], 'team_members', '0');">
                                                 <i class="fa fa-user"></i>
                                             </button>
@@ -322,7 +324,8 @@
                     </div>
                     <div class="box-body">
                         <div class="form-group" style="border:1px solid gray;">
-                            <textarea id="objective" ng-model="ctrl.task.objective" ng-readonly="ctrl.ACL.section3" class="form-control ng-pristine ng-valid ng-empty ng-touched ng-untouched fld-att"
+                            <textarea id="objective" ng-model="ctrl.task.objective" ng-readonly="ctrl.ACL.section2" 
+                                class="form-control ng-pristine ng-valid ng-empty ng-touched ng-untouched fld-att"
                                 style="resize: horizontal; min-height: 150px;border:0;cursor:text;"></textarea>
                         </div>
                     </div>
@@ -360,7 +363,7 @@
                                                 <i class="fa fa-download"></i>
                                             </button>
                                         </a>
-                                        <button ng-click="ctrl.deleteFile($index, file, 'materials')" ng-hide="ctrl.ACL.section3" style="color:red;">
+                                        <button ng-click="ctrl.deleteFile($index, file, 'materials')" ng-hide="ctrl.ACL.section2" style="color:red;">
                                              <i class="fa fa-trash-o"></i>	
                                         </button>
                                     </td>
@@ -372,7 +375,7 @@
                         <span ng-if="ctrl.task.materials.length>0">{{ctrl.task.materials.length}} &nbsp; attachment(s)</span>
                         <div class="pull-right">
                             <div class="btn btn-default" name="materials" ngf-select="ctrl.uploadFiles($files, 'materials')" ngf-multiple="true" style="border: 1;font-weight: bold;"
-                                ng-hide="ctrl.ACL.section3">Upload
+                                ng-hide="ctrl.ACL.section2">Upload
                             </div>
                         </div>
 
@@ -389,7 +392,7 @@
                         <div style="border:1px solid gray;">
                             <div class="form-group">
                                 <textarea id="instruction" ng-model="ctrl.task.instruction" class="form-control ng-pristine ng-valid ng-empty ng-touched ng-untouched fld-att"
-                                    style="resize: horizontal; min-height: 165px;border:0;cursor:text;" ng-readonly="ctrl.ACL.section3"></textarea>
+                                    style="resize: horizontal; min-height: 165px;border:0;cursor:text;" ng-readonly="ctrl.ACL.section2"></textarea>
                             </div>
                         </div>
                     </div>
@@ -430,7 +433,7 @@
                                                 <i class="fa fa-download"></i>
                                             </button>
                                         </a>
-                                        <button ng-click="ctrl.deleteFile(file, 'artwork')" ng-hide="ctrl.ACL.section5" style="color:red;">
+                                        <button ng-click="ctrl.deleteFile(file, 'artwork')" ng-hide="ctrl.ACL.section4" style="color:red;">
                                              <i class="fa fa-trash-o"></i>	
                                         </button>
                                     </td>
@@ -442,7 +445,7 @@
                         <span ng-if="ctrl.task.artwork.length>0">{{ctrl.task.artwork.length}} &nbsp; attachment(s)</span>
                         <div class="pull-right">
                             <div class="btn btn-default" name="artwork" ngf-select="ctrl.uploadFiles($files, 'artwork')" ngf-multiple="true" style="border: 1;font-weight: bold;"
-                                ng-hide="ctrl.ACL.section5">Upload
+                                ng-hide="ctrl.ACL.section4">Upload
                             </div>
                         </div>
 
@@ -454,7 +457,7 @@
                     <div class="box-body" style="padding-top:0;padding-bottom:0;border:1px solid gray;">
                         <div class="form-group">
                             <textarea class="form-control ng-pristine ng-valid ng-empty ng-touched ng-untouched fld-att" style="resize: horizontal; min-height: 160px;border:0;cursor:text;"
-                                ng-model="ctrl.task.artwork_detail" ng-readonly="ctrl.ACL.section5 || ctrl.task.status!='In Progress'"></textarea>
+                                ng-model="ctrl.task.artwork_detail" ng-readonly="ctrl.ACL.section4 || ctrl.task.status!='In Progress'"></textarea>
                         </div>
                     </div>
                 </div>
@@ -542,7 +545,7 @@
                 <button type="button" class="btn btn-default" ng-click="ctrl.gotoMain();"><i class="fa fa-remove"></i> Close</button>
             </div>
             <div class="col-md-1">
-                <button type="button" class="btn btn-default btn-sm" ng-click="ctrl.developerLog=!ctrl.developerLog" style="border: 1px solid #a1a1a1;border-radius: 25px;background:white;">
+                <button type="button" class="btn btn-default btn-sm" ng-click="ctrl.developerLog=!ctrl.developerLog" ng-show="ctrl.isLogEnabled" style="border: 1px solid #a1a1a1;border-radius: 25px;background:white;">
                      <i class="fa fa-question-circle"></i>
                 </button>
             </div>
@@ -654,7 +657,7 @@
                          <i class="fa fa-comments-o"></i> Chat
                     </button>
 
-                    <button type="button" class="btn btn-default btn-sm" ng-click="ctrl.developerLog=!ctrl.developerLog" style="border: 1px solid #a1a1a1;border-radius: 25px;background:white;margin-left: 10px;margin-right: 10px;">
+                    <button type="button" class="btn btn-default btn-sm" ng-click="ctrl.developerLog=!ctrl.developerLog" ng-show="ctrl.isLogEnabled" style="border: 1px solid #a1a1a1;border-radius: 25px;background:white;margin-left: 10px;margin-right: 10px;">
                         <i class="fa fa-question-circle"></i>
                     </button>
                 </div>
