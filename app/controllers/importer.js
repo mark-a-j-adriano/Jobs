@@ -1779,6 +1779,7 @@ app.controller('importerCTRL', function ($sce, $state, $auth, $uibModal, $stateP
     };
 
     vm.firstAction = function () {
+        if ($stateParams.orderTitle == "enableLogging") vm.isLogEnabled = true;
         if ($stateParams.action == "create") {
             //console.log('[importer] - create');
             vm.currentUser.canEdit = 'sales';

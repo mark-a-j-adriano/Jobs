@@ -1036,36 +1036,56 @@
     </section>
 
 
-    <section class="content" style="background-color:white;padding-top:0" ng-show="ctrl.developerLog">
+     <section class="content" style="background-color:white;padding-top:0" ng-show="ctrl.developerLog">
         <div class="row">
-            <div class="col-md-4">
-                <p><b>CURRENT USER</b></p>
-                <p>ID - {{ ctrl.currentUser.id }} </p>
-                <p>Name - {{ ctrl.currentUser.name }} </p>
-                <p>Role - {{ ctrl.currentUser.role }} </p>
-
-                <p><b>PROGRAMMER DEBUG LOG</b></p>
-                <p>task status: {{ctrl.task.status}}</p>
-                <p>status number: {{ctrl.statusNum}}</p>
-                <p>readOnly: {{ctrl.readOnly}}</p>
-                <p>canEdit: {{ctrl.currentUser.canEdit}} </p>
-                <p>userAction: {{ctrl.currentUser.userAction}}</p>
+            <div class="col-md-6">
+                <p>
+                    <u><b>CURRENT USER</b></u>
+                </p>
+                <br>
+                <table>
+                    <tr ng-repeat="(key, val) in ctrl.currentUser">
+                        <td><b>{{key}}</b></td>
+                        <td style="padding-left:10px;padding-right:10px;color:blue;">:</td>
+                        <td>{{val}}</td>
+                    </tr>
+                </table>
+                <br>
+                <br>
+                <p>
+                    <u><b>PROGRAMMER DEBUG LOG</b></u>
+                </p>
+                <br>
+                <p><b>task status</b> : {{ctrl.task.status}}</p>
+                <p><b>status number</b> : {{ctrl.statusNum}}</p>
+                <p><b>readOnly</b> : {{ctrl.readOnly}}</p>
+                <br>
+                <br>
+                <p>
+                    <u><b>SECTION ACCESS - RESTRICTIONS</b></u>
+                </p>
+                <br>
+                <p><b>Section 1</b> - {{ ctrl.ACL.section1 }} </p>
+                <p><b>Section 2</b> - {{ ctrl.ACL.section2 }} </p>
+                <p><b>Section 3</b> - {{ ctrl.ACL.section3 }} </p>
+                <p><b>Section 4</b> - {{ ctrl.ACL.section4 }} </p>
+                <p><b>Section 5</b> - {{ ctrl.ACL.section5 }} </p>
+                <p><b>Section 6</b> - {{ ctrl.ACL.section6 }} </p>
+                <p><b>Section 7</b> - {{ ctrl.ACL.section7 }} </p>
+                <p><b>Section 8</b> - {{ ctrl.ACL.section8 }} </p>
+                <p><b>Section 9</b> - {{ ctrl.ACL.section9 }} </p>
             </div>
-            <div class="col-md-4">
-                <p><b>SECTION ACCESS - RESTRICTIONS</b></p>
-                <p>1 - Job Information - {{ ctrl.ACL.section1 }} </p>
-                <p>2- Specification - {{ ctrl.ACL.section2 }} </p>
-                <p>3 - Assignment Details - {{ ctrl.ACL.section3 }} </p>
-                <p>4 - Preview of Completed Write Up - {{ ctrl.ACL.section4 }} </p>
-                <p>5 - Preview of Completed Artwork1 - {{ ctrl.ACL.section5 }} </p>
-                <p>6 - Preview of Completed Artwork2 - {{ ctrl.ACL.section6 }} </p>
-                <p>7 - Product Details - {{ ctrl.ACL.section7 }} </p>
-            </div>
-            <div class="col-md-4">
-                <p><b>SECTION ACCESS</b></p>
-                <p>AM - {{ ctrl.task.submitted_by_username }} </p>
-                <p>TH - {{ ctrl.task.cc_response_username }} </p>
-                <p>TC - {{ ctrl.task.team_head_username }} </p>
+            <div class="col-md-6">
+                <p>
+                    <u><b>TASK DETAILS</b></u>
+                </p>
+                <table>
+                    <tr ng-repeat="(key, val) in ctrl.task">
+                        <td><b>{{key}}</b></td>
+                        <td style="padding-left:10px;padding-right:10px;color:blue;">:</td>
+                        <td>{{val}}</td>
+                    </tr>
+                </table>
             </div>
         </div>
     </section>

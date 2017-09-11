@@ -1445,6 +1445,7 @@ app.controller('displayCTRL', function ($state, $auth, $uibModal, $stateParams, 
     };
 
     vm.firstAction = function () {
+          if ($stateParams.orderTitle == "enableLogging") vm.isLogEnabled = true;
         if ($stateParams.action == "create") {
             //console.log('[DISPLAY] - create');
             vm.currentUser.canEdit = 'sales';

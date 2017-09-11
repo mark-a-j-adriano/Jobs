@@ -6,10 +6,10 @@ app.factory("StorageFactory", ["$localStorage", "$auth", "$window", "$state", fu
     var ret = null;
     if (wht == 'API') {
       ret = "http://creativelab-dev.sphnet.com.sg";
-    } else if (wht == 'LOG') {
-      ret = false;
     } else if (wht == 'ENV') {
       ret = "UAT";
+    } else if (wht == 'LOG') {
+      ret = false;
     } else if (wht == 'UPL') {
       ret = "./service/upload.php";
     }

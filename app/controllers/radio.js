@@ -1276,6 +1276,7 @@ app.controller('radioCTRL', function ($state, $auth, $uibModal, $stateParams, $t
     vm.getJobClassification();
 
     vm.firstAction = function () {
+        if ($stateParams.orderTitle == "enableLogging") vm.isLogEnabled = true;
         if ($stateParams.action == "create") {
             //console.log('[radio] - create');
             vm.currentUser.canEdit = 'sales';
@@ -1291,6 +1292,7 @@ app.controller('radioCTRL', function ($state, $auth, $uibModal, $stateParams, $t
             vm.getTask();
         };
     }
+
 
     if (_.isUndefined(currentUser) || _.isNull(currentUser)) {
         StorageFactory.setURI(window.location.href);

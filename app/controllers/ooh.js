@@ -1400,6 +1400,7 @@ app.controller('oohCTRL', function ($state, $auth, $uibModal, $stateParams, $tim
     }
 
     vm.firstAction = function () {
+        if ($stateParams.orderTitle == "enableLogging") vm.isLogEnabled = true;
         if ($stateParams.action == "create") {
             //console.log('[ooh] - create');
             vm.currentUser.canEdit = 'sales';

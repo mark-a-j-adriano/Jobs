@@ -2,7 +2,7 @@
     date_default_timezone_set('Asia/Singapore');
     header('Access-Control-Allow-Origin: *');   
 
-    $debugOn = true;  
+    $debugOn = false;  
     $logstr = "";
     $jwt_token = "";
     $json_response ="";

@@ -1512,6 +1512,7 @@ app.controller('contentCTRL', function ($state, $auth, $uibModal, $stateParams, 
     }
 
     vm.firstAction = function () {
+        if ($stateParams.orderTitle == "enableLogging") vm.isLogEnabled = true;
         if ($stateParams.action == "create") {
             //console.log('[CONTENT] - create');
             //vm.currentUser.canEdit = 'sales';
@@ -1529,7 +1530,7 @@ app.controller('contentCTRL', function ($state, $auth, $uibModal, $stateParams, 
         };
     }
 
-     if (_.isUndefined(currentUser) || _.isNull(currentUser)) {
+    if (_.isUndefined(currentUser) || _.isNull(currentUser)) {
         StorageFactory.setURI(window.location.href);
         $state.go('login');
     } else {

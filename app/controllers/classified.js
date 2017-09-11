@@ -1766,6 +1766,7 @@ app.controller('classifiedCTRL', function ($sce, $state, $auth, $uibModal, $stat
     };
 
     vm.firstAction = function () {
+        if ($stateParams.orderTitle == "enableLogging") vm.isLogEnabled = true;
         if ($stateParams.action == "create") {
             //console.log('[CLASSIFIED] - create');
             vm.currentUser.canEdit = 'sales';

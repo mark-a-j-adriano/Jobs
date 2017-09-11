@@ -4,7 +4,7 @@
     // Change directory
     chdir("tmp");
 
-    $debugOn = true;  
+    $debugOn = false;  
     $logfile  = "upload_log.log";    
     $meta = $_POST;
 

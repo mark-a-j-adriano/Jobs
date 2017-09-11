@@ -1227,6 +1227,7 @@ app.controller('digitalCTRL', function ($state, $auth, $uibModal, $stateParams, 
     }
 
     vm.firstAction = function () {
+          if ($stateParams.orderTitle == "enableLogging") vm.isLogEnabled = true;
         if ($stateParams.action == "create") {
             //console.log('[DIGITAL] - create');
             vm.currentUser.canEdit = 'sales';

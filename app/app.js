@@ -235,3 +235,4 @@ app.filter('propercase', function () {
     return txt;
   };
 });
+
