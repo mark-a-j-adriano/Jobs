@@ -3,7 +3,7 @@ app.controller('LoginCtrl', function ($auth, $state, $window, $stateParams, toas
     vm.isDev = false;
     //console.log('hostname:'+ JSON.stringify($window.location.hostname));
     //vm.isUAT = (window.location.hostname.includes("-dev") || window.location.hostname.includes("localhost")) ? true : false;
-    vm.isUAT = StorageFactory.getAppSettings('ENV')=='UAT' ? true : false;
+    vm.isUAT = StorageFactory.getAppSettings('ENV') == 'UAT' ? true : false;
     vm.userName = '';
     vm.eMail = '';
     vm.passWord = '';
@@ -131,7 +131,7 @@ app.controller('LoginCtrl', function ($auth, $state, $window, $stateParams, toas
 
                 console.log('userInfor : ' + JSON.stringify(userInfor));
                 StorageFactory.setSessionData(userInfor, null);
-                if (_.isUndefined(ret_URI) || _.isNull(ret_URI) || ret_URI == '' || ret_URI.includes("login")) {
+                if (_.isNil(ret_URI) || ret_URI == '' || ret_URI.includes("login")) {
                     var accessLVL = parseInt(userInfor.role);
                     if (accessLVL >= 30) {
                         //Sales Team Lead /SALES
@@ -178,15 +178,17 @@ app.controller('LoginCtrl', function ($auth, $state, $window, $stateParams, toas
             })
     };
 
-    if (_.isUndefined(cookieActive) || _.isNull(cookieActive)) {
-    } else {
-        var poi = StorageFactory.getSessionData(false);
-        console.log("[LoginCtrl] - poi :", poi);
-        if (_.isUndefined(poi) || _.isNull(poi)) {
-            console.log("[LoginCtrl] - getToken :", $auth.getToken());
-            console.log("[LoginCtrl] - getPayload :", $auth.getPayload());
+    if ($auth.isAuthenticated()) {
+        if (_.isNil(cookieActive)) {        
         } else {
-            vm.getRole(poi.id);
+            var poi = StorageFactory.getSessionData(false);
+            console.log("[LoginCtrl] - poi :", poi);
+            if (_.isNil(poi)) {               
+                console.log("[LoginCtrl] - getToken :", $auth.getToken());
+                console.log("[LoginCtrl] - getPayload :", $auth.getPayload());
+            } else {
+                vm.getRole(poi.id);
+            }
         }
     }
 
@@ -249,9 +251,8 @@ app.controller('NavCtrl', function ($auth, $state, $scope, $uibModal, toastr, St
     vm.isAuthenticated = function () {
         if ($auth.isAuthenticated()) {
             var userData = StorageFactory.getSessionData(false);
-            ////console.log('userData : ' + JSON.stringify(userData));
-            if (_.isUndefined(userData) || _.isNull(userData)) { } else {
-                if (_.isUndefined(userData.name) || _.isNull(userData.name)) { } else {
+            if(_.isNil(userData)){} else {            
+                if (_.isNil(userData.name)) { } else {
                     vm.fullName = userData.name
                     var accessLVL = parseInt(userData.role);
                     if (accessLVL > 29) {
@@ -266,7 +267,7 @@ app.controller('NavCtrl', function ($auth, $state, $scope, $uibModal, toastr, St
                         vm.role = "Coordinator"
                     } else {
                         vm.role = "Administrator"
-                    }                    
+                    }
                 }
             };
             $scope.start();
@@ -313,7 +314,7 @@ app.controller('memberModalCtrl', function ($uibModalInstance, focus, toastr, pa
         enableSearch: (vm.members.length > 10) ? true : false,
     }
 
-    if (_.isUndefined(parentData.user_data.is_Multiple) || _.isNull(parentData.user_data.is_Multiple)) {
+    if (_.isNil(parentData.user_data.is_Multiple)) {
     } else if (parentData.user_data.is_Multiple == "1") {
         vm.isMultiple = true;
         for (i = 0; i < vm.members.length; i++) {
@@ -326,7 +327,7 @@ app.controller('memberModalCtrl', function ($uibModalInstance, focus, toastr, pa
         }
 
         //console.log('[memberModalCtrl] inputList -', vm.inputList);
-        if (_.isUndefined(vm.selected) || _.isNull(vm.selected) || _.isEmpty(vm.selected) || vm.selected == "") {
+        if (_.isNil(vm.selected) || _.isEmpty(vm.selected) || vm.selected == "") {
         } else {
             vm.selected = vm.selected.split(", ");
             //console.log('[memberModalCtrl] selected -', vm.selected);
@@ -400,11 +401,11 @@ app.controller('msgBoxModalCtrl', function ($uibModalInstance, focus, toastr, pa
     }
 
     if (parentData.isChat) {
-        if (_.isNull(parentData.isChat)) { } else { vm.isChat = parentData.isChat }
+        if (_.isNil(parentData.isChat)) { } else { vm.isChat = parentData.isChat }
     }
 
     if (parentData.user_role) {
-        if (_.isNull(parentData.user_role)) { } else { vm.userRole = parentData.user_role }
+        if (_.isNil(parentData.user_role)) { } else { vm.userRole = parentData.user_role }
     }
 
     vm.ok = function () {

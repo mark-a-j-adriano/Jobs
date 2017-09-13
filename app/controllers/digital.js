@@ -40,13 +40,13 @@ app.controller('digitalCTRL', function ($state, $auth, $uibModal, $stateParams, 
 
     vm.cleanArray = function (tmpArray) {
         //console.log("[cleanArray] tmpArray - ", tmpArray);
-        if (_.isUndefined(tmpArray) || _.isNull(tmpArray)) {
+        if (_.isNil(tmpArray) ) {
             return null;
         } else {
             if (_.isArray(tmpArray)) {
                 var newArray = [];
                 for (i = 0, len = tmpArray.length; i < len; i++) {
-                    if (_.isUndefined(tmpArray[i]) || _.isNull(tmpArray[i]) || _.isEmpty(tmpArray[i])) {
+                    if (_.isNil(tmpArray[i]) || _.isEmpty(tmpArray[i])) {
                     } else if (_.isDate(tmpArray[i])) {
                         newArray.push(moment(tmpArray[i]).format('YYYY-MM-DD'));
                     } else {
@@ -108,12 +108,12 @@ app.controller('digitalCTRL', function ($state, $auth, $uibModal, $stateParams, 
         var current_user = currentUser.id.toLowerCase().trim();
         var submitted_by = vm.task.submitted_by_username.toLowerCase().trim();
         var cc_response = "";
-        if (_.isNull(vm.task.cc_response_username)) {
+        if (_.isNil(vm.task.cc_response_username)) {
         } else {
             var cc_response = vm.task.cc_response_username.toLowerCase().trim();
         }
         var designer = '';
-        if (_.isUndefined(vm.task.creative_team_username) || _.isNull(vm.task.creative_team_username)) {
+        if (_.isNil(vm.task.creative_team_username) ) {
         } else {
             designer = vm.task.creative_team_username.toLowerCase().trim();
         }
@@ -347,7 +347,7 @@ app.controller('digitalCTRL', function ($state, $auth, $uibModal, $stateParams, 
                 vm.task.production_cost = 0;
                 vm.task.parent_id = $stateParams.orderID;
                 vm.task.logged_in_user = currentUser.id;
-                if (_.isUndefined(vm.task.cc_response) || _.isNull(vm.task.cc_response)) {
+                if (_.isNil(vm.task.cc_response) ) {
                     vm.cc_response_dsp = [];
                 } else {
                     vm.cc_response_dsp = _.uniq(vm.task.cc_response.split(","));
@@ -377,7 +377,7 @@ app.controller('digitalCTRL', function ($state, $auth, $uibModal, $stateParams, 
                         //console.log('[getTmpID - getMember] - response.data : ' + JSON.stringify(response.data));
                         //console.log('[getTmpID - getMember] - response.status : ' + JSON.stringify(response.status));
 
-                        if (_.isUndefined(response.data) || _.isNull(response.data) || _.isEmpty(response.data)) {
+                        if (_.isNil(response.data)   || _.isEmpty(response.data)) {
                         } else {
                             vm.task.project_mgr = response.data[0].name;
                             vm.task.project_mgr_username = response.data[0].username;
@@ -444,22 +444,31 @@ app.controller('digitalCTRL', function ($state, $auth, $uibModal, $stateParams, 
                     vm.display.ad_spend = $filter('currency')(vm.task.ad_spend, "");
                     vm.display.production_cost = $filter('currency')(vm.task.production_cost, "");
 
-                    vm.task.due_date = new Date(vm.task.due_date);
-                    vm.task.launch_date = new Date(vm.task.launch_date);
-                    vm.creativeTypes = JSON.parse(vm.task.creative_types);
-                    if (_.isUndefined(vm.task.cc_response) || _.isNull(vm.task.cc_response) || _.isEmpty(vm.task.cc_response)) {
+
+                    if (_.isNil(vm.task.due_date)  ) {
+                    } else {
+                        vm.task.due_date = new Date(vm.task.due_date);
+                    }
+
+                    if (_.isNil(vm.task.launch_date)  ) {
+                    } else {
+                        vm.task.launch_date = new Date(vm.task.launch_date);
+                    }
+
+                    vm.creativeTypes = DataFactory.parseLodash(vm.task.creative_types);
+                    if (_.isNil(vm.task.cc_response)   || _.isEmpty(vm.task.cc_response)) {
                         vm.cc_response_dsp = [];
                     } else {
                         vm.cc_response_dsp = _.uniq(vm.task.cc_response.split(","));
                     }
-                    if (_.isUndefined(vm.task.materials) || _.isNull(vm.task.materials) || _.isEmpty(vm.task.materials)) {
+                    if (_.isNil(vm.task.materials)   || _.isEmpty(vm.task.materials)) {
                     } else {
-                        vm.task.materials = vm.cleanArray(JSON.parse(vm.task.materials));
+                        vm.task.materials = vm.cleanArray(DataFactory.parseLodash(vm.task.materials));
                     }
 
-                    if (_.isUndefined(vm.task.artwork) || _.isNull(vm.task.artwork) || _.isEmpty(vm.task.materials)) {
+                    if (_.isNil(vm.task.artwork)   || _.isEmpty(vm.task.materials)) {
                     } else {
-                        vm.task.artwork = vm.cleanArray(JSON.parse(vm.task.artwork));
+                        vm.task.artwork = vm.cleanArray(DataFactory.parseLodash(vm.task.artwork));
                     }
 
                     vm.getDocHistory(vm.task.task_no);
@@ -547,7 +556,7 @@ app.controller('digitalCTRL', function ($state, $auth, $uibModal, $stateParams, 
 
     vm.isAssigned = function () {
         var str = vm.task.creative_team_username;
-        if (_.isUndefined(str) | _.isNull(str) || _.isEmpty(str) || str.trim() == '') {
+        if (_.isNil(str) | _.isNil(str) || _.isEmpty(str) || str.trim() == '') {
             toastr.error("Please assign creative team members.", {
                 closeButton: true,
                 onHidden: function () {
@@ -572,10 +581,10 @@ app.controller('digitalCTRL', function ($state, $auth, $uibModal, $stateParams, 
         }
         var prevStats = vm.task.status;
         if (vm.isValid) {
-            if (_.isUndefined(newStatus) || _.isNull(newStatus) || newStatus == '') {
+            if (_.isNil(newStatus)   || newStatus == '') {
                 //console.log('[submitTask] - 1');
                 if (vm.task.creative_team) {
-                    if (_.isNull(vm.task.creative_team) || vm.task.creative_team == '') {
+                    if (_.isNil(vm.task.creative_team) || vm.task.creative_team == '') {
                         vm.task.status = "Pending Assignment"
                     } else {
                         vm.task.status = "In Progress"
@@ -613,10 +622,10 @@ app.controller('digitalCTRL', function ($state, $auth, $uibModal, $stateParams, 
                 vm.task.log_msg = "Document was saved from " + prevStats.toUpperCase() + " to " + vm.task.status.toUpperCase();
             }
 
-            if (!_.isUndefined(vm.task.role)) delete vm.task.role;
-            if (!_.isUndefined(vm.task.type)) delete vm.task.type;
-            if (!_.isUndefined(vm.task.job_no)) delete vm.task.job_no;
-            if (!_.isUndefined(vm.task.default_due_date)) delete vm.task.default_due_date;
+            if (!_.isNil(vm.task.role)) delete vm.task.role;
+            if (!_.isNil(vm.task.type)) delete vm.task.type;
+            if (!_.isNil(vm.task.job_no)) delete vm.task.job_no;
+            if (!_.isNil(vm.task.default_due_date)) delete vm.task.default_due_date;
 
 
 
@@ -640,19 +649,19 @@ app.controller('digitalCTRL', function ($state, $auth, $uibModal, $stateParams, 
                 vm.task._method = "put";
             }
 
-            if (_.isUndefined(vm.creativeTypes) || _.isNull(vm.creativeTypes) || _.isEmpty(vm.creativeTypes)) {
+            if (_.isNil(vm.creativeTypes)   || _.isEmpty(vm.creativeTypes)) {
                 vm.task.creative_types = [];
             } else {
                 vm.task.creative_types = vm.cleanArray(vm.creativeTypes);
             }
 
-            if (_.isUndefined(vm.task.materials) || _.isNull(vm.task.materials) || _.isEmpty(vm.task.materials)) {
+            if (_.isNil(vm.task.materials)   || _.isEmpty(vm.task.materials)) {
                 vm.task.materials = [];
             } else {
                 vm.task.materials = vm.cleanArray(vm.task.materials);
             }
 
-            if (_.isUndefined(vm.task.artwork) || _.isNull(vm.task.artwork) || _.isEmpty(vm.task.artwork)) {
+            if (_.isNil(vm.task.artwork)   || _.isEmpty(vm.task.artwork)) {
                 vm.task.artwork = [];
             } else {
                 vm.task.artwork = vm.cleanArray(vm.task.artwork);
@@ -726,12 +735,12 @@ app.controller('digitalCTRL', function ($state, $auth, $uibModal, $stateParams, 
     vm.gotoParent = function () {
         //$state.go('creative', { orderID: $stateParams.orderID });
         var tmpID = null;
-        if (_.isUndefined(vm.task.parent_id) || _.isNull(vm.task.parent_id)) { } else { tmpID = vm.task.parent_id };
-        if (_.isNull(tmpID)) {
-            if (_.isUndefined(vm.task.job_id) || _.isNull(vm.task.job_id)) { } else { tmpID = vm.task.job_id };
+        if (_.isNil(vm.task.parent_id)  ) { } else { tmpID = vm.task.parent_id };
+        if (_.isNil(tmpID)) {
+            if (_.isNil(vm.task.job_id)  ) { } else { tmpID = vm.task.job_id };
         }
-        if (_.isNull(tmpID)) {
-            if (_.isUndefined($stateParams.orderID) || _.isNull($stateParams.orderID)) { } else { tmpID = $stateParams.orderID };
+        if (_.isNil(tmpID)) {
+            if (_.isNil($stateParams.orderID)  ) { } else { tmpID = $stateParams.orderID };
         }
 
         $state.go('creative', { orderID: tmpID });
@@ -747,8 +756,8 @@ app.controller('digitalCTRL', function ($state, $auth, $uibModal, $stateParams, 
         } else {
             // if (vm.task.ad_spend < 1) vm.errorMsg.push({ id: 'ad_spend', msg: 'Ad Spend is required.' });
             // if (vm.task.production_cost < 1) vm.errorMsg.push({ id: 'production_cost', msg: 'Production Cost is required.' });
-            if (_.isNull(vm.task.due_date) || vm.task.due_date == '') vm.errorMsg.push({ id: 'due_date', msg: 'Date of Presentation to Client is required.' });
-            if (_.isNull(vm.task.launch_date) || vm.task.launch_date == '') vm.errorMsg.push({ id: 'launch_date', msg: 'Online Launch Date is required.' });
+            if (_.isNil(vm.task.due_date) || vm.task.due_date == '') vm.errorMsg.push({ id: 'due_date', msg: 'Date of Presentation to Client is required.' });
+            if (_.isNil(vm.task.launch_date) || vm.task.launch_date == '') vm.errorMsg.push({ id: 'launch_date', msg: 'Online Launch Date is required.' });
 
             if (vm.creativeTypes) {
                 var ctr = 0;
@@ -756,18 +765,18 @@ app.controller('digitalCTRL', function ($state, $auth, $uibModal, $stateParams, 
                     if (vm.creativeTypes[i].isSelected) ctr = ctr + 1;
                 }
                 if (ctr < 1) {
-                    if (_.isUndefined(vm.task.other_type) || _.isNull(vm.task.other_type) || vm.task.other_type.trim() == '') vm.errorMsg.push({ id: 'other_type', msg: 'Please specify the Creative Type for this task.' });
+                    if (_.isNil(vm.task.other_type)   || vm.task.other_type.trim() == '') vm.errorMsg.push({ id: 'other_type', msg: 'Please specify the Creative Type for this task.' });
                 }
             }
 
             if (vm.task.materials) {
-                if (_.isNull(vm.task.materials) || vm.task.materials.length < 1) vm.errorMsg.push({ id: 'materials', msg: 'Materials is required.' });
+                if (_.isNil(vm.task.materials) || vm.task.materials.length < 1) vm.errorMsg.push({ id: 'materials', msg: 'Materials is required.' });
             } else {
                 vm.errorMsg.push({ id: 'materials', msg: 'Materials is required.' });
             }
 
             if (vm.task.instruction) {
-                if (_.isNull(vm.task.instruction) || vm.task.instruction == '') vm.errorMsg.push({ id: 'instruction', msg: 'Instruction is required.' });
+                if (_.isNil(vm.task.instruction) || vm.task.instruction == '') vm.errorMsg.push({ id: 'instruction', msg: 'Instruction is required.' });
             } else {
                 vm.errorMsg.push({ id: 'instruction', msg: 'Instruction is required.' });
             }
@@ -865,7 +874,7 @@ app.controller('digitalCTRL', function ($state, $auth, $uibModal, $stateParams, 
                     parentData: function () {
                         return tmp;
                     },
-                    members: function (DataFactory) {
+                    members: function (df) {
                         return DataFactory.getMembers(tmpData);
                     }
                 }
@@ -938,7 +947,7 @@ app.controller('digitalCTRL', function ($state, $auth, $uibModal, $stateParams, 
             user_role: vm.currentUser.canEdit,
         };
 
-        if (_.isUndefined(chatFlag) || _.isNull(chatFlag) || _.isEmpty(chatFlag) || chatFlag == '') {
+        if (_.isNil(chatFlag)   || _.isEmpty(chatFlag) || chatFlag == '') {
             chatFlag = "";
             tmp.frm_title = "Conversation";
         } else if (chatFlag.includes('cancel')) {
@@ -1018,14 +1027,14 @@ app.controller('digitalCTRL', function ($state, $auth, $uibModal, $stateParams, 
         if (type == 'artwork') {
             vm.spinners.artwork.visible = true;
             vm.spinners.artwork.progress = 0;
-            if (_.isUndefined(vm.task.artwork) || _.isNull(vm.task.artwork)) vm.task.artwork = [];
-            if (_.isUndefined(vm.task.final_size) || _.isNull(vm.task.final_size)) vm.task.final_size = vm.task.pub_size;
+            if (_.isNil(vm.task.artwork)  ) vm.task.artwork = [];
+            if (_.isNil(vm.task.final_size)  ) vm.task.final_size = vm.task.pub_size;
         } else if (type == 'article') {
-            if (_.isUndefined(vm.task.article) || _.isNull(vm.task.article)) vm.task.article = [];
+            if (_.isNil(vm.task.article)  ) vm.task.article = [];
         } else {
             vm.spinners.materials.visible = true;
             vm.spinners.materials.progress = 0;
-            if (_.isUndefined(vm.task.materials) || _.isNull(vm.task.materials)) vm.task.materials = [];
+            if (_.isNil(vm.task.materials)  ) vm.task.materials = [];
         }
 
         angular.forEach(files, function (file) {
@@ -1156,7 +1165,7 @@ app.controller('digitalCTRL', function ($state, $auth, $uibModal, $stateParams, 
             }
         }
         /*
-        if (_.isUndefined(vm.task.artwork) || _.isNull(vm.task.artwork)) {
+        if (_.isNil(vm.task.artwork)  ) {
             if (vm.task.artwork.length > 0) previewReady = true;
         }
         */
@@ -1207,7 +1216,7 @@ app.controller('digitalCTRL', function ($state, $auth, $uibModal, $stateParams, 
 
     vm.revertArtwork = function () {
         //console.log('[DIGITAL] - revertArtwork');
-        if (_.isUndefined(vm.task.sales_comment) || _.isNull(vm.task.sales_comment) || vm.task.sales_comment == '') {
+        if (_.isNil(vm.task.sales_comment)   || vm.task.sales_comment == '') {
             toastr.error("Please add your reason for returning Artwork", { closeButton: true });
         } else {
             vm.submitTask('For Revision');
@@ -1227,7 +1236,7 @@ app.controller('digitalCTRL', function ($state, $auth, $uibModal, $stateParams, 
     }
 
     vm.firstAction = function () {
-          if ($stateParams.orderTitle == "enableLogging") vm.isLogEnabled = true;
+        if ($stateParams.orderTitle == "enableLogging") vm.isLogEnabled = true;
         if ($stateParams.action == "create") {
             //console.log('[DIGITAL] - create');
             vm.currentUser.canEdit = 'sales';
@@ -1245,15 +1254,22 @@ app.controller('digitalCTRL', function ($state, $auth, $uibModal, $stateParams, 
         };
     }
 
-    if (_.isUndefined(currentUser) || _.isNull(currentUser)) {
+    if ($auth.isAuthenticated()) {
+        if (_.isNil(currentUser)  ) {
+            vm.currentUser = null;
+            StorageFactory.setURI(window.location.href);
+            $state.go('login');
+        } else {
+            //console.log('currentUser[1] : ' + JSON.stringify(currentUser));
+            vm.currentUser = currentUser;
+            vm.currentUser.canEdit = '';
+            vm.currentUser.userAction = $stateParams.action;
+            vm.firstAction();
+        }
+    } else {
+        vm.currentUser = null;
         StorageFactory.setURI(window.location.href);
         $state.go('login');
-    } else {
-        //console.log('currentUser[1] : ' + JSON.stringify(currentUser));
-        vm.currentUser = currentUser;
-        vm.currentUser.canEdit = '';
-        vm.currentUser.userAction = $stateParams.action;
-        vm.firstAction();
     }
 
     ////console.log('$routeParams.orderId : ' + $routeParams.orderId);
@@ -1268,7 +1284,7 @@ app.controller('digitalModalCtrl', function ($uibModalInstance, focus, toastr, p
     vm.final_ad_spend = 0;
     vm.final_cost = 0;
 
-    if ((_.isUndefined(product)) || (_.isNull(product))) {
+    if ((_.isNil(product)) || (_.isNil(product))) {
         vm.formTitle = "Add Product";
         vm.product = {
             pubID: '',
@@ -1286,14 +1302,14 @@ app.controller('digitalModalCtrl', function ($uibModalInstance, focus, toastr, p
         vm.product = product;
     }
 
-    if ((_.isUndefined(vm.pubOptions.title)) || (_.isNull(vm.pubOptions.title))) {
+    if ((_.isNil(vm.pubOptions.title)) || (_.isNil(vm.pubOptions.title))) {
     } else {
         vm.formTitle = vm.pubOptions.title;
         vm.final_ad_spend = vm.pubOptions.ad_spend;
         vm.final_cost = vm.pubOptions.cost;
     }
 
-    if ((_.isUndefined(parentData.isList)) || (_.isNull(parentData.isList))) {
+    if ((_.isNil(parentData.isList)) || (_.isNil(parentData.isList))) {
         vm.isList = false;
     } else {
         vm.isList = parentData.isList;
@@ -1436,13 +1452,13 @@ app.controller('digitalModalCtrl', function ($uibModalInstance, focus, toastr, p
     vm.sendProduct = function () {
         var errMsg = [];
         if (vm.product.pubID == '') errMsg.push('Publication is required');
-        if (_.isNull(vm.product.pubDate)) errMsg.push('Publication date is required');
+        if (_.isNil(vm.product.pubDate)) errMsg.push('Publication date is required');
 
         var isComplete1 = false;
-        if (vm.product.etNum == '' || _.isNull(vm.product.etNum)) {
+        if (vm.product.etNum == '' || _.isNil(vm.product.etNum)) {
             isComplete1 = vm.product.etNum_tbd;
         } else {
-            if (_.isNull(vm.product.etDate)) {
+            if (_.isNil(vm.product.etDate)) {
                 errMsg.push('ET Date is required');
             } else {
                 //console.log('[etNum]');
@@ -1451,10 +1467,10 @@ app.controller('digitalModalCtrl', function ($uibModalInstance, focus, toastr, p
         }
 
         var isComplete2 = false;
-        if (vm.product.cashNum == '' || _.isNull(vm.product.cashNum)) {
+        if (vm.product.cashNum == '' || _.isNil(vm.product.cashNum)) {
             isComplete2 = vm.product.cashNum_tbd;
         } else {
-            if (_.isNull(vm.product.cashDate)) {
+            if (_.isNil(vm.product.cashDate)) {
                 errMsg.push('CASH Date is required');
             } else {
                 //console.log('[cashDate]');
@@ -1466,9 +1482,9 @@ app.controller('digitalModalCtrl', function ($uibModalInstance, focus, toastr, p
         if (errMsg.length > 0) {
             toastr.error(errMsg[0], { closeButton: true });
         } else {
-            if (!(_.isNull(vm.product.pubDate))) vm.product.pubDate = moment(vm.product.pubDate).format('YYYY-MM-DD');
-            if (!(_.isNull(vm.product.cashDate))) vm.product.cashDate = moment(vm.product.cashDate).format('YYYY-MM-DD');
-            if (!(_.isNull(vm.product.etDate))) vm.product.etDate = moment(vm.product.etDate).format('YYYY-MM-DD');
+            if (!(_.isNil(vm.product.pubDate))) vm.product.pubDate = moment(vm.product.pubDate).format('YYYY-MM-DD');
+            if (!(_.isNil(vm.product.cashDate))) vm.product.cashDate = moment(vm.product.cashDate).format('YYYY-MM-DD');
+            if (!(_.isNil(vm.product.etDate))) vm.product.etDate = moment(vm.product.etDate).format('YYYY-MM-DD');
             var tmp = {
                 pubID: vm.product.pubID,
                 pubName: vm.product.pubName,

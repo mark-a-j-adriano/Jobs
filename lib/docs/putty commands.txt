@@ -1,5 +1,6 @@
 ssh -l prjjc jobscre-web01-dev //for login to server
 14#Jun17
+12Sep#17
 
 'Copy www folder to UAT server : www directory
 scp -r www prjjc@jobscre-web01-dev:/test/prjjc/jc

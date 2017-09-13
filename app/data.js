@@ -5,7 +5,7 @@ app.factory("StorageFactory", ["$localStorage", "$auth", "$window", "$state", fu
   obj.getAppSettings = function (wht) {
     var ret = null;
     if (wht == 'API') {
-      ret = "http://creativelab-dev.sphnet.com.sg";
+      ret = "https://creativelab-dev.sphnet.com.sg";
     } else if (wht == 'ENV') {
       ret = "UAT";
     } else if (wht == 'LOG') {
@@ -29,14 +29,15 @@ app.factory("StorageFactory", ["$localStorage", "$auth", "$window", "$state", fu
     if ($auth.isAuthenticated()) {
       if (dataFlag) {
         try {
-          ret = JSON.parse(window.atob($localStorage.data));
+          ret = _.attempt(JSON.parse.bind(null, window.atob($localStorage.data)));
+          //ret = DataFactory.parseLodash(window.atob($localStorage.data));
         } catch (e) {
           console.log('[getSessionData] data is not a valid base64 String.');
         }
-
       } else {
         try {
-          ret = JSON.parse(window.atob($localStorage.user));
+          ret = _.attempt(JSON.parse.bind(null, window.atob($localStorage.user)));
+          //ret = DataFactory.parseLodash(window.atob($localStorage.user));
         } catch (e) {
           console.log('[getSessionData] user is not a valid base64 String.');
         }
@@ -59,15 +60,15 @@ app.factory("StorageFactory", ["$localStorage", "$auth", "$window", "$state", fu
 
   obj.setSessionData = function (userData, tmpData) {
     ////console.log('setSessionData UserData: ' + JSON.stringify(userData));
-    if (_.isUndefined(userData) || _.isNull(userData)) userData = {};
-    if (_.isUndefined(tmpData) || _.isNull(tmpData)) tmpData = {};
+    if (_.isNil(userData)) userData = {};
+    if (_.isNil(tmpData)) tmpData = {};
     $localStorage.user = window.btoa(JSON.stringify(userData));
     $localStorage.data = window.btoa(JSON.stringify(tmpData));
     //console.log('getPayload: ' + JSON.stringify($auth.getPayload()));
     $localStorage.exp = $auth.getPayload().exp;
     //$localStorage.exp = window.btoa(JSON.stringify($auth.getPayload().exp));
     var dnsFlag = $localStorage.uri;
-    if (_.isUndefined(dnsFlag) || _.isNull(dnsFlag)) { } else { delete $localStorage.uri }
+    if (_.isNil(dnsFlag)) { } else { delete $localStorage.uri }
   };
 
   obj.setFlg = function () {
@@ -77,7 +78,7 @@ app.factory("StorageFactory", ["$localStorage", "$auth", "$window", "$state", fu
   obj.setURI = function (tmp) {
     //console.log("originating URI : " + tmp);
     var dnsFlag = $localStorage.uri;
-    if (_.isUndefined(dnsFlag) || _.isNull(dnsFlag)) {
+    if (_.isNil(dnsFlag)) {
       $localStorage.uri = window.btoa(JSON.stringify(tmp));
     }
   };
@@ -86,7 +87,7 @@ app.factory("StorageFactory", ["$localStorage", "$auth", "$window", "$state", fu
     //console.log("get URI : " + $localStorage.uri);
     var ret = null;
     try {
-      ret = JSON.parse(window.atob($localStorage.uri));
+      ret = DataFactory.parseLodash(window.atob($localStorage.uri));
     } catch (e) {
       console.log('[getSessionData] uri is not a valid base64 String.');
     }
@@ -110,8 +111,17 @@ app.factory("DataFactory", [
   function ($http, $timeout, $q, $location, $auth, $window, StorageFactory, Upload) {
     var obj = {};
     var base_url = StorageFactory.getAppSettings('API');
-    /***  RESOLVABLE - START ***/
 
+    /***  UTILITIES - START ***/
+    obj.parseLodash = function (str) {
+      var ret = _.attempt(JSON.parse.bind(null, str));
+      console.log("[parseLodash] ret : ", ret);
+      return ret;
+    }
+
+    /***  UTILITIES - END ***/
+
+    /***  RESOLVABLE - START ***/
     // returns a PROMISE
     obj.getDevUserList = function () {
       //C:\xampp\htdocs\Creative\Jobs\lib\docs\dump\userList.json
@@ -205,7 +215,7 @@ app.factory("DataFactory", [
       var userData = null;
       if ($auth.isAuthenticated()) userData = StorageFactory.getSessionData(false);
 
-      if (_.isUndefined(userData) || _.isNull(userData)) {
+      if (_.isNil(userData)) {
         console.log('userData is Null');
         deferred.resolve(null);
       } else {
@@ -463,13 +473,13 @@ app.factory("DataFactory", [
       } else if (type == "radio") {
         httpURL = base_url + "/radio-artworks";
       }
-      if (_.isNull(passedID)) { } else { httpURL = httpURL + "/" + passedID; };
+      if (_.isNil(passedID)) { } else { httpURL = httpURL + "/" + passedID; };
       return $http.post(httpURL, task);
     };
 
     obj.uploadJobRequest = function (jobRequest, passedID) {
       var httpURL = base_url + "/jobs";
-      if (_.isNull(passedID)) {
+      if (_.isNil(passedID)) {
       } else {
         httpURL = base_url + "/jobs/" + passedID;
       }

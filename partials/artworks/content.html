@@ -693,19 +693,20 @@
                         <table class="table table-hover table-bordered">
                             <thead>
                                 <tr>
-                                    <th class="col-xs-2" style="text-align:center">Publication</th>
+                                    <th class="col-xs-1" style="text-align:center">Publication</th>
                                     <th class="col-xs-1" style="text-align:center">Pub Date</th>
                                     <th class="col-xs-2" style="text-align:center">ET Number</th>
                                     <th class="col-xs-1" style="text-align:center">ET Date</th>
                                     <th class="col-xs-2" style="text-align:center">CASH</th>
                                     <th class="col-xs-2" style="text-align:center">Import Date</th>
-                                    <th class="col-xs-2" style="text-align:center">&nbsp;</th>
+                                    <th class="col-xs-2" style="text-align:center">Ad Base</th>
+                                    <th class="col-xs-1" style="text-align:center">&nbsp;</th>
                                 </tr>
                             </thead>
                             <tbody style="min-height:100px;">
                                 <tr ng-repeat="option in ctrl.productList track by $index">
 
-                                    <td class="col-xs-2" style="text-align:center">{{option.pubID}}</td>
+                                    <td class="col-xs-1" style="text-align:center">{{option.pubID}}</td>
                                     <td class="col-xs-1" style="text-align:center">{{option.pubDate | date:"dd/MM/yyyy"}}</td>
 
                                     <td class="col-xs-2" style="text-align:center" ng-show="option.etNum_tbd">TBA</td>
@@ -714,13 +715,14 @@
 
                                     <td class="col-xs-2" style="text-align:center" ng-show="option.cashNum_tbd">TBA</td>
                                     <td class="col-xs-2" style="text-align:center" ng-hide="option.cashNum_tbd">{{option.cashNum}}</td>
-                                    <td class="col-xs-1" style="text-align:center">{{option.cashDate | date:"dd/MM/yyyy"}}</td>
+                                    <td class="col-xs-2" style="text-align:center">{{option.cashDate | date:"dd/MM/yyyy"}}</td>
 
-                                    <td class="col-xs-3" style="text-align:center" ng-show="ctrl.ACL.section7 || option == null">
+                                     <td class="col-xs-2" style="text-align:center">{{option.ad_base}}</td>
+
+                                    <td class="col-xs-1" style="text-align:center" ng-show="ctrl.ACL.section7 || option == null">
                                         &nbsp;
                                     </td>
-
-                                    <td class="col-xs-3" style="text-align:center; color: black;" ng-hide="ctrl.ACL.section7 || option == null">
+                                    <td class="col-xs-1" style="text-align:center; color: black;" ng-hide="ctrl.ACL.section7 || option == null">
                                         <button type="button" class="btn btn-danger pull-right" ng-show="vm.statusNum <= 2" ng-click="ctrl.deleteRow($index);" style="text-align:center; color: black;"
                                             popover="Delete" popover-trigger="mouseenter">
 											<i class="fa fa-trash-o"></i>													 
@@ -820,7 +822,8 @@
                 <button type="button" class="btn btn-default" ng-click="ctrl.gotoMain();"><i class="fa fa-remove"></i> Close</button>
             </div>
             <div class="col-md-1">
-                <button type="button" class="btn btn-default btn-sm" ng-click="ctrl.developerLog=!ctrl.developerLog" ng-show="ctrl.isLogEnabled" style="border: 1px solid #a1a1a1;border-radius: 25px;background:white;">
+                <button type="button" class="btn btn-default btn-sm" ng-click="ctrl.developerLog=!ctrl.developerLog" ng-show="ctrl.isLogEnabled"
+                    style="border: 1px solid #a1a1a1;border-radius: 25px;background:white;">
                      <i class="fa fa-question-circle"></i>
                 </button>
             </div>
@@ -903,7 +906,12 @@
                     </button>
                 </div>
 
+
                 <div class="pull-right" ng-show="ctrl.currentUser.canEdit == 'coordinator'">
+                    <button type="button" class="btn btn-danger" ng-click="ctrl.revertTask('direct cancel');" ng-show="(ctrl.currentUser.role>=25 || ctrl.currentUser.role<10) && ctrl.currentUser.canEdit!='' &&
+                        !(ctrl.statusNum == 0  || ctrl.statusNum > 4) && ctrl.task.status!='Cancellation Request'">
+                        <i class="fa fa-hand-stop-o"></i> &nbsp; Cancel Artwork
+                    </button>
                     <button type="button" class="btn btn-danger" ng-click="ctrl.submitTask( 'Cancelled' );" ng-show="ctrl.task.status=='Cancellation Request'"
                         style="margin-left: 10px;">
                         <i class="fa fa-close"></i> &nbsp; Cancel Artwork
@@ -916,9 +924,20 @@
                         style="margin-left: 10px;">
                         <i class="fa fa-save"></i> &nbsp; Save Assignments
                     </button>
+                    <button type="button" class="btn btn-success" ng-click="ctrl.submitTask('For Approval');" ng-show="ctrl.statusNum==2" style="margin-left: 10px;">
+                        <i class="fa fa-save"></i> &nbsp; Request Artwork Approval
+                    </button>
                     <button type="button" class="btn btn-primary" ng-click="ctrl.submitTask( ctrl.task.status );" style="margin-left: 10px;"
                         ng-hide="ctrl.task.status=='Pending Assignment' || ctrl.task.status=='Cancelled' || ctrl.task.status=='Completed'">
                         <i class="fa fa-save"></i> &nbsp; Save Updates
+                    </button>
+                    <button type="button" class="btn btn-warning" ng-click="ctrl.revertTask('rejected');" ng-show="ctrl.task.status=='For Approval'"
+                        style="margin-left: 10px;">
+                        <i class="fa fa-hand-o-left"></i> &nbsp; For Revision
+                    </button>
+                    <button type="button" class="btn btn-success" ng-click="ctrl.approveArtwork();" ng-show="ctrl.task.status=='For Approval'"
+                        style="margin-left: 10px;">
+                        <i class="fa fa-thumbs-up"></i> &nbsp; Approve
                     </button>
                     <button type="button" class="btn btn-success" ng-click="ctrl.closeContentTask();" ng-show="ctrl.task.status=='Pending Import'"
                         style="margin-left: 10px;">
@@ -932,7 +951,8 @@
                          <i class="fa fa-comments-o"></i> Chat
                     </button>
 
-                    <button type="button" class="btn btn-default btn-sm" ng-click="ctrl.developerLog=!ctrl.developerLog" ng-show="ctrl.isLogEnabled" style="border: 1px solid #a1a1a1;border-radius: 25px;background:white;margin-left: 10px;margin-right: 10px;">
+                    <button type="button" class="btn btn-default btn-sm" ng-click="ctrl.developerLog=!ctrl.developerLog" ng-show="ctrl.isLogEnabled"
+                        style="border: 1px solid #a1a1a1;border-radius: 25px;background:white;margin-left: 10px;margin-right: 10px;">
                         <i class="fa fa-question-circle"></i>
                     </button>
                 </div>
@@ -940,8 +960,7 @@
         </div>
     </section>
 
-
-  <section class="content" style="background-color:white;padding-top:0" ng-show="ctrl.developerLog">
+    <section class="content" style="background-color:white;padding-top:0" ng-show="ctrl.developerLog">
         <div class="row">
             <div class="col-md-6">
                 <p>

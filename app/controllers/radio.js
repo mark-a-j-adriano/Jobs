@@ -31,13 +31,13 @@ app.controller('radioCTRL', function ($state, $auth, $uibModal, $stateParams, $t
 
     vm.cleanArray = function (tmpArray) {
         //console.log("[cleanArray] tmpArray - ", tmpArray);
-        if (_.isUndefined(tmpArray) || _.isNull(tmpArray)) {
+        if (_.isNil(tmpArray)  ) {
             return null;
         } else {
             if (_.isArray(tmpArray)) {
                 var newArray = [];
                 for (i = 0, len = tmpArray.length; i < len; i++) {
-                    if (_.isUndefined(tmpArray[i]) || _.isNull(tmpArray[i]) || _.isEmpty(tmpArray[i])) {
+                    if (_.isNil(tmpArray[i])   || _.isEmpty(tmpArray[i])) {
                     } else if (_.isDate(tmpArray[i])) {
                         newArray.push(moment(tmpArray[i]).format('YYYY-MM-DD'));
                     } else {
@@ -97,12 +97,12 @@ app.controller('radioCTRL', function ($state, $auth, $uibModal, $stateParams, $t
         var current_user = currentUser.id.toLowerCase().trim();
         var submitted_by = vm.task.submitted_by_username.toLowerCase().trim();
         var cc_response = "";
-        if (_.isNull(vm.task.cc_response_username)) {
+        if (_.isNil(vm.task.cc_response_username)) {
         } else {
             var cc_response = vm.task.cc_response_username.toLowerCase().trim();
         }
         var designer = '';
-        if (_.isUndefined(vm.task.team_members_username) || _.isNull(vm.task.team_members_username)) {
+        if (_.isNil(vm.task.team_members_username)  ) {
         } else {
             designer = vm.task.team_members_username.toLowerCase().trim();
         }
@@ -328,7 +328,7 @@ app.controller('radioCTRL', function ($state, $auth, $uibModal, $stateParams, $t
                 vm.task.production_cost = 0;
                 vm.task.parent_id = $stateParams.orderID;
                 vm.task.logged_in_user = currentUser.id;
-                if (_.isUndefined(vm.task.cc_response) || _.isNull(vm.task.cc_response)) {
+                if (_.isNil(vm.task.cc_response)  ) {
                     vm.cc_response_dsp = [];
                 } else {
                     vm.cc_response_dsp = _.uniq(vm.task.cc_response.split(","));
@@ -356,7 +356,7 @@ app.controller('radioCTRL', function ($state, $auth, $uibModal, $stateParams, $t
                     function (response) {
                         ////console.log('[getTmpID - getMember] - response.data : ' + JSON.stringify(response.data));
                         ////console.log('[getTmpID - getMember] - response.status : ' + JSON.stringify(response.status));
-                        if (_.isUndefined(response.data) || _.isNull(response.data) || _.isEmpty(response.data)) {
+                        if (_.isNil(response.data)   || _.isEmpty(response.data)) {
                         } else {
                             vm.task.project_mgr = response.data[0].name;
                             vm.task.project_mgr_username = response.data[0].username;
@@ -397,22 +397,31 @@ app.controller('radioCTRL', function ($state, $auth, $uibModal, $stateParams, $t
                 } else {
                     //console.log('[getTask] - prepare Data');
                     vm.task.ad_spend = parseFloat(vm.task.ad_spend);
-                    vm.task.due_date = new Date(vm.task.due_date);
-                    vm.task.launch_date = new Date(vm.task.launch_date);
-                    vm.creativeTypes = JSON.parse(vm.task.creative_types);
-                    if (_.isUndefined(vm.task.cc_response) || _.isNull(vm.task.cc_response)) {
+
+                    if (_.isNil(vm.task.due_date)  ) {
+                    } else {
+                        vm.task.due_date = new Date(vm.task.due_date);
+                    }
+
+                    if (_.isNil(vm.task.launch_date)  ) {
+                    } else {
+                        vm.task.launch_date = new Date(vm.task.launch_date);
+                    }
+
+                    vm.creativeTypes = DataFactory.parseLodash(vm.task.creative_types);
+                    if (_.isNil(vm.task.cc_response)  ) {
                         vm.cc_response_dsp = [];
                     } else {
                         vm.cc_response_dsp = _.uniq(vm.task.cc_response.split(","));
                     }
-                    if (_.isUndefined(vm.task.materials) || _.isNull(vm.task.materials) || _.isEmpty(vm.task.materials)) {
+                    if (_.isNil(vm.task.materials)   || _.isEmpty(vm.task.materials)) {
                     } else {
-                        vm.task.materials = vm.cleanArray(JSON.parse(vm.task.materials));
+                        vm.task.materials = vm.cleanArray(DataFactory.parseLodash(vm.task.materials));
                     }
 
-                    if (_.isUndefined(vm.task.artwork) || _.isNull(vm.task.artwork) || _.isEmpty(vm.task.materials)) {
+                    if (_.isNil(vm.task.artwork)   || _.isEmpty(vm.task.materials)) {
                     } else {
-                        vm.task.artwork = vm.cleanArray(JSON.parse(vm.task.artwork));
+                        vm.task.artwork = vm.cleanArray(DataFactory.parseLodash(vm.task.artwork));
                     }
 
                     vm.getDocHistory(vm.task.task_no);
@@ -500,7 +509,7 @@ app.controller('radioCTRL', function ($state, $auth, $uibModal, $stateParams, $t
 
     vm.isAssigned = function () {
         var str = vm.task.creative_team_username;
-        if (_.isUndefined(str) | _.isNull(str) || _.isEmpty(str) || str.trim() == '') {
+        if (_.isNil(str) | _.isNil(str) || _.isEmpty(str) || str.trim() == '') {
             toastr.error("Please assign creative team members.", {
                 closeButton: true,
                 onHidden: function () {
@@ -525,10 +534,10 @@ app.controller('radioCTRL', function ($state, $auth, $uibModal, $stateParams, $t
         //vm.isValid = vm.Validate();
         var prevStats = vm.task.status;
         if (vm.isValid) {
-            if (_.isUndefined(newStatus) || _.isNull(newStatus) || newStatus == '') {
+            if (_.isNil(newStatus)   || newStatus == '') {
                 //console.log('[submitTask] - 1');
                 if (vm.task.creative_team) {
-                    if (_.isNull(vm.task.creative_team) || vm.task.creative_team == '') {
+                    if (_.isNil(vm.task.creative_team) || vm.task.creative_team == '') {
                         vm.task.status = "Pending Assignment"
                     } else {
                         vm.task.status = "In Progress"
@@ -566,14 +575,21 @@ app.controller('radioCTRL', function ($state, $auth, $uibModal, $stateParams, $t
                 vm.task.log_msg = "Document was saved from " + prevStats.toUpperCase() + " to " + vm.task.status.toUpperCase();
             }
 
-            if (!_.isUndefined(vm.task.role)) delete vm.task.role;
-            if (!_.isUndefined(vm.task.type)) delete vm.task.type;
-            if (!_.isUndefined(vm.task.job_no)) delete vm.task.job_no;
-            if (!_.isUndefined(vm.task.default_due_date)) delete vm.task.default_due_date;
+            if (!_.isNil(vm.task.role)) delete vm.task.role;
+            if (!_.isNil(vm.task.type)) delete vm.task.type;
+            if (!_.isNil(vm.task.job_no)) delete vm.task.job_no;
+            if (!_.isNil(vm.task.default_due_date)) delete vm.task.default_due_date;
 
-            vm.task.due_date = moment(vm.task.due_date).format('YYYY-MM-DD HH:mm:ss');
-            vm.task.launch_date = moment(vm.task.launch_date).format('YYYY-MM-DD HH:mm:ss');
+            if (_.isNil(vm.task.due_date)   || vm.task.due_date == '') {
+            } else {
+                vm.task.due_date = moment(new Date(vm.task.due_date)).format('YYYY-MM-DD HH:mm:ss');
+            }
 
+            if (_.isNil(vm.task.launch_date)   || vm.task.launch_date == '') {
+            } else {
+                vm.task.launch_date = moment(new Date(vm.task.launch_date)).format('YYYY-MM-DD HH:mm:ss');
+            }
+            
             var passedID = null;
             if ($stateParams.action != "create") {
                 passedID = vm.task.id;
@@ -581,26 +597,26 @@ app.controller('radioCTRL', function ($state, $auth, $uibModal, $stateParams, $t
                 vm.task._method = "put";
             }
 
-            if (_.isUndefined(vm.creativeTypes) || _.isNull(vm.creativeTypes) || _.isEmpty(vm.creativeTypes)) {
-                vm.task.creative_types = [];
+            if (_.isNil(vm.RadioContracts)   || _.isEmpty(vm.RadioContracts)) {
+                vm.task.radio_contracts = [];
             } else {
-                vm.task.creative_types = vm.cleanArray(vm.creativeTypes);
+                vm.task.radio_contracts = vm.cleanArray(vm.radio_contracts);
             }
 
-            if (_.isUndefined(vm.task.materials) || _.isNull(vm.task.materials) || _.isEmpty(vm.task.materials)) {
+            if (_.isNil(vm.task.materials)   || _.isEmpty(vm.task.materials)) {
                 vm.task.materials = [];
             } else {
                 vm.task.materials = vm.cleanArray(vm.task.materials);
             }
 
-            if (_.isUndefined(vm.task.artwork) || _.isNull(vm.task.artwork) || _.isEmpty(vm.task.artwork)) {
+            if (_.isNil(vm.task.artwork)   || _.isEmpty(vm.task.artwork)) {
                 vm.task.artwork = [];
             } else {
                 vm.task.artwork = vm.cleanArray(vm.task.artwork);
             }
 
             var tmpTsk = angular.copy(vm.task);
-            tmpTsk.creative_types = JSON.stringify(tmpTsk.creative_types);
+            tmpTsk.radio_contracts = JSON.stringify(tmpTsk.radio_contracts);
             tmpTsk.materials = JSON.stringify(tmpTsk.materials);
             tmpTsk.artwork = JSON.stringify(tmpTsk.artwork);
             //console.log('submitted vm.task : ' + JSON.stringify(tmpTsk));
@@ -667,12 +683,12 @@ app.controller('radioCTRL', function ($state, $auth, $uibModal, $stateParams, $t
     vm.gotoParent = function () {
         //$state.go('creative', { orderID: $stateParams.orderID });
         var tmpID = null;
-        if (_.isUndefined(vm.task.parent_id) || _.isNull(vm.task.parent_id)) { } else { tmpID = vm.task.parent_id };
-        if (_.isNull(tmpID)) {
-            if (_.isUndefined(vm.task.job_id) || _.isNull(vm.task.job_id)) { } else { tmpID = vm.task.job_id };
+        if (_.isNil(vm.task.parent_id)  ) { } else { tmpID = vm.task.parent_id };
+        if (_.isNil(tmpID)) {
+            if (_.isNil(vm.task.job_id)  ) { } else { tmpID = vm.task.job_id };
         }
-        if (_.isNull(tmpID)) {
-            if (_.isUndefined($stateParams.orderID) || _.isNull($stateParams.orderID)) { } else { tmpID = $stateParams.orderID };
+        if (_.isNil(tmpID)) {
+            if (_.isNil($stateParams.orderID)  ) { } else { tmpID = $stateParams.orderID };
         }
 
         $state.go('creative', { orderID: tmpID });
@@ -685,17 +701,17 @@ app.controller('radioCTRL', function ($state, $auth, $uibModal, $stateParams, $t
         if (vm.task.production_cost < 1) vm.errorMsg.push({ id: 'production_cost', msg: 'Production Cost is required.' });
 
         if (vm.task.artwork_type) {
-            if (_.isNull(vm.task.artwork_type) || vm.task.artwork_type == '') vm.errorMsg.push({ id: 'artwork_type', msg: 'Job Classification is required.' });
+            if (_.isNil(vm.task.artwork_type) || vm.task.artwork_type == '') vm.errorMsg.push({ id: 'artwork_type', msg: 'Job Classification is required.' });
         } else {
             vm.errorMsg.push({ id: 'artwork_type', msg: 'Job Classification is required.' });
         }
 
         if (vm.task.publication) {
-            if (_.isNull(vm.task.publication) || vm.task.publication == '') {
+            if (_.isNil(vm.task.publication) || vm.task.publication == '') {
                 vm.errorMsg.push({ id: 'publication', msg: 'Publication is required.' });
             } else if (vm.task.publication == 'Other') {
                 if (vm.task.other_pub) {
-                    if (_.isNull(vm.task.other_pub) || vm.task.other_pub == '') vm.errorMsg.push({ id: 'other', msg: 'Other Information is required.' });
+                    if (_.isNil(vm.task.other_pub) || vm.task.other_pub == '') vm.errorMsg.push({ id: 'other', msg: 'Other Information is required.' });
                 } else {
                     vm.errorMsg.push({ id: 'other_pub', msg: 'Other Information is required.' });
                 }
@@ -706,18 +722,18 @@ app.controller('radioCTRL', function ($state, $auth, $uibModal, $stateParams, $t
 
         if (vm.task.pub_type) {
 
-            if (_.isNull(vm.task.pub_type) || vm.task.pub_type == '') vm.errorMsg.push({ id: 'pub_type', msg: 'Publication Type is required.' });
+            if (_.isNil(vm.task.pub_type) || vm.task.pub_type == '') vm.errorMsg.push({ id: 'pub_type', msg: 'Publication Type is required.' });
         } else {
             //console.log('pub_type [2] : ' + vm.task.pub_type);
             vm.errorMsg.push({ id: 'pub_type', msg: 'Publication Type is required.' });
         }
 
         if (vm.task.size_option) {
-            if (_.isNull(vm.task.size_option) || vm.task.size_option == '') {
+            if (_.isNil(vm.task.size_option) || vm.task.size_option == '') {
                 vm.errorMsg.push({ id: 'size_option', msg: 'Pre-defined size is required.' });
             } else if (vm.task.size_option == 'Other') {
                 if (vm.task.pub_size) {
-                    if (_.isNull(vm.task.pub_size) || vm.task.pub_size == '') vm.errorMsg.push({ id: 'pub_size', msg: 'Height x Cols is required.' });
+                    if (_.isNil(vm.task.pub_size) || vm.task.pub_size == '') vm.errorMsg.push({ id: 'pub_size', msg: 'Height x Cols is required.' });
                 } else {
                     vm.errorMsg.push({ id: 'pub_size', msg: 'Height x Cols is required.' });
                 }
@@ -727,17 +743,17 @@ app.controller('radioCTRL', function ($state, $auth, $uibModal, $stateParams, $t
         }
 
         if (vm.task.language) {
-            if (_.isNull(vm.task.language) || vm.task.language == '') vm.errorMsg.push({ id: 'language', msg: 'Language is required.' });
+            if (_.isNil(vm.task.language) || vm.task.language == '') vm.errorMsg.push({ id: 'language', msg: 'Language is required.' });
         } else {
             vm.errorMsg.push({ id: 'language', msg: 'Language is required.' });
         }
 
         if (vm.task.colour) {
-            if (_.isNull(vm.task.colour) || vm.task.colour == '') {
+            if (_.isNil(vm.task.colour) || vm.task.colour == '') {
                 vm.errorMsg.push({ id: 'colour', msg: 'Colour is required.' });
             } else if (vm.task.colour == 'Spot Colour') {
                 if (vm.task.colour_option) {
-                    if (_.isNull(vm.task.colour_option) || vm.task.colour_option == '') vm.errorMsg.push({ id: 'colour_option', msg: 'Colour Option is required.' });
+                    if (_.isNil(vm.task.colour_option) || vm.task.colour_option == '') vm.errorMsg.push({ id: 'colour_option', msg: 'Colour Option is required.' });
                 } else {
                     vm.errorMsg.push({ id: 'colour_option', msg: 'Colour Option is required.' });
                 }
@@ -748,7 +764,7 @@ app.controller('radioCTRL', function ($state, $auth, $uibModal, $stateParams, $t
 
 
         if (vm.task.due_date) {
-            if (_.isNull(vm.task.due_date) || vm.task.due_date == '') {
+            if (_.isNil(vm.task.due_date) || vm.task.due_date == '') {
                 vm.errorMsg.push({ id: 'due_date', msg: 'Due date is required.' });
             } else {
                 var flg = false;
@@ -766,20 +782,20 @@ app.controller('radioCTRL', function ($state, $auth, $uibModal, $stateParams, $t
 
         /*
         if (vm.task.materials) {
-          if (_.isNull(vm.task.materials) || vm.task.materials.length < 1) vm.errorMsg.push({ id: 'materials', msg: 'Materials is required.' });
+          if (_.isNil(vm.task.materials) || vm.task.materials.length < 1) vm.errorMsg.push({ id: 'materials', msg: 'Materials is required.' });
         } else {
           vm.errorMsg.push({ id: 'materials', msg: 'Materials is required.' });
         }
         */
 
         if (vm.task.instruction) {
-            if (_.isNull(vm.task.instruction) || vm.task.instruction == '') vm.errorMsg.push({ id: 'instruction', msg: 'Instruction is required.' });
+            if (_.isNil(vm.task.instruction) || vm.task.instruction == '') vm.errorMsg.push({ id: 'instruction', msg: 'Instruction is required.' });
         } else {
             vm.errorMsg.push({ id: 'instruction', msg: 'Instruction is required.' });
         }
 
         if (vm.productList) {
-            if (_.isNull(vm.productList) || vm.productList.length < 1) vm.errorMsg.push({ id: 'productList', msg: 'Product List is required.' });
+            if (_.isNil(vm.productList) || vm.productList.length < 1) vm.errorMsg.push({ id: 'productList', msg: 'Product List is required.' });
         } else {
             vm.errorMsg.push({ id: 'productList', msg: 'Product List is required.' });
         }
@@ -877,7 +893,7 @@ app.controller('radioCTRL', function ($state, $auth, $uibModal, $stateParams, $t
                     parentData: function () {
                         return tmp;
                     },
-                    members: function (DataFactory) {
+                    members: function (df) {
                         return DataFactory.getMembers(tmpData);
                     }
                 }
@@ -950,7 +966,7 @@ app.controller('radioCTRL', function ($state, $auth, $uibModal, $stateParams, $t
             user_role: vm.currentUser.canEdit,
         };
 
-        if (_.isUndefined(chatFlag) || _.isNull(chatFlag) || _.isEmpty(chatFlag) || chatFlag == '') {
+        if (_.isNil(chatFlag)   || _.isEmpty(chatFlag) || chatFlag == '') {
             chatFlag = "";
             tmp.frm_title = "Conversation";
         } else if (chatFlag.includes('cancel')) {
@@ -1028,12 +1044,12 @@ app.controller('radioCTRL', function ($state, $auth, $uibModal, $stateParams, $t
         var timeStamp = new Date();
 
         if (type == 'artwork') {
-            if (_.isUndefined(vm.task.artwork) || _.isNull(vm.task.artwork)) vm.task.artwork = [];
-            if (_.isUndefined(vm.task.final_size) || _.isNull(vm.task.final_size)) vm.task.final_size = vm.task.pub_size;
+            if (_.isNil(vm.task.artwork)  ) vm.task.artwork = [];
+            if (_.isNil(vm.task.final_size)  ) vm.task.final_size = vm.task.pub_size;
         } else if (type == 'article') {
-            if (_.isUndefined(vm.task.article) || _.isNull(vm.task.article)) vm.task.article = [];
+            if (_.isNil(vm.task.article)  ) vm.task.article = [];
         } else {
-            if (_.isUndefined(vm.task.materials) || _.isNull(vm.task.materials)) vm.task.materials = [];
+            if (_.isNil(vm.task.materials)  ) vm.task.materials = [];
         }
 
         angular.forEach(files, function (file) {
@@ -1151,7 +1167,7 @@ app.controller('radioCTRL', function ($state, $auth, $uibModal, $stateParams, $t
             }
         }
         /*
-        if (_.isUndefined(vm.task.artwork) || _.isNull(vm.task.artwork)) {
+        if (_.isNil(vm.task.artwork)  ) {
             if (vm.task.artwork.length > 0) previewReady = true;
         }
         */
@@ -1202,7 +1218,7 @@ app.controller('radioCTRL', function ($state, $auth, $uibModal, $stateParams, $t
 
     vm.revertArtwork = function () {
         //console.log('[radio] - revertArtwork');
-        if (_.isUndefined(vm.task.sales_comment) || _.isNull(vm.task.sales_comment) || vm.task.sales_comment == '') {
+        if (_.isNil(vm.task.sales_comment)   || vm.task.sales_comment == '') {
             toastr.error("Please add your reason for returning Artwork", { closeButton: true });
         } else {
             vm.submitTask('For Revision');
@@ -1294,15 +1310,22 @@ app.controller('radioCTRL', function ($state, $auth, $uibModal, $stateParams, $t
     }
 
 
-    if (_.isUndefined(currentUser) || _.isNull(currentUser)) {
+    if ($auth.isAuthenticated()) {
+        if (_.isNil(currentUser)  ) {
+            vm.currentUser = null;
+            StorageFactory.setURI(window.location.href);
+            $state.go('login');
+        } else {
+            //console.log('currentUser[1] : ' + JSON.stringify(currentUser));
+            vm.currentUser = currentUser;
+            vm.currentUser.canEdit = '';
+            vm.currentUser.userAction = $stateParams.action;
+            vm.firstAction();
+        }
+    } else {
+        vm.currentUser = null;
         StorageFactory.setURI(window.location.href);
         $state.go('login');
-    } else {
-        //console.log('currentUser[1] : ' + JSON.stringify(currentUser));
-        vm.currentUser = currentUser;
-        vm.currentUser.canEdit = '';
-        vm.currentUser.userAction = $stateParams.action;
-        vm.firstAction();
     }
     ////console.log('$routeParams.orderId : ' + $routeParams.orderId);
     //console.log('END - radioCTRL');
@@ -1316,7 +1339,7 @@ app.controller('radioModalCtrl', function ($uibModalInstance, focus, toastr, par
     vm.final_ad_spend = 0;
     vm.final_cost = 0;
 
-    if ((_.isUndefined(product)) || (_.isNull(product))) {
+    if ((_.isNil(product)) || (_.isNil(product))) {
         vm.formTitle = "Add Product";
         vm.product = {
             pubID: '',
@@ -1334,14 +1357,14 @@ app.controller('radioModalCtrl', function ($uibModalInstance, focus, toastr, par
         vm.product = product;
     }
 
-    if ((_.isUndefined(vm.pubOptions.title)) || (_.isNull(vm.pubOptions.title))) {
+    if ((_.isNil(vm.pubOptions.title)) || (_.isNil(vm.pubOptions.title))) {
     } else {
         vm.formTitle = vm.pubOptions.title;
         vm.final_ad_spend = vm.pubOptions.ad_spend;
         vm.final_cost = vm.pubOptions.cost;
     }
 
-    if ((_.isUndefined(parentData.isList)) || (_.isNull(parentData.isList))) {
+    if ((_.isNil(parentData.isList)) || (_.isNil(parentData.isList))) {
         vm.isList = false;
     } else {
         vm.isList = parentData.isList;
@@ -1484,13 +1507,13 @@ app.controller('radioModalCtrl', function ($uibModalInstance, focus, toastr, par
     vm.sendProduct = function () {
         var errMsg = [];
         if (vm.product.pubID == '') errMsg.push('Publication is required');
-        if (_.isNull(vm.product.pubDate)) errMsg.push('Publication date is required');
+        if (_.isNil(vm.product.pubDate)) errMsg.push('Publication date is required');
 
         var isComplete1 = false;
-        if (vm.product.etNum == '' || _.isNull(vm.product.etNum)) {
+        if (vm.product.etNum == '' || _.isNil(vm.product.etNum)) {
             isComplete1 = vm.product.etNum_tbd;
         } else {
-            if (_.isNull(vm.product.etDate)) {
+            if (_.isNil(vm.product.etDate)) {
                 errMsg.push('ET Date is required');
             } else {
                 //console.log('[etNum]');
@@ -1499,10 +1522,10 @@ app.controller('radioModalCtrl', function ($uibModalInstance, focus, toastr, par
         }
 
         var isComplete2 = false;
-        if (vm.product.cashNum == '' || _.isNull(vm.product.cashNum)) {
+        if (vm.product.cashNum == '' || _.isNil(vm.product.cashNum)) {
             isComplete2 = vm.product.cashNum_tbd;
         } else {
-            if (_.isNull(vm.product.cashDate)) {
+            if (_.isNil(vm.product.cashDate)) {
                 errMsg.push('CASH Date is required');
             } else {
                 //console.log('[cashDate]');
@@ -1514,9 +1537,9 @@ app.controller('radioModalCtrl', function ($uibModalInstance, focus, toastr, par
         if (errMsg.length > 0) {
             toastr.error(errMsg[0], { closeButton: true });
         } else {
-            if (!(_.isNull(vm.product.pubDate))) vm.product.pubDate = moment(vm.product.pubDate).format('YYYY-MM-DD');
-            if (!(_.isNull(vm.product.cashDate))) vm.product.cashDate = moment(vm.product.cashDate).format('YYYY-MM-DD');
-            if (!(_.isNull(vm.product.etDate))) vm.product.etDate = moment(vm.product.etDate).format('YYYY-MM-DD');
+            if (!(_.isNil(vm.product.pubDate))) vm.product.pubDate = moment(vm.product.pubDate).format('YYYY-MM-DD');
+            if (!(_.isNil(vm.product.cashDate))) vm.product.cashDate = moment(vm.product.cashDate).format('YYYY-MM-DD');
+            if (!(_.isNil(vm.product.etDate))) vm.product.etDate = moment(vm.product.etDate).format('YYYY-MM-DD');
             var tmp = {
                 pubID: vm.product.pubID,
                 pubName: vm.product.pubName,

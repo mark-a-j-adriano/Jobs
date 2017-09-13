@@ -1,4 +1,4 @@
-app.controller('salesDashCTRL', function ($state, $stateParams, $uibModal, toastr, DataFactory, currentUser) {
+app.controller('salesDashCTRL', function ($auth, $state, $stateParams, $uibModal, toastr, DataFactory, StorageFactory, currentUser) {
   ////console.log('salesDashCTRL : START');
 
   var vm = this;
@@ -11,24 +11,15 @@ app.controller('salesDashCTRL', function ($state, $stateParams, $uibModal, toast
   vm.pageSize = 30;
   vm.currentPage = 1;
   vm.totalItems = 0;
+  vm.expandAll = true;
   vm.toggleAnimation = function () {
     vm.animationsEnabled = !vm.animationsEnabled;
   };
 
-  if (currentUser) {
-    if (_.isNull(currentUser)) {
-      $state.go('login');
-    } else {
-      vm.currentUser = currentUser;
-      vm.currentUser.canEdit = '';
-      vm.currentUser.userAction = '';
-    }
-  } else {
-    $state.go('login');
-  }
+
 
   vm.columnTitle = [
-    { text: " ", predicate: " ", sortable: true, dataType: "string" },
+    { text: " ", predicate: " ", sortable: false, dataType: "button" },
     //{ text: "Job Number", predicate: "job_no", sortable: true, dataType: "string" },
     { text: "Title", predicate: "title", sortable: true, dataType: "string" },
     { text: "Booking Type", predicate: "booking_type", sortable: true, dataType: "string" },
@@ -67,51 +58,84 @@ app.controller('salesDashCTRL', function ($state, $stateParams, $uibModal, toast
         vm.totalItems = vm.jobs.length;
         //console.clear();
         for (x = 0; x < vm.jobs.length; x++) {
-          vm.jobs[x].tasks = JSON.parse(vm.jobs[x].tasks);
-          for (y = 0; y < vm.jobs[x].tasks.length; y++) {
-            if (_.isUndefined(vm.jobs[x].tasks[y].designer) || _.isNull(vm.jobs[x].tasks[y].designer)) {
-            } else {
-              vm.jobs[x].tasks[y].designer = vm.jobs[x].tasks[y].designer.split(",");
-            }
+          vm.jobs[x].isExpanded = true;
+          vm.jobs[x].tasks = DataFactory.parseLodash(vm.jobs[x].tasks);
+          console.log('tasks' + x, vm.jobs[x].tasks);
+          if (_.isArray(vm.jobs[x].tasks)) {
+            for (y = 0; y < vm.jobs[x].tasks.length; y++) {
+              if (_.isNil(vm.jobs[x].tasks[y].designer)) {
+              } else {
+                if (!_.isArray(vm.jobs[x].tasks[y].designer)) vm.jobs[x].tasks[y].designer = vm.jobs[x].tasks[y].designer.split(",");
+              }
 
-            if (_.isUndefined(vm.jobs[x].tasks[y].writer) || _.isNull(vm.jobs[x].tasks[y].writer)) {
-            } else {
-              vm.jobs[x].tasks[y].writer = vm.jobs[x].tasks[y].writer.split(",");
-            }
+              if (_.isNil(vm.jobs[x].tasks[y].writer)) {
+              } else {
+                if (!_.isArray(vm.jobs[x].tasks[y].writer)) vm.jobs[x].tasks[y].writer = vm.jobs[x].tasks[y].writer.split(",");
+              }
+
+              if (_.isNil(vm.jobs[x].tasks[y].status) | _.isEmpty(vm.jobs[x].tasks[y].status)) {
+                vm.jobs[x].tasks[y].status = '';
+              } else {
+                if (!_.isArray(vm.jobs[x].tasks[y].status)) vm.jobs[x].tasks[y].status = vm.jobs[x].tasks[y].status.split(",");
+              }
 
 
-            if (_.isUndefined(vm.jobs[x].tasks[y].due_date) || _.isNull(vm.jobs[x].tasks[y].due_date) || vm.jobs[x].tasks[y].due_date == '') {
-              vm.jobs[x].tasks[y].due_date = '';
-            } else {
-              var tmpDue = new Date(vm.jobs[x].tasks[y].due_date);
-              vm.jobs[x].tasks[y].due_date = (_.isDate(tmpDue) ? tmpDue : '');
-            }
-
-            if (_.isUndefined(vm.jobs[x].tasks[y].submitted_date) || _.isNull(vm.jobs[x].tasks[y].submitted_date)) {
-              vm.jobs[x].tasks[y].submitted_date = '';
-            } else {
-              vm.jobs[x].tasks[y].submitted_date = new Date(vm.jobs[x].tasks[y].submitted_date);
-            }
-
-            if (_.isUndefined(vm.jobs[x].tasks[y].pub_date) || _.isNull(vm.jobs[x].tasks[y].pub_date) || vm.jobs[x].tasks[y].pub_date == '') {
-              vm.jobs[x].tasks[y].pub_date = '';
-            } else {
-              var pub_date = vm.jobs[x].tasks[y].pub_date;
-              //if (pub_date.indexOf(", ") > 0) {
-              var str = [];
-              var res = pub_date.split(",");
-              for (z = 0; z < res.length; z++) {
-                if (_.isUndefined(res[z]) || _.isNull(res[z]) || res[z] == '') {
+              if (vm.jobs[x].tasks[y].creative_form == 'display') {
+                if (_.isNil(vm.jobs[x].tasks[y].due_date) || vm.jobs[x].tasks[y].due_date == '') {
+                  vm.jobs[x].tasks[y].due_date = '';
                 } else {
-                  var tmpDt = new Date(res[z].trim());
-                  if (_.isDate(tmpDt)) str.push(tmpDt);
-                  //str.push(pub_date[z]);
+                  var due_date = vm.jobs[x].tasks[y].due_date;
+                  //if (due_date.indexOf(", ") > 0) {
+                  var str = [];
+                  var res = _.isArray(due_date) ? due_date : due_date.split(",");
+
+                  for (z = 0; z < res.length; z++) {
+                    if (_.isNil(res[z]) || res[z] == '') {
+                    } else {
+                      var tmpDt = new Date(res[z].trim());
+                      if (_.isDate(tmpDt)) str.push(moment(tmpDt).format('DD/MM/YYYY'));
+                      //str.push(due_date[z]);
+                    }
+                  }
+                  vm.jobs[x].tasks[y].due_date = str;
+                }
+              } else {
+                if (_.isNil(vm.jobs[x].tasks[y].due_date) || vm.jobs[x].tasks[y].due_date == '') {
+                  vm.jobs[x].tasks[y].due_date = '';
+                } else {
+                  var tmpDue = new Date(vm.jobs[x].tasks[y].due_date);
+                  vm.jobs[x].tasks[y].due_date = (_.isDate(tmpDue) ? tmpDue : '');
                 }
               }
-              vm.jobs[x].tasks[y].pub_date = str;
+
+
+              if (_.isNil(vm.jobs[x].tasks[y].submitted_date)) {
+                vm.jobs[x].tasks[y].submitted_date = '';
+              } else {
+                vm.jobs[x].tasks[y].submitted_date = new Date(vm.jobs[x].tasks[y].submitted_date);
+              }
+
+              if (_.isNil(vm.jobs[x].tasks[y].pub_date) || vm.jobs[x].tasks[y].pub_date == '') {
+                vm.jobs[x].tasks[y].pub_date = '';
+              } else {
+                var pub_date = vm.jobs[x].tasks[y].pub_date;
+                //if (pub_date.indexOf(", ") > 0) {
+                var str = [];
+                var res = _.isArray(pub_date) ? pub_date : pub_date.split(",");
+
+                for (z = 0; z < res.length; z++) {
+                  if (_.isNil(res[z]) || res[z] == '') {
+                  } else {
+                    var tmpDt = new Date(res[z].trim());
+                    if (_.isDate(tmpDt)) str.push(tmpDt);
+                    //str.push(pub_date[z]);
+                  }
+                }
+                vm.jobs[x].tasks[y].pub_date = str;
+              }
+
+
             }
-
-
           }
         }
         //console.log('[getJobList] - final.data : ' + JSON.stringify(vm.jobs));
@@ -130,6 +154,26 @@ app.controller('salesDashCTRL', function ($state, $stateParams, $uibModal, toast
   vm.go = function (job) {
     ////console.log('job.Title - [GO] : ' + job.title)
   };
+
+  vm.updAllJobs = function (newStatus) {
+    vm.expandAll = newStatus;
+    for (x = 0; x < vm.jobs.length; x++) {
+      vm.jobs[x].isExpanded = newStatus;
+    }
+  }
+
+  vm.updateLine = function (newStatus, jobNum) {
+    var isAll = true;
+    for (x = 0; x < vm.jobs.length; x++) {
+      if (jobNum == vm.jobs[x].job_no) {
+        vm.jobs[x].isExpanded = newStatus;
+      } else {
+        if (vm.jobs[x].isExpanded != newStatus) isAll = false;
+      }
+    }
+
+    if (isAll) vm.expandAll = newStatus;
+  }
 
   vm.accessControl = function () {
     var accessLVL = parseInt(currentUser.role);
@@ -180,12 +224,29 @@ app.controller('salesDashCTRL', function ($state, $stateParams, $uibModal, toast
     ////console.log('[getStatList] - END');
   };
 
-  vm.getJobList('');
-  vm.getStatList('In Progress');
-  ////console.log('salesDashCTRL : END');
+
+
+  if ($auth.isAuthenticated()) {
+    if (_.isNil(currentUser)) {
+      vm.currentUser = null;
+      StorageFactory.setURI(window.location.href);
+      $state.go('login');
+    } else {
+      vm.currentUser = currentUser;
+      vm.currentUser.canEdit = '';
+      vm.currentUser.userAction = '';
+      vm.getJobList('');
+      vm.getStatList('In Progress');
+    }
+  } else {
+    vm.currentUser = null;
+    StorageFactory.setURI(window.location.href);
+    $state.go('login');
+  }
+
 });
 
-app.controller('designerDashCTRL', function ($state, $stateParams, $uibModal, toastr, DataFactory, currentUser) {
+app.controller('designerDashCTRL', function ($auth, $state, $stateParams, $uibModal, toastr, DataFactory, StorageFactory, currentUser) {
   ////console.log('designerDashCTRL : START');
 
   var vm = this;
@@ -202,17 +263,6 @@ app.controller('designerDashCTRL', function ($state, $stateParams, $uibModal, to
     vm.animationsEnabled = !vm.animationsEnabled;
   };
 
-  if (currentUser) {
-    if (_.isNull(currentUser)) {
-      $state.go('login');
-    } else {
-      vm.currentUser = currentUser;
-      vm.currentUser.canEdit = '';
-      vm.currentUser.userAction = '';
-    }
-  } else {
-    $state.go('login');
-  }
 
   vm.columnTitle = [
     { text: " ", predicate: " ", sortable: true, dataType: "string" },
@@ -255,26 +305,58 @@ app.controller('designerDashCTRL', function ($state, $stateParams, $uibModal, to
         vm.tasks = response.data;
         vm.totalItems = vm.tasks.length;
         for (i = 0; i < vm.tasks.length; i++) {
-          if (_.isUndefined(vm.tasks[i].due_date) || _.isNull(vm.tasks[i].due_date) || vm.tasks[i].due_date == '') {
-            vm.tasks[i].due_date = ''
+          if (_.isNil(vm.tasks[i].pub_size)) {
           } else {
-            vm.tasks[i].due_date = new Date(vm.tasks[i].due_date);
+            vm.tasks[i].pub_size = vm.tasks[i].pub_size.replace("_", "");
           }
 
-          if (_.isUndefined(vm.tasks[i].submitted_date) || _.isNull(vm.tasks[i].submitted_date)) {
+          if (_.isNil(vm.tasks[i].status) || _.isEmpty(vm.tasks[i].status)) {
+            vm.tasks[i].status = "";
+          } else {
+            if (!_.isArray(vm.tasks[i].status)) vm.tasks[i].status = vm.tasks[i].status.split(",");
+          }
+
+          if (vm.tasks[i].creative_form == 'display') {
+            if (_.isNil(vm.tasks[i].due_date) || vm.tasks[i].due_date == '') {
+              vm.tasks[i].due_date = '';
+            } else {
+              var due_date = vm.tasks[i].due_date;
+              //if (due_date.indexOf(", ") > 0) {
+              var str = [];
+              var res = _.isArray(due_date) ? due_date : due_date.split(",");
+              for (z = 0; z < res.length; z++) {
+                if (_.isNil(res[z]) || res[z] == '') {
+                } else {
+                  var tmpDt = new Date(res[z].trim());
+                  if (_.isDate(tmpDt)) str.push(moment(tmpDt).format('DD/MM/YYYY'));
+                  //str.push(due_date[z]);
+                }
+              }
+              vm.tasks[i].due_date = str;
+            }
+          } else {
+            if (_.isNil(vm.tasks[i].due_date) || vm.tasks[i].due_date == '') {
+              vm.tasks[i].due_date = '';
+            } else {
+              var tmpDue = new Date(vm.tasks[i].due_date);
+              vm.tasks[i].due_date = (_.isDate(tmpDue) ? tmpDue : '');
+            }
+          }
+
+          if (_.isNil(vm.tasks[i].submitted_date)) {
           } else {
             vm.tasks[i].submitted_date = new Date(vm.tasks[i].submitted_date);
           }
 
-          if (_.isUndefined(vm.tasks[i].pub_date) || _.isNull(vm.tasks[i].pub_date) || vm.tasks[i].pub_date == '') {
+          if (_.isNil(vm.tasks[i].pub_date) || vm.tasks[i].pub_date == '') {
             vm.tasks[i].pub_date = ''
           } else {
             var pub_date = vm.tasks[i].pub_date;
             //if (pub_date.indexOf(", ") > 0) {
             var str = [];
-            var res = pub_date.split(",");
+            var res = _.isArray(pub_date) ? pub_date : pub_date.split(",");
             for (z = 0; z < res.length; z++) {
-              if (_.isUndefined(res[z]) || _.isNull(res[z]) || res[z] == '') {
+              if (_.isNil(res[z]) || res[z] == '') {
               } else {
                 var tmpDt = new Date(res[z].trim());
                 if (_.isDate(tmpDt)) str.push(tmpDt);
@@ -284,14 +366,14 @@ app.controller('designerDashCTRL', function ($state, $stateParams, $uibModal, to
             vm.tasks[i].pub_date = str;
           }
 
-          if (_.isUndefined(vm.tasks[i].designer) || _.isNull(vm.tasks[i].designer)) {
+          if (_.isNil(vm.tasks[i].designer)) {
           } else {
-            vm.tasks[i].designer = vm.tasks[i].designer.split(",");
+            if (!_.isArray(vm.tasks[i].designer)) vm.tasks[i].designer = vm.tasks[i].designer.split(",");
           }
 
-          if (_.isUndefined(vm.tasks[i].writer) || _.isNull(vm.tasks[i].writer)) {
+          if (_.isNil(vm.tasks[i].writer)) {
           } else {
-            vm.tasks[i].writer = vm.tasks[i].writer.split(",");
+            if (!_.isArray(vm.tasks[i].writer)) vm.tasks[i].writer = vm.tasks[i].writer.split(",");
           }
         }
       },
@@ -341,13 +423,29 @@ app.controller('designerDashCTRL', function ($state, $stateParams, $uibModal, to
     });
   };
 
-  vm.getTaskList('In Progress');
-  vm.getStatList('In Progress');
+
+  if ($auth.isAuthenticated()) {
+    if (_.isNil(currentUser)) {
+      vm.currentUser = null;
+      StorageFactory.setURI(window.location.href);
+      $state.go('login');
+    } else {
+      vm.currentUser = currentUser;
+      vm.currentUser.canEdit = '';
+      vm.currentUser.userAction = '';
+      vm.getTaskList('In Progress');
+      vm.getStatList('In Progress');
+    }
+  } else {
+    vm.currentUser = null;
+    StorageFactory.setURI(window.location.href);
+    $state.go('login');
+  }
 
   ////console.log('designerDashCTRL : END');
 });
 
-app.controller('copywriterDashCTRL', function ($state, $stateParams, $uibModal, toastr, DataFactory, currentUser) {
+app.controller('copywriterDashCTRL', function ($auth, $state, $stateParams, $uibModal, toastr, DataFactory, StorageFactory, currentUser) {
   ////console.log('copywriterDashCTRL : START');
 
   var vm = this;
@@ -364,18 +462,6 @@ app.controller('copywriterDashCTRL', function ($state, $stateParams, $uibModal, 
   vm.toggleAnimation = function () {
     vm.animationsEnabled = !vm.animationsEnabled;
   };
-
-  if (currentUser) {
-    if (_.isNull(currentUser)) {
-      $state.go('login');
-    } else {
-      vm.currentUser = currentUser;
-      vm.currentUser.canEdit = '';
-      vm.currentUser.userAction = '';
-    }
-  } else {
-    $state.go('login');
-  }
 
 
   vm.columnTitle = [
@@ -420,27 +506,59 @@ app.controller('copywriterDashCTRL', function ($state, $stateParams, $uibModal, 
         vm.totalItems = vm.tasks.length;
 
         for (i = 0; i < vm.tasks.length; i++) {
-          if (_.isUndefined(vm.tasks[i].due_date) || _.isNull(vm.tasks[i].due_date) || vm.tasks[i].due_date == '') {
-            vm.tasks[i].due_date = ''
+          if (_.isNil(vm.tasks[i].pub_size)) {
           } else {
-            vm.tasks[i].due_date = new Date(vm.tasks[i].due_date);
+            vm.tasks[i].pub_size = vm.tasks[i].pub_size.replace("_", "");
           }
 
-          if (_.isUndefined(vm.tasks[i].submitted_date) || _.isNull(vm.tasks[i].submitted_date)) {
+          if (_.isNil(vm.tasks[i].status) || _.isEmpty(vm.tasks[i].status)) {
+            vm.tasks[i].status = "";
+          } else {
+            if (!_.isArray(vm.tasks[i].status)) vm.tasks[i].status = vm.tasks[i].status.split(",");
+          }
+
+          if (vm.tasks[i].creative_form == 'display') {
+            if (_.isNil(vm.tasks[i].due_date) || vm.tasks[i].due_date == '') {
+              vm.tasks[i].due_date = '';
+            } else {
+              var due_date = vm.tasks[i].due_date;
+              //if (due_date.indexOf(", ") > 0) {
+              var str = [];
+              var res = _.isArray(due_date) ? due_date : due_date.split(",");
+              for (z = 0; z < res.length; z++) {
+                if (_.isNil(res[z]) || res[z] == '') {
+                } else {
+                  var tmpDt = new Date(res[z].trim());
+                  if (_.isDate(tmpDt)) str.push(moment(tmpDt).format('DD/MM/YYYY'));
+                  //str.push(due_date[z]);
+                }
+              }
+              vm.tasks[i].due_date = str;
+            }
+          } else {
+            if (_.isNil(vm.tasks[i].due_date) || vm.tasks[i].due_date == '') {
+              vm.tasks[i].due_date = '';
+            } else {
+              var tmpDue = new Date(vm.tasks[i].due_date);
+              vm.tasks[i].due_date = (_.isDate(tmpDue) ? tmpDue : '');
+            }
+          }
+
+          if (_.isNil(vm.tasks[i].submitted_date)) {
           } else {
             vm.tasks[i].submitted_date = new Date(vm.tasks[i].submitted_date);
           }
 
 
-          if (_.isUndefined(vm.tasks[i].pub_date) || _.isNull(vm.tasks[i].pub_date) || vm.tasks[i].pub_date == '') {
+          if (_.isNil(vm.tasks[i].pub_date) || vm.tasks[i].pub_date == '') {
             vm.tasks[i].pub_date = ''
           } else {
             var pub_date = vm.tasks[i].pub_date;
             //if (pub_date.indexOf(", ") > 0) {
             var str = [];
-            var res = pub_date.split(",");
+            var res = _.isArray(pub_date) ? pub_date : pub_date.split(",");
             for (z = 0; z < res.length; z++) {
-              if (_.isUndefined(res[z]) || _.isNull(res[z]) || res[z] == '') {
+              if (_.isNil(res[z]) || res[z] == '') {
               } else {
                 var tmpDt = new Date(res[z].trim());
                 if (_.isDate(tmpDt)) str.push(tmpDt);
@@ -450,14 +568,14 @@ app.controller('copywriterDashCTRL', function ($state, $stateParams, $uibModal, 
             vm.tasks[i].pub_date = str;
           }
 
-          if (_.isUndefined(vm.tasks[i].designer) || _.isNull(vm.tasks[i].designer)) {
+          if (_.isNil(vm.tasks[i].designer)) {
           } else {
-            vm.tasks[i].designer = vm.tasks[i].designer.split(",");
+            if (!_.isArray(vm.tasks[i].designer)) vm.tasks[i].designer = vm.tasks[i].designer.split(",");
           }
 
-          if (_.isUndefined(vm.tasks[i].writer) || _.isNull(vm.tasks[i].writer)) {
+          if (_.isNil(vm.tasks[i].writer)) {
           } else {
-            vm.tasks[i].writer = vm.tasks[i].writer.split(",");
+            if (!_.isArray(vm.tasks[i].writer)) vm.tasks[i].writer = vm.tasks[i].writer.split(",");
           }
         }
 
@@ -505,12 +623,28 @@ app.controller('copywriterDashCTRL', function ($state, $stateParams, $uibModal, 
     });
   };
 
-  vm.getTaskList('In Progress');
-  vm.getStatList('In Progress');
-  ////console.log('copywriterDashCTRL : END');
+  if ($auth.isAuthenticated()) {
+    if (_.isNil(currentUser)) {
+      vm.currentUser = null;
+      StorageFactory.setURI(window.location.href);
+      $state.go('login');
+    } else {
+      vm.currentUser = currentUser;
+      vm.currentUser.canEdit = '';
+      vm.currentUser.userAction = '';
+      vm.getTaskList('In Progress');
+      vm.getStatList('In Progress');
+    }
+  } else {
+    vm.currentUser = null;
+    StorageFactory.setURI(window.location.href);
+    $state.go('login');
+  }
+
+
 });
 
-app.controller('coordinatorDashCTRL', function ($state, $stateParams, $uibModal, toastr, DataFactory, currentUser) {
+app.controller('coordinatorDashCTRL', function ($auth, $state, $stateParams, $uibModal, toastr, DataFactory, StorageFactory, currentUser) {
   ////console.log('coordinatorDashCTRL : START');
 
   var vm = this;
@@ -529,17 +663,7 @@ app.controller('coordinatorDashCTRL', function ($state, $stateParams, $uibModal,
     vm.animationsEnabled = !vm.animationsEnabled;
   };
 
-  if (currentUser) {
-    if (_.isNull(currentUser)) {
-      $state.go('login');
-    } else {
-      vm.currentUser = currentUser;
-      vm.currentUser.canEdit = '';
-      vm.currentUser.userAction = '';
-    }
-  } else {
-    $state.go('login');
-  }
+
 
   vm.columnTitle = [
     { text: " ", predicate: " ", sortable: true, dataType: "string" },
@@ -583,27 +707,60 @@ app.controller('coordinatorDashCTRL', function ($state, $stateParams, $uibModal,
         vm.tasks = response.data;
         vm.totalItems = vm.tasks.length;
         for (i = 0; i < vm.tasks.length; i++) {
-          if (_.isUndefined(vm.tasks[i].due_date) || _.isNull(vm.tasks[i].due_date) || vm.tasks[i].due_date == '') {
-            vm.tasks[i].due_date = ''
+
+          if (_.isNil(vm.tasks[i].pub_size)) {
           } else {
-            vm.tasks[i].due_date = new Date(vm.tasks[i].due_date);
+            vm.tasks[i].pub_size = vm.tasks[i].pub_size.replace("_", "");
           }
 
-          if (_.isUndefined(vm.tasks[i].submitted_date) || _.isNull(vm.tasks[i].submitted_date)) {
+          if (_.isNil(vm.tasks[i].status) || _.isEmpty(vm.tasks[i].status)) {
+            vm.tasks[i].status = "";
+          } else {
+            if (!_.isArray(vm.tasks[i].status)) vm.tasks[i].status = vm.tasks[i].status.split(",");
+          }
+
+          if (vm.tasks[i].creative_form == 'display') {
+            if (_.isNil(vm.tasks[i].due_date) || vm.tasks[i].due_date == '') {
+              vm.tasks[i].due_date = '';
+            } else {
+              var due_date = vm.tasks[i].due_date;
+              //if (due_date.indexOf(", ") > 0) {
+              var str = [];
+              var res = _.isArray(due_date) ? due_date : due_date.split(",");
+              for (z = 0; z < res.length; z++) {
+                if (_.isNil(res[z]) || res[z] == '') {
+                } else {
+                  var tmpDt = new Date(res[z].trim());
+                  if (_.isDate(tmpDt)) str.push(moment(tmpDt).format('DD/MM/YYYY'));
+                  //str.push(due_date[z]);
+                }
+              }
+              vm.tasks[i].due_date = str;
+            }
+          } else {
+            if (_.isNil(vm.tasks[i].due_date) || vm.tasks[i].due_date == '') {
+              vm.tasks[i].due_date = '';
+            } else {
+              var tmpDue = new Date(vm.tasks[i].due_date);
+              vm.tasks[i].due_date = (_.isDate(tmpDue) ? tmpDue : '');
+            }
+          }
+
+          if (_.isNil(vm.tasks[i].submitted_date)) {
           } else {
             vm.tasks[i].submitted_date = new Date(vm.tasks[i].submitted_date);
           }
 
 
-          if (_.isUndefined(vm.tasks[i].pub_date) || _.isNull(vm.tasks[i].pub_date) || vm.tasks[i].pub_date == '') {
+          if (_.isNil(vm.tasks[i].pub_date) || vm.tasks[i].pub_date == '') {
             vm.tasks[i].pub_date = ''
           } else {
             var pub_date = vm.tasks[i].pub_date;
             //if (pub_date.indexOf(", ") > 0) {
             var str = [];
-            var res = pub_date.split(",");
+            var res = _.isArray(pub_date) ? pub_date : pub_date.split(",");
             for (z = 0; z < res.length; z++) {
-              if (_.isUndefined(res[z]) || _.isNull(res[z]) || res[z] == '') {
+              if (_.isNil(res[z]) || res[z] == '') {
               } else {
                 var tmpDt = new Date(res[z].trim());
                 if (_.isDate(tmpDt)) str.push(tmpDt);
@@ -613,20 +770,20 @@ app.controller('coordinatorDashCTRL', function ($state, $stateParams, $uibModal,
             vm.tasks[i].pub_date = str;
           }
 
-          if (_.isUndefined(vm.tasks[i].designer) || _.isNull(vm.tasks[i].designer)) {
+          if (_.isNil(vm.tasks[i].designer)) {
           } else {
-            vm.tasks[i].designer = vm.tasks[i].designer.split(",");
+            if (!_.isArray(vm.tasks[i].designer)) vm.tasks[i].designer = vm.tasks[i].designer.split(",");
           }
 
-          if (_.isUndefined(vm.tasks[i].writer) || _.isNull(vm.tasks[i].writer)) {
+          if (_.isNil(vm.tasks[i].writer)) {
           } else {
-            vm.tasks[i].writer = vm.tasks[i].writer.split(",");
+            if (!_.isArray(vm.tasks[i].writer)) vm.tasks[i].writer = vm.tasks[i].writer.split(",");
           }
         }
 
         /*
         for (i = 0; i < vm.jobs.length; i++) {
-          vm.jobs[i].tasks = JSON.parse(vm.jobs[i].tasks);
+          vm.jobs[i].tasks = DataFactory.parseLodash(vm.jobs[i].tasks);
         }
         */
       },
@@ -684,8 +841,24 @@ app.controller('coordinatorDashCTRL', function ($state, $stateParams, $uibModal,
     */
   };
 
-  vm.getTaskList('Pending Assignment');
-  vm.getStatList('Pending Assignment');
+
+  if ($auth.isAuthenticated()) {
+    if (_.isNil(currentUser)) {
+      vm.currentUser = null;
+      StorageFactory.setURI(window.location.href);
+      $state.go('login');
+    } else {
+      vm.currentUser = currentUser;
+      vm.currentUser.canEdit = '';
+      vm.currentUser.userAction = '';
+      vm.getTaskList('Pending Assignment');
+      vm.getStatList('Pending Assignment');
+    }
+  } else {
+    vm.currentUser = null;
+    StorageFactory.setURI(window.location.href);
+    $state.go('login');
+  }
 
   ////console.log('coordinatorDashCTRL : END');
 });

@@ -1,4 +1,4 @@
-<div class="container" style="padding:0">
+<div class="container" id="printSectionId" style="padding:0">
     <!-- Header content -->
     <section class="content" style="background-color:white;min-height: 0px;padding:0">
         <div class="row">
@@ -19,7 +19,8 @@
         <div class="row" style="padding-left:10px;padding-right:10px;">
             <div class="col-md-9">
                 <span ng-show="ctrl.task.status=='new'"><h4>New Artwork Request</h4></span>
-                <div class="info-box bg-aqua" ng-click="ctrl.revertTask();" ng-show="ctrl.docMessages.length > 0" style="margin-top:10px;height:50px;min-height: 50px;cursor:pointer">
+                <div class="info-box bg-aqua no-print" ng-click="ctrl.revertTask();" ng-show="ctrl.docMessages.length > 0" 
+                    style="margin-top:10px;height:50px;min-height: 50px;cursor:pointer">
                     <span class="info-box-icon" style="height:50px;">
                         <i class="fa fa-comments-o"></i>
                     </span>
@@ -776,11 +777,17 @@
     <!-- READ ONLY TASK -->
     <section class="content" style="background-color:white;padding-top:0" ng-show="ctrl.readOnly">
         <div class="row">
-            <div class="col-md-5">
+            <div class="col-md-4">
                 <button type="button" class="btn btn-default" ng-click="ctrl.gotoMain();"><i class="fa fa-remove"></i> Close</button>
             </div>
             <div class="col-md-1">
-                <button type="button" class="btn btn-default btn-sm" ng-click="ctrl.developerLog=!ctrl.developerLog" ng-show="ctrl.isLogEnabled" style="border: 1px solid #a1a1a1;border-radius: 25px;background:white;">
+                <button type="button" class="btn btn-info" ng-click="ctrl.printThis('printSectionId');">
+                         <i class="fa fa-print"></i> 
+                </button>
+            </div>
+            <div class="col-md-1">
+                <button type="button" class="btn btn-default btn-sm" ng-click="ctrl.developerLog=!ctrl.developerLog" ng-show="ctrl.isLogEnabled" 
+                style="border: 1px solid #a1a1a1;border-radius: 25px;background:white;">
                      <i class="fa fa-question-circle"></i>
                 </button>
             </div>

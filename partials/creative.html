@@ -65,17 +65,14 @@
                             <label>Ad Spend :</label>
                             <div class="input-group">
                                 <span class="input-group-addon">$</span>
-                                <input type="text" class="form-control input-sm fld-att" ng-model="ctrl.job.ad_spend"                                 
-                                
-                                    style='text-align:right' readonly>
+                                <input type="text" class="form-control input-sm fld-att" ng-model="ctrl.job.ad_spend" style='text-align:right' readonly>
                             </div>
                         </div>
                         <div class="form-group">
                             <label>Production Cost :</label>
                             <div class="input-group">
                                 <span class="input-group-addon">$</span>
-                                <input type="text" class="form-control input-sm fld-att" ng-model="ctrl.job.production_cost"                                 
-                                    style='text-align:right' readonly>
+                                <input type="text" class="form-control input-sm fld-att" ng-model="ctrl.job.production_cost" style='text-align:right' readonly>
                             </div>
                         </div>
                     </div>
@@ -372,7 +369,7 @@
                         </div>
                     </div>
                     <div class="box-footer table-responsive no-padding">
-                        <table class="table table-bordered table-hover">
+                        <table class="table table-bordered table-hover" >
                             <thead>
                                 <tr ng-hide="(ctrl.taskList.length>-1) || ctrl.qTaskResultError || !ctrl.readOnly">
                                     <th style="vertical-align:middle;">&emsp;<i class="fa fa-cog fa-2x fa-spin"></i>&emsp;Loading</th>
@@ -414,8 +411,24 @@
                                         </p>
                                     </td>
 
-                                    <td>{{c.due_date | date:"dd/MM/yyyy hh:mm a"}}</td>
-                                    <td>{{c.status}}</td>
+                                    <td ng-hide="c.due_date.length > 0">
+                                        {{c.due_date | date:"dd/MM/yyyy hh:mm a"}}
+                                    </td>
+                                    <td ng-show="c.due_date.length > 0">
+                                        <p ng-repeat="due_date in c.due_date">
+                                            <span>{{due_date | date:"dd/MM/yyyy hh:mm a"}}</span>
+                                        </p>
+                                    </td>
+
+                                     <td ng-hide="c.status.length > 0">
+                                        {{c.status}}
+                                    </td>
+                                    <td ng-show="c.status.length > 0">
+                                        <p ng-repeat="status in c.status">
+                                            <span>{{status}}</span>
+                                        </p>
+                                    </td>
+                                    
                                     <td style="width:100px">
                                         <div class="btn-group">
                                             <button type="button" class="btn btn-default fa fa-edit" tooltip-placement="left" uib-tooltip="Edit Task" ng-click="ctrl.openTask(c);"></button>
@@ -444,7 +457,7 @@
                         Edit History
                     </div>
                     <div class="box-body">
-                        <table class="table table-bordered">
+                        <table class="table table-bordered" >
                             <thead>
                                 <tr>
                                     <th class="col-xs-3" style="text-align:center">Date</th>
@@ -483,14 +496,16 @@
                 <div class="pull-right" ng-show="ctrl.readOnly">
                     <button type="button" class="btn btn-primary" ng-click="ctrl.editJob();" ng-show="ctrl.currentUser.canEdit || ctrl.job.status=='Completed'">
                         <i class="fa fa-pencil-square-o"></i> Edit</button>
-                    <button type="button" class="btn btn-default btn-sm" ng-click="ctrl.developerLog=!ctrl.developerLog" ng-show="ctrl.isLogEnabled" style="border: 1px solid #a1a1a1;border-radius: 25px;background:white;margin-left: 10px;margin-right: 10px;">
+                    <button type="button" class="btn btn-default btn-sm" ng-click="ctrl.developerLog=!ctrl.developerLog" ng-show="ctrl.isLogEnabled"
+                        style="border: 1px solid #a1a1a1;border-radius: 25px;background:white;margin-left: 10px;margin-right: 10px;">
                         <i class="fa fa-question-circle"></i>
                     </button>
                 </div>
                 <div class="pull-right" ng-hide="ctrl.readOnly">
                     <button type="button" class="btn btn-primary" ng-click="ctrl.checkValidity();" ng-show='ctrl.currentUser.canEdit'>
                         <i class="fa fa-save"></i> Save</button>
-                    <button type="button" class="btn btn-default btn-sm" ng-click="ctrl.developerLog=!ctrl.developerLog" ng-show="ctrl.isLogEnabled" style="border: 1px solid #a1a1a1;border-radius: 25px;background:white;">
+                    <button type="button" class="btn btn-default btn-sm" ng-click="ctrl.developerLog=!ctrl.developerLog" ng-show="ctrl.isLogEnabled"
+                        style="border: 1px solid #a1a1a1;border-radius: 25px;background:white;">
                         <i class="fa fa-question-circle"></i>
                     </button>
                 </div>

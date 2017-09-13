@@ -27,7 +27,7 @@
 </section>
 
 <!-- Main content -->
-<section class="content">
+<section class="content" style="font-size:14px;">
     <!-- Small boxes (Stat box) -->
     <div class="row">
         <div class="col-lg-2 col-xs-4">
@@ -172,14 +172,25 @@
                 </div>
                 <!-- /.box-body -->
 
-                <div class="box-footer  table-responsive no-padding">
-                    <table class="table table-striped">
-                        <thead>
+                <div class="box-footer  table-responsive no-padding" style="font-size:14px;">
+                    <table class="table table-striped" >
+                        <thead style="font-size:14px;">
                             <tr>
                                 <th ng-repeat="c in ctrl.columnTitle">
-                                    <div ng-hide="c.sortable">{{c.text}}</div>
-                                    <div ng-show="c.sortable">
-                                        <a ng-click="ctrl.orderByField=c.predicate; ctrl.reverseSort = !ctrl.reverseSort" style="cursor:pointer">
+                                    <div ng-show="c.dataType=='button'">
+                                        <button type="btn btn-small" ng-click="ctrl.updAllJobs(!ctrl.expandAll);" 
+                                         uib-tooltip="Expand All" ng-hide="ctrl.expandAll">
+										    <i class="fa fa-angle-double-down"></i>                                            
+                                        </button>
+                                        <button type="btn btn-small" ng-click="ctrl.updAllJobs(!ctrl.expandAll);" 
+                                        uib-tooltip="Collapse all" ng-show="ctrl.expandAll">										    
+                                            <i class="fa fa-angle-double-right"></i>
+                                        </button>                                        
+                                    </div>
+                                    <div ng-hide="c.dataType=='button'">
+                                        <div ng-hide="c.sortable">{{c.text}}</div>
+                                        <div ng-show="c.sortable">
+                                            <a ng-click="ctrl.orderByField=c.predicate; ctrl.reverseSort = !ctrl.reverseSort" style="cursor:pointer">
                                             {{c.text}}
                                             <span ng-show="ctrl.orderByField == c.predicate">
                                                 <span ng-show="!ctrl.reverseSort" style='font-weight:100;'>
@@ -192,6 +203,7 @@
                                                 </span>
                                             </span>
                                         </a>
+                                        </div>
                                     </div>
                                 </th>
                             </tr>
@@ -203,19 +215,16 @@
                             <tr ng-hide="(ctrl.jobs.length>-1) || ctrl.qResultError">
                                 <th colspan="8" style="vertical-align:middle;"><i class="fa fa-cog fa-3x fa-spin"></i>&nbsp;Loading</th>
                             </tr>
-                        </thead>
-                        <!--
-                        <tbody ng-repeat="c in ctrl.jobs | filter: ctrl.filterJobs | orderBy:'-id'" id="{{c.id}}" animate-on-change='c.packing + c.stock + c.price + c.description'
-                            ng-animate="ctrl.animationsEnabled" ng-click="ctrl.go(c);">
-                        -->
-                        <tbody id="{{c.id}}" ng-animate="ctrl.animationsEnabled" ng-click="ctrl.go(c);" ng-show='ctrl.jobs.length > 0' animate-on-change='c.job_no + c.title + c.booking_type + c.status'
+                        </thead>                   
+                        <tbody id="{{c.id}}" ng-animate="ctrl.animationsEnabled" ng-click="ctrl.go(c);" ng-show='ctrl.jobs.length > 0' 
+                            animate-on-change='c.job_no + c.title + c.booking_type + c.status' style="font-size:14px;"
                             ng-repeat="c in ctrl.jobs | filter: ctrl.filterJobs | orderBy:ctrl.orderByField:ctrl.reverseSort | limitTo : ctrl.pageSize : (ctrl.currentPage - 1) * ctrl.pageSize">
                             <tr>
                                 <td class="pullright">
-                                    <button type="btn btn-small" title="Click to show list of task for Job Order..." ng-click="jobData.showTaskList=!jobData.showTaskList"
-                                        ng-hide="c.tasks.length==0">
-										<i class="fa fa-chevron-right" ng-hide="jobData.showTaskList"></i>
-                                        <i class="fa fa-chevron-down"  ng-show="jobData.showTaskList"></i>
+                                    <button type="btn btn-small" title="Click to show list of task for Job Order..." 
+                                    ng-click="ctrl.updateLine(!c.isExpanded, c.job_no)" ng-hide="c.tasks.length==0">
+										<i class="fa fa-angle-right" ng-hide="c.isExpanded"></i>
+                                        <i class="fa fa-angle-down"  ng-show="c.isExpanded"></i>
                                     </button>
                                 </td>
                                 <!--<td>{{c.job_no}}</td>-->
@@ -231,11 +240,11 @@
                                     </div>
                                 </td>
                             </tr>
-                            <tr ng-show="jobData.showTaskList">
+                            <tr ng-show="c.isExpanded">
                                 <td>&nbsp;</td>
                                 <td colspan="7">
                                     <!--<table class="table table-bordered table-condensed table-inverse" style="background-color:aliceblue;border: 2px solid darkblue;">-->
-                                    <table class="table table-condensed" style='border: 1px solid black; background-color:aliceblue; border-collapse: collapse;margin:0;'>
+                                    <table class="table table-condensed" style='font-size:14px;border: 1px solid black; background-color:aliceblue; border-collapse: collapse;margin:0;'>
                                         <thead>
                                             <tr>
                                                 <th ng-repeat="x in ctrl.subColumnTitle" style='border: 1px solid black; background-color:aliceblue; border-collapse: collapse;'>{{x.text}}</th>
@@ -246,7 +255,18 @@
                                                 <td style="border: 1px solid black;">{{($index + 1)}}</td>
                                                 <td style="border: 1px solid black;">{{task.creative_form | propercase}}</td>
                                                 <td style="border: 1px solid black;">{{task.artwork_type}}</td>
-                                                <td style="border: 1px solid black;">{{task.due_date | date:"dd/MM/yyyy hh:mm a"}}</td>
+
+
+                                                <td style="border: 1px solid black;" ng-hide="task.due_date.length > 0">
+                                                    <span>{{task.due_date | date:"dd/MM/yyyy hh:mm a"}}</span>
+                                                </td>
+                                                <td style="border: 1px solid black;" ng-show="task.due_date.length > 0">
+                                                    <p ng-repeat="due_date in task.due_date">
+                                                        <span>{{due_date | date:"dd/MM/yyyy hh:mm a"}}</span>
+                                                    </p>
+                                                </td>
+
+
                                                 <td style="border: 1px solid black;" ng-hide="task.pub_date.length > 0">
                                                     <span>{{task.pub_date | date:"dd/MM/yyyy"}}</span>
                                                 </td>
@@ -275,7 +295,18 @@
                                                 </td>
 
                                                 <td style="border: 1px solid black;">{{task.submitted_date | date:"dd/MM/yyyy hh:mm a"}}</td>
-                                                <td style="border: 1px solid black;">{{task.status}}</td>
+
+
+                                                <td style="border: 1px solid black;" ng-hide="task.status.length > 0">
+                                                    {{task.status}}
+                                                </td>
+                                                <td style="border: 1px solid black;" ng-show="task.status.length > 0">
+                                                    <p ng-repeat="status in task.status">
+                                                        <span>{{status}}</span>
+                                                    </p>
+                                                </td>
+
+
                                                 <td style="width:100px;border: 1px solid black; background-color:aliceblue; border-collapse: collapse;">
                                                     <div class="btn-group">
                                                         <button type="button" class="btn btn-default fa fa-edit" ng-click="ctrl.openTask(c,task);"></button>

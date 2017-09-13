@@ -5,6 +5,7 @@ app.controller("creativeCTRL", function (
   $stateParams,
   $timeout,
   $filter,
+  $window,
   toastr,
   focus,
   Upload,
@@ -98,10 +99,10 @@ app.controller("creativeCTRL", function (
 
   vm.cleanArray = function (tmpArray) {
     var newArray = [];
-    if (_.isUndefined(tmpArray) || _.isNull(tmpArray)) {
+    if (_.isNil(tmpArray)) {
     } else {
       for (i = 0, len = tmpArray.length; i < len; i++) {
-        if (_.isUndefined(tmpArray[i]) || _.isNull(tmpArray[i]) || _.isEmpty(tmpArray[i])) {
+        if (_.isNil(tmpArray[i]) || _.isEmpty(tmpArray[i])) {
         } else {
           newArray.push(tmpArray[i]);
         }
@@ -129,7 +130,7 @@ app.controller("creativeCTRL", function (
     var current_user = currentUser.id.toLowerCase().trim();
     var submitted_by = vm.job.submitted_by_username.toLowerCase().trim();
     var cc_response = "";
-    if (_.isNull(vm.job.cc_response_username)) {
+    if (_.isNil(vm.job.cc_response_username)) {
     } else {
       var cc_response = vm.job.cc_response_username.toLowerCase().trim();
     }
@@ -239,35 +240,35 @@ app.controller("creativeCTRL", function (
         vm.job = response.data;
 
         if (
-          _.isUndefined(vm.job.creative_checkbox) ||
-          _.isNull(vm.job.creative_checkbox) ||
+          _.isNil(vm.job.creative_checkbox) ||
+          _.isNil(vm.job.creative_checkbox) ||
           _.isEmpty(vm.job.materials)
         ) {
           vm.creatives = [];
         } else {
-          vm.creatives = JSON.parse(vm.job.creative_checkbox);
+          vm.creatives = DataFactory.parseLodash(vm.job.creative_checkbox);
         }
 
-        if (_.isUndefined(vm.job.materials) ||
-          _.isNull(vm.job.materials) ||
+        if (_.isNil(vm.job.materials) ||
+          _.isNil(vm.job.materials) ||
           _.isEmpty(vm.job.materials)) {
           vm.job.materials = [];
         } else {
-          vm.job.materials = JSON.parse(vm.job.materials);
+          vm.job.materials = DataFactory.parseLodash(vm.job.materials);
         }
 
         if (
-          _.isUndefined(vm.job.creative_briefs) ||
-          _.isNull(vm.job.creative_briefs) ||
+          _.isNil(vm.job.creative_briefs) ||
+          _.isNil(vm.job.creative_briefs) ||
           _.isEmpty(vm.job.creative_briefs)
         ) {
           vm.job.creative_briefs = [];
         } else {
-          vm.job.creative_briefs = JSON.parse(vm.job.creative_briefs);
+          vm.job.creative_briefs = DataFactory.parseLodash(vm.job.creative_briefs);
         }
 
-        if (_.isUndefined(vm.job.tasks) ||
-          _.isNull(vm.job.tasks) ||
+        if (_.isNil(vm.job.tasks) ||
+          _.isNil(vm.job.tasks) ||
           _.isEmpty(vm.job.team_members)
         ) {
           vm.job.tasks = [];
@@ -278,7 +279,7 @@ app.controller("creativeCTRL", function (
         vm.job.ad_spend = $filter('currency')(parseFloat(vm.job.ad_spend), "");
         vm.job.production_cost = $filter('currency')(parseFloat(vm.job.production_cost), "");
 
-        if (_.isUndefined(vm.job.cc_response) || _.isNull(vm.job.cc_response)) {
+        if (_.isNil(vm.job.cc_response)) {
           vm.cc_response_dsp = [];
         } else {
           vm.cc_response_dsp = vm.job.cc_response.split(",");
@@ -299,25 +300,50 @@ app.controller("creativeCTRL", function (
     DataFactory.getTaskList({ job_id: jobID }).then(
       //success
       function (response) {
-        //console.log("[getTaskList] - response.data : " + JSON.stringify(response.data));
-        //console.log("[getTaskList] - response.status : " + JSON.stringify(response.status));
+        console.log("[getTaskList] - response.data : " + JSON.stringify(response.data));
+        console.log("[getTaskList] - response.status : " + JSON.stringify(response.status));
         vm.taskList = response.data;
         for (i = 0; i < vm.taskList.length; i++) {
-          //console.log('due_date : |' + vm.taskList[i].due_date + '|');
-          if (_.isUndefined(vm.taskList[i].due_date) || _.isNull(vm.taskList[i].due_date) || vm.taskList[i].due_date == '') {
-            vm.taskList[i].due_date = ''
+
+
+          if (vm.taskList[i].creative_form == 'display') {
+            if (_.isNil(vm.taskList[i].due_date) || vm.taskList[i].due_date == '') {
+              vm.taskList[i].due_date = '';
+            } else {
+              var due_date = vm.taskList[i].due_date;
+              //if (due_date.indexOf(", ") > 0) {
+              var str = [];
+              var res = _.isArray(due_date) ? due_date : due_date.split(",");
+              for (z = 0; z < res.length; z++) {
+                if (_.isNil(res[z]) || res[z] == '') {
+                } else {
+                  var tmpDt = new Date(res[z].trim());
+                  if (_.isDate(tmpDt)) str.push(moment(tmpDt).format('DD/MM/YYYY'));
+                }
+              }
+              vm.taskList[i].due_date = str;
+            }
           } else {
-            vm.taskList[i].due_date = new Date(vm.taskList[i].due_date);
+            if (_.isNil(vm.taskList[i].due_date) || vm.taskList[i].due_date == '') {
+            } else {
+              vm.taskList[i].due_date = new Date(vm.taskList[i].due_date);
+            }
           }
 
-          if (_.isUndefined(vm.taskList[i].designer) || _.isNull(vm.taskList[i].designer)) {
+          if (_.isNil(vm.taskList[i].status)) {
           } else {
-            vm.taskList[i].designer = vm.taskList[i].designer.split(",");
+            if (!_.isArray(vm.taskList[i].status)) vm.taskList[i].status = vm.taskList[i].status.split(",");
           }
 
-          if (_.isUndefined(vm.taskList[i].writer) || _.isNull(vm.taskList[i].writer)) {
+          if (_.isNil(vm.taskList[i].designer)) {
           } else {
-            vm.taskList[i].writer = vm.taskList[i].writer.split(",");
+            if (!_.isArray(vm.taskList[i].designer)) vm.taskList[i].designer = vm.taskList[i].designer.split(",");
+          }
+
+
+          if (_.isNil(vm.taskList[i].writer)) {
+          } else {
+            if (!_.isArray(vm.taskList[i].writer)) vm.taskList[i].writer = vm.taskList[i].writer.split(",");
           }
         }
       },
@@ -335,7 +361,7 @@ app.controller("creativeCTRL", function (
       function (response) {
         //console.log("response.data : " + JSON.stringify(response.data));
         //console.log("response.status : " + JSON.stringify(response.status));
-        if (_.isNull(passedID)) {
+        if (_.isNil(passedID)) {
           vm.job.id = response.data;
         } else {
           var modalInstance = $uibModal
@@ -416,14 +442,14 @@ app.controller("creativeCTRL", function (
       vm.job.logged_in_user = vm.currentUser.id;
 
       vm.artwork.preview = false;
-      if (_.isUndefined(vm.job.id) || _.isNull(vm.job.id)) {
+      if (_.isNil(vm.job.id)) {
       } else {
         vm.job._method = "put";
       }
 
       if (
-        _.isUndefined(vm.job.meeting_schedule) ||
-        _.isNull(vm.job.meeting_schedule) ||
+        _.isNil(vm.job.meeting_schedule) ||
+        _.isNil(vm.job.meeting_schedule) ||
         _.isEmpty(vm.job.meeting_schedule)
       ) {
       } else {
@@ -432,8 +458,8 @@ app.controller("creativeCTRL", function (
         );
       }
 
-      if (_.isUndefined(vm.job.materials) ||
-        _.isNull(vm.job.materials) ||
+      if (_.isNil(vm.job.materials) ||
+        _.isNil(vm.job.materials) ||
         _.isEmpty(vm.job.materials)
       ) {
         vm.job.materials = [];
@@ -442,8 +468,8 @@ app.controller("creativeCTRL", function (
       }
 
       if (
-        _.isUndefined(vm.job.creative_briefs) ||
-        _.isNull(vm.job.creative_briefs) ||
+        _.isNil(vm.job.creative_briefs) ||
+        _.isNil(vm.job.creative_briefs) ||
         _.isEmpty(vm.job.creative_briefs)
       ) {
         vm.job.creative_briefs = [];
@@ -676,7 +702,7 @@ app.controller("creativeCTRL", function (
 
   vm.downloadFiles = function (isMaterial) {
     if (isMaterial) {
-      if (_.isUndefined(vm.job.materials) || _.isNull(vm.job.materials)) {
+      if (_.isNil(vm.job.materials)) {
         //console.log("Materials for job is not defined.");
       } else {
         var mat = vm.job.materials;
@@ -686,8 +712,8 @@ app.controller("creativeCTRL", function (
       }
     } else {
       if (
-        _.isUndefined(vm.job.creative_briefs) ||
-        _.isNull(vm.job.creative_briefs)
+        _.isNil(vm.job.creative_briefs) ||
+        _.isNil(vm.job.creative_briefs)
       ) {
         //console.log("Materials for job is not defined.");
       } else {
@@ -718,13 +744,13 @@ app.controller("creativeCTRL", function (
   vm.uploadFiles = function (files, type) {
 
     if (type == "creative_briefs") {
-      if (_.isUndefined(vm.job.creative_briefs) || _.isNull(vm.job.creative_briefs)) {
+      if (_.isNil(vm.job.creative_briefs)) {
         vm.job.creative_briefs = [];
       }
       vm.spinners.creative.visible = true;
       vm.spinners.creative.progress = 0;
     } else {
-      if (_.isUndefined(vm.job.materials) || _.isNull(vm.job.materials)) {
+      if (_.isNil(vm.job.materials)) {
         vm.job.materials = [];
       }
       vm.spinners.materials.visible = true;
@@ -733,7 +759,7 @@ app.controller("creativeCTRL", function (
 
 
     var tmpJobID = null;
-    if (_.isUndefined(vm.job.job_no) || _.isNull(vm.job.job_no)) {
+    if (_.isNil(vm.job.job_no)) {
       tmpJobID = orderID;
     } else {
       tmpJobID = vm.job.job_no;
@@ -889,7 +915,7 @@ app.controller("creativeCTRL", function (
 
   vm.showMaterialPreview = function () {
     vm.artwork.preview = !vm.artwork.preview;
-    if (_.isUndefined(vm.job.materials) || _.isNull(vm.job.materials)) {
+    if (_.isNil(vm.job.materials)) {
     } else {
       if (vm.artwork.preview)
         vm.MaterialDsp = vm.cleanArray(angular.copy(vm.job.materials));
@@ -919,7 +945,7 @@ app.controller("creativeCTRL", function (
           };
           return tmp;
         },
-        members: function (DataFactory) {
+        members: function (df) {
           return DataFactory.getSalesTeam();
         }
       }
@@ -954,13 +980,13 @@ app.controller("creativeCTRL", function (
           };
           return tmp;
         },
-        members: function (DataFactory) {
+        members: function (df) {
           return DataFactory.getMembers(tmpData);
         }
       }
     }).result.then(function (submitVar) {
       console.log("submitted value inside parent controller", submitVar);
-      if (_.isUndefined(submitVar.name) || _.isNull(submitVar.name) || submitVar.name == "") {
+      if (_.isNil(submitVar.name) || submitVar.name == "") {
         vm.job[retFld] = "";
         vm.job[retFld + "_username"] = "";
         vm.cc_response_dsp = [];
@@ -995,15 +1021,22 @@ app.controller("creativeCTRL", function (
     }
   }
 
-  if (_.isUndefined(currentUser) || _.isNull(currentUser)) {
+  if ($auth.isAuthenticated()) {
+    if (_.isNil(currentUser)) {
+      vm.currentUser = null;
+      StorageFactory.setURI(window.location.href);
+      $state.go('login');
+    } else {
+      //console.log('currentUser[1] : ' + JSON.stringify(currentUser));
+      vm.currentUser = currentUser;
+      vm.currentUser.canEdit = '';
+      vm.currentUser.userAction = $stateParams.action;
+      vm.firstAction();
+    }
+  } else {
+    vm.currentUser = null;
     StorageFactory.setURI(window.location.href);
     $state.go('login');
-  } else {
-    //console.log('currentUser[1] : ' + JSON.stringify(currentUser));
-    vm.currentUser = currentUser;
-    vm.currentUser.canEdit = '';
-    vm.currentUser.userAction = $stateParams.action;
-    vm.firstAction();
   }
 
 

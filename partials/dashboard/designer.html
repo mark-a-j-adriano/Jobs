@@ -165,7 +165,7 @@
                 <!-- /.box-body -->
 
                 <div class="box-footer  table-responsive no-padding">
-                    <table class="table table-condensed" style='border: 1px solid black; background-color:aliceblue; border-collapse: collapse;margin:0;'>
+                    <table class="table table-condensed" style='font-size:14px;border: 1px solid black; background-color:aliceblue; border-collapse: collapse;margin:0;'>
                         <thead>
                             <tr>
                                 <th ng-repeat="c in ctrl.subColumnTitle" style='cursor:pointer;border: 1px solid black; background-color:aliceblue; border-collapse: collapse;'>
@@ -196,7 +196,16 @@
                                 <td style="border: 1px solid black;">{{task.title}}</td>
                                 <td style="border: 1px solid black;">{{task.creative_form | propercase}}</td>
                                 <td style="border: 1px solid black;">{{task.artwork_type}}</td>
-                                <td style="border: 1px solid black;">{{task.due_date | date:"dd/MM/yyyy hh:mm a"}}</td>
+
+                                <td style="border: 1px solid black;" ng-hide="task.due_date.length > 0">
+                                    <span>{{task.due_date | date:"dd/MM/yyyy hh:mm a"}}</span>
+                                </td>
+                                <td style="border: 1px solid black;" ng-show="task.due_date.length > 0">
+                                    <p ng-repeat="due_date in task.due_date">
+                                        <span>{{due_date | date:"dd/MM/yyyy hh:mm a"}}</span>
+                                    </p>
+                                </td>
+
                                 <td style="border: 1px solid black;" ng-hide="task.pub_date.length > 0">
                                     <span>{{task.pub_date | date:"dd/MM/yyyy"}}</span>
                                 </td>
@@ -216,7 +225,16 @@
                                 </td>
                                 <td style="border: 1px solid black;">{{task.sales}}</td>
                                 <td style="border: 1px solid black;">{{task.submitted_date | date:"dd/MM/yyyy hh:mm a"}}</td>
-                                <td style="border: 1px solid black;">{{task.status}}</td>
+
+                                <td style="border: 1px solid black;" ng-hide="task.status.length > 0">
+                                    {{task.status}}
+                                </td>
+                                <td style="border: 1px solid black;" ng-show="task.status.length > 0">
+                                    <p ng-repeat="status in task.status">
+                                        <span>{{status}}</span>
+                                    </p>
+                                </td>
+
                                 <td style="width:100px;border: 1px solid black; background-color:aliceblue; border-collapse: collapse;">
                                     <div class="btn-group">
                                         <button type="button" class="btn btn-default fa fa-edit" ng-click="ctrl.openTask(c,task);"></button>

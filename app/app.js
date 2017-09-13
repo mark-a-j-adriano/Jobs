@@ -220,7 +220,7 @@ app.run(function ($transitions, $rootScope, $auth, $state, $window, StorageFacto
 app.filter('propercase', function () {
   return function (x) {
     var i, c, txt = "";
-    if (_.isUndefined(x) || _.isNull(x)) {
+    if (_.isNil(x)) {
       txt = x;
     } else {
       for (i = 0; i < x.length; i++) {

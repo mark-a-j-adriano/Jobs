@@ -99,13 +99,13 @@ app.controller('oohCTRL', function ($state, $auth, $uibModal, $stateParams, $tim
 
     vm.cleanArray = function (tmpArray) {
         //console.log("[cleanArray] tmpArray - ", tmpArray);
-        if (_.isUndefined(tmpArray) || _.isNull(tmpArray)) {
+        if (_.isNil(tmpArray)) {
             return null;
         } else {
             if (_.isArray(tmpArray)) {
                 var newArray = [];
                 for (i = 0, len = tmpArray.length; i < len; i++) {
-                    if (_.isUndefined(tmpArray[i]) || _.isNull(tmpArray[i]) || _.isEmpty(tmpArray[i])) {
+                    if (_.isNil(tmpArray[i]) || _.isEmpty(tmpArray[i])) {
                     } else if (_.isDate(tmpArray[i])) {
                         newArray.push(moment(tmpArray[i]).format('YYYY-MM-DD'));
                     } else {
@@ -168,32 +168,32 @@ app.controller('oohCTRL', function ($state, $auth, $uibModal, $stateParams, $tim
         var current_user = currentUser.id.toLowerCase().trim();
         var submitted_by = vm.task.submitted_by_username.toLowerCase().trim();
         var cc_response = "";
-        if (_.isNull(vm.task.cc_response_username)) {
+        if (_.isNil(vm.task.cc_response_username)) {
         } else {
             var cc_response = vm.task.cc_response_username.toLowerCase().trim();
         }
 
 
         var designer = '';
-        if (_.isUndefined(vm.task.designer_username) || _.isNull(vm.task.designer_username)) {
+        if (_.isNil(vm.task.designer_username)) {
         } else {
             designer = vm.task.designer_username.toLowerCase().trim();
         }
 
         var eng_writer = '';
-        if (_.isUndefined(vm.task.english_writer_username) || _.isNull(vm.task.english_writer_username)) {
+        if (_.isNil(vm.task.english_writer_username)) {
         } else {
             eng_writer = vm.task.english_writer_username.toLowerCase().trim();
         }
 
         var chi_writer = '';
-        if (_.isUndefined(vm.task.chinese_writer_username) || _.isNull(vm.task.chinese_writer_username)) {
+        if (_.isNil(vm.task.chinese_writer_username)) {
         } else {
             chi_writer = vm.task.chinese_writer_username.toLowerCase().trim();
         }
 
         var mal_writer = '';
-        if (_.isUndefined(vm.task.malay_writer_username) || _.isNull(vm.task.malay_writer_username)) {
+        if (_.isNil(vm.task.malay_writer_username)) {
         } else {
             mal_writer = vm.task.malay_writer_username.toLowerCase().trim();
         }
@@ -358,7 +358,7 @@ app.controller('oohCTRL', function ($state, $auth, $uibModal, $stateParams, $tim
                 vm.task.type = null;
                 vm.task.pub_size = null;
                 vm.task.materials = [];
-                if (_.isUndefined(vm.task.cc_response) || _.isNull(vm.task.cc_response)) {
+                if (_.isNil(vm.task.cc_response)) {
                     vm.cc_response_dsp = [];
                 } else {
                     vm.cc_response_dsp = _.uniq(vm.task.cc_response.split(","));
@@ -376,7 +376,7 @@ app.controller('oohCTRL', function ($state, $auth, $uibModal, $stateParams, $tim
                     function (response) {
                         //console.log('[getTmpID - getMember] - response.data : ' + JSON.stringify(response.data));
                         //console.log('[getTmpID - getMember] - response.status : ' + JSON.stringify(response.status));
-                        if (_.isUndefined(response.data) || _.isNull(response.data) || _.isEmpty(response.data)) {
+                        if (_.isNil(response.data) || _.isEmpty(response.data)) {
                         } else {
                             vm.task.team_head = response.data[0].name;
                             vm.task.team_head_username = response.data[0].username;
@@ -434,45 +434,53 @@ app.controller('oohCTRL', function ($state, $auth, $uibModal, $stateParams, $tim
                     vm.display.ad_spend = $filter('currency')(vm.task.ad_spend, "");
                     vm.display.production_cost = $filter('currency')(vm.task.production_cost, "");
 
-                    vm.task.due_date = new Date(vm.task.due_date);
-                    vm.task.pub_date = new Date(vm.task.pub_date);
+                    if (_.isNil(vm.task.due_date)) {
+                    } else {
+                        vm.task.due_date = new Date(vm.task.due_date);
+                    }
+
+                    if (_.isNil(vm.task.pub_date)) {
+                    } else {
+                        vm.task.pub_date = new Date(vm.task.pub_date);
+                    }
+
                     if (vm.task.urgent > 0) vm.task.urgent = true;
                     vm.task.size_option = 'Other';
-                    if (_.isUndefined(vm.task.cc_response) || _.isNull(vm.task.cc_response) || _.isEmpty(vm.task.cc_response)) {
+                    if (_.isNil(vm.task.cc_response) || _.isEmpty(vm.task.cc_response)) {
                         vm.cc_response_dsp = [];
                     } else {
                         vm.cc_response_dsp = _.uniq(vm.task.cc_response.split(","));
                     }
 
-                    if (_.isUndefined(vm.task.materials) || _.isNull(vm.task.materials) || _.isEmpty(vm.task.materials)) {
+                    if (_.isNil(vm.task.materials) || _.isEmpty(vm.task.materials)) {
                         vm.task.materials = [];
                     } else {
-                        vm.task.materials = vm.cleanArray(JSON.parse(vm.task.materials));
+                        vm.task.materials = vm.cleanArray(DataFactory.parseLodash(vm.task.materials));
                     }
 
-                    if (_.isUndefined(vm.task.static_list) || _.isNull(vm.task.static_list) || _.isEmpty(vm.task.static_list)) {
+                    if (_.isNil(vm.task.static_list) || _.isEmpty(vm.task.static_list)) {
                         vm.task.static_list = [];
                     } else {
-                        vm.task.static_list = vm.cleanArray(JSON.parse(vm.task.static_list));
+                        vm.task.static_list = vm.cleanArray(DataFactory.parseLodash(vm.task.static_list));
                     }
 
-                    if (_.isUndefined(vm.task.digital_list) || _.isNull(vm.task.digital_list) || _.isEmpty(vm.task.digital_list)) {
+                    if (_.isNil(vm.task.digital_list) || _.isEmpty(vm.task.digital_list)) {
                         vm.task.digital_list = [];
                     } else {
-                        vm.task.digital_list = vm.cleanArray(JSON.parse(vm.task.digital_list));
+                        vm.task.digital_list = vm.cleanArray(DataFactory.parseLodash(vm.task.digital_list));
                     }
 
 
-                    if (_.isUndefined(vm.task.artwork) || _.isNull(vm.task.artwork) || _.isEmpty(vm.task.artwork) || vm.task.artwork == "" || vm.task.artwork == "[]") {
+                    if (_.isNil(vm.task.artwork) || _.isEmpty(vm.task.artwork) || vm.task.artwork == "" || vm.task.artwork == "[]") {
                         vm.task.artwork = [];
                     } else {
-                        vm.task.artwork = vm.cleanArray(JSON.parse(vm.task.artwork));
+                        vm.task.artwork = vm.cleanArray(DataFactory.parseLodash(vm.task.artwork));
                     }
 
-                    if (_.isUndefined(vm.task.article) || _.isNull(vm.task.article) || _.isEmpty(vm.task.article) || vm.task.article == "" || vm.task.article == "[]") {
+                    if (_.isNil(vm.task.article) || _.isEmpty(vm.task.article) || vm.task.article == "" || vm.task.article == "[]") {
                         vm.task.article = [];
                     } else {
-                        vm.task.article = vm.cleanArray(JSON.parse(vm.task.article));
+                        vm.task.article = vm.cleanArray(DataFactory.parseLodash(vm.task.article));
                     }
 
                     vm.defineType(false);
@@ -557,7 +565,7 @@ app.controller('oohCTRL', function ($state, $auth, $uibModal, $stateParams, $tim
     };
     vm.isAssigned = function () {
         //console.log('[isAssigned] - start');
-        if (_.isUndefined(vm.task.designer) || _.isNull(vm.task.designer) || vm.task.designer == '') {
+        if (_.isNil(vm.task.designer) || vm.task.designer == '') {
             toastr.error('You must select a designer.', {
                 closeButton: true,
                 onHidden: function () {
@@ -584,10 +592,10 @@ app.controller('oohCTRL', function ($state, $auth, $uibModal, $stateParams, $tim
         var prevStats = vm.task.status;
 
         if (vm.isValid) {
-            if (_.isUndefined(newStatus) || _.isNull(newStatus) || newStatus == '') {
+            if (_.isNil(newStatus) || newStatus == '') {
                 //console.log('[submitTask] - 1');
                 if (vm.task.designer) {
-                    if (_.isNull(vm.task.designer) || vm.task.designer == '') {
+                    if (_.isNil(vm.task.designer) || vm.task.designer == '') {
                         vm.task.status = "Pending Assignment";
                         vm.task.sales_comment = '';
                     } else {
@@ -636,31 +644,31 @@ app.controller('oohCTRL', function ($state, $auth, $uibModal, $stateParams, $tim
                 vm.task._method = "put";
             }
 
-            if (_.isUndefined(vm.task.materials) || _.isNull(vm.task.materials) || _.isEmpty(vm.task.materials)) {
+            if (_.isNil(vm.task.materials)  || _.isEmpty(vm.task.materials)) {
                 vm.task.materials = [];
             } else {
                 vm.task.materials = vm.cleanArray(vm.task.materials);
             }
 
-            if (_.isUndefined(vm.task.artwork) || _.isNull(vm.task.artwork) || _.isEmpty(vm.task.artwork)) {
+            if (_.isNil(vm.task.artwork)  || _.isEmpty(vm.task.artwork)) {
                 vm.task.artwork = [];
             } else {
                 vm.task.artwork = vm.cleanArray(vm.task.artwork);
             }
 
-            if (_.isUndefined(vm.task.article) || _.isNull(vm.task.article) || _.isEmpty(vm.task.article)) {
+            if (_.isNil(vm.task.article)  || _.isEmpty(vm.task.article)) {
                 vm.task.article = [];
             } else {
                 vm.task.article = vm.cleanArray(vm.task.article);
             }
 
-            if (_.isUndefined(vm.task.static_list) || _.isNull(vm.task.static_list) || _.isEmpty(vm.task.static_list)) {
+            if (_.isNil(vm.task.static_list)  || _.isEmpty(vm.task.static_list)) {
                 vm.task.static_list = [];
             } else {
                 vm.task.static_list = vm.cleanArray(vm.task.static_list);
             }
 
-            if (_.isUndefined(vm.task.digital_list) || _.isNull(vm.task.digital_list) || _.isEmpty(vm.task.digital_list)) {
+            if (_.isNil(vm.task.digital_list)  || _.isEmpty(vm.task.digital_list)) {
                 vm.task.digital_list = [];
             } else {
                 vm.task.digital_list = vm.cleanArray(vm.task.digital_list);
@@ -752,14 +760,15 @@ app.controller('oohCTRL', function ($state, $auth, $uibModal, $stateParams, $tim
         } else if (vm.spinners.materials.visible) {
             vm.errorMsg.push({ id: '', msg: 'Please wait until Material attachment is uploaded to server.' });
         } else {
-            if (_.isUndefined(vm.task.ad_spend) || _.isNull(vm.task.ad_spend)) {
+            if (_.isNil(vm.task.ad_spend) 
+            ) {
                 vm.errorMsg.push({ id: 'ad_spend', msg: 'Ad Spend is required.' });
             } else {
                 if (vm.task.ad_spend < 1) vm.errorMsg.push({ id: 'ad_spend', msg: 'Ad Spend is required.' });
             }
 
             if (vm.task.artwork_type) {
-                if (_.isNull(vm.task.artwork_type) || vm.task.artwork_type == '') {
+                if (_.isNil(vm.task.artwork_type) || vm.task.artwork_type == '') {
                     vm.errorMsg.push({ id: 'artwork_type', msg: 'Job Classification is required.' });
                 }
             } else {
@@ -767,10 +776,10 @@ app.controller('oohCTRL', function ($state, $auth, $uibModal, $stateParams, $tim
             }
 
 
-            if (_.isUndefined(vm.task.static) || _.isNull(vm.task.static)) {
+            if (_.isNil(vm.task.static) ) {
             } else {
                 if (vm.task.static == 1) {
-                    if (_.isUndefined(vm.task.static_list) || _.isNull(vm.task.static_list)) {
+                    if (_.isNil(vm.task.static_list)) {
                         vm.errorMsg.push({ id: 'Static', msg: 'Static location is required.' });
                     } else {
                         if (vm.task.static_list.length > 0) {
@@ -782,10 +791,10 @@ app.controller('oohCTRL', function ($state, $auth, $uibModal, $stateParams, $tim
                 }
             }
 
-            if (_.isUndefined(vm.task.digital) || _.isNull(vm.task.digital)) {
+            if (_.isNil(vm.task.digital) ) {
             } else {
                 if (vm.task.digital == 1) {
-                    if (_.isUndefined(vm.task.digital_list) || _.isNull(vm.task.digital_list)) {
+                    if (_.isNil(vm.task.digital_list)) {
                         vm.errorMsg.push({ id: 'Digital', msg: 'Digital location is required.' });
                     } else {
                         if (vm.task.digital_list.length > 0) {
@@ -797,14 +806,14 @@ app.controller('oohCTRL', function ($state, $auth, $uibModal, $stateParams, $tim
                 }
             }
 
-            if (_.isUndefined(vm.task.video) || _.isNull(vm.task.video)) {
+            if (_.isNil(vm.task.video) ) {
             } else {
                 if (vm.task.video == 1) {
-                    if (_.isUndefined(vm.task.video_len) || _.isNull(vm.task.video_len)) {
+                    if (_.isNil(vm.task.video_len)) {
                         vm.errorMsg.push({ id: 'video_len', msg: 'Please provide the video length.' });
                     } else {
                         if (vm.task.video_len == 'Other') {
-                            if (_.isUndefined(vm.task.video_len_option) || _.isNull(vm.task.video_len_option)) {
+                            if (_.isNil(vm.task.video_len_option)) {
                                 vm.errorMsg.push({ id: 'video_len_option', msg: 'Please provide the video length.' });
                             } else {
                                 type_count = type_count + 1;
@@ -816,14 +825,14 @@ app.controller('oohCTRL', function ($state, $auth, $uibModal, $stateParams, $tim
                 }
             }
 
-            if (_.isUndefined(vm.task.motion_graphic) || _.isNull(vm.task.motion_graphic)) {
+            if (_.isNil(vm.task.motion_graphic)) {
             } else {
                 if (vm.task.motion_graphic == 1) {
-                    if (_.isUndefined(vm.task.graphic_len) || _.isNull(vm.task.graphic_len)) {
+                    if (_.isNil(vm.task.graphic_len)) {
                         vm.errorMsg.push({ id: 'graphic_len', msg: 'Please provide the Motion Graphic length.' });
                     } else {
                         if (vm.task.graphic_len == 'Other') {
-                            if (_.isUndefined(vm.task.graphic_len_option) || _.isNull(vm.task.graphic_len_option)) {
+                            if (_.isNil(vm.task.graphic_len_option) ) {
                                 vm.errorMsg.push({ id: 'graphic_len_option', msg: 'Please provide the Motion Graphic length.' });
                             } else {
                                 type_count = type_count + 1;
@@ -835,7 +844,7 @@ app.controller('oohCTRL', function ($state, $auth, $uibModal, $stateParams, $tim
                 }
             }
 
-            if (_.isUndefined(vm.task.others) || _.isNull(vm.task.others) || vm.task.others == "") {
+            if (_.isNil(vm.task.others)  || vm.task.others == "") {
             } else {
                 type_count = type_count + 1;
             }
@@ -843,16 +852,16 @@ app.controller('oohCTRL', function ($state, $auth, $uibModal, $stateParams, $tim
             if (type_count == 0) vm.errorMsg.push({ id: 'others', msg: 'Please provide the Type of task.' });
 
 
-            if (_.isUndefined(vm.task.due_date) || _.isNull(vm.task.due_date) || vm.task.due_date == '') {
+            if (_.isNil(vm.task.due_date) || vm.task.due_date == '') {
                 vm.errorMsg.push({ id: 'due_date', msg: 'Due date is required.' });
             }
 
-            if (_.isUndefined(vm.task.pub_date) || _.isNull(vm.task.pub_date) || vm.task.pub_date == '') {
+            if (_.isNil(vm.task.pub_date) || vm.task.pub_date == '') {
                 vm.errorMsg.push({ id: 'pub_date', msg: 'Pub date is required.' });
             }
 
             if (vm.task.instruction) {
-                if (_.isNull(vm.task.instruction) || vm.task.instruction == '') vm.errorMsg.push({ id: 'instruction', msg: 'Instruction is required.' });
+                if (_.isNil(vm.task.instruction) || vm.task.instruction == '') vm.errorMsg.push({ id: 'instruction', msg: 'Instruction is required.' });
             } else {
                 vm.errorMsg.push({ id: 'instruction', msg: 'Instruction is required.' });
             }
@@ -898,12 +907,12 @@ app.controller('oohCTRL', function ($state, $auth, $uibModal, $stateParams, $tim
     vm.gotoParent = function () {
         //$state.go('creative', { orderID: $stateParams.orderID });
         var tmpID = null;
-        if (_.isUndefined(vm.task.parent_id) || _.isNull(vm.task.parent_id)) { } else { tmpID = vm.task.parent_id };
-        if (_.isNull(tmpID)) {
-            if (_.isUndefined(vm.task.job_id) || _.isNull(vm.task.job_id)) { } else { tmpID = vm.task.job_id };
+        if (_.isNil(vm.task.parent_id) ) { } else { tmpID = vm.task.parent_id };
+        if (_.isNil(tmpID)) {
+            if (_.isNil(vm.task.job_id)) { } else { tmpID = vm.task.job_id };
         }
-        if (_.isNull(tmpID)) {
-            if (_.isUndefined($stateParams.orderID) || _.isNull($stateParams.orderID)) { } else { tmpID = $stateParams.orderID };
+        if (_.isNil(tmpID)) {
+            if (_.isNil($stateParams.orderID)) { } else { tmpID = $stateParams.orderID };
         }
 
         $state.go('creative', { orderID: tmpID });
@@ -912,9 +921,9 @@ app.controller('oohCTRL', function ($state, $auth, $uibModal, $stateParams, $tim
     vm.addProduct = function (typ) {
 
         if (typ == 'Digital') {
-            if (_.isUndefined(vm.task.digital_list) || _.isNull(vm.task.digital_list)) vm.task.digital_list = [];
+            if (_.isNil(vm.task.digital_list) ) vm.task.digital_list = [];
         } else {
-            if (_.isUndefined(vm.task.static_list) || _.isNull(vm.task.static_list)) vm.task.static_list = [];
+            if (_.isNil(vm.task.static_list)) vm.task.static_list = [];
         }
 
         var modalInstance = $uibModal.open({
@@ -1021,7 +1030,7 @@ app.controller('oohCTRL', function ($state, $auth, $uibModal, $stateParams, $tim
                         };
                         return tmp;
                     },
-                    members: function (DataFactory) {
+                    members: function (df) {
                         return DataFactory.getMembers(tmpData);
                     }
                 }
@@ -1158,7 +1167,7 @@ app.controller('oohCTRL', function ($state, $auth, $uibModal, $stateParams, $tim
             user_role: vm.currentUser.canEdit,
         };
 
-        if (_.isUndefined(chatFlag) || _.isNull(chatFlag) || _.isEmpty(chatFlag) || chatFlag == '') {
+        if (_.isNil(chatFlag) || _.isEmpty(chatFlag) || chatFlag == '') {
             chatFlag = "";
             tmp.frm_title = "Conversation";
         } else if (chatFlag.includes('cancel')) {
@@ -1239,14 +1248,14 @@ app.controller('oohCTRL', function ($state, $auth, $uibModal, $stateParams, $tim
         if (type == 'artwork') {
             vm.spinners.artwork.visible = true;
             vm.spinners.artwork.progress = 0;
-            if (_.isUndefined(vm.task.artwork) || _.isNull(vm.task.artwork)) vm.task.artwork = [];
-            if (_.isUndefined(vm.task.final_size) || _.isNull(vm.task.final_size)) vm.task.final_size = vm.task.pub_size;
+            if (_.isNil(vm.task.artwork) ) vm.task.artwork = [];
+            if (_.isNil(vm.task.final_size)) vm.task.final_size = vm.task.pub_size;
         } else if (type == 'article') {
-            if (_.isUndefined(vm.task.article) || _.isNull(vm.task.article)) vm.task.article = [];
+            if (_.isNil(vm.task.article)) vm.task.article = [];
         } else {
             vm.spinners.materials.visible = true;
             vm.spinners.materials.progress = 0;
-            if (_.isUndefined(vm.task.materials) || _.isNull(vm.task.materials)) vm.task.materials = [];
+            if (_.isNil(vm.task.materials) ) vm.task.materials = [];
         }
 
         angular.forEach(files, function (file) {
@@ -1371,7 +1380,7 @@ app.controller('oohCTRL', function ($state, $auth, $uibModal, $stateParams, $tim
     };
     vm.revertArtwork = function () {
         //console.log('[ooh] - revertArtwork');
-        if (_.isUndefined(vm.task.sales_comment) || _.isNull(vm.task.sales_comment) || vm.task.sales_comment == '') {
+        if (_.isNil(vm.task.sales_comment) || vm.task.sales_comment == '') {
             toastr.error("Please add your reason for returning Artwork", { closeButton: true });
         } else {
             vm.submitTask('For Revision');
@@ -1417,15 +1426,22 @@ app.controller('oohCTRL', function ($state, $auth, $uibModal, $stateParams, $tim
         };
     }
 
-    if (_.isUndefined(currentUser) || _.isNull(currentUser)) {
+    if ($auth.isAuthenticated()) {
+        if (_.isNil(currentUser)) {
+            vm.currentUser = null;
+            StorageFactory.setURI(window.location.href);
+            $state.go('login');
+        } else {
+            //console.log('currentUser[1] : ' + JSON.stringify(currentUser));
+            vm.currentUser = currentUser;
+            vm.currentUser.canEdit = '';
+            vm.currentUser.userAction = $stateParams.action;
+            vm.firstAction();
+        }
+    } else {
+        vm.currentUser = null;
         StorageFactory.setURI(window.location.href);
         $state.go('login');
-    } else {
-        //console.log('currentUser[1] : ' + JSON.stringify(currentUser));
-        vm.currentUser = currentUser;
-        vm.currentUser.canEdit = '';
-        vm.currentUser.userAction = $stateParams.action;
-        vm.firstAction();
     }
 
     ////console.log('$routeParams.orderId : ' + $routeParams.orderId);
@@ -1499,7 +1515,7 @@ app.controller('oohModalCtrl', function ($uibModalInstance, $filter, focus, toas
         ////console.log('output : ' + JSON.stringify(vm.output), vm.output);
         //console.log('fldName : ' + fldName + ' | srcName : ' + srcName + ' | tmp : ' + JSON.stringify(tmp), tmp);
         if (tmp.length == 1) {
-            if (_.isNull(tmp[0])) {
+            if (_.isNil(tmp[0])) {
             } else {
                 vm.output[fldName] = tmp[0].toString();
                 res = parseInt(srcName.charAt(srcName.length - 1)) + 1;
@@ -1563,7 +1579,7 @@ app.controller('oohModalCtrl', function ($uibModalInstance, $filter, focus, toas
     }
 
     vm.runOptions = function () {
-        if (_.isUndefined(preload.option) || _.isNull(preload.option)) {
+        if (_.isNil(preload.option)) {
             vm.formTitle = "Add Product";
             if (preload.type == 'Digital') {
                 vm.output = {
