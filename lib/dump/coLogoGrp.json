@@ -1,356 +1,356 @@
 [
     {
-        "Pub": "Chinese",
+        "Pub": ["Chinese"],
         "LogoGrp": "Co Logo A",
-        "Charge": "Non-Chargeable",
-        "Colour": "B&W"
+        "Charges": ["Non-Chargeable"],
+        "Colour": ["B&W"]
     },
     {
-        "Pub": "Chinese",
+        "Pub": ["Chinese"],
         "LogoGrp": "Co Logo B",
-        "Charge": "Non-Chargeable",
-        "Colour": "B&W"
+        "Charges": ["Non-Chargeable"],
+        "Colour": ["B&W"]
     },
     {
-        "Pub": "Chinese",
+        "Pub": ["Chinese"],
         "LogoGrp": "Co Logo C",
-        "Charge": "Non-Chargeable",
-        "Colour": "B&W"
+        "Charges": ["Non-Chargeable"],
+        "Colour": ["B&W"]
     },
     {
-        "Pub": "Chinese",
+        "Pub": ["Chinese"],
         "LogoGrp": "Co Logo D",
-        "Charge": "Non-Chargeable",
-        "Colour": "B&W"
+        "Charges": ["Non-Chargeable"],
+        "Colour": ["B&W"]
     },
     {
-        "Pub": "Chinese",
+        "Pub": ["Chinese"],
         "LogoGrp": "Co Logo E",
-        "Charge": "Non-Chargeable",
-        "Colour": "B&W"
+        "Charges": ["Non-Chargeable"],
+        "Colour": ["B&W"]
     },
     {
-        "Pub": "Chinese",
+        "Pub": ["Chinese"],
         "LogoGrp": "Co Logo F",
-        "Charge": "Non-Chargeable",
-        "Colour": "B&W"
+        "Charges": ["Non-Chargeable"],
+        "Colour": ["B&W"]
     },
     {
-        "Pub": "Chinese",
+        "Pub": ["Chinese"],
         "LogoGrp": "Co Logo G",
-        "Charge": "Non-Chargeable",
-        "Colour": "B&W"
+        "Charges": ["Non-Chargeable"],
+        "Colour": ["B&W"]
     },
     {
-        "Pub": "Chinese",
+        "Pub": ["Chinese"],
         "LogoGrp": "Co Logo H",
-        "Charge": "Non-Chargeable",
-        "Colour": "B&W"
+        "Charges": ["Non-Chargeable"],
+        "Colour": ["B&W"]
     },
     {
-        "Pub": "Chinese",
+        "Pub": ["Chinese"],
         "LogoGrp": "Co Logo I",
-        "Charge": "Non-Chargeable",
-        "Colour": "B&W"
+        "Charges": ["Non-Chargeable"],
+        "Colour": ["B&W"]
     },
     {
-        "Pub": "Chinese",
+        "Pub": ["Chinese"],
         "LogoGrp": "Co Logo J",
-        "Charge": "Non-Chargeable",
-        "Colour": "B&W"
+        "Charges": ["Non-Chargeable"],
+        "Colour": ["B&W"]
     },
     {
-        "Pub": "Chinese",
+        "Pub": ["Chinese"],
         "LogoGrp": "Co Logo K",
-        "Charge": "Non-Chargeable",
-        "Colour": "B&W"
+        "Charges": ["Non-Chargeable"],
+        "Colour": ["B&W"]
     },
     {
-        "Pub": "Chinese",
+        "Pub": ["Chinese"],
         "LogoGrp": "Co Logo L",
-        "Charge": "Non-Chargeable",
-        "Colour": "B&W"
+        "Charges": ["Non-Chargeable"],
+        "Colour": ["B&W"]
     },
     {
-        "Pub": "Chinese",
+        "Pub": ["Chinese"],
         "LogoGrp": "Co Logo M",
-        "Charge": "Non-Chargeable",
-        "Colour": "B&W"
+        "Charges": ["Non-Chargeable"],
+        "Colour": ["B&W"]
     },
     {
-        "Pub": "Chinese",
+        "Pub": ["Chinese"],
         "LogoGrp": "Co Logo N",
-        "Charge": "Non-Chargeable",
-        "Colour": "B&W"
+        "Charges": ["Non-Chargeable"],
+        "Colour": ["B&W"]
     },
     {
-        "Pub": "Chinese",
+        "Pub": ["Chinese"],
         "LogoGrp": "Co Logo Numeric",
-        "Charge": "Non-Chargeable",
-        "Colour": "B&W"
+        "Charges": ["Non-Chargeable"],
+        "Colour": ["B&W"]
     },
     {
-        "Pub": "Chinese",
+        "Pub": ["Chinese"],
         "LogoGrp": "Co Logo O",
-        "Charge": "Non-Chargeable",
-        "Colour": "B&W"
+        "Charges": ["Non-Chargeable"],
+        "Colour": ["B&W"]
     },
     {
-        "Pub": "Chinese",
+        "Pub": ["Chinese"],
         "LogoGrp": "Co Logo P",
-        "Charge": "Non-Chargeable",
-        "Colour": "B&W"
+        "Charges": ["Non-Chargeable"],
+        "Colour": ["B&W"]
     },
     {
-        "Pub": "Chinese",
+        "Pub": ["Chinese"],
         "LogoGrp": "Co Logo Q",
-        "Charge": "Non-Chargeable",
-        "Colour": "B&W"
+        "Charges": ["Non-Chargeable"],
+        "Colour": ["B&W"]
     },
     {
-        "Pub": "Chinese",
+        "Pub": ["Chinese"],
         "LogoGrp": "Co Logo R",
-        "Charge": "Non-Chargeable",
-        "Colour": "B&W"
+        "Charges": ["Non-Chargeable"],
+        "Colour": ["B&W"]
     },
     {
-        "Pub": "Chinese",
+        "Pub": ["Chinese"],
         "LogoGrp": "Co Logo S",
-        "Charge": "Non-Chargeable",
-        "Colour": "B&W"
+        "Charges": ["Non-Chargeable"],
+        "Colour": ["B&W"]
     },
     {
-        "Pub": "Chinese",
+        "Pub": ["Chinese"],
         "LogoGrp": "Co Logo T",
-        "Charge": "Non-Chargeable",
-        "Colour": "B&W"
+        "Charges": ["Non-Chargeable"],
+        "Colour": ["B&W"]
     },
     {
-        "Pub": "Chinese",
+        "Pub": ["Chinese"],
         "LogoGrp": "Co Logo U",
-        "Charge": "Non-Chargeable",
-        "Colour": "B&W"
+        "Charges": ["Non-Chargeable"],
+        "Colour": ["B&W"]
     },
     {
-        "Pub": "Chinese",
+        "Pub": ["Chinese"],
         "LogoGrp": "Co Logo V",
-        "Charge": "Non-Chargeable",
-        "Colour": "B&W"
+        "Charges": ["Non-Chargeable"],
+        "Colour": ["B&W"]
     },
     {
-        "Pub": "Chinese",
+        "Pub": ["Chinese"],
         "LogoGrp": "Co Logo W",
-        "Charge": "Non-Chargeable",
-        "Colour": "B&W"
+        "Charges": ["Non-Chargeable"],
+        "Colour": ["B&W"]
     },
     {
-        "Pub": "Chinese",
+        "Pub": ["Chinese"],
         "LogoGrp": "Co Logo X",
-        "Charge": "Non-Chargeable",
-        "Colour": "B&W"
+        "Charges": ["Non-Chargeable"],
+        "Colour": ["B&W"]
     },
     {
-        "Pub": "Chinese",
+        "Pub": ["Chinese"],
         "LogoGrp": "Co Logo Y",
-        "Charge": "Non-Chargeable",
-        "Colour": "B&W"
+        "Charges": ["Non-Chargeable"],
+        "Colour": ["B&W"]
     },
     {
-        "Pub": "Chinese",
+        "Pub": ["Chinese"],
         "LogoGrp": "Co Logo Z",
-        "Charge": "Non-Chargeable",
-        "Colour": "B&W"
+        "Charges": ["Non-Chargeable"],
+        "Colour": ["B&W"]
     },
     {
-        "Pub": "English",
+        "Pub": ["English"],
         "LogoGrp": "Co Logo A",
-        "Charge": "Non-Chargeable",
-        "Colour": "B&W"
+        "Charges": ["Non-Chargeable"],
+        "Colour": ["B&W"]
     },
     {
-        "Pub": "English",
+        "Pub": ["English"],
         "LogoGrp": "Co Logo B",
-        "Charge": "Non-Chargeable",
-        "Colour": "B&W"
+        "Charges": ["Non-Chargeable"],
+        "Colour": ["B&W"]
     },
     {
-        "Pub": "English",
+        "Pub": ["English"],
         "LogoGrp": "Co Logo C",
-        "Charge": "Non-Chargeable",
-        "Colour": "B&W"
+        "Charges": ["Non-Chargeable"],
+        "Colour": ["B&W"]
     },
     {
-        "Pub": "English",
+        "Pub": ["English"],
         "LogoGrp": "Co Logo Clr for Obit",
-        "Charge": "Non-Chargeable",
-        "Colour": "Colour"
+        "Charges": ["Non-Chargeable"],
+        "Colour": ["Colour"]
     },
     {
-        "Pub": "English",
+        "Pub": ["English"],
         "LogoGrp": "Co Logo D",
-        "Charge": "Non-Chargeable",
-        "Colour": "B&W"
+        "Charges": ["Non-Chargeable"],
+        "Colour": ["B&W"]
     },
     {
-        "Pub": "English",
+        "Pub": ["English"],
         "LogoGrp": "Co Logo E",
-        "Charge": "Non-Chargeable",
-        "Colour": "B&W"
+        "Charges": ["Non-Chargeable"],
+        "Colour": ["B&W"]
     },
     {
-        "Pub": "English",
+        "Pub": ["English"],
         "LogoGrp": "Co Logo F",
-        "Charge": "Non-Chargeable",
-        "Colour": "B&W"
+        "Charges": ["Non-Chargeable"],
+        "Colour": ["B&W"]
     },
     {
-        "Pub": "English",
+        "Pub": ["English"],
         "LogoGrp": "Co Logo G",
-        "Charge": "Non-Chargeable",
-        "Colour": "B&W"
+        "Charges": ["Non-Chargeable"],
+        "Colour": ["B&W"]
     },
     {
-        "Pub": "English",
+        "Pub": ["English"],
         "LogoGrp": "Co Logo H",
-        "Charge": "Non-Chargeable",
-        "Colour": "B&W"
+        "Charges": ["Non-Chargeable"],
+        "Colour": ["B&W"]
     },
     {
-        "Pub": "English",
+        "Pub": ["English"],
         "LogoGrp": "Co Logo I",
-        "Charge": "Non-Chargeable",
-        "Colour": "B&W"
+        "Charges": ["Non-Chargeable"],
+        "Colour": ["B&W"]
     },
     {
-        "Pub": "English",
+        "Pub": ["English"],
         "LogoGrp": "Co Logo J",
-        "Charge": "Non-Chargeable",
-        "Colour": "B&W"
+        "Charges": ["Non-Chargeable"],
+        "Colour": ["B&W"]
     },
     {
-        "Pub": "English",
+        "Pub": ["English"],
         "LogoGrp": "Co Logo K",
-        "Charge": "Non-Chargeable",
-        "Colour": "B&W"
+        "Charges": ["Non-Chargeable"],
+        "Colour": ["B&W"]
     },
     {
-        "Pub": "English",
+        "Pub": ["English"],
         "LogoGrp": "Co Logo L",
-        "Charge": "Non-Chargeable",
-        "Colour": "B&W"
+        "Charges": ["Non-Chargeable"],
+        "Colour": ["B&W"]
     },
     {
-        "Pub": "English",
+        "Pub": ["English"],
         "LogoGrp": "Co Logo M",
-        "Charge": "Non-Chargeable",
-        "Colour": "B&W"
+        "Charges": ["Non-Chargeable"],
+        "Colour": ["B&W"]
     },
     {
-        "Pub": "English",
+        "Pub": ["English"],
         "LogoGrp": "Co Logo N",
-        "Charge": "Non-Chargeable",
-        "Colour": "B&W"
+        "Charges": ["Non-Chargeable"],
+        "Colour": ["B&W"]
     },
     {
-        "Pub": "English",
+        "Pub": ["English"],
         "LogoGrp": "Co Logo Numeric",
-        "Charge": "Non-Chargeable",
-        "Colour": "B&W"
+        "Charges": ["Non-Chargeable"],
+        "Colour": ["B&W"]
     },
     {
-        "Pub": "English",
+        "Pub": ["English"],
         "LogoGrp": "Co Logo O",
-        "Charge": "Non-Chargeable",
-        "Colour": "B&W"
+        "Charges": ["Non-Chargeable"],
+        "Colour": ["B&W"]
     },
     {
-        "Pub": "English",
+        "Pub": ["English"],
         "LogoGrp": "Co Logo P",
-        "Charge": "Non-Chargeable",
-        "Colour": "B&W"
+        "Charges": ["Non-Chargeable"],
+        "Colour": ["B&W"]
     },
     {
-        "Pub": "English",
+        "Pub": ["English"],
         "LogoGrp": "Co Logo Q",
-        "Charge": "Non-Chargeable",
-        "Colour": "B&W"
+        "Charges": ["Non-Chargeable"],
+        "Colour": ["B&W"]
     },
     {
-        "Pub": "English",
+        "Pub": ["English"],
         "LogoGrp": "Co Logo R",
-        "Charge": "Non-Chargeable",
-        "Colour": "B&W"
+        "Charges": ["Non-Chargeable"],
+        "Colour": ["B&W"]
     },
     {
-        "Pub": "English",
+        "Pub": ["English"],
         "LogoGrp": "Co Logo S",
-        "Charge": "Non-Chargeable",
-        "Colour": "B&W"
+        "Charges": ["Non-Chargeable"],
+        "Colour": ["B&W"]
     },
     {
-        "Pub": "English",
+        "Pub": ["English"],
         "LogoGrp": "Co Logo T",
-        "Charge": "Non-Chargeable",
-        "Colour": "B&W"
+        "Charges": ["Non-Chargeable"],
+        "Colour": ["B&W"]
     },
     {
-        "Pub": "English",
+        "Pub": ["English"],
         "LogoGrp": "Co Logo U",
-        "Charge": "Non-Chargeable",
-        "Colour": "B&W"
+        "Charges": ["Non-Chargeable"],
+        "Colour": ["B&W"]
     },
     {
-        "Pub": "English",
+        "Pub": ["English"],
         "LogoGrp": "Co Logo V",
-        "Charge": "Non-Chargeable",
-        "Colour": "B&W"
+        "Charges": ["Non-Chargeable"],
+        "Colour": ["B&W"]
     },
     {
-        "Pub": "English",
+        "Pub": ["English"],
         "LogoGrp": "Co Logo W",
-        "Charge": "Non-Chargeable",
-        "Colour": "B&W"
+        "Charges": ["Non-Chargeable"],
+        "Colour": ["B&W"]
     },
     {
-        "Pub": "English",
+        "Pub": ["English"],
         "LogoGrp": "Co Logo X",
-        "Charge": "Non-Chargeable",
-        "Colour": "B&W"
+        "Charges": ["Non-Chargeable"],
+        "Colour": ["B&W"]
     },
     {
-        "Pub": "English",
+        "Pub": ["English"],
         "LogoGrp": "Co Logo Y",
-        "Charge": "Non-Chargeable",
-        "Colour": "B&W"
+        "Charges": ["Non-Chargeable"],
+        "Colour": ["B&W"]
     },
     {
-        "Pub": "English",
+        "Pub": ["English"],
         "LogoGrp": "Co Logo Z",
-        "Charge": "Non-Chargeable",
-        "Colour": "B&W"
+        "Charges": ["Non-Chargeable"],
+        "Colour": ["B&W"]
     },
     {
-        "Pub": "English",
+        "Pub": ["English"],
         "LogoGrp": "MYB Logo Left",
-        "Charge": "Non-Chargeable",
-        "Colour": "B&W"
+        "Charges": ["Non-Chargeable"],
+        "Colour": ["B&W"]
     },
     {
-        "Pub": "English",
+        "Pub": ["English"],
         "LogoGrp": "MYB Logo Left Clr",
-        "Charge": "Chargeable",
-        "Colour": "Colour"
+        "Charges": ["Chargeable"],
+        "Colour": ["Colour"]
     },
     {
-        "Pub": "English",
+        "Pub": ["English"],
         "LogoGrp": "MYB Logo Right",
-        "Charge": "Non-Chargeable",
-        "Colour": "B&W"
+        "Charges": ["Non-Chargeable"],
+        "Colour": ["B&W"]
     },
     {
-        "Pub": "English",
+        "Pub": ["English"],
         "LogoGrp": "MYB Logo Right Clr",
-        "Charge": "Chargeable",
-        "Colour": "Colour"
+        "Charges": ["Chargeable"],
+        "Colour": ["Colour"]
     }
 ]

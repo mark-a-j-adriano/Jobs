@@ -60,7 +60,7 @@ app.controller('salesDashCTRL', function ($auth, $state, $stateParams, $uibModal
         for (x = 0; x < vm.jobs.length; x++) {
           vm.jobs[x].isExpanded = true;
           vm.jobs[x].tasks = DataFactory.parseLodash(vm.jobs[x].tasks);
-          console.log('tasks' + x, vm.jobs[x].tasks);
+          //console.log('tasks' + x, vm.jobs[x].tasks);
           if (_.isArray(vm.jobs[x].tasks)) {
             for (y = 0; y < vm.jobs[x].tasks.length; y++) {
               if (_.isNil(vm.jobs[x].tasks[y].designer)) {

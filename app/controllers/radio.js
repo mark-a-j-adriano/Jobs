@@ -28,48 +28,7 @@ app.controller('radioCTRL', function ($state, $auth, $uibModal, $stateParams, $t
         section3: true,     //Assignment Details
         section4: true,     //Preview of Completed Artwork  - team_members     
     };
-
-    vm.cleanArray = function (tmpArray) {
-        //console.log("[cleanArray] tmpArray - ", tmpArray);
-        if (_.isNil(tmpArray)  ) {
-            return null;
-        } else {
-            if (_.isArray(tmpArray)) {
-                var newArray = [];
-                for (i = 0, len = tmpArray.length; i < len; i++) {
-                    if (_.isNil(tmpArray[i])   || _.isEmpty(tmpArray[i])) {
-                    } else if (_.isDate(tmpArray[i])) {
-                        newArray.push(moment(tmpArray[i]).format('YYYY-MM-DD'));
-                    } else {
-                        newArray.push(tmpArray[i]);
-                    }
-                }
-                return newArray;
-            } else {
-                return tmpArray.trim();
-            }
-        }
-    };
-
-    vm.gotoDash = function () {
-        ////console.log('[gotoDash] - currentUser.role : ' + currentUser.role);
-        var accessLVL = parseInt(currentUser.role);
-        ////console.log('[gotoDash] - accessLVL : ' + accessLVL);        
-        if (accessLVL >= 30) {
-            //Sales Team Lead /SALES
-            $state.go('sales');
-        } else if (accessLVL >= 20) {
-            //CopyWriter   
-            $state.go('copywriter');
-        } else if (accessLVL >= 10) {
-            //team_members1  /team_members2 /Backup    
-            $state.go('designer');
-        } else {
-            // Coordinator / System Administrator
-            $state.go('coordinator');
-        }
-    }
-
+    
     vm.accessControl = function () {
         var tmpFlag = '';
         var tmpStatus = vm.task.status;
@@ -102,7 +61,7 @@ app.controller('radioCTRL', function ($state, $auth, $uibModal, $stateParams, $t
             var cc_response = vm.task.cc_response_username.toLowerCase().trim();
         }
         var designer = '';
-        if (_.isNil(vm.task.team_members_username)  ) {
+        if (_.isNil(vm.task.team_members_username)) {
         } else {
             designer = vm.task.team_members_username.toLowerCase().trim();
         }
@@ -328,7 +287,7 @@ app.controller('radioCTRL', function ($state, $auth, $uibModal, $stateParams, $t
                 vm.task.production_cost = 0;
                 vm.task.parent_id = $stateParams.orderID;
                 vm.task.logged_in_user = currentUser.id;
-                if (_.isNil(vm.task.cc_response)  ) {
+                if (_.isNil(vm.task.cc_response)) {
                     vm.cc_response_dsp = [];
                 } else {
                     vm.cc_response_dsp = _.uniq(vm.task.cc_response.split(","));
@@ -356,7 +315,7 @@ app.controller('radioCTRL', function ($state, $auth, $uibModal, $stateParams, $t
                     function (response) {
                         ////console.log('[getTmpID - getMember] - response.data : ' + JSON.stringify(response.data));
                         ////console.log('[getTmpID - getMember] - response.status : ' + JSON.stringify(response.status));
-                        if (_.isNil(response.data)   || _.isEmpty(response.data)) {
+                        if (_.isNil(response.data) || _.isEmpty(response.data)) {
                         } else {
                             vm.task.project_mgr = response.data[0].name;
                             vm.task.project_mgr_username = response.data[0].username;
@@ -393,35 +352,35 @@ app.controller('radioCTRL', function ($state, $auth, $uibModal, $stateParams, $t
                 //console.log('[getTask] - currentUser.canEdit : ' + JSON.stringify(vm.currentUser.canEdit));
                 if (vm.currentUser.canEdit === "") {
                     //console.log('[getTask] - gotoDash');
-                    vm.gotoDash();
+                    DataFactory.gotoDashBoard(vm.currentUser.role);
                 } else {
                     //console.log('[getTask] - prepare Data');
                     vm.task.ad_spend = parseFloat(vm.task.ad_spend);
 
-                    if (_.isNil(vm.task.due_date)  ) {
+                    if (_.isNil(vm.task.due_date)) {
                     } else {
                         vm.task.due_date = new Date(vm.task.due_date);
                     }
 
-                    if (_.isNil(vm.task.launch_date)  ) {
+                    if (_.isNil(vm.task.launch_date)) {
                     } else {
                         vm.task.launch_date = new Date(vm.task.launch_date);
                     }
 
                     vm.creativeTypes = DataFactory.parseLodash(vm.task.creative_types);
-                    if (_.isNil(vm.task.cc_response)  ) {
+                    if (_.isNil(vm.task.cc_response)) {
                         vm.cc_response_dsp = [];
                     } else {
                         vm.cc_response_dsp = _.uniq(vm.task.cc_response.split(","));
                     }
-                    if (_.isNil(vm.task.materials)   || _.isEmpty(vm.task.materials)) {
+                    if (_.isNil(vm.task.materials) || _.isEmpty(vm.task.materials)) {
                     } else {
-                        vm.task.materials = vm.cleanArray(DataFactory.parseLodash(vm.task.materials));
+                        vm.task.materials = DataFactory.cleanArray(DataFactory.parseLodash(vm.task.materials));
                     }
 
-                    if (_.isNil(vm.task.artwork)   || _.isEmpty(vm.task.materials)) {
+                    if (_.isNil(vm.task.artwork) || _.isEmpty(vm.task.materials)) {
                     } else {
-                        vm.task.artwork = vm.cleanArray(DataFactory.parseLodash(vm.task.artwork));
+                        vm.task.artwork = DataFactory.cleanArray(DataFactory.parseLodash(vm.task.artwork));
                     }
 
                     vm.getDocHistory(vm.task.task_no);
@@ -491,11 +450,11 @@ app.controller('radioCTRL', function ($state, $auth, $uibModal, $stateParams, $t
                     //success
                     function (submitVar) {
                         //console.log("submitted value inside parent controller", submitVar);
-                        if (submitVar) vm.gotoDash();
+                        if (submitVar) DataFactory.gotoDashBoard(vm.currentUser.role);
                     },
                     //failure
                     function (submitVar) {
-                        vm.gotoDash();
+                        DataFactory.gotoDashBoard(vm.currentUser.role);
                     },
                 )
             },
@@ -534,7 +493,7 @@ app.controller('radioCTRL', function ($state, $auth, $uibModal, $stateParams, $t
         //vm.isValid = vm.Validate();
         var prevStats = vm.task.status;
         if (vm.isValid) {
-            if (_.isNil(newStatus)   || newStatus == '') {
+            if (_.isNil(newStatus) || newStatus == '') {
                 //console.log('[submitTask] - 1');
                 if (vm.task.creative_team) {
                     if (_.isNil(vm.task.creative_team) || vm.task.creative_team == '') {
@@ -580,16 +539,16 @@ app.controller('radioCTRL', function ($state, $auth, $uibModal, $stateParams, $t
             if (!_.isNil(vm.task.job_no)) delete vm.task.job_no;
             if (!_.isNil(vm.task.default_due_date)) delete vm.task.default_due_date;
 
-            if (_.isNil(vm.task.due_date)   || vm.task.due_date == '') {
+            if (_.isNil(vm.task.due_date) || vm.task.due_date == '') {
             } else {
                 vm.task.due_date = moment(new Date(vm.task.due_date)).format('YYYY-MM-DD HH:mm:ss');
             }
 
-            if (_.isNil(vm.task.launch_date)   || vm.task.launch_date == '') {
+            if (_.isNil(vm.task.launch_date) || vm.task.launch_date == '') {
             } else {
                 vm.task.launch_date = moment(new Date(vm.task.launch_date)).format('YYYY-MM-DD HH:mm:ss');
             }
-            
+
             var passedID = null;
             if ($stateParams.action != "create") {
                 passedID = vm.task.id;
@@ -597,22 +556,22 @@ app.controller('radioCTRL', function ($state, $auth, $uibModal, $stateParams, $t
                 vm.task._method = "put";
             }
 
-            if (_.isNil(vm.RadioContracts)   || _.isEmpty(vm.RadioContracts)) {
+            if (_.isNil(vm.RadioContracts) || _.isEmpty(vm.RadioContracts)) {
                 vm.task.radio_contracts = [];
             } else {
-                vm.task.radio_contracts = vm.cleanArray(vm.radio_contracts);
+                vm.task.radio_contracts = DataFactory.cleanArray(vm.radio_contracts);
             }
 
-            if (_.isNil(vm.task.materials)   || _.isEmpty(vm.task.materials)) {
+            if (_.isNil(vm.task.materials) || _.isEmpty(vm.task.materials)) {
                 vm.task.materials = [];
             } else {
-                vm.task.materials = vm.cleanArray(vm.task.materials);
+                vm.task.materials = DataFactory.cleanArray(vm.task.materials);
             }
 
-            if (_.isNil(vm.task.artwork)   || _.isEmpty(vm.task.artwork)) {
+            if (_.isNil(vm.task.artwork) || _.isEmpty(vm.task.artwork)) {
                 vm.task.artwork = [];
             } else {
-                vm.task.artwork = vm.cleanArray(vm.task.artwork);
+                vm.task.artwork = DataFactory.cleanArray(vm.task.artwork);
             }
 
             var tmpTsk = angular.copy(vm.task);
@@ -654,11 +613,11 @@ app.controller('radioCTRL', function ($state, $auth, $uibModal, $stateParams, $t
                         //success
                         function (submitVar) {
                             //console.log("submitted value inside parent controller", submitVar);
-                            if (submitVar) vm.gotoDash();
+                            if (submitVar) DataFactory.gotoDashBoard(vm.currentUser.role);
                         },
                         //failure
                         function (submitVar) {
-                            vm.gotoDash();
+                            DataFactory.gotoDashBoard(vm.currentUser.role);
                         },
                     )
                 },
@@ -683,12 +642,12 @@ app.controller('radioCTRL', function ($state, $auth, $uibModal, $stateParams, $t
     vm.gotoParent = function () {
         //$state.go('creative', { orderID: $stateParams.orderID });
         var tmpID = null;
-        if (_.isNil(vm.task.parent_id)  ) { } else { tmpID = vm.task.parent_id };
+        if (_.isNil(vm.task.parent_id)) { } else { tmpID = vm.task.parent_id };
         if (_.isNil(tmpID)) {
-            if (_.isNil(vm.task.job_id)  ) { } else { tmpID = vm.task.job_id };
+            if (_.isNil(vm.task.job_id)) { } else { tmpID = vm.task.job_id };
         }
         if (_.isNil(tmpID)) {
-            if (_.isNil($stateParams.orderID)  ) { } else { tmpID = $stateParams.orderID };
+            if (_.isNil($stateParams.orderID)) { } else { tmpID = $stateParams.orderID };
         }
 
         $state.go('creative', { orderID: tmpID });
@@ -893,7 +852,7 @@ app.controller('radioCTRL', function ($state, $auth, $uibModal, $stateParams, $t
                     parentData: function () {
                         return tmp;
                     },
-                    members: function (df) {
+                    members: function (DataFactory) {
                         return DataFactory.getMembers(tmpData);
                     }
                 }
@@ -966,7 +925,7 @@ app.controller('radioCTRL', function ($state, $auth, $uibModal, $stateParams, $t
             user_role: vm.currentUser.canEdit,
         };
 
-        if (_.isNil(chatFlag)   || _.isEmpty(chatFlag) || chatFlag == '') {
+        if (_.isNil(chatFlag) || _.isEmpty(chatFlag) || chatFlag == '') {
             chatFlag = "";
             tmp.frm_title = "Conversation";
         } else if (chatFlag.includes('cancel')) {
@@ -1044,12 +1003,12 @@ app.controller('radioCTRL', function ($state, $auth, $uibModal, $stateParams, $t
         var timeStamp = new Date();
 
         if (type == 'artwork') {
-            if (_.isNil(vm.task.artwork)  ) vm.task.artwork = [];
-            if (_.isNil(vm.task.final_size)  ) vm.task.final_size = vm.task.pub_size;
+            if (_.isNil(vm.task.artwork)) vm.task.artwork = [];
+            if (_.isNil(vm.task.final_size)) vm.task.final_size = vm.task.pub_size;
         } else if (type == 'article') {
-            if (_.isNil(vm.task.article)  ) vm.task.article = [];
+            if (_.isNil(vm.task.article)) vm.task.article = [];
         } else {
-            if (_.isNil(vm.task.materials)  ) vm.task.materials = [];
+            if (_.isNil(vm.task.materials)) vm.task.materials = [];
         }
 
         angular.forEach(files, function (file) {
@@ -1112,11 +1071,11 @@ app.controller('radioCTRL', function ($state, $auth, $uibModal, $stateParams, $t
         });
 
         if (type == 'artwork') {
-            vm.task.artwork = vm.cleanArray(vm.task.artwork);
+            vm.task.artwork = DataFactory.cleanArray(vm.task.artwork);
         } else if (type == 'article') {
-            vm.task.article = vm.cleanArray(vm.task.article);
+            vm.task.article = DataFactory.cleanArray(vm.task.article);
         } else {
-            vm.task.materials = vm.cleanArray(vm.task.materials);
+            vm.task.materials = DataFactory.cleanArray(vm.task.materials);
         }
     };
 
@@ -1127,15 +1086,15 @@ app.controller('radioCTRL', function ($state, $auth, $uibModal, $stateParams, $t
         if (type == 'article') {
             //vm.task.article
             vm.task.article[ndex] = null;
-            vm.task.article = vm.cleanArray(vm.task.article);
+            vm.task.article = DataFactory.cleanArray(vm.task.article);
         } else if (type == 'artwork') {
             //vm.task.artwork
             vm.task.artwork[ndex] = null;
-            vm.task.artwork = vm.cleanArray(vm.task.artwork);
+            vm.task.artwork = DataFactory.cleanArray(vm.task.artwork);
         } else {
             //vm.task.materials
             vm.task.materials[ndex] = null;
-            vm.task.materials = vm.cleanArray(vm.task.materials);
+            vm.task.materials = DataFactory.cleanArray(vm.task.materials);
         }
     };
 
@@ -1218,7 +1177,7 @@ app.controller('radioCTRL', function ($state, $auth, $uibModal, $stateParams, $t
 
     vm.revertArtwork = function () {
         //console.log('[radio] - revertArtwork');
-        if (_.isNil(vm.task.sales_comment)   || vm.task.sales_comment == '') {
+        if (_.isNil(vm.task.sales_comment) || vm.task.sales_comment == '') {
             toastr.error("Please add your reason for returning Artwork", { closeButton: true });
         } else {
             vm.submitTask('For Revision');
@@ -1238,21 +1197,26 @@ app.controller('radioCTRL', function ($state, $auth, $uibModal, $stateParams, $t
     }
 
     vm.getRadioStations = function () {
-        DataFactory.getRadioList().then(
+        DataFactory.getRadioList(null, null).then(
             //success
             function (response) {
                 //console.log('response.data : ' + JSON.stringify(response.data));
-                ////console.log('response.status : ' + JSON.stringify(response.status));
+                //console.log('response.status : ' + JSON.stringify(response.status));
                 vm.Stations = response.data;
             },
             // error handler
             function (response) {
-                ////console.log('Ooops, something went wrong..  \n ' + JSON.stringify(response));
+               //console.log('Ooops, something went wrong..  \n ' + JSON.stringify(response));
             });
     };
 
     vm.getJobClassification = function () {
-        DataFactory.getRadioList('class').then(
+        var filter = {
+            team: 'RadioLAB',
+            department: 'Creative',
+        };
+
+        DataFactory.getRadioList('class', filter).then(
             //success
             function (response) {
                 //console.log('response.data : ' + JSON.stringify(response.data));
@@ -1266,11 +1230,11 @@ app.controller('radioCTRL', function ($state, $auth, $uibModal, $stateParams, $t
     };
 
     vm.getRadioContracts = function () {
-        DataFactory.getRadioList('contracts').then(
+        DataFactory.getRadioList('contracts', null).then(
             //success
             function (response) {
-                //console.log('response.data : ' + JSON.stringify(response.data));
-                ////console.log('response.status : ' + JSON.stringify(response.status));
+                console.log('response.data : ' + JSON.stringify(response.data));
+                console.log('response.status : ' + JSON.stringify(response.status));
                 var names = response.data;
                 for (i = 0; i < names.length; i++) {
                     var option = {
@@ -1283,7 +1247,7 @@ app.controller('radioCTRL', function ($state, $auth, $uibModal, $stateParams, $t
             },
             // error handler
             function (response) {
-                ////console.log('Ooops, something went wrong..  \n ' + JSON.stringify(response));
+                console.log('Ooops, something went wrong..  \n ' + JSON.stringify(response));
             });
     };
 
@@ -1311,7 +1275,7 @@ app.controller('radioCTRL', function ($state, $auth, $uibModal, $stateParams, $t
 
 
     if ($auth.isAuthenticated()) {
-        if (_.isNil(currentUser)  ) {
+        if (_.isNil(currentUser)) {
             vm.currentUser = null;
             StorageFactory.setURI(window.location.href);
             $state.go('login');

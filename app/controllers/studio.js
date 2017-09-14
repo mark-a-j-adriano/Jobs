@@ -51,28 +51,7 @@ app.controller('studioCTRL', function ($state, $auth, $uibModal, $stateParams, $
         creative: { visible: false, progress: 0 },
     };
 
-    vm.cleanArray = function (tmpArray) {
-        //console.log("[cleanArray] tmpArray - ", tmpArray);
-        if (_.isNil(tmpArray)) {
-            return null;
-        } else {
-            if (_.isArray(tmpArray)) {
-                var newArray = [];
-                for (i = 0, len = tmpArray.length; i < len; i++) {
-                    if (_.isNil(tmpArray[i]) || _.isEmpty(tmpArray[i])) {
-                    } else if (_.isDate(tmpArray[i])) {
-                        newArray.push(moment(tmpArray[i]).format('YYYY-MM-DD'));
-                    } else {
-                        newArray.push(tmpArray[i]);
-                    }
-                }
-                return newArray;
-            } else {
-                return tmpArray.trim();
-            }
-        }
-    };
-
+  
     vm.cleanTrix = function (tmpStr, type) {
         var str = _.replace(tmpStr, new RegExp('"', "g"), "'");
         str = _.replace(str, new RegExp("<strong>", "g"), "");
@@ -265,7 +244,7 @@ app.controller('studioCTRL', function ($state, $auth, $uibModal, $stateParams, $
                     }
                 }
             }
-            vm.task.materials = vm.cleanArray(vm.task.materials);
+            vm.task.materials = DataFactory.cleanArray(vm.task.materials);
         } else {
             vm.trixEditor2 = true;
             for (i = 0; i < vm.task.artwork.length; i++) {
@@ -283,7 +262,7 @@ app.controller('studioCTRL', function ($state, $auth, $uibModal, $stateParams, $
                     }
                 }
             }
-            vm.task.artwork = vm.cleanArray(vm.task.artwork);
+            vm.task.artwork = DataFactory.cleanArray(vm.task.artwork);
         }
     };
 
@@ -325,51 +304,7 @@ app.controller('studioCTRL', function ($state, $auth, $uibModal, $stateParams, $
     };
 
     vm.trixInitialize = function (e, editor, type) {
-        /*
-        vm.trixEditor =  editor;
-        //console.log('[trixInitialize] - editor:', editor);
-        $timeout(function () {
-            //console.log("show after directive partial loaded");
-            //console.log('[trixInitialize] - type:', type);
-
-            if (type == 'materials') {
-                if (_.isNil(vm.task.materials)) {
-                } else {
-                    for (i = 0; i < vm.task.materials.length; i++) {
-                        if (_.isNil(vm.task.materials[i].blob)) {
-                        } else {
-                            //var url = "http://localhost/creative/jobs/service/tmp/task/materials/emsmaav1-170802-008-1/image57.png";
-                            var url = vm.task.materials[i].url;
-                            getFileObject(url, function (fileObject) {
-                                //console.log(fileObject);
-                                editor.insertFile(fileObject)
-                            })
-                        }
-                    }
-                }
-            } else {
-                if (_.isNil(vm.task.artwork)) {
-                } else {
-                    for (i = 0; i < vm.task.artwork.length; i++) {
-                         if (_.isNil(vm.task.artwork[i].blob)) {
-                        } else {                            
-                            var url = vm.task.artwork[i].url;
-                            getFileObject(url, function (fileObject) {
-                                //console.log(fileObject);
-                                editor.insertFile(fileObject)
-                            })
-                        }
-                    }
-                }
-            }
-
-        }); //note, no time parameter
-        //editor.insertString("Hello")
-        //editor.insertLineBreak()
-        */
     };
-
-
 
     vm.carousel = {
         preview: false,
@@ -383,23 +318,6 @@ app.controller('studioCTRL', function ($state, $auth, $uibModal, $stateParams, $
         interval: 5000,
         active: 0,
     };
-
-    vm.gotoDash = function () {
-        var accessLVL = parseInt(currentUser.role);
-        if (accessLVL >= 30) {
-            //Sales Team Lead /SALES
-            $state.go('sales');
-        } else if (accessLVL >= 20) {
-            //CopyWriter   
-            $state.go('copywriter');
-        } else if (accessLVL >= 10) {
-            //Designer1  /Designer2 /Backup    
-            $state.go('designer');
-        } else {
-            // Coordinator / System Administrator
-            $state.go('coordinator');
-        }
-    }
 
     vm.accessControl = function () {
         var tmpFlag = '';
@@ -739,18 +657,18 @@ app.controller('studioCTRL', function ($state, $auth, $uibModal, $stateParams, $
                 vm.currentUser.canEdit = vm.accessControl();
                 vm.task.parent_id = vm.task.job_id;
                 if (vm.currentUser.canEdit == '') {
-                    vm.gotoDash();
+                    DataFactory.gotoDashBoard(vm.currentUser.role);
                 } else {
                     vm.task.ad_spend = parseFloat(vm.task.ad_spend);
                     vm.task.production_cost = parseFloat(vm.task.production_cost);
                     vm.display.ad_spend = $filter('currency')(vm.task.ad_spend, "");
-                    vm.display.production_cost = $filter('currency')(vm.task.production_cost, "");                    
-                    
-                    if(_.isNil(vm.task.due_date)){
-                    }else{
+                    vm.display.production_cost = $filter('currency')(vm.task.production_cost, "");
+
+                    if (_.isNil(vm.task.due_date)) {
+                    } else {
                         vm.task.due_date = new Date(vm.task.due_date);
-                    }                                      
-                    
+                    }
+
                     if (vm.task.urgent > 0) vm.task.urgent = true;
                     vm.task.size_option = 'Other';
                     vm.productList = DataFactory.parseLodash(vm.task.products);
@@ -763,35 +681,35 @@ app.controller('studioCTRL', function ($state, $auth, $uibModal, $stateParams, $
                     if (_.isNil(vm.task.materials) || _.isEmpty(vm.task.materials) || vm.task.materials == "" || vm.task.materials == "[]") {
                         vm.task.materials = [];
                     } else {
-                        vm.task.materials = vm.cleanArray(DataFactory.parseLodash(vm.task.materials));
+                        vm.task.materials = DataFactory.cleanArray(DataFactory.parseLodash(vm.task.materials));
                     }
 
                     if (_.isNil(vm.task.materials_trix) || _.isEmpty(vm.task.materials_trix) || vm.task.materials_trix == "" || vm.task.materials_trix == "[]" || vm.task.materials_trix == "{}") {
                         vm.task.materials_trix = "";
                     }
 
-                    if (_.isNil(vm.task.artwork) ||  _.isEmpty(vm.task.artwork) || vm.task.artwork == "" || vm.task.artwork == "[]") {
+                    if (_.isNil(vm.task.artwork) || _.isEmpty(vm.task.artwork) || vm.task.artwork == "" || vm.task.artwork == "[]") {
                         vm.task.artwork = [];
                     } else {
-                        vm.task.artwork = vm.cleanArray(DataFactory.parseLodash(vm.task.artwork));
+                        vm.task.artwork = DataFactory.cleanArray(DataFactory.parseLodash(vm.task.artwork));
                     }
 
-                    if (_.isNil(vm.task.artwork_trix)  || _.isEmpty(vm.task.artwork_trix) || vm.task.artwork_trix == "" || vm.task.artwork_trix == "[]" || vm.task.artwork_trix == "{}") {
+                    if (_.isNil(vm.task.artwork_trix) || _.isEmpty(vm.task.artwork_trix) || vm.task.artwork_trix == "" || vm.task.artwork_trix == "[]" || vm.task.artwork_trix == "{}") {
                         vm.task.artwork_trix = "";
                     }
 
-                    if (_.isNil(vm.task.article)  || _.isEmpty(vm.task.article) || vm.task.article == "" || vm.task.article == "[]") {
+                    if (_.isNil(vm.task.article) || _.isEmpty(vm.task.article) || vm.task.article == "" || vm.task.article == "[]") {
                         vm.task.article = [];
                     } else {
-                        vm.task.article = vm.cleanArray(DataFactory.parseLodash(vm.task.article));
+                        vm.task.article = DataFactory.cleanArray(DataFactory.parseLodash(vm.task.article));
                     }
 
-                    if (_.isNil(vm.task.final_ad_spend)  || _.isEmpty(vm.task.final_ad_spend) || vm.task.final_ad_spend == '') {
+                    if (_.isNil(vm.task.final_ad_spend) || _.isEmpty(vm.task.final_ad_spend) || vm.task.final_ad_spend == '') {
                     } else {
                         vm.task.final_ad_spend = parseFloat(vm.task.final_ad_spend);
                     }
 
-                    if (_.isNil(vm.task.final_production_cost)  || _.isEmpty(vm.task.final_production_cost) || vm.task.final_production_cost == '') {
+                    if (_.isNil(vm.task.final_production_cost) || _.isEmpty(vm.task.final_production_cost) || vm.task.final_production_cost == '') {
                     } else {
                         vm.task.final_production_cost = parseFloat(vm.task.final_production_cost);
                     }
@@ -889,11 +807,11 @@ app.controller('studioCTRL', function ($state, $auth, $uibModal, $stateParams, $
                     //success
                     function (submitVar) {
                         //console.log("submitted value inside parent controller", submitVar);
-                        if (submitVar) vm.gotoDash();
+                        if (submitVar) DataFactory.gotoDashBoard(vm.currentUser.role);
                     },
                     //failure
                     function (submitVar) {
-                        vm.gotoDash();
+                        DataFactory.gotoDashBoard(vm.currentUser.role);
                     },
                 )
             },
@@ -904,7 +822,7 @@ app.controller('studioCTRL', function ($state, $auth, $uibModal, $stateParams, $
     };
     vm.isAssigned = function () {
         var str = vm.task.designer_username;
-        if (_.isNil(str)  || _.isEmpty(str) || str.trim() == '') {
+        if (_.isNil(str) || _.isEmpty(str) || str.trim() == '') {
             toastr.error("Please assign a designer.", {
                 closeButton: true,
                 onHidden: function () {
@@ -928,7 +846,7 @@ app.controller('studioCTRL', function ($state, $auth, $uibModal, $stateParams, $
         var prevStats = vm.task.status;
 
         if (vm.isValid) {
-            if (_.isNil(newStatus)  || newStatus == '') {
+            if (_.isNil(newStatus) || newStatus == '') {
                 //console.log('[submitTask] - 1');
                 if (vm.task.designer) {
                     if (_.isNil(vm.task.designer) || vm.task.designer == '') {
@@ -990,36 +908,36 @@ app.controller('studioCTRL', function ($state, $auth, $uibModal, $stateParams, $
                 vm.task._method = "put";
             }
 
-            if (vm.task.status == 'For Approval' && _.isNil(vm.task.final_size)) {
+            if (vm.task.status == 'For Approval' && (_.isNil(vm.task.final_size) || vm.task.final_size == '')) {
                 vm.task.final_size = vm.task.pub_size;
             }
 
-            if (_.isNil(vm.productList)  || _.isEmpty(vm.productList)) {
+            if (_.isNil(vm.productList) || _.isEmpty(vm.productList)) {
                 vm.task.productList = [];
             } else {
-                vm.task.productList = vm.cleanArray(vm.productList);
+                vm.task.productList = DataFactory.cleanArray(vm.productList);
             }
 
-            if (_.isNil(vm.task.materials)  || _.isEmpty(vm.task.materials)) {
+            if (_.isNil(vm.task.materials) || _.isEmpty(vm.task.materials)) {
                 vm.task.materials = [];
             } else {
-                vm.task.materials = vm.cleanArray(vm.task.materials);
+                vm.task.materials = DataFactory.cleanArray(vm.task.materials);
             }
 
-            if (_.isNil(vm.task.artwork)  || _.isEmpty(vm.task.artwork)) {
+            if (_.isNil(vm.task.artwork) || _.isEmpty(vm.task.artwork)) {
                 vm.task.artwork = [];
             } else {
-                vm.task.artwork = vm.cleanArray(vm.task.artwork);
+                vm.task.artwork = DataFactory.cleanArray(vm.task.artwork);
             }
 
-            if (_.isNil(vm.task.article)  || _.isEmpty(vm.task.article)) {
+            if (_.isNil(vm.task.article) || _.isEmpty(vm.task.article)) {
                 vm.task.article = [];
             } else {
-                vm.task.article = vm.cleanArray(vm.task.article);
+                vm.task.article = DataFactory.cleanArray(vm.task.article);
             }
 
             if (vm.trixEditor1 && vm.statusNum == 0) {
-                if (_.isNil(vm.task.materials_trix)  || _.isEmpty(vm.task.materials_trix)) {
+                if (_.isNil(vm.task.materials_trix) || _.isEmpty(vm.task.materials_trix)) {
                     vm.task.materials_trix = "";
                 } else {
                     vm.task.materials_trix = vm.cleanTrix(vm.task.materials_trix, "materials");
@@ -1027,7 +945,7 @@ app.controller('studioCTRL', function ($state, $auth, $uibModal, $stateParams, $
             }
 
             if (vm.trixEditor2 && vm.statusNum == 2) {
-                if (_.isNil(vm.task.artwork_trix)  || _.isEmpty(vm.task.artwork_trix)) {
+                if (_.isNil(vm.task.artwork_trix) || _.isEmpty(vm.task.artwork_trix)) {
                     vm.task.artwork_trix = "";
                 } else {
                     vm.task.artwork_trix = vm.cleanTrix(vm.task.artwork_trix, "artwork");
@@ -1074,11 +992,11 @@ app.controller('studioCTRL', function ($state, $auth, $uibModal, $stateParams, $
                         //success
                         function (submitVar) {
                             //console.log("submitted value inside parent controller", submitVar);
-                            if (submitVar) vm.gotoDash();
+                            if (submitVar) DataFactory.gotoDashBoard(vm.currentUser.role);
                         },
                         //failure
                         function (submitVar) {
-                            vm.gotoDash();
+                            DataFactory.gotoDashBoard(vm.currentUser.role);
                         },
                     )
                 },
@@ -1309,8 +1227,8 @@ app.controller('studioCTRL', function ($state, $auth, $uibModal, $stateParams, $
                     return null;
                 }
             }
-        }).result.then(function (submitVar) {          
-            vm.productList.push(submitVar);            
+        }).result.then(function (submitVar) {
+            vm.productList.push(submitVar);
         })
     };
     vm.editRow = function (option, ndex) {
@@ -1608,18 +1526,18 @@ app.controller('studioCTRL', function ($state, $auth, $uibModal, $stateParams, $
         if (type == 'artwork') {
             vm.spinners.artwork.visible = true;
             vm.spinners.artwork.progress = 0;
-            if (_.isNil(vm.task.artwork) ) vm.task.artwork = [];
-            if (_.isNil(vm.task.final_size)  || _.isEmpty(vm.task.final_size) || vm.task.final_size == '') {
+            if (_.isNil(vm.task.artwork)) vm.task.artwork = [];
+            if (_.isNil(vm.task.final_size) || _.isEmpty(vm.task.final_size) || vm.task.final_size == '') {
                 vm.task.final_size = vm.task.pub_size;
             }
         } else if (type == 'article') {
             vm.spinners.article.visible = true;
             vm.spinners.article.progress = 0;
-            if (_.isNil(vm.task.article) ) vm.task.article = [];
+            if (_.isNil(vm.task.article)) vm.task.article = [];
         } else {
             vm.spinners.materials.visible = true;
             vm.spinners.materials.progress = 0;
-            if (_.isNil(vm.task.materials) ) vm.task.materials = [];
+            if (_.isNil(vm.task.materials)) vm.task.materials = [];
         }
 
         angular.forEach(files, function (file) {
@@ -1691,15 +1609,15 @@ app.controller('studioCTRL', function ($state, $auth, $uibModal, $stateParams, $
         if (type == 'artwork') {
             vm.spinners.artwork.visible = false;
             vm.spinners.artwork.progress = 0;
-            vm.task.artwork = vm.cleanArray(vm.task.artwork);
+            vm.task.artwork = DataFactory.cleanArray(vm.task.artwork);
         } else if (type == 'article') {
             vm.spinners.article.visible = false;
             vm.spinners.article.progress = 0;
-            vm.task.article = vm.cleanArray(vm.task.article);
+            vm.task.article = DataFactory.cleanArray(vm.task.article);
         } else {
             vm.spinners.materials.visible = false;
             vm.spinners.materials.progress = 0;
-            vm.task.materials = vm.cleanArray(vm.task.materials);
+            vm.task.materials = DataFactory.cleanArray(vm.task.materials);
         }
     };
     vm.clearFiles = function (file) {
@@ -1723,7 +1641,7 @@ app.controller('studioCTRL', function ($state, $auth, $uibModal, $stateParams, $
         //console.log('[deleteFile] - type : ' + type);
         //console.log('[deleteFile] - file : ' + JSON.stringify(file));
 
-        if (_.isNil(file.url) ) {
+        if (_.isNil(file.url)) {
         } else {
             //console.log("filesForDeletion5");
             vm.filesForDeletion.push(file.url.trim());
@@ -1732,31 +1650,37 @@ app.controller('studioCTRL', function ($state, $auth, $uibModal, $stateParams, $
         if (type == 'article') {
             //vm.task.article
             vm.task.article[ndex] = null;
-            vm.task.article = vm.cleanArray(vm.task.article);
+            vm.task.article = DataFactory.cleanArray(vm.task.article);
         } else if (type == 'artwork') {
             //vm.task.artwork
             vm.task.artwork[ndex] = null;
-            vm.task.artwork = vm.cleanArray(vm.task.artwork);
+            vm.task.artwork = DataFactory.cleanArray(vm.task.artwork);
         } else {
             //vm.task.materials
             vm.task.materials[ndex] = null;
-            vm.task.materials = vm.cleanArray(vm.task.materials);
+            vm.task.materials = DataFactory.cleanArray(vm.task.materials);
         }
     };
     vm.approveArtwork = function () {
         var hasTBD = false;
-        var previewReady = true;
+        var previewNotReady = false;
         for (i = 0; i < vm.productList.length; i++) {
-            if ((vm.productList[i].etNum_tbd) || (vm.productList[i].etNum_tbd)) {
+            if ((vm.productList[i].etNum_tbd) || (vm.productList[i].cashNum_tbd)) {
                 hasTBD = true;
                 break;
             }
         }
+                
+        if( _.isNil(vm.task.artwork_trix) || vm.task.artwork_trix==''){
+            if (_.isNil(vm.task.artwork) || _.isEmpty(vm.task.artwork)) previewNotReady = true;
+        }     
 
         if (hasTBD) {
             toastr.error("Please update the ET Number or CASH number details in the Product table", { closeButton: true });
+        } else if (previewNotReady) {
+            toastr.error("Please upload an Artwork Preview", { closeButton: true });            
         } else if (vm.task.pub_size != vm.task.final_size) {
-            if (_.isNil(vm.task.final_ad_spend)  || vm.task.final_ad_spend == "") {
+            if (_.isNil(vm.task.final_ad_spend) || vm.task.final_ad_spend == "") {
                 toastr.error("Please update final ad spend.", { closeButton: true });
             } else if (parseFloat(vm.task.final_ad_spend) == 0) {
                 toastr.error("Please update final ad spend (orig. size: " + vm.task.pub_size + " -> final size: " + vm.task.final_size + " ).", { closeButton: true });
@@ -1781,7 +1705,7 @@ app.controller('studioCTRL', function ($state, $auth, $uibModal, $stateParams, $
     };
     vm.revertArtwork = function () {
         //console.log('[STUDIO] - revertArtwork');
-        if (_.isNil(vm.task.sales_comment)  || vm.task.sales_comment == '') {
+        if (_.isNil(vm.task.sales_comment) || vm.task.sales_comment == '') {
             toastr.error("Please add your reason for returning Artwork", { closeButton: true });
         } else {
             vm.submitTask('For Revision');
@@ -1801,7 +1725,7 @@ app.controller('studioCTRL', function ($state, $auth, $uibModal, $stateParams, $
         ////console.log('[deleteRow] - index : ' + ndex);
         ////console.log('[deleteRow] - product list : ' + JSON.stringify(vm.productList));
         vm.productList[ndex] = null;
-        vm.productList = vm.cleanArray(vm.productList);
+        vm.productList = DataFactory.cleanArray(vm.productList);
         //_.findLastIndex(array, {}) 
     }
 

@@ -106,19 +106,62 @@ app.factory("DataFactory", [
   "$location",
   "$auth",
   "$window",
+  "$state",
   "StorageFactory",
   "Upload",
-  function ($http, $timeout, $q, $location, $auth, $window, StorageFactory, Upload) {
+  function ($http, $timeout, $q, $location, $auth, $window, $state, StorageFactory, Upload) {
     var obj = {};
     var base_url = StorageFactory.getAppSettings('API');
 
     /***  UTILITIES - START ***/
     obj.parseLodash = function (str) {
       var ret = _.attempt(JSON.parse.bind(null, str));
-      console.log("[parseLodash] ret : ", ret);
+      //console.log("[parseLodash] ret : ", ret);
       return ret;
     }
 
+    obj.gotoDashBoard = function (str) {
+      var accessLVL = parseInt(str);
+      if ($auth.isAuthenticated()) {
+        if (accessLVL >= 30) {
+          //Sales Team Lead /SALES
+          $state.go('sales');
+        } else if (accessLVL >= 20) {
+          //CopyWriter   
+          $state.go('copywriter');
+        } else if (accessLVL >= 10) {
+          //Designer1  /Designer2 /Backup    
+          $state.go('designer');
+        } else {
+          // Coordinator / System Administrator
+          $state.go('coordinator');
+        }
+      } else {
+        $state.go('login');
+      }
+    }
+
+    obj.cleanArray = function (tmpArray) {
+      //console.log("[cleanArray] tmpArray - ", tmpArray);
+      if (_.isNil(tmpArray)) {
+        return null;
+      } else {
+        if (_.isArray(tmpArray)) {
+          var newArray = [];
+          for (i = 0, len = tmpArray.length; i < len; i++) {
+            if (_.isNil(tmpArray[i]) || _.isEmpty(tmpArray[i])) {
+            } else if (_.isDate(tmpArray[i])) {
+              newArray.push(moment(tmpArray[i]).format('YYYY-MM-DD'));
+            } else {
+              newArray.push(tmpArray[i]);
+            }
+          }
+          return newArray;
+        } else {
+          return tmpArray.trim();
+        }
+      }
+    };
     /***  UTILITIES - END ***/
 
     /***  RESOLVABLE - START ***/
@@ -266,35 +309,38 @@ app.factory("DataFactory", [
       return $http.get(httpURL);
     }
 
-    obj.getRadioList = function (type) {
+    obj.getRadioList = function (type, filter) {
       var httpURL = "";
       if (type == 'contracts') {
-        httpURL = "./lib/dump/radioContracts.json";
+        httpURL = base_url + "/json/get-radio-contracts";
+        //httpURL = "./lib/dump/radioContracts.json";
+        return $http.get(httpURL);
       } else if (type == 'class') {
         httpURL = "./lib/dump/radioJobClass.json";
+        return $http.post(httpURL, filter);
       } else {
         httpURL = "./lib/dump/radioStations.json";
+        return $http.get(httpURL);
       }
-      return $http.get(httpURL);
+
     }
 
     obj.getContentTypes = function () {
-      var httpURL = "./lib/dump/contentGrp.json";
-      return $http.get(httpURL);
-    }
-
-    obj.getContentGrp = function (type) {
-      var httpURL = "./lib/dump/contentGrp.json";
+      //var httpURL = "./lib/dump/contentGrp.json";
+      var httpURL = base_url + "/json/get-content-groups";
       return $http.get(httpURL);
     }
 
     obj.getImporterLogoGrp = function (type) {
       var httpURL = "";
       if (type == "Company Logo") {
+        //httpURL = base_url + "/json/company-logo-groups";
         httpURL = "./lib/dump/coLogoGrp.json";
       } else if (type == "Obituary Pix") {
+        //httpURL = base_url + "/json/obituary-logo-groups";
         httpURL = "./lib/dump/obitLogoGrp.json";
       } else {
+        //httpURL = base_url + "/json/advertiser-logo-groups";
         httpURL = "./lib/dump/advLogoGrp.json";
       }
       return $http.get(httpURL);
@@ -371,6 +417,8 @@ app.factory("DataFactory", [
         httpURL = base_url + "/display-artworks/" + filter;
       } else if (frm == 'importer') {
         httpURL = base_url + "/importer-artworks/" + filter;
+      } else if (frm == 'radio') {
+        httpURL = base_url + "/radio-artworks/" + filter;
       }
 
       return $http.get(httpURL);

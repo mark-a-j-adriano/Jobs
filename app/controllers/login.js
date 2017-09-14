@@ -132,20 +132,7 @@ app.controller('LoginCtrl', function ($auth, $state, $window, $stateParams, toas
                 console.log('userInfor : ' + JSON.stringify(userInfor));
                 StorageFactory.setSessionData(userInfor, null);
                 if (_.isNil(ret_URI) || ret_URI == '' || ret_URI.includes("login")) {
-                    var accessLVL = parseInt(userInfor.role);
-                    if (accessLVL >= 30) {
-                        //Sales Team Lead /SALES
-                        $state.go('sales');
-                    } else if (accessLVL >= 20) {
-                        //CopyWriter   
-                        $state.go('copywriter');
-                    } else if (accessLVL >= 10) {
-                        //Designer1  /Designer2 /Backup    
-                        $state.go('designer');
-                    } else {
-                        // Coordinator / System Administrator
-                        $state.go('coordinator');
-                    }
+                    DataFactory.gotoDashBoard(userInfor.role);
                 } else {
                     //console.log('Redirecting to URL instance...');
                     window.location = ret_URI;
@@ -179,11 +166,11 @@ app.controller('LoginCtrl', function ($auth, $state, $window, $stateParams, toas
     };
 
     if ($auth.isAuthenticated()) {
-        if (_.isNil(cookieActive)) {        
+        if (_.isNil(cookieActive)) {
         } else {
             var poi = StorageFactory.getSessionData(false);
             console.log("[LoginCtrl] - poi :", poi);
-            if (_.isNil(poi)) {               
+            if (_.isNil(poi)) {
                 console.log("[LoginCtrl] - getToken :", $auth.getToken());
                 console.log("[LoginCtrl] - getPayload :", $auth.getPayload());
             } else {
@@ -251,7 +238,7 @@ app.controller('NavCtrl', function ($auth, $state, $scope, $uibModal, toastr, St
     vm.isAuthenticated = function () {
         if ($auth.isAuthenticated()) {
             var userData = StorageFactory.getSessionData(false);
-            if(_.isNil(userData)){} else {            
+            if (_.isNil(userData)) { } else {
                 if (_.isNil(userData.name)) { } else {
                     vm.fullName = userData.name
                     var accessLVL = parseInt(userData.role);

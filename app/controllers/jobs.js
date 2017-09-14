@@ -97,19 +97,6 @@ app.controller("creativeCTRL", function (
     );
   };
 
-  vm.cleanArray = function (tmpArray) {
-    var newArray = [];
-    if (_.isNil(tmpArray)) {
-    } else {
-      for (i = 0, len = tmpArray.length; i < len; i++) {
-        if (_.isNil(tmpArray[i]) || _.isEmpty(tmpArray[i])) {
-        } else {
-          newArray.push(tmpArray[i]);
-        }
-      }
-    }
-    return newArray;
-  };
 
   vm.animationsEnabled = true;
   var job_id = parseInt($stateParams.orderID);
@@ -464,7 +451,7 @@ app.controller("creativeCTRL", function (
       ) {
         vm.job.materials = [];
       } else {
-        vm.job.materials = vm.cleanArray(vm.job.materials);
+        vm.job.materials = DataFactory.cleanArray(vm.job.materials);
       }
 
       if (
@@ -474,7 +461,7 @@ app.controller("creativeCTRL", function (
       ) {
         vm.job.creative_briefs = [];
       } else {
-        vm.job.creative_briefs = vm.cleanArray(vm.job.creative_briefs);
+        vm.job.creative_briefs = DataFactory.cleanArray(vm.job.creative_briefs);
       }
 
       var tmpJob = angular.copy(vm.job);
@@ -628,24 +615,10 @@ app.controller("creativeCTRL", function (
     vm.currentUser.userAction = "Edit";
   };
   vm.gotoDash = function (flag) {
-    var newLoc = "login";
-    var accessLVL = parseInt(vm.currentUser.role);
-    if (accessLVL >= 30) {
-      //Sales Team Lead /SALES
-      newLoc = "sales";
-    } else if (accessLVL >= 20) {
-      //CopyWriter
-      newLoc = "copywriter";
-    } else if (accessLVL >= 10) {
-      //Designer1  /Designer2 /Backup
-      newLoc = "designer";
-    } else {
-      // Coordinator / System Administrator
-      newLoc = "coordinator";
-    }
+
     if (flag) {
       //console.log("[gotoDash] - Filter failure");
-      $state.go(newLoc);
+      DataFactory.gotoDashBoard(vm.currentUser.role);
     } else {
       //console.log("[gotoDash] - userAction : " + vm.currentUser.userAction);
       if (vm.currentUser.userAction == "Create" || vm.currentUser.userAction == "Edit") {
@@ -675,7 +648,7 @@ app.controller("creativeCTRL", function (
           .result.then(
           function (submitVar) {
             //console.log("submitted value inside parent controller", submitVar);
-            if (submitVar) $state.go(newLoc);
+            if (submitVar) DataFactory.gotoDashBoard(vm.currentUser.role);
           },
           function (res) {
             //console.log("cancel gotoDash", res);
@@ -683,7 +656,7 @@ app.controller("creativeCTRL", function (
           );
       } else {
         //console.log("[gotoDash] - Filter failure");
-        $state.go(newLoc);
+        DataFactory.gotoDashBoard(vm.currentUser.role);
       }
     }
 
@@ -814,11 +787,11 @@ app.controller("creativeCTRL", function (
             }
 
             if (type == "creative_briefs") {
-              vm.job.creative_briefs.visible = vm.cleanArray(vm.job.creative_briefs);
+              vm.job.creative_briefs.visible = DataFactory.cleanArray(vm.job.creative_briefs);
               vm.spinners.creative = false;
               vm.spinners.creative.progress = 0;
             } else {
-              vm.job.materials = vm.cleanArray(vm.job.materials);
+              vm.job.materials = DataFactory.cleanArray(vm.job.materials);
               vm.spinners.materials.visible = false;
               vm.spinners.materials.progress = 0;
             }
@@ -852,11 +825,11 @@ app.controller("creativeCTRL", function (
     if (type == 'creative_briefs') {
       //vm.job.creative_briefs
       vm.job.creative_briefs[ndex] = null;
-      vm.job.creative_briefs = vm.cleanArray(vm.job.creative_briefs);
+      vm.job.creative_briefs = DataFactory.cleanArray(vm.job.creative_briefs);
     } else {
       //vm.job.materials
       vm.job.materials[ndex] = null;
-      vm.job.materials = vm.cleanArray(vm.job.materials);
+      vm.job.materials = DataFactory.cleanArray(vm.job.materials);
     }
   };
 
@@ -918,7 +891,7 @@ app.controller("creativeCTRL", function (
     if (_.isNil(vm.job.materials)) {
     } else {
       if (vm.artwork.preview)
-        vm.MaterialDsp = vm.cleanArray(angular.copy(vm.job.materials));
+        vm.MaterialDsp = DataFactory.cleanArray(angular.copy(vm.job.materials));
     }
   };
 
@@ -945,7 +918,7 @@ app.controller("creativeCTRL", function (
           };
           return tmp;
         },
-        members: function (df) {
+        members: function (DataFactory) {
           return DataFactory.getSalesTeam();
         }
       }
@@ -980,7 +953,7 @@ app.controller("creativeCTRL", function (
           };
           return tmp;
         },
-        members: function (df) {
+        members: function (DataFactory) {
           return DataFactory.getMembers(tmpData);
         }
       }
@@ -1020,6 +993,7 @@ app.controller("creativeCTRL", function (
       vm.getRequestor(vm.currentUser.id);
     }
   }
+
 
   if ($auth.isAuthenticated()) {
     if (_.isNil(currentUser)) {

@@ -39,44 +39,8 @@ app.controller('displayCTRL', function ($state, $auth, $uibModal, $stateParams, 
         creative: { visible: false, progress: 0 },
     }
 
-    vm.cleanArray = function (tmpArray) {
-        //console.log("[cleanArray] tmpArray - ", tmpArray);
-        if (_.isNil(tmpArray)) {
-            return null;
-        } else {
-            if (_.isArray(tmpArray)) {
-                var newArray = [];
-                for (i = 0, len = tmpArray.length; i < len; i++) {
-                    if (_.isNil(tmpArray[i]) || _.isEmpty(tmpArray[i])) {
-                    } else if (_.isDate(tmpArray[i])) {
-                        newArray.push(moment(tmpArray[i]).format('YYYY-MM-DD'));
-                    } else {
-                        newArray.push(tmpArray[i]);
-                    }
-                }
-                return newArray;
-            } else {
-                return tmpArray.trim();
-            }
-        }
-    };
+ 
 
-    vm.gotoDash = function () {
-        var accessLVL = parseInt(currentUser.role);
-        if (accessLVL >= 30) {
-            //Sales Team Lead /SALES
-            $state.go('sales');
-        } else if (accessLVL >= 20) {
-            //CopyWriter   
-            $state.go('copywriter');
-        } else if (accessLVL >= 10) {
-            //Designer1  /Designer2 /Backup    
-            $state.go('designer');
-        } else {
-            // Coordinator / System Administrator
-            $state.go('coordinator');
-        }
-    }
 
     vm.accessControl = function () {
         var tmpFlag = '';
@@ -425,7 +389,7 @@ app.controller('displayCTRL', function ($state, $auth, $uibModal, $stateParams, 
                 vm.currentUser.canEdit = vm.accessControl();
                 vm.task.parent_id = vm.task.job_id;
                 if (vm.currentUser.canEdit == '') {
-                    vm.gotoDash();
+                    DataFactory.gotoDashBoard(vm.currentUser.role);
                 } else {
 
                     vm.task.ad_spend = parseFloat(vm.task.ad_spend);
@@ -449,19 +413,19 @@ app.controller('displayCTRL', function ($state, $auth, $uibModal, $stateParams, 
                     if (_.isNil(vm.task.materials) || _.isEmpty(vm.task.materials) || vm.task.materials == "" || vm.task.materials == "[]") {
                         vm.task.materials = [];
                     } else {
-                        vm.task.materials = vm.cleanArray(DataFactory.parseLodash(vm.task.materials));
+                        vm.task.materials = DataFactory.cleanArray(DataFactory.parseLodash(vm.task.materials));
                     }
 
                     if (_.isNil(vm.task.artwork) || _.isEmpty(vm.task.artwork) || vm.task.artwork == "" || vm.task.artwork == "[]") {
                         vm.task.artwork = [];
                     } else {
-                        vm.task.artwork = vm.cleanArray(DataFactory.parseLodash(vm.task.artwork));
+                        vm.task.artwork = DataFactory.cleanArray(DataFactory.parseLodash(vm.task.artwork));
                     }
 
                     if (_.isNil(vm.task.article) || _.isEmpty(vm.task.article) || vm.task.article == "" || vm.task.article == "[]") {
                         vm.task.article = [];
                     } else {
-                        vm.task.article = vm.cleanArray(DataFactory.parseLodash(vm.task.article));
+                        vm.task.article = DataFactory.cleanArray(DataFactory.parseLodash(vm.task.article));
                     }
 
                     if (_.isNil(vm.task.final_ad_spend) || _.isEmpty(vm.task.final_ad_spend) || final_ad_spend == '') {
@@ -568,11 +532,11 @@ app.controller('displayCTRL', function ($state, $auth, $uibModal, $stateParams, 
                     //success
                     function (submitVar) {
                         //console.log("submitted value inside parent controller", submitVar);
-                        if (submitVar) vm.gotoDash();
+                        if (submitVar) DataFactory.gotoDashBoard(vm.currentUser.role);
                     },
                     //failure
                     function (submitVar) {
-                        vm.gotoDash();
+                        DataFactory.gotoDashBoard(vm.currentUser.role);
                     },
                 )
             },
@@ -661,25 +625,25 @@ app.controller('displayCTRL', function ($state, $auth, $uibModal, $stateParams, 
             if (_.isNil(vm.productList) || _.isEmpty(vm.productList)) {
                 vm.task.productList = [];
             } else {
-                vm.task.productList = vm.cleanArray(vm.productList);
+                vm.task.productList = DataFactory.cleanArray(vm.productList);
             }
 
             if (_.isNil(vm.task.materials) || _.isEmpty(vm.task.materials)) {
                 vm.task.materials = [];
             } else {
-                vm.task.materials = vm.cleanArray(vm.task.materials);
+                vm.task.materials = DataFactory.cleanArray(vm.task.materials);
             }
 
             if (_.isNil(vm.task.artwork) || _.isEmpty(vm.task.artwork)) {
                 vm.task.artwork = [];
             } else {
-                vm.task.artwork = vm.cleanArray(vm.task.artwork);
+                vm.task.artwork = DataFactory.cleanArray(vm.task.artwork);
             }
 
             if (_.isNil(vm.task.article) || _.isEmpty(vm.task.article)) {
                 vm.task.article = [];
             } else {
-                vm.task.article = vm.cleanArray(vm.task.article);
+                vm.task.article = DataFactory.cleanArray(vm.task.article);
             }
 
             var tmpTsk = angular.copy(vm.task);
@@ -723,11 +687,11 @@ app.controller('displayCTRL', function ($state, $auth, $uibModal, $stateParams, 
                         //success
                         function (submitVar) {
                             //console.log("submitted value inside parent controller", submitVar);
-                            if (submitVar) vm.gotoDash();
+                            if (submitVar) DataFactory.gotoDashBoard(vm.currentUser.role);
                         },
                         //failure
                         function (submitVar) {
-                            vm.gotoDash();
+                            DataFactory.gotoDashBoard(vm.currentUser.role);
                         },
                     )
                 },
@@ -1041,7 +1005,7 @@ app.controller('displayCTRL', function ($state, $auth, $uibModal, $stateParams, 
                         };
                         return tmp;
                     },
-                    members: function (df) {
+                    members: function (DataFactory) {
                         return DataFactory.getMembers(tmpData);
                     }
                 }
@@ -1330,15 +1294,15 @@ app.controller('displayCTRL', function ($state, $auth, $uibModal, $stateParams, 
         if (type == 'artwork') {
             vm.spinners.artwork.visible = false;
             vm.spinners.artwork.progress = 0;
-            vm.task.artwork = vm.cleanArray(vm.task.artwork);
+            vm.task.artwork = DataFactory.cleanArray(vm.task.artwork);
         } else if (type == 'article') {
             vm.spinners.article.visible = false;
             vm.spinners.article.progress = 0;
-            vm.task.article = vm.cleanArray(vm.task.article);
+            vm.task.article = DataFactory.cleanArray(vm.task.article);
         } else {
             vm.spinners.materials.visible = false;
             vm.spinners.materials.progress = 0;
-            vm.task.materials = vm.cleanArray(vm.task.materials);
+            vm.task.materials = DataFactory.cleanArray(vm.task.materials);
         }
     };
     vm.clearFiles = function (file) {
@@ -1365,15 +1329,15 @@ app.controller('displayCTRL', function ($state, $auth, $uibModal, $stateParams, 
         if (type == 'article') {
             //vm.task.article
             vm.task.article[ndex] = null;
-            vm.task.article = vm.cleanArray(vm.task.article);
+            vm.task.article = DataFactory.cleanArray(vm.task.article);
         } else if (type == 'artwork') {
             //vm.task.artwork
             vm.task.artwork[ndex] = null;
-            vm.task.artwork = vm.cleanArray(vm.task.artwork);
+            vm.task.artwork = DataFactory.cleanArray(vm.task.artwork);
         } else {
             //vm.task.materials
             vm.task.materials[ndex] = null;
-            vm.task.materials = vm.cleanArray(vm.task.materials);
+            vm.task.materials = DataFactory.cleanArray(vm.task.materials);
         }
     };
     vm.approveArtwork = function () {
@@ -1461,7 +1425,7 @@ app.controller('displayCTRL', function ($state, $auth, $uibModal, $stateParams, 
         ////console.log('[deleteRow] - index : ' + ndex);
         ////console.log('[deleteRow] - product list : ' + JSON.stringify(vm.productList));
         vm.productList[ndex] = null;
-        vm.productList = vm.cleanArray(vm.productList);
+        vm.productList = DataFactory.cleanArray(vm.productList);
         //_.findLastIndex(array, {}) 
     };
 
@@ -1514,7 +1478,7 @@ app.controller('displayCTRL', function ($state, $auth, $uibModal, $stateParams, 
     ////console.log('$routeParams.orderId : ' + $routeParams.orderId);
     //console.log('END - displayCTRL');
 });
-app.controller('displayModalCtrl', function ($timeout, $uibModalInstance, focus, toastr, parentData, product, Upload, sf) {
+app.controller('displayModalCtrl', function ($timeout, $uibModalInstance, focus, toastr, parentData, product, Upload, StorageFactory) {
     var vm = this;
     vm.pubOptions = parentData.items;
     vm.filter = parentData.filters;
@@ -1535,11 +1499,11 @@ app.controller('displayModalCtrl', function ($timeout, $uibModalInstance, focus,
         "Revised Artwork 6 - CTR", "Revised Artwork 7 – CTR", "Redo Artwork", "Viaual Mock-up", "Visual is ready for collection",
         "Writer [Chinese]", "Writer [English]", "Writer [Malay]"];
 
-    if ((_.isNil(product)) || (_.isNil(product))) {
+    if (_.isNil(product)) {
         vm.formTitle = "Add Product";
         vm.product = {
-            pubID: parentData.initial.product_code,
-            pubName: parentData.initial.product_name,
+            pubID: parentData.initialValue.product_code,
+            pubName: parentData.initialValue.product_name,
             pubDate: null,
             etNum: '',
             etNum_tbd: false,
@@ -1557,14 +1521,14 @@ app.controller('displayModalCtrl', function ($timeout, $uibModalInstance, focus,
         vm.product.etDate = _.isNil(vm.product.etDate) ? null : new Date(vm.product.etDate);
     }
 
-    if ((_.isNil(vm.pubOptions.title)) || (_.isNil(vm.pubOptions.title))) {
+    if (_.isNil(vm.pubOptions.title)) {
     } else {
         vm.formTitle = vm.pubOptions.title;
         vm.final_ad_spend = vm.pubOptions.ad_spend;
         vm.final_cost = vm.pubOptions.cost;
     }
 
-    if ((_.isNil(parentData.isList)) || (_.isNil(parentData.isList))) {
+    if (_.isNil(parentData.isList)) {
         vm.isList = false;
     } else {
         vm.isList = parentData.isList;

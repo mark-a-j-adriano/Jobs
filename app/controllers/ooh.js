@@ -96,28 +96,7 @@ app.controller('oohCTRL', function ($state, $auth, $uibModal, $stateParams, $tim
     vm.openCalendar = function (e, picker) {
         vm[picker].open = true;
     };
-
-    vm.cleanArray = function (tmpArray) {
-        //console.log("[cleanArray] tmpArray - ", tmpArray);
-        if (_.isNil(tmpArray)) {
-            return null;
-        } else {
-            if (_.isArray(tmpArray)) {
-                var newArray = [];
-                for (i = 0, len = tmpArray.length; i < len; i++) {
-                    if (_.isNil(tmpArray[i]) || _.isEmpty(tmpArray[i])) {
-                    } else if (_.isDate(tmpArray[i])) {
-                        newArray.push(moment(tmpArray[i]).format('YYYY-MM-DD'));
-                    } else {
-                        newArray.push(tmpArray[i]);
-                    }
-                }
-                return newArray;
-            } else {
-                return tmpArray.trim();
-            }
-        }
-    };
+   
 
     vm.artwork = {
         preview: false,
@@ -125,22 +104,7 @@ app.controller('oohCTRL', function ($state, $auth, $uibModal, $stateParams, $tim
         interval: 5000,
         active: 0,
     };
-    vm.gotoDash = function () {
-        var accessLVL = parseInt(currentUser.role);
-        if (accessLVL >= 30) {
-            //Sales Team Lead /SALES
-            $state.go('sales');
-        } else if (accessLVL >= 20) {
-            //CopyWriter   
-            $state.go('copywriter');
-        } else if (accessLVL >= 10) {
-            //Designer1  /Designer2 /Backup    
-            $state.go('designer');
-        } else {
-            // Coordinator / System Administrator
-            $state.go('coordinator');
-        }
-    };
+   
     vm.accessControl = function () {
         var tmpFlag = '';
         var tmpStatus = vm.task.status;
@@ -427,7 +391,7 @@ app.controller('oohCTRL', function ($state, $auth, $uibModal, $stateParams, $tim
                 vm.currentUser.canEdit = vm.accessControl();
                 vm.task.parent_id = vm.task.job_id;
                 if (vm.currentUser.canEdit == '') {
-                    vm.gotoDash();
+                    DataFactory.gotoDashBoard(vm.currentUser.role);
                 } else {
                     vm.task.ad_spend = parseFloat(vm.task.ad_spend);
                     vm.task.production_cost = parseFloat(vm.task.production_cost);
@@ -455,32 +419,32 @@ app.controller('oohCTRL', function ($state, $auth, $uibModal, $stateParams, $tim
                     if (_.isNil(vm.task.materials) || _.isEmpty(vm.task.materials)) {
                         vm.task.materials = [];
                     } else {
-                        vm.task.materials = vm.cleanArray(DataFactory.parseLodash(vm.task.materials));
+                        vm.task.materials = DataFactory.cleanArray(DataFactory.parseLodash(vm.task.materials));
                     }
 
                     if (_.isNil(vm.task.static_list) || _.isEmpty(vm.task.static_list)) {
                         vm.task.static_list = [];
                     } else {
-                        vm.task.static_list = vm.cleanArray(DataFactory.parseLodash(vm.task.static_list));
+                        vm.task.static_list = DataFactory.cleanArray(DataFactory.parseLodash(vm.task.static_list));
                     }
 
                     if (_.isNil(vm.task.digital_list) || _.isEmpty(vm.task.digital_list)) {
                         vm.task.digital_list = [];
                     } else {
-                        vm.task.digital_list = vm.cleanArray(DataFactory.parseLodash(vm.task.digital_list));
+                        vm.task.digital_list = DataFactory.cleanArray(DataFactory.parseLodash(vm.task.digital_list));
                     }
 
 
                     if (_.isNil(vm.task.artwork) || _.isEmpty(vm.task.artwork) || vm.task.artwork == "" || vm.task.artwork == "[]") {
                         vm.task.artwork = [];
                     } else {
-                        vm.task.artwork = vm.cleanArray(DataFactory.parseLodash(vm.task.artwork));
+                        vm.task.artwork = DataFactory.cleanArray(DataFactory.parseLodash(vm.task.artwork));
                     }
 
                     if (_.isNil(vm.task.article) || _.isEmpty(vm.task.article) || vm.task.article == "" || vm.task.article == "[]") {
                         vm.task.article = [];
                     } else {
-                        vm.task.article = vm.cleanArray(DataFactory.parseLodash(vm.task.article));
+                        vm.task.article = DataFactory.cleanArray(DataFactory.parseLodash(vm.task.article));
                     }
 
                     vm.defineType(false);
@@ -548,11 +512,11 @@ app.controller('oohCTRL', function ($state, $auth, $uibModal, $stateParams, $tim
                     //success
                     function (submitVar) {
                         //console.log("submitted value inside parent controller", submitVar);
-                        if (submitVar) vm.gotoDash();
+                        if (submitVar) DataFactory.gotoDashBoard(vm.currentUser.role);
                     },
                     //failure
                     function (submitVar) {
-                        vm.gotoDash();
+                        DataFactory.gotoDashBoard(vm.currentUser.role);
                     },
                 )
             },
@@ -647,31 +611,31 @@ app.controller('oohCTRL', function ($state, $auth, $uibModal, $stateParams, $tim
             if (_.isNil(vm.task.materials)  || _.isEmpty(vm.task.materials)) {
                 vm.task.materials = [];
             } else {
-                vm.task.materials = vm.cleanArray(vm.task.materials);
+                vm.task.materials = DataFactory.cleanArray(vm.task.materials);
             }
 
             if (_.isNil(vm.task.artwork)  || _.isEmpty(vm.task.artwork)) {
                 vm.task.artwork = [];
             } else {
-                vm.task.artwork = vm.cleanArray(vm.task.artwork);
+                vm.task.artwork = DataFactory.cleanArray(vm.task.artwork);
             }
 
             if (_.isNil(vm.task.article)  || _.isEmpty(vm.task.article)) {
                 vm.task.article = [];
             } else {
-                vm.task.article = vm.cleanArray(vm.task.article);
+                vm.task.article = DataFactory.cleanArray(vm.task.article);
             }
 
             if (_.isNil(vm.task.static_list)  || _.isEmpty(vm.task.static_list)) {
                 vm.task.static_list = [];
             } else {
-                vm.task.static_list = vm.cleanArray(vm.task.static_list);
+                vm.task.static_list = DataFactory.cleanArray(vm.task.static_list);
             }
 
             if (_.isNil(vm.task.digital_list)  || _.isEmpty(vm.task.digital_list)) {
                 vm.task.digital_list = [];
             } else {
-                vm.task.digital_list = vm.cleanArray(vm.task.digital_list);
+                vm.task.digital_list = DataFactory.cleanArray(vm.task.digital_list);
             }
 
             var tmpTsk = angular.copy(vm.task);
@@ -715,11 +679,11 @@ app.controller('oohCTRL', function ($state, $auth, $uibModal, $stateParams, $tim
                         //success
                         function (submitVar) {
                             //console.log("submitted value inside parent controller", submitVar);
-                            if (submitVar) vm.gotoDash();
+                            if (submitVar) DataFactory.gotoDashBoard(vm.currentUser.role);
                         },
                         //failure
                         function (submitVar) {
-                            vm.gotoDash();
+                            DataFactory.gotoDashBoard(vm.currentUser.role);
                         },
                     )
                 },
@@ -1030,7 +994,7 @@ app.controller('oohCTRL', function ($state, $auth, $uibModal, $stateParams, $tim
                         };
                         return tmp;
                     },
-                    members: function (df) {
+                    members: function (DataFactory) {
                         return DataFactory.getMembers(tmpData);
                     }
                 }
@@ -1325,15 +1289,15 @@ app.controller('oohCTRL', function ($state, $auth, $uibModal, $stateParams, $tim
         });
 
         if (type == 'artwork') {
-            vm.task.artwork = vm.cleanArray(vm.task.artwork);
+            vm.task.artwork = DataFactory.cleanArray(vm.task.artwork);
             vm.spinners.artwork.visible = false;
             vm.spinners.artwork.progress = 0;
         } else if (type == 'article') {
-            vm.task.article = vm.cleanArray(vm.task.article);
+            vm.task.article = DataFactory.cleanArray(vm.task.article);
             vm.spinners.article.visible = false;
             vm.spinners.article.progress = 0;
         } else {
-            vm.task.materials = vm.cleanArray(vm.task.materials);
+            vm.task.materials = DataFactory.cleanArray(vm.task.materials);
             vm.spinners.materials.visible = false;
             vm.spinners.materials.progress = 0;
         }
@@ -1363,15 +1327,15 @@ app.controller('oohCTRL', function ($state, $auth, $uibModal, $stateParams, $tim
         if (type == 'article') {
             //vm.task.article
             vm.task.article[ndex] = null;
-            vm.task.article = vm.cleanArray(vm.task.article);
+            vm.task.article = DataFactory.cleanArray(vm.task.article);
         } else if (type == 'artwork') {
             //vm.task.artwork
             vm.task.artwork[ndex] = null;
-            vm.task.artwork = vm.cleanArray(vm.task.artwork);
+            vm.task.artwork = DataFactory.cleanArray(vm.task.artwork);
         } else {
             //vm.task.materials
             vm.task.materials[ndex] = null;
-            vm.task.materials = vm.cleanArray(vm.task.materials);
+            vm.task.materials = DataFactory.cleanArray(vm.task.materials);
         }
     };
 
@@ -1401,10 +1365,10 @@ app.controller('oohCTRL', function ($state, $auth, $uibModal, $stateParams, $tim
         ////console.log('[deleteRow] - product list : ' + JSON.stringify(vm.productList));
         if (typ == 'Static') {
             vm.task.static_list[ndex] = null;
-            vm.task.static_list = vm.cleanArray(vm.task.static_list);
+            vm.task.static_list = DataFactory.cleanArray(vm.task.static_list);
         } else {
             vm.task.digital_list[ndex] = null;
-            vm.task.digital_list = vm.cleanArray(vm.task.digital_list);
+            vm.task.digital_list = DataFactory.cleanArray(vm.task.digital_list);
         }
     }
 

@@ -189,13 +189,15 @@
                                         <label class="col-xs-4" style="padding:0px;">Language</label>
                                         <div class="col-xs-4" style="padding:0px;">
                                             <div class="checkbox" style="margin-top: 0px;">
-                                                <input type="radio" id="language" ng-model="ctrl.task.language" value="English" ng-disabled="ctrl.ACL.section2" />
+                                                <input type="radio" id="language" ng-model="ctrl.task.language" value="English" ng-change="ctrl.filterLogoGrp();" ng-disabled="ctrl.ACL.section2"
+                                                />
                                                 <label style="cursor:default;padding-left: 5px;">English</label>
                                             </div>
                                         </div>
                                         <div class="col-xs-4" style="padding:0px;">
                                             <div class="checkbox" style="margin-top: 0px;">
-                                                <input type="radio" id="language" ng-model="ctrl.task.language" value="Chinese" ng-disabled="ctrl.ACL.section2" />
+                                                <input type="radio" id="language" ng-model="ctrl.task.language" value="Chinese" ng-change="ctrl.filterLogoGrp();" ng-disabled="ctrl.ACL.section2"
+                                                />
                                                 <label style="cursor:default;padding-left: 5px;">Chinese</label>
                                             </div>
                                         </div>
@@ -266,13 +268,15 @@
                                         <label class="col-xs-4" style="padding:0px;">Colour</label>
                                         <div class="col-xs-4" style="padding:0px;">
                                             <div class="checkbox" style="margin-top: 0px;">
-                                                <input type="radio" id="colour" ng-model="ctrl.task.colour" value="B&W" ng-disabled="ctrl.ACL.section2" />
+                                                <input type="radio" id="colour" ng-model="ctrl.task.colour" value="B&W" ng-change="ctrl.filterLogoGrp();" ng-disabled="ctrl.ACL.section2"
+                                                />
                                                 <label style="cursor:default;padding-left: 5px;">B&amp;W</label>
                                             </div>
                                         </div>
                                         <div class="col-xs-4" style="padding:0px;">
                                             <div class="checkbox" style="margin-top: 0px;">
-                                                <input type="radio" id="colour" ng-model="ctrl.task.colour" value="Colour" ng-disabled="ctrl.ACL.section2" />
+                                                <input type="radio" id="colour" ng-model="ctrl.task.colour" value="Colour" ng-change="ctrl.filterLogoGrp();" ng-disabled="ctrl.ACL.section2"
+                                                />
                                                 <label style="cursor:default;padding-left: 5px;">Colour</label>
                                             </div>
                                         </div>
@@ -286,15 +290,15 @@
                                         <label class="col-xs-4" style="padding:0px;">Charge Option </label>
                                         <div class="col-xs-4" style="padding:0px;">
                                             <div class="checkbox" style="margin-top: 0px;">
-                                                <input type="radio" id="charge_option" ng-model="ctrl.task.charge_option" value="Chargeable" ng-disabled="ctrl.ACL.section2 || ctrl.task.colour==null"
-                                                />
+                                                <input type="radio" id="charge_option" ng-model="ctrl.task.charge_option" value="Chargeable" ng-change="ctrl.filterLogoGrp();"
+                                                    ng-disabled="ctrl.ACL.section2 || ctrl.task.colour==null" />
                                                 <label style="cursor:default;padding-left: 5px;">Chargeable</label>
                                             </div>
                                         </div>
                                         <div class="col-xs-4" style="padding:0px;">
                                             <div class="checkbox" style="margin-top: 0px;">
-                                                <input type="radio" id="charge_option" ng-model="ctrl.task.charge_option" value="Non-Chargeable" ng-disabled="ctrl.ACL.section2  || ctrl.task.colour==null"
-                                                />
+                                                <input type="radio" id="charge_option" ng-model="ctrl.task.charge_option" value="Non-Chargeable" ng-change="ctrl.filterLogoGrp();"
+                                                    ng-disabled="ctrl.ACL.section2  || ctrl.task.colour==null" />
                                                 <label style="cursor:default;padding-left: 5px;">Non-Chargeable</label>
                                             </div>
                                         </div>
@@ -319,8 +323,9 @@
                                 <label class="col-2 col-sm-2">Logo Group</label>
                                 <div class="col-10 col-sm-10">
                                     <select name="logo_group" id="logo_group" class="form-control input-sm select-att" ng-model="ctrl.task.logo_group" ng-disabled="ctrl.ACL.section2 || ctrl.task.company==null">
-                                        <option ng-repeat="option in ctrl.LogoGrps  | filter:{Pub: ctrl.task.language, Charge: ctrl.task.charge_option, Colour: ctrl.task.colour}"
-                                        value="{{option.LogoGrp}}">{{option.LogoGrp}}</option>
+                                        <!--<option ng-repeat="option in ctrl.LogoGrps  | filter:{Pub: ctrl.task.language, Charge: ctrl.task.charge_option, Colour: ctrl.task.colour}"
+                                        value="{{option.LogoGrp}}">{{option.LogoGrp}}</option>-->
+                                        <option ng-repeat="option in ctrl.LogoGrps"  value="{{option.LogoGrp}}">{{option.LogoGrp}}</option>
                                     </select>
                                 </div>
                             </div>
@@ -335,13 +340,15 @@
                                         <label class="col-xs-4" style="padding:0px;">Colour</label>
                                         <div class="col-xs-4" style="padding:0px;">
                                             <div class="checkbox" style="margin-top: 0px;">
-                                                <input type="radio" id="colour" ng-model="ctrl.task.colour" value="B&W" ng-disabled="ctrl.ACL.section2" />
+                                                <input type="radio" id="colour" ng-model="ctrl.task.colour" value="B&W" ng-change="ctrl.filterLogoGrp();" ng-disabled="ctrl.ACL.section2"
+                                                />
                                                 <label style="cursor:default;padding-left: 5px;">B&amp;W</label>
                                             </div>
                                         </div>
                                         <div class="col-xs-4" style="padding:0px;">
                                             <div class="checkbox" style="margin-top: 0px;">
-                                                <input type="radio" id="colour" ng-model="ctrl.task.colour" value="Colour" ng-disabled="ctrl.ACL.section2" />
+                                                <input type="radio" id="colour" ng-model="ctrl.task.colour" value="Colour" ng-change="ctrl.filterLogoGrp();" ng-disabled="ctrl.ACL.section2"
+                                                />
                                                 <label style="cursor:default;padding-left: 5px;">Colour</label>
                                             </div>
                                         </div>
@@ -355,14 +362,14 @@
                                         <label class="col-xs-4" style="padding:0px;">Charges Option </label>
                                         <div class="col-xs-4" style="padding:0px;">
                                             <div class="checkbox" style="margin-top: 0px;">
-                                                <input type="radio" id="charge_option" ng-model="ctrl.task.charge_option" value="Chargeable" ng-disabled="ctrl.ACL.section2  || ctrl.task.colour==null"
+                                                <input type="radio" id="charge_option" ng-model="ctrl.task.charge_option" value="Chargeable" ng-change="ctrl.filterLogoGrp();" ng-disabled="ctrl.ACL.section2  || ctrl.task.colour==null"
                                                 />
                                                 <label style="cursor:default;padding-left: 5px;">Chargeable</label>
                                             </div>
                                         </div>
                                         <div class="col-xs-4" style="padding:0px;">
                                             <div class="checkbox" style="margin-top: 0px;">
-                                                <input type="radio" id="charge_option" ng-model="ctrl.task.charge_option" value="Non-Chargeable" ng-disabled="ctrl.ACL.section2   || ctrl.task.colour==null"
+                                                <input type="radio" id="charge_option" ng-model="ctrl.task.charge_option" value="Non-Chargeable" ng-change="ctrl.filterLogoGrp();" ng-disabled="ctrl.ACL.section2   || ctrl.task.colour==null"
                                                 />
                                                 <label style="cursor:default;padding-left: 5px;">Non-Chargeable</label>
                                             </div>
@@ -376,7 +383,8 @@
                                 <label class="col-2 col-sm-2">Logo Group</label>
                                 <div class="col-10 col-sm-10">
                                     <select name="logo_group" id="logo_group" class="form-control input-sm select-att" ng-model="ctrl.task.logo_group" ng-disabled="ctrl.ACL.section2 || ctrl.task.charge_option==null">
-                                        <option ng-repeat="option in ctrl.LogoGrps | filter:{Pub: ctrl.task.language, Charges: ctrl.task.charge_option, Colour: ctrl.task.colour}" value="{{option.LogoGrp}}">{{option.LogoGrp}}</option>
+                                        <!--<option ng-repeat="option in ctrl.LogoGrps | filter:{Pub: ctrl.task.language, Charges: ctrl.task.charge_option, Colour: ctrl.task.colour}" value="{{option.LogoGrp}}">{{option.LogoGrp}}</option>-->
+                                        <option ng-repeat="option in ctrl.LogoGrps" value="{{option.LogoGrp}}">{{option.LogoGrp}}</option>
                                     </select>
                                 </div>
                             </div>
@@ -868,7 +876,8 @@
                 <button type="button" class="btn btn-default" ng-click="ctrl.gotoMain();"><i class="fa fa-remove"></i> Close</button>
             </div>
             <div class="col-md-1">
-                <button type="button" class="btn btn-default btn-sm" ng-click="ctrl.developerLog=!ctrl.developerLog" ng-show="ctrl.isLogEnabled" style="border: 1px solid #a1a1a1;border-radius: 25px;background:white;">
+                <button type="button" class="btn btn-default btn-sm" ng-click="ctrl.developerLog=!ctrl.developerLog" ng-show="ctrl.isLogEnabled"
+                    style="border: 1px solid #a1a1a1;border-radius: 25px;background:white;">
                      <i class="fa fa-question-circle"></i>
                 </button>
             </div>
@@ -988,7 +997,8 @@
                          <i class="fa fa-comments-o"></i> Chat
                     </button>
 
-                    <button type="button" class="btn btn-default btn-sm" ng-click="ctrl.developerLog=!ctrl.developerLog" ng-show="ctrl.isLogEnabled" style="border: 1px solid #a1a1a1;border-radius: 25px;background:white;margin-left: 10px;margin-right: 10px;">
+                    <button type="button" class="btn btn-default btn-sm" ng-click="ctrl.developerLog=!ctrl.developerLog" ng-show="ctrl.isLogEnabled"
+                        style="border: 1px solid #a1a1a1;border-radius: 25px;background:white;margin-left: 10px;margin-right: 10px;">
                         <i class="fa fa-question-circle"></i>
                     </button>
                 </div>
