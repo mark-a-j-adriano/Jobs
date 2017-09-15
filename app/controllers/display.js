@@ -39,7 +39,7 @@ app.controller('displayCTRL', function ($state, $auth, $uibModal, $stateParams, 
         creative: { visible: false, progress: 0 },
     }
 
- 
+
 
 
     vm.accessControl = function () {
@@ -1429,14 +1429,12 @@ app.controller('displayCTRL', function ($state, $auth, $uibModal, $stateParams, 
         //_.findLastIndex(array, {}) 
     };
 
-    vm.printThis = function (printSectionId) {
-        var innerContents = document.getElementById(printSectionId).innerHTML;
-        var popupWinindow = window.open('', '_blank', 'width=600,height=700,scrollbars=no,menubar=no,toolbar=no,location=no,status=no,titlebar=no');
-        popupWinindow.document.open();
-        popupWinindow.document.write("<html><head><link rel='stylesheet' href='css/print.css' type='text/css'/></head>" +
-            "<body onload='window.print();'>" + innerContents + "</body></html>");
-        popupWinindow.document.close();
-
+    vm.printThis = function () {
+        DataFactory.printThis();
+    };
+    
+    vm.saveThis = function () {
+        DataFactory.saveThis();
     };
 
     vm.firstAction = function () {

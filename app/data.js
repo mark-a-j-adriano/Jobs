@@ -141,6 +141,32 @@ app.factory("DataFactory", [
       }
     }
 
+    obj.printThis = function () {
+      html2canvas($("#printSectionId"), {
+        onrendered: function (canvas) {
+          var myImage = canvas.toDataURL("image/jpeg").replace("image/jpeg", "image/octet-stream");
+          var innerContents = "<img id='Image' src=" + myImage + " style='width:100%;'></img>";
+          var popupWinindow = window.open('', '_blank', 'width=600,height=700,scrollbars=no,menubar=no,toolbar=no,location=no,status=no,titlebar=no');
+          popupWinindow.document.open();
+          popupWinindow.document.write("<html><head></head>" +
+            "<body onload='window.print();'>" + innerContents + "</body></html>");
+          popupWinindow.document.close();
+        }
+      });
+    }
+
+    obj.saveThis = function (printSectionId) {
+      html2canvas($("#printSectionId"), {
+        onrendered: function (canvas) {
+          var a = document.createElement('a');
+          // toDataURL defaults to png, so we need to request a jpeg, then convert for file download.
+          a.href = canvas.toDataURL("image/jpeg").replace("image/jpeg", "image/octet-stream");
+          a.download = 'somefilename.jpg';
+          a.click();
+        }
+      });
+    }
+
     obj.cleanArray = function (tmpArray) {
       //console.log("[cleanArray] tmpArray - ", tmpArray);
       if (_.isNil(tmpArray)) {
@@ -334,14 +360,14 @@ app.factory("DataFactory", [
     obj.getImporterLogoGrp = function (type) {
       var httpURL = "";
       if (type == "Company Logo") {
-        //httpURL = base_url + "/json/company-logo-groups";
-        httpURL = "./lib/dump/coLogoGrp.json";
+        httpURL = base_url + "/json/company-logo-groups";
+        //httpURL = "./lib/dump/coLogoGrp.json";
       } else if (type == "Obituary Pix") {
-        //httpURL = base_url + "/json/obituary-logo-groups";
-        httpURL = "./lib/dump/obitLogoGrp.json";
+        httpURL = base_url + "/json/obituary-logo-groups";
+        //httpURL = "./lib/dump/obitLogoGrp.json";
       } else {
-        //httpURL = base_url + "/json/advertiser-logo-groups";
-        httpURL = "./lib/dump/advLogoGrp.json";
+        httpURL = base_url + "/json/advertiser-logo-groups";
+        //httpURL = "./lib/dump/advLogoGrp.json";
       }
       return $http.get(httpURL);
     }

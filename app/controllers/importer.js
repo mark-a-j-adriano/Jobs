@@ -597,18 +597,29 @@ app.controller('importerCTRL', function ($sce, $state, $auth, $uibModal, $stateP
         }
     };
     vm.filterLogoGrp = function () {
-        console.log('[filterLogoGrp]  Start', vm.task.category);
+        //console.log('[filterLogoGrp]  Start', vm.task.category);        
         if (!_.isNil(vm.task.category)) {
             if (vm.task.category == 'Obituary Pix') {
             } else {
                 vm.LogoGrps = angular.copy(vm.LogoGrpOptions);
-                console.log('[filterLogoGrp] 0', vm.LogoGrps);
+                //console.log('[filterLogoGrp] 0', vm.LogoGrps);
                 if (!(_.isNil(vm.task.charge_option) && _.isNil(vm.task.colour) && _.isNil(vm.task.language))) {
                     vm.LogoGrps = _.filter(vm.LogoGrps, function (o) {
-                        return _.includes(o.Charges, vm.task.charge_option) && _.includes(o.Colour, vm.task.colour) && _.includes(o.Pub, vm.task.language);
+                        /*
+                        var tmp1 = _.isEmpty(o.charge) ? "" : JSON.stringify(o.charge).toLowerCase().trim();
+                        var tmp2 = _.isEmpty(o.colour) ? "" : JSON.stringify(o.colour).toLowerCase().trim();
+                        var tmp3 = _.isEmpty(o.pub) ? "" : JSON.stringify(o.pub).toLowerCase().trim();
+
+                        var key1 = _.isNil(vm.task.charge_option) ? "": vm.task.charge_option.toLowerCase().trim();
+                        var key2 = _.isNil(vm.task.colour) ? "": vm.task.colour.toLowerCase().trim();
+                        var key3 = _.isNil(vm.task.language) ? "": vm.task.language.toLowerCase().trim();
+
+                        return (tmp1.includes(key1) && tmp2.includes(key2) && tmp3.includes(key3));
+                        */
+                        return _.includes(o.charge, vm.task.charge_option) && _.includes(o.colour, vm.task.colour) && _.includes(o.pub, vm.task.language);
                     });
                 }
-                console.log('[filterLogoGrp]  vm.LogoGrps', vm.LogoGrps)
+                //console.log('[filterLogoGrp]  vm.LogoGrps', vm.LogoGrps)
             }
         }
     }

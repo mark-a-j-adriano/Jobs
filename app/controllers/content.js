@@ -478,10 +478,10 @@ app.controller('contentCTRL', function ($state, $auth, $uibModal, $stateParams, 
         var col = _.filter(vm.artwork_Types, { 'job_class': vm.task.artwork_type });
         vm.pubTypes = _.uniq(_.flattenDeep(_.map(col, 'category')));
         console.log('vm.pubTypes : ' + JSON.stringify(vm.pubTypes), vm.pubTypes);
+
         var uniq = _.uniqBy(vm.pubTypes, 'name');
         uniq = _.map(uniq, _.partialRight(_.pick, ['name', 'code']));
         console.log('uniq : ' + JSON.stringify(uniq), uniq);
-
 
         if (uniq.length == 1) {
             vm.task.pub_type = uniq[0].code;

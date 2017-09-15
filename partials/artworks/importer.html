@@ -325,7 +325,7 @@
                                     <select name="logo_group" id="logo_group" class="form-control input-sm select-att" ng-model="ctrl.task.logo_group" ng-disabled="ctrl.ACL.section2 || ctrl.task.company==null">
                                         <!--<option ng-repeat="option in ctrl.LogoGrps  | filter:{Pub: ctrl.task.language, Charge: ctrl.task.charge_option, Colour: ctrl.task.colour}"
                                         value="{{option.LogoGrp}}">{{option.LogoGrp}}</option>-->
-                                        <option ng-repeat="option in ctrl.LogoGrps"  value="{{option.LogoGrp}}">{{option.LogoGrp}}</option>
+                                        <option ng-repeat="option in ctrl.LogoGrps"  value="{{option.logo_grp}}">{{option.logo_grp}}</option>
                                     </select>
                                 </div>
                             </div>
@@ -384,7 +384,7 @@
                                 <div class="col-10 col-sm-10">
                                     <select name="logo_group" id="logo_group" class="form-control input-sm select-att" ng-model="ctrl.task.logo_group" ng-disabled="ctrl.ACL.section2 || ctrl.task.charge_option==null">
                                         <!--<option ng-repeat="option in ctrl.LogoGrps | filter:{Pub: ctrl.task.language, Charges: ctrl.task.charge_option, Colour: ctrl.task.colour}" value="{{option.LogoGrp}}">{{option.LogoGrp}}</option>-->
-                                        <option ng-repeat="option in ctrl.LogoGrps" value="{{option.LogoGrp}}">{{option.LogoGrp}}</option>
+                                        <option ng-repeat="option in ctrl.LogoGrps" value="{{option.logo_grp}}">{{option.logo_grp}}</option>
                                     </select>
                                 </div>
                             </div>
