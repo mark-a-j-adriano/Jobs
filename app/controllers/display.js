@@ -1502,8 +1502,8 @@ app.controller('displayModalCtrl', function ($timeout, $uibModalInstance, focus,
     if (_.isNil(product)) {
         vm.formTitle = "Add Product";
         vm.product = {
-            pubID: parentData.initialValue.product_code,
-            pubName: parentData.initialValue.product_name,
+            pubID: parentData.initial.product_code,
+            pubName: parentData.initial.product_name,
             pubDate: null,
             etNum: '',
             etNum_tbd: false,

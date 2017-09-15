@@ -320,17 +320,20 @@ app.controller("creativeCTRL", function (
           if (_.isNil(vm.taskList[i].status)) {
           } else {
             if (!_.isArray(vm.taskList[i].status)) vm.taskList[i].status = vm.taskList[i].status.split(",");
+            if(_.isEmpty(vm.taskList[i].status)) vm.taskList[i].status = "";
           }
 
           if (_.isNil(vm.taskList[i].designer)) {
           } else {
             if (!_.isArray(vm.taskList[i].designer)) vm.taskList[i].designer = vm.taskList[i].designer.split(",");
+            if(_.isEmpty(vm.taskList[i].designer)) vm.taskList[i].designer = "";
           }
 
 
           if (_.isNil(vm.taskList[i].writer)) {
           } else {
             if (!_.isArray(vm.taskList[i].writer)) vm.taskList[i].writer = vm.taskList[i].writer.split(",");
+            if(_.isEmpty(vm.taskList[i].writer)) vm.taskList[i].writer = "";
           }
         }
       },
