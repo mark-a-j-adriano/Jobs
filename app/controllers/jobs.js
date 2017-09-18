@@ -18,6 +18,7 @@ app.controller("creativeCTRL", function (
 
   var vm = this;
   vm.developerLog = false;
+  vm.hdrStyle = { 'background-size': 'cover' };
   vm.isLogEnabled = StorageFactory.getAppSettings('LOG') ? true : false;
   vm.filesForDeletion = [];
   vm.isValid = true;
@@ -117,7 +118,7 @@ app.controller("creativeCTRL", function (
     var current_user = currentUser.id.toLowerCase().trim();
     var submitted_by = vm.job.submitted_by_username.toLowerCase().trim();
     var cc_response = "";
-    if (_.isNil(vm.job.cc_response_username)) {
+    if (_.isNil(vm.job.cc_response_username) || vm.job.cc_response_username == '') {
     } else {
       var cc_response = vm.job.cc_response_username.toLowerCase().trim();
     }
@@ -266,7 +267,7 @@ app.controller("creativeCTRL", function (
         vm.job.ad_spend = $filter('currency')(parseFloat(vm.job.ad_spend), "");
         vm.job.production_cost = $filter('currency')(parseFloat(vm.job.production_cost), "");
 
-        if (_.isNil(vm.job.cc_response)) {
+        if (_.isNil(vm.job.cc_response) || vm.job.cc_response == '') {
           vm.cc_response_dsp = [];
         } else {
           vm.cc_response_dsp = vm.job.cc_response.split(",");
@@ -287,8 +288,8 @@ app.controller("creativeCTRL", function (
     DataFactory.getTaskList({ job_id: jobID }).then(
       //success
       function (response) {
-        console.log("[getTaskList] - response.data : " + JSON.stringify(response.data));
-        console.log("[getTaskList] - response.status : " + JSON.stringify(response.status));
+        // console.log("[getTaskList] - response.data : " + JSON.stringify(response.data));
+        // console.log("[getTaskList] - response.status : " + JSON.stringify(response.status));
         vm.taskList = response.data;
         for (i = 0; i < vm.taskList.length; i++) {
 
@@ -320,20 +321,20 @@ app.controller("creativeCTRL", function (
           if (_.isNil(vm.taskList[i].status)) {
           } else {
             if (!_.isArray(vm.taskList[i].status)) vm.taskList[i].status = vm.taskList[i].status.split(",");
-            if(_.isEmpty(vm.taskList[i].status)) vm.taskList[i].status = "";
+            if (_.isEmpty(vm.taskList[i].status)) vm.taskList[i].status = "";
           }
 
           if (_.isNil(vm.taskList[i].designer)) {
           } else {
             if (!_.isArray(vm.taskList[i].designer)) vm.taskList[i].designer = vm.taskList[i].designer.split(",");
-            if(_.isEmpty(vm.taskList[i].designer)) vm.taskList[i].designer = "";
+            if (_.isEmpty(vm.taskList[i].designer)) vm.taskList[i].designer = "";
           }
 
 
           if (_.isNil(vm.taskList[i].writer)) {
           } else {
             if (!_.isArray(vm.taskList[i].writer)) vm.taskList[i].writer = vm.taskList[i].writer.split(",");
-            if(_.isEmpty(vm.taskList[i].writer)) vm.taskList[i].writer = "";
+            if (_.isEmpty(vm.taskList[i].writer)) vm.taskList[i].writer = "";
           }
         }
       },
@@ -510,10 +511,6 @@ app.controller("creativeCTRL", function (
         {
           id: "extension",
           name: "Extension"
-        },
-        {
-          id: "mobile_no",
-          name: "Mobile Number"
         },
         {
           id: "team",
@@ -973,6 +970,19 @@ app.controller("creativeCTRL", function (
       }
     })
 
+  };
+
+
+  vm.printThis = function () {
+    vm.hdrStyle = {};
+    DataFactory.printThis();
+    $timeout(function () { vm.hdrStyle = { 'background-size': 'cover' }; }, 5000);
+  };
+
+  vm.saveThis = function () {
+    vm.hdrStyle = {};
+    DataFactory.saveThis(vm.task.task_no);
+    $timeout(function () { vm.hdrStyle = { 'background-size': 'cover' }; }, 5000);
   };
 
   vm.copyTask = function () {

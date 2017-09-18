@@ -18,6 +18,7 @@ app.controller('digitalCTRL', function ($state, $auth, $uibModal, $stateParams, 
     vm.qProductsError = false;
     vm.filesForDeletion = [];
     vm.readOnly = true;
+    vm.hdrStyle = { 'background-size': 'cover' };
     vm.docHistory = [];
     vm.docMessages = [];
     vm.cc_response_dsp = [];
@@ -38,8 +39,6 @@ app.controller('digitalCTRL', function ($state, $auth, $uibModal, $stateParams, 
         creative: { visible: false, progress: 0 },
     }
 
-  
-   
 
     vm.accessControl = function () {
         var tmpFlag = '';
@@ -75,7 +74,7 @@ app.controller('digitalCTRL', function ($state, $auth, $uibModal, $stateParams, 
             var cc_response = vm.task.cc_response_username.toLowerCase().trim();
         }
         var designer = '';
-        if (_.isNil(vm.task.creative_team_username) ) {
+        if (_.isNil(vm.task.creative_team_username)) {
         } else {
             designer = vm.task.creative_team_username.toLowerCase().trim();
         }
@@ -309,11 +308,13 @@ app.controller('digitalCTRL', function ($state, $auth, $uibModal, $stateParams, 
                 vm.task.production_cost = 0;
                 vm.task.parent_id = $stateParams.orderID;
                 vm.task.logged_in_user = currentUser.id;
-                if (_.isNil(vm.task.cc_response) ) {
+
+                if (_.isNil(vm.task.cc_response) || vm.task.cc_response == '') {
                     vm.cc_response_dsp = [];
                 } else {
                     vm.cc_response_dsp = _.uniq(vm.task.cc_response.split(","));
                 }
+
                 var res = $stateParams.taskID.split('~');
                 vm.task.job_no = res[0];
                 //console.log('res : ' + JSON.stringify(res[0]));
@@ -339,7 +340,7 @@ app.controller('digitalCTRL', function ($state, $auth, $uibModal, $stateParams, 
                         //console.log('[getTmpID - getMember] - response.data : ' + JSON.stringify(response.data));
                         //console.log('[getTmpID - getMember] - response.status : ' + JSON.stringify(response.status));
 
-                        if (_.isNil(response.data)   || _.isEmpty(response.data)) {
+                        if (_.isNil(response.data) || _.isEmpty(response.data)) {
                         } else {
                             vm.task.project_mgr = response.data[0].name;
                             vm.task.project_mgr_username = response.data[0].username;
@@ -407,28 +408,30 @@ app.controller('digitalCTRL', function ($state, $auth, $uibModal, $stateParams, 
                     vm.display.production_cost = $filter('currency')(vm.task.production_cost, "");
 
 
-                    if (_.isNil(vm.task.due_date)  ) {
+                    if (_.isNil(vm.task.due_date)) {
                     } else {
                         vm.task.due_date = new Date(vm.task.due_date);
                     }
 
-                    if (_.isNil(vm.task.launch_date)  ) {
+                    if (_.isNil(vm.task.launch_date)) {
                     } else {
                         vm.task.launch_date = new Date(vm.task.launch_date);
                     }
 
                     vm.creativeTypes = DataFactory.parseLodash(vm.task.creative_types);
-                    if (_.isNil(vm.task.cc_response)   || _.isEmpty(vm.task.cc_response)) {
+
+                    if (_.isNil(vm.task.cc_response) || vm.task.cc_response == '') {
                         vm.cc_response_dsp = [];
                     } else {
                         vm.cc_response_dsp = _.uniq(vm.task.cc_response.split(","));
                     }
-                    if (_.isNil(vm.task.materials)   || _.isEmpty(vm.task.materials)) {
+
+                    if (_.isNil(vm.task.materials) || _.isEmpty(vm.task.materials)) {
                     } else {
                         vm.task.materials = DataFactory.cleanArray(DataFactory.parseLodash(vm.task.materials));
                     }
 
-                    if (_.isNil(vm.task.artwork)   || _.isEmpty(vm.task.materials)) {
+                    if (_.isNil(vm.task.artwork) || _.isEmpty(vm.task.materials)) {
                     } else {
                         vm.task.artwork = DataFactory.cleanArray(DataFactory.parseLodash(vm.task.artwork));
                     }
@@ -543,7 +546,7 @@ app.controller('digitalCTRL', function ($state, $auth, $uibModal, $stateParams, 
         }
         var prevStats = vm.task.status;
         if (vm.isValid) {
-            if (_.isNil(newStatus)   || newStatus == '') {
+            if (_.isNil(newStatus) || newStatus == '') {
                 //console.log('[submitTask] - 1');
                 if (vm.task.creative_team) {
                     if (_.isNil(vm.task.creative_team) || vm.task.creative_team == '') {
@@ -611,19 +614,19 @@ app.controller('digitalCTRL', function ($state, $auth, $uibModal, $stateParams, 
                 vm.task._method = "put";
             }
 
-            if (_.isNil(vm.creativeTypes)   || _.isEmpty(vm.creativeTypes)) {
+            if (_.isNil(vm.creativeTypes) || _.isEmpty(vm.creativeTypes)) {
                 vm.task.creative_types = [];
             } else {
                 vm.task.creative_types = DataFactory.cleanArray(vm.creativeTypes);
             }
 
-            if (_.isNil(vm.task.materials)   || _.isEmpty(vm.task.materials)) {
+            if (_.isNil(vm.task.materials) || _.isEmpty(vm.task.materials)) {
                 vm.task.materials = [];
             } else {
                 vm.task.materials = DataFactory.cleanArray(vm.task.materials);
             }
 
-            if (_.isNil(vm.task.artwork)   || _.isEmpty(vm.task.artwork)) {
+            if (_.isNil(vm.task.artwork) || _.isEmpty(vm.task.artwork)) {
                 vm.task.artwork = [];
             } else {
                 vm.task.artwork = DataFactory.cleanArray(vm.task.artwork);
@@ -697,12 +700,12 @@ app.controller('digitalCTRL', function ($state, $auth, $uibModal, $stateParams, 
     vm.gotoParent = function () {
         //$state.go('creative', { orderID: $stateParams.orderID });
         var tmpID = null;
-        if (_.isNil(vm.task.parent_id)  ) { } else { tmpID = vm.task.parent_id };
+        if (_.isNil(vm.task.parent_id)) { } else { tmpID = vm.task.parent_id };
         if (_.isNil(tmpID)) {
-            if (_.isNil(vm.task.job_id)  ) { } else { tmpID = vm.task.job_id };
+            if (_.isNil(vm.task.job_id)) { } else { tmpID = vm.task.job_id };
         }
         if (_.isNil(tmpID)) {
-            if (_.isNil($stateParams.orderID)  ) { } else { tmpID = $stateParams.orderID };
+            if (_.isNil($stateParams.orderID)) { } else { tmpID = $stateParams.orderID };
         }
 
         $state.go('creative', { orderID: tmpID });
@@ -727,7 +730,7 @@ app.controller('digitalCTRL', function ($state, $auth, $uibModal, $stateParams, 
                     if (vm.creativeTypes[i].isSelected) ctr = ctr + 1;
                 }
                 if (ctr < 1) {
-                    if (_.isNil(vm.task.other_type)   || vm.task.other_type.trim() == '') vm.errorMsg.push({ id: 'other_type', msg: 'Please specify the Creative Type for this task.' });
+                    if (_.isNil(vm.task.other_type) || vm.task.other_type.trim() == '') vm.errorMsg.push({ id: 'other_type', msg: 'Please specify the Creative Type for this task.' });
                 }
             }
 
@@ -909,7 +912,7 @@ app.controller('digitalCTRL', function ($state, $auth, $uibModal, $stateParams, 
             user_role: vm.currentUser.canEdit,
         };
 
-        if (_.isNil(chatFlag)   || _.isEmpty(chatFlag) || chatFlag == '') {
+        if (_.isNil(chatFlag) || _.isEmpty(chatFlag) || chatFlag == '') {
             chatFlag = "";
             tmp.frm_title = "Conversation";
         } else if (chatFlag.includes('cancel')) {
@@ -989,14 +992,14 @@ app.controller('digitalCTRL', function ($state, $auth, $uibModal, $stateParams, 
         if (type == 'artwork') {
             vm.spinners.artwork.visible = true;
             vm.spinners.artwork.progress = 0;
-            if (_.isNil(vm.task.artwork)  ) vm.task.artwork = [];
-            if (_.isNil(vm.task.final_size)  ) vm.task.final_size = vm.task.pub_size;
+            if (_.isNil(vm.task.artwork)) vm.task.artwork = [];
+            if (_.isNil(vm.task.final_size)) vm.task.final_size = vm.task.pub_size;
         } else if (type == 'article') {
-            if (_.isNil(vm.task.article)  ) vm.task.article = [];
+            if (_.isNil(vm.task.article)) vm.task.article = [];
         } else {
             vm.spinners.materials.visible = true;
             vm.spinners.materials.progress = 0;
-            if (_.isNil(vm.task.materials)  ) vm.task.materials = [];
+            if (_.isNil(vm.task.materials)) vm.task.materials = [];
         }
 
         angular.forEach(files, function (file) {
@@ -1178,7 +1181,7 @@ app.controller('digitalCTRL', function ($state, $auth, $uibModal, $stateParams, 
 
     vm.revertArtwork = function () {
         //console.log('[DIGITAL] - revertArtwork');
-        if (_.isNil(vm.task.sales_comment)   || vm.task.sales_comment == '') {
+        if (_.isNil(vm.task.sales_comment) || vm.task.sales_comment == '') {
             toastr.error("Please add your reason for returning Artwork", { closeButton: true });
         } else {
             vm.submitTask('For Revision');
@@ -1196,6 +1199,18 @@ app.controller('digitalCTRL', function ($state, $auth, $uibModal, $stateParams, 
         //_.findLastIndex(array, {}) 
 
     }
+
+    vm.printThis = function () {
+        vm.hdrStyle = {};
+        DataFactory.printThis();
+        $timeout(function () { vm.hdrStyle = { 'background-size': 'cover' }; }, 5000);
+    };
+
+    vm.saveThis = function () {
+        vm.hdrStyle = {};
+        DataFactory.saveThis(vm.task.task_no);
+        $timeout(function () { vm.hdrStyle = { 'background-size': 'cover' }; }, 5000);
+    };
 
     vm.firstAction = function () {
         if ($stateParams.orderTitle == "enableLogging") vm.isLogEnabled = true;
@@ -1217,7 +1232,7 @@ app.controller('digitalCTRL', function ($state, $auth, $uibModal, $stateParams, 
     }
 
     if ($auth.isAuthenticated()) {
-        if (_.isNil(currentUser)  ) {
+        if (_.isNil(currentUser)) {
             vm.currentUser = null;
             StorageFactory.setURI(window.location.href);
             $state.go('login');

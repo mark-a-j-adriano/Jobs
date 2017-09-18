@@ -29,7 +29,6 @@ http://jobscre-app01-dev.sphnet.com.sg/
 http://creativelab-dev.sph.com.sg
 http://creativelab-dev.sphnet.com.sg
 
-
 '------------------------------------------------------------------------------------------------------------------------------------
 
 'Copy prd folder to UAT server : prd directory

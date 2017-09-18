@@ -188,8 +188,8 @@
                                         </button>                                        
                                     </div>
                                     <div ng-hide="c.dataType=='button'">
-                                        <div ng-hide="c.sortable">{{c.text}}</div>
-                                        <div ng-show="c.sortable">
+                                        <div ng-hide="c.sortable" ng-style="c.style">{{c.text}}</div>
+                                        <div ng-show="c.sortable" ng-style="c.style">
                                             <a ng-click="ctrl.orderByField=c.predicate; ctrl.reverseSort = !ctrl.reverseSort" style="cursor:pointer">
                                             {{c.text}}
                                             <span ng-show="ctrl.orderByField == c.predicate">
@@ -230,8 +230,9 @@
                                 <!--<td>{{c.job_no}}</td>-->
                                 <td>{{c.title}}</td>
                                 <td>{{c.booking_type}}</td>
-                                <td style="text-align: right;padding-right:100px;">{{c.ad_spend | currency : "$" : 2}}</td>
-                                <td style="text-align: right;padding-right:100px;">{{c.production_cost | currency : "$" : 2}}</td>
+                                <td>{{c.submitted_by}}</td>
+                                <td style="text-align: right;padding-right:120px;">{{c.ad_spend | currency : "$" : 2}}</td>
+                                <td style="text-align: right;padding-right:120px;">{{c.production_cost | currency : "$" : 2}}</td>
                                 <td>{{c.status}}</td>
                                 <td style="width:100px">
                                     <div class="btn-group">

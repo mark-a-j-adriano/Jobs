@@ -5,14 +5,16 @@
         "display": "DisplayLAB",
         "toolTip": "DisplayLAB",
         "pixPath": "lib/img/jobs/JobReqBanner Icons - Display.jpg",
+        "hdrPath": "",
         "isActive": false
     },
     {
         "priority": 2,
         "taskName": "ooh",
         "display": "OutdoorLab",
-        "toolTip": "OutdoorLab",
+        "toolTip": "OutdoorLab",        
         "pixPath": "lib/img/jobs/JobReqBanner Icons - OOH.jpg",
+        "hdrPath": "",
         "isActive": false
     },
     {
@@ -21,6 +23,7 @@
         "display": "DigitalLAB",
         "toolTip": "DigitalLAB",
         "pixPath": "lib/img/jobs/JobReqBanner Icons - Digital.jpg",
+        "hdrPath": "",
         "isActive": false
     },
     {
@@ -29,6 +32,7 @@
         "display": "Radio",
         "toolTip": "Radio",
         "pixPath": "lib/img/jobs/JobReqBanner Icons - Radio.jpg",
+        "hdrPath": "",
         "isActive": false
     },
     {
@@ -37,6 +41,7 @@
         "display": "StudioLAB",
         "toolTip": "StudioLAB",
         "pixPath": "lib/img/jobs/JobReqBanner Icons - Studio.jpg",
+        "hdrPath": "",
         "isActive": false
     },
     {
@@ -45,6 +50,7 @@
         "display": "ContentLAB",
         "toolTip": "ContentLAB",
         "pixPath": "lib/img/jobs/JobReqBanner Icons - Content.jpg",
+        "hdrPath": "",
         "isActive": false
     },
     {
@@ -53,6 +59,7 @@
         "display": "ClassifiedLAB",
         "toolTip": "ClassifiedLAB",
         "pixPath": "lib/img/jobs/JobReqBanner Icons - Classified.jpg",
+        "hdrPath": "",
         "isActive": false
     },
     {
@@ -61,6 +68,7 @@
         "display": "Graphic Importer",
         "toolTip": "Graphic Importer",
         "pixPath": "lib/img/jobs/JobReqBanner Icons - Importer.jpg",
+        "hdrPath": "",
         "isActive": false
     }
 ]

@@ -16,14 +16,14 @@
     }
 </style>
 
-<div class="container" style="padding:0">
+<div id="printSectionId" class="container" style="padding:0">
     <!-- Header content -->
     <section class="content" style="background-color:white;min-height: 0px;padding:0">
         <div class="row">
             <div class="col-md-12">
                 <!--<img style="width:100%" src="./lib/img/jobs/JobReqBanner - Display.jpg">-->
                 <div class="box" style="margin-bottom:0px;">
-                    <div class="box-header" style="background-image:url('./lib/img/jobs/JobReqBanner - Studio.jpg');background-size: cover;min-height:65px;">
+                    <div class="box-header" style="background-image:url('./lib/img/jobs/JobReqBanner - Studio.jpg');min-height:65px;" ng-style="ctrl.hdrStyle">
                         <!--<img style="width:100%" src="./lib/img/jobs/JobReqBanner - Display.jpg">-->
                         <div class="box-tools pull-right">
                             <button type="button" class="btn btn-box-tool" title="Close Task" style="background-color:rgba(255,255,255,0.5);" ng-click="ctrl.gotoMain();">
@@ -853,30 +853,41 @@
     <!-- READ ONLY TASK -->
     <section class="content" style="background-color:white;padding-top:0" ng-show="ctrl.readOnly">
         <div class="row">
-            <div class="col-md-5">
+            <div class="col-md-1">
                 <button type="button" class="btn btn-default" ng-click="ctrl.gotoMain();"><i class="fa fa-remove"></i> Close</button>
             </div>
-            <div class="col-md-1">
-                <button type="button" class="btn btn-default btn-sm" ng-click="ctrl.developerLog=!ctrl.developerLog" ng-show="ctrl.isLogEnabled"
-                    style="border: 1px solid #a1a1a1;border-radius: 25px;background:white;">
-                     <i class="fa fa-question-circle"></i>
-                </button>
-            </div>
-            <div class="col-md-1">
-                <button type="button" class="btn btn-primary bg-teal-gradient" ng-click="ctrl.revertTask();" ng-hide="(ctrl.task.status=='new' || ctrl.task.status=='Completed' || ctrl.task.status=='Cancelled')">
-                         <i class="fa fa-comments-o"></i> Chat
-                </button>
-            </div>
-            <div class="col-md-5">
+            <div class="col-md-11">
+
                 <div class="pull-right">
                     <button type="button" class="btn btn-danger" ng-click="ctrl.revertTask('cancel');" ng-show="(ctrl.currentUser.role>=25 || ctrl.currentUser.role<10) && ctrl.currentUser.canEdit!='' &&
-                    !(ctrl.task.status == 0  || ctrl.statusNum > 5)">
+                    !(ctrl.statusNum == 0  || ctrl.statusNum > 5)">
                       <i class="fa fa-hand-stop-o"></i> &nbsp; Cancel Artwork Request
                     </button>
+
                     <button type="button" class="btn btn-primary" ng-click="ctrl.editTask();" ng-hide="ctrl.currentUser.canEdit=='' || ctrl.currentUser.canEdit=='reader'">
                         <i class="fa fa-pencil-square-o"></i> &nbsp; Edit
                     </button>
                 </div>
+
+                <div class="pull-right" style="margin-right:25px;" ng-hide="(ctrl.statusNum == 0 || ctrl.statusNum == 3)">
+                    <button type="button" class="btn btn-default btn-sm" ng-click="ctrl.developerLog=!ctrl.developerLog" ng-show="ctrl.isLogEnabled"
+                        style="border: 1px solid #a1a1a1;border-radius: 25px;background:white;">
+                     <i class="fa fa-question-circle"></i>
+                    </button>
+
+                    <button type="button" class="btn btn-primary bg-teal-gradient" ng-click="ctrl.revertTask();" style="border: 1px solid #a1a1a1;border-radius: 25px;margin-left: 10px;margin-right: 10px;">
+                         <i class="fa fa-comments-o"></i> Chat
+                    </button>
+
+                    <button type="button" class="btn btn-info" ng-click="ctrl.printThis('printSectionId');" style="border: 1px solid #a1a1a1;border-radius: 25px;background:maroon;">
+                         <i class="fa fa-print"></i> Print
+                    </button>
+
+                    <button type="button" class="btn btn-warning" ng-click="ctrl.saveThis('printSectionId');" style="border: 1px solid #a1a1a1;border-radius: 25px;background:indigo;">
+                         <i class="fa fa-cloud-download"></i> Cast
+                    </button>
+                </div>
+
             </div>
         </div>
     </section>
@@ -884,10 +895,10 @@
     <!-- EDIT TASK -->
     <section class="content" style="background-color:white;padding-top:0" ng-hide="ctrl.readOnly">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-1">
                 <button type="button" class="btn btn-default" ng-click="ctrl.gotoMain();"><i class="fa fa-remove"></i> Close</button>
             </div>
-            <div class="col-md-10">
+            <div class="col-md-11">
                 <div class="pull-right" ng-show="ctrl.currentUser.canEdit == 'sales'">
                     <button type="button" class="btn btn-warning" ng-click="ctrl.submitTask('Draft');" ng-show="(ctrl.statusNum==0) && ctrl.task.status!='Request Re-Submission'">
                         <i class="fa fa-save"></i> &nbsp; Save As Draft
@@ -918,8 +929,7 @@
                 </div>
 
                 <div class="pull-right" ng-show="ctrl.currentUser.canEdit == 'designer'">
-                    <button type="button" class="btn btn-warning" ng-click="ctrl.revertTask('revert');" ng-show="ctrl.task.status=='In Progress'"
-                        style="margin-left: 10px;">
+                    <button type="button" class="btn btn-warning" ng-click="ctrl.revertTask('revert');" ng-show="ctrl.statusNum == 2" style="margin-left: 10px;">
                         <i class="fa fa-reply"></i> &nbsp; Request Re-submission
                     </button>
 
@@ -947,7 +957,7 @@
                         style="margin-left: 10px;">
                         <i class="fa fa-close"></i> &nbsp; Cancel Artwork
                     </button>
-                    <button type="button" class="btn btn-warning" ng-click="ctrl.revertTask('revert');" ng-show="ctrl.task.status=='Pending Assignment'"
+                    <button type="button" class="btn btn-warning" ng-click="ctrl.revertTask('revert');" ng-show="(ctrl.statusNum > 0  && ctrl.statusNum < 5)"
                         style="margin-left: 10px;">
                         <i class="fa fa-reply"></i> &nbsp; Request Re-submission
                     </button>
@@ -976,15 +986,22 @@
                     </button>
                 </div>
 
-                <div class="pull-right">
-                    <button type="button" class="btn btn-primary bg-teal-gradient pull-right" ng-click="ctrl.revertTask();" ng-hide="(ctrl.task.status=='new' || ctrl.task.status=='Completed' || ctrl.task.status=='Cancelled')"
-                        style="margin-left: 10px;margin-right: 10px;">
+                <div class="pull-right" style="margin-right:25px;" ng-hide="(ctrl.statusNum == 0 || ctrl.statusNum == 3)">
+                    <button type="button" class="btn btn-default btn-sm" ng-click="ctrl.developerLog=!ctrl.developerLog" ng-show="ctrl.isLogEnabled"
+                        style="border: 1px solid #a1a1a1;border-radius: 25px;background:white;">
+                     <i class="fa fa-question-circle"></i>
+                    </button>
+
+                    <button type="button" class="btn btn-primary bg-teal-gradient" ng-click="ctrl.revertTask();" style="border: 1px solid #a1a1a1;border-radius: 25px;margin-left: 10px;margin-right: 10px;">
                          <i class="fa fa-comments-o"></i> Chat
                     </button>
 
-                    <button type="button" class="btn btn-default btn-sm" ng-click="ctrl.developerLog=!ctrl.developerLog" ng-show="ctrl.isLogEnabled"
-                        style="border: 1px solid #a1a1a1;border-radius: 25px;background:white;margin-left: 10px;margin-right: 10px;">
-                        <i class="fa fa-question-circle"></i>
+                    <button type="button" class="btn btn-info" ng-click="ctrl.printThis('printSectionId');" style="border: 1px solid #a1a1a1;border-radius: 25px;background:maroon;">
+                         <i class="fa fa-print"></i> Print
+                    </button>
+
+                    <button type="button" class="btn btn-warning" ng-click="ctrl.saveThis('printSectionId');" style="border: 1px solid #a1a1a1;border-radius: 25px;background:indigo;">
+                         <i class="fa fa-cloud-download"></i> Cast
                     </button>
                 </div>
             </div>

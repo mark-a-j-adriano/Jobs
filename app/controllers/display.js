@@ -21,6 +21,7 @@ app.controller('displayCTRL', function ($state, $auth, $uibModal, $stateParams, 
     vm.docHistory = [];
     vm.docMessages = [];
     vm.cc_response_dsp = [];
+    vm.hdrStyle = { 'background-size': 'cover' };
     vm.ACL = {
         //TRUE MEANS YOU ARE RESTRICTED
         section0: true,     //Permanent Read ONLY fields
@@ -281,11 +282,13 @@ app.controller('displayCTRL', function ($state, $auth, $uibModal, $stateParams, 
                 vm.task.production_cost = 0;
                 vm.task.parent_id = $stateParams.orderID;
                 vm.task.logged_in_user = currentUser.id;
-                if (_.isNil(vm.task.cc_response)) {
+
+                if (_.isNil(vm.task.cc_response) || vm.task.cc_response == '') {
                     vm.cc_response_dsp = [];
                 } else {
                     vm.cc_response_dsp = _.uniq(vm.task.cc_response.split(","));
                 }
+
                 var res = $stateParams.taskID.split('~');
                 vm.task.job_no = res[0];
                 //console.log('res : ' + JSON.stringify(res[0]));
@@ -405,11 +408,13 @@ app.controller('displayCTRL', function ($state, $auth, $uibModal, $stateParams, 
                     if (vm.task.urgent > 0) vm.task.urgent = true;
                     //vm.task.size_option = ['Other'];
                     vm.productList = DataFactory.parseLodash(vm.task.products);
-                    if (_.isNil(vm.task.cc_response) || _.isEmpty(vm.task.cc_response)) {
+
+                    if (_.isNil(vm.task.cc_response) || vm.task.cc_response == '') {
                         vm.cc_response_dsp = [];
                     } else {
                         vm.cc_response_dsp = _.uniq(vm.task.cc_response.split(","));
                     }
+
                     if (_.isNil(vm.task.materials) || _.isEmpty(vm.task.materials) || vm.task.materials == "" || vm.task.materials == "[]") {
                         vm.task.materials = [];
                     } else {
@@ -1430,11 +1435,15 @@ app.controller('displayCTRL', function ($state, $auth, $uibModal, $stateParams, 
     };
 
     vm.printThis = function () {
+        vm.hdrStyle = {};
         DataFactory.printThis();
+        $timeout(function () { vm.hdrStyle = { 'background-size': 'cover' }; }, 5000);
     };
-    
+
     vm.saveThis = function () {
-        DataFactory.saveThis();
+        vm.hdrStyle = {};
+        DataFactory.saveThis(vm.task.task_no);
+        $timeout(function () { vm.hdrStyle = { 'background-size': 'cover' }; }, 5000);
     };
 
     vm.firstAction = function () {

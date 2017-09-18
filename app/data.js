@@ -9,7 +9,7 @@ app.factory("StorageFactory", ["$localStorage", "$auth", "$window", "$state", fu
     } else if (wht == 'ENV') {
       ret = "UAT";
     } else if (wht == 'LOG') {
-      ret = false;
+      ret = true;
     } else if (wht == 'UPL') {
       ret = "./service/upload.php";
     }
@@ -142,6 +142,7 @@ app.factory("DataFactory", [
     }
 
     obj.printThis = function () {
+      $("#taskHeader").css("background-size", "");
       html2canvas($("#printSectionId"), {
         onrendered: function (canvas) {
           var myImage = canvas.toDataURL("image/jpeg").replace("image/jpeg", "image/octet-stream");
@@ -153,15 +154,17 @@ app.factory("DataFactory", [
           popupWinindow.document.close();
         }
       });
+
     }
 
-    obj.saveThis = function (printSectionId) {
-      html2canvas($("#printSectionId"), {
+    obj.saveThis = function (taskID) {
+      var section = $("#printSectionId");
+      html2canvas(section, {
         onrendered: function (canvas) {
           var a = document.createElement('a');
           // toDataURL defaults to png, so we need to request a jpeg, then convert for file download.
           a.href = canvas.toDataURL("image/jpeg").replace("image/jpeg", "image/octet-stream");
-          a.download = 'somefilename.jpg';
+          a.download = taskID + '.jpg';
           a.click();
         }
       });

@@ -24,6 +24,7 @@ app.controller('classifiedCTRL', function ($sce, $state, $auth, $uibModal, $stat
     vm.trixEditor1 = false;
     vm.trixEditor2 = false;
     vm.cc_response_dsp = [];
+    vm.hdrStyle = { 'background-size': 'cover' };
     var host = StorageFactory.getAppSettings('UPL');
     var createStorageKey, host, uploadAttachment;
     var events = ['trixInitialize', 'trixChange', 'trixSelectionChange', 'trixFocus',
@@ -613,7 +614,13 @@ app.controller('classifiedCTRL', function ($sce, $state, $auth, $uibModal, $stat
                 vm.task.parent_id = $stateParams.orderID;
                 vm.task.logged_in_user = currentUser.id;
                 vm.task.in_house = "No";
-                vm.cc_response_dsp = _.uniq(vm.task.cc_response.split(","));
+
+                if (_.isNil(vm.task.cc_response) || vm.task.cc_response == '') {
+                    vm.cc_response_dsp = [];
+                } else {
+                    vm.cc_response_dsp = _.uniq(vm.task.cc_response.split(","));
+                }
+
                 var res = $stateParams.taskID.split('~');
                 vm.task.job_no = res[0];
                 //console.log('res : ' + JSON.stringify(res[0]));
@@ -734,7 +741,8 @@ app.controller('classifiedCTRL', function ($sce, $state, $auth, $uibModal, $stat
                     if (vm.task.feature > 0) vm.task.feature = true;
                     vm.task.size_option = 'Other';
                     vm.productList = DataFactory.parseLodash(vm.task.products);
-                    if (_.isNil(vm.task.cc_response)) {
+
+                    if (_.isNil(vm.task.cc_response) || vm.task.cc_response == '') {
                         vm.cc_response_dsp = [];
                     } else {
                         vm.cc_response_dsp = _.uniq(vm.task.cc_response.split(","));
@@ -1760,6 +1768,18 @@ app.controller('classifiedCTRL', function ($sce, $state, $auth, $uibModal, $stat
         //_.findLastIndex(array, {}) 
     };
 
+    vm.printThis = function () {
+        vm.hdrStyle = {};
+        DataFactory.printThis();
+        $timeout(function () { vm.hdrStyle = { 'background-size': 'cover' }; }, 5000);
+    };
+
+    vm.saveThis = function () {
+        vm.hdrStyle = {};
+        DataFactory.saveThis(vm.task.task_no);
+        $timeout(function () { vm.hdrStyle = { 'background-size': 'cover' }; }, 5000);
+    };
+
     vm.firstAction = function () {
         if ($stateParams.orderTitle == "enableLogging") vm.isLogEnabled = true;
         if ($stateParams.action == "create") {
@@ -2039,24 +2059,24 @@ app.controller('classifiedModalCtrl', function ($uibModalInstance, focus, toastr
         if (vm.product.pubID == '') errMsg.push('Publication is required');
         if (_.isNil(vm.product.pubDate)) errMsg.push('Publication date is required');
 
-        var isComplete1 = false;
-        if (vm.product.etNum == '' || _.isNil(vm.product.etNum)) {
-            isComplete1 = vm.product.etNum_tbd;
+        console.log('product', vm.product);
+        console.log('etNum_tbd', vm.product.etNum_tbd);
+        console.log('etNum', vm.product.etNum);
+        console.log('cashNum', vm.product.cashNum);
+
+        var isComplete1 = true;
+        if (_.isNil(vm.product.cashNum) || vm.product.cashNum == '') isComplete1 = false;
+
+        var isComplete2 = true;
+        if (_.isNil(vm.product.etNum) || vm.product.etNum == '') {
+            isComplete2 = vm.product.etNum_tbd;
         }
 
-        var isComplete2 = false;
-        if (vm.product.cashNum == '' || _.isNil(vm.product.cashNum)) {
-            isComplete2 = vm.product.cashNum_tbd;
-        }
-
-        /*
-        if (_.isNil(vm.product.copies)   || vm.product.copies == '') {
-            errMsg.push('Number of Copies is required');
+        if (isComplete1 || isComplete2) {
         } else {
-            if (parseInt(vm.product.copies) < 1) errMsg.push('Number of Copies is required');
+            errMsg.push('ET number or CASH is required');
         }
-        */
-        if (!(isComplete1 || isComplete2)) errMsg.push('ET number or CASH is required');
+
         if (errMsg.length > 0) {
             toastr.error(errMsg[0], { closeButton: true });
         } else {

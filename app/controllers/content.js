@@ -17,6 +17,7 @@ app.controller('contentCTRL', function ($state, $auth, $uibModal, $stateParams, 
     vm.filesForDeletion = [];
     vm.qProductsError = false;
     vm.readOnly = true;
+    vm.hdrStyle = { 'background-size': 'cover' };
     vm.docHistory = [];
     vm.docMessages = [];
     vm.cc_response_dsp = [];
@@ -30,7 +31,7 @@ app.controller('contentCTRL', function ($state, $auth, $uibModal, $stateParams, 
         section5: true,     //Preview of Completed Artwork  - Designer
         section6: true,     //Product Details      
     };
-   
+
     vm.carousel = {
         preview: false,
         noWrap: false,
@@ -43,7 +44,7 @@ app.controller('contentCTRL', function ($state, $auth, $uibModal, $stateParams, 
         interval: 5000,
         active: 0,
     };
-   
+
     vm.accessControl = function () {
         var tmpFlag = '';
         var tmpStatus = vm.task.status;
@@ -279,12 +280,14 @@ app.controller('contentCTRL', function ($state, $auth, $uibModal, $stateParams, 
                 vm.task.production_cost = 0;
                 vm.task.parent_id = $stateParams.orderID;
                 vm.task.logged_in_user = vm.currentUser.id;
-                vm.currentUser.canEdit = vm.accessControl();
-                if (_.isNil(vm.task.cc_response)) {
+                //vm.currentUser.canEdit = vm.accessControl();
+
+                if (_.isNil(vm.task.cc_response) || vm.task.cc_response == '') {
                     vm.cc_response_dsp = [];
                 } else {
                     vm.cc_response_dsp = _.uniq(vm.task.cc_response.split(","));
                 }
+
                 var res = $stateParams.taskID.split('~');
                 vm.task.job_no = res[0];
                 //console.log('res : ' + JSON.stringify(res[0]));
@@ -395,11 +398,13 @@ app.controller('contentCTRL', function ($state, $auth, $uibModal, $stateParams, 
                     if (vm.task.urgent > 0) vm.task.urgent = true;
                     vm.task.size_option = 'Other';
                     vm.productList = DataFactory.parseLodash(vm.task.products);
-                    if (_.isNil(vm.task.cc_response)) {
+
+                    if (_.isNil(vm.task.cc_response) || vm.task.cc_response == '') {
                         vm.cc_response_dsp = [];
                     } else {
                         vm.cc_response_dsp = _.uniq(vm.task.cc_response.split(","));
                     }
+
                     if (_.isNil(vm.task.materials) || _.isEmpty(vm.task.materials) || vm.task.materials == "" || vm.task.materials == "[]") {
                         vm.task.materials = [];
                     } else {
@@ -1483,11 +1488,24 @@ app.controller('contentCTRL', function ($state, $auth, $uibModal, $stateParams, 
         vm.productList = DataFactory.cleanArray(vm.productList);
         //_.findLastIndex(array, {}) 
     };
+
+    vm.printThis = function () {
+        vm.hdrStyle = {};
+        DataFactory.printThis();
+        $timeout(function () { vm.hdrStyle = { 'background-size': 'cover' }; }, 5000);
+    };
+
+    vm.saveThis = function () {
+        vm.hdrStyle = {};
+        DataFactory.saveThis(vm.task.task_no);
+        $timeout(function () { vm.hdrStyle = { 'background-size': 'cover' }; }, 5000);
+    };
+
     vm.firstAction = function () {
         if ($stateParams.orderTitle == "enableLogging") vm.isLogEnabled = true;
         if ($stateParams.action == "create") {
             //console.log('[CONTENT] - create');
-            //vm.currentUser.canEdit = 'sales';
+            vm.currentUser.canEdit = 'sales';
             //vm.currentUser.canEdit = vm.accessControl();
             vm.readOnly = false;
             vm.getTmpID();
@@ -1508,7 +1526,7 @@ app.controller('contentCTRL', function ($state, $auth, $uibModal, $stateParams, 
             StorageFactory.setURI(window.location.href);
             $state.go('login');
         } else {
-            //console.log('currentUser[1] : ' + JSON.stringify(currentUser));
+            console.log('currentUser : ' + JSON.stringify(currentUser));
             vm.currentUser = currentUser;
             vm.currentUser.canEdit = '';
             vm.currentUser.userAction = $stateParams.action;

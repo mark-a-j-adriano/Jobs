@@ -1,11 +1,11 @@
-<div class="container" id="printSectionId" style="padding:0;">
+<div id="printSectionId" class="container"  style="padding:0;">
     <!-- Header content -->
     <section class="content" style="background-color:white;min-height: 0px;padding:0">
         <div class="row">
             <div class="col-md-12">
                 <!--<img style="width:100%" src="./lib/img/jobs/JobReqBanner - Display.jpg">-->
                 <div class="box" style="margin-bottom:0px;">
-                    <div class="box-header" style="background-image:url('./lib/img/jobs/JobReqBanner - Display.jpg');min-height:65px;">
+                    <div class="box-header" id="taskHeader" style="background-image:url('./lib/img/jobs/JobReqBanner - Display.jpg');min-height:65px;" ng-style="ctrl.hdrStyle">
                         <!--<img style="width:100%" src="./lib/img/jobs/JobReqBanner - Display.jpg">-->
                         <div class="box-tools pull-right">
                             <button type="button" class="btn btn-box-tool" title="Close Task" style="background-color:rgba(255,255,255,0.5);" ng-click="ctrl.gotoMain();">
@@ -822,7 +822,6 @@
                 <button type="button" class="btn btn-default" ng-click="ctrl.gotoMain();"><i class="fa fa-remove"></i> Close</button>
             </div>
             <div class="col-md-11">
-
 
                 <div class="pull-right" ng-show="ctrl.currentUser.canEdit == 'sales'">
                     <button type="button" class="btn btn-danger" ng-click="ctrl.revertTask('cancel');" ng-show="(ctrl.currentUser.role>=25 || ctrl.currentUser.role<10) && ctrl.currentUser.canEdit!='' &&

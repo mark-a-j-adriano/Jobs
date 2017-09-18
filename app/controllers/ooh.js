@@ -18,7 +18,7 @@ app.controller('oohCTRL', function ($state, $auth, $uibModal, $stateParams, $tim
     vm.readOnly = true;
     vm.docHistory = [];
     vm.docMessages = [];
-
+    vm.hdrStyle = { 'background-size': 'cover' };
     vm.ACL = {
         //TRUE MEANS YOU ARE RESTRICTED
         section0: true,     //Permanent Read ONLY fields
@@ -96,7 +96,7 @@ app.controller('oohCTRL', function ($state, $auth, $uibModal, $stateParams, $tim
     vm.openCalendar = function (e, picker) {
         vm[picker].open = true;
     };
-   
+
 
     vm.artwork = {
         preview: false,
@@ -104,7 +104,7 @@ app.controller('oohCTRL', function ($state, $auth, $uibModal, $stateParams, $tim
         interval: 5000,
         active: 0,
     };
-   
+
     vm.accessControl = function () {
         var tmpFlag = '';
         var tmpStatus = vm.task.status;
@@ -322,7 +322,7 @@ app.controller('oohCTRL', function ($state, $auth, $uibModal, $stateParams, $tim
                 vm.task.type = null;
                 vm.task.pub_size = null;
                 vm.task.materials = [];
-                if (_.isNil(vm.task.cc_response)) {
+                if (_.isNil(vm.task.cc_response) || vm.task.cc_response == '') {
                     vm.cc_response_dsp = [];
                 } else {
                     vm.cc_response_dsp = _.uniq(vm.task.cc_response.split(","));
@@ -410,7 +410,8 @@ app.controller('oohCTRL', function ($state, $auth, $uibModal, $stateParams, $tim
 
                     if (vm.task.urgent > 0) vm.task.urgent = true;
                     vm.task.size_option = 'Other';
-                    if (_.isNil(vm.task.cc_response) || _.isEmpty(vm.task.cc_response)) {
+
+                    if (_.isNil(vm.task.cc_response) || vm.task.cc_response == '') {
                         vm.cc_response_dsp = [];
                     } else {
                         vm.cc_response_dsp = _.uniq(vm.task.cc_response.split(","));
@@ -608,31 +609,31 @@ app.controller('oohCTRL', function ($state, $auth, $uibModal, $stateParams, $tim
                 vm.task._method = "put";
             }
 
-            if (_.isNil(vm.task.materials)  || _.isEmpty(vm.task.materials)) {
+            if (_.isNil(vm.task.materials) || _.isEmpty(vm.task.materials)) {
                 vm.task.materials = [];
             } else {
                 vm.task.materials = DataFactory.cleanArray(vm.task.materials);
             }
 
-            if (_.isNil(vm.task.artwork)  || _.isEmpty(vm.task.artwork)) {
+            if (_.isNil(vm.task.artwork) || _.isEmpty(vm.task.artwork)) {
                 vm.task.artwork = [];
             } else {
                 vm.task.artwork = DataFactory.cleanArray(vm.task.artwork);
             }
 
-            if (_.isNil(vm.task.article)  || _.isEmpty(vm.task.article)) {
+            if (_.isNil(vm.task.article) || _.isEmpty(vm.task.article)) {
                 vm.task.article = [];
             } else {
                 vm.task.article = DataFactory.cleanArray(vm.task.article);
             }
 
-            if (_.isNil(vm.task.static_list)  || _.isEmpty(vm.task.static_list)) {
+            if (_.isNil(vm.task.static_list) || _.isEmpty(vm.task.static_list)) {
                 vm.task.static_list = [];
             } else {
                 vm.task.static_list = DataFactory.cleanArray(vm.task.static_list);
             }
 
-            if (_.isNil(vm.task.digital_list)  || _.isEmpty(vm.task.digital_list)) {
+            if (_.isNil(vm.task.digital_list) || _.isEmpty(vm.task.digital_list)) {
                 vm.task.digital_list = [];
             } else {
                 vm.task.digital_list = DataFactory.cleanArray(vm.task.digital_list);
@@ -724,7 +725,7 @@ app.controller('oohCTRL', function ($state, $auth, $uibModal, $stateParams, $tim
         } else if (vm.spinners.materials.visible) {
             vm.errorMsg.push({ id: '', msg: 'Please wait until Material attachment is uploaded to server.' });
         } else {
-            if (_.isNil(vm.task.ad_spend) 
+            if (_.isNil(vm.task.ad_spend)
             ) {
                 vm.errorMsg.push({ id: 'ad_spend', msg: 'Ad Spend is required.' });
             } else {
@@ -740,7 +741,7 @@ app.controller('oohCTRL', function ($state, $auth, $uibModal, $stateParams, $tim
             }
 
 
-            if (_.isNil(vm.task.static) ) {
+            if (_.isNil(vm.task.static)) {
             } else {
                 if (vm.task.static == 1) {
                     if (_.isNil(vm.task.static_list)) {
@@ -755,7 +756,7 @@ app.controller('oohCTRL', function ($state, $auth, $uibModal, $stateParams, $tim
                 }
             }
 
-            if (_.isNil(vm.task.digital) ) {
+            if (_.isNil(vm.task.digital)) {
             } else {
                 if (vm.task.digital == 1) {
                     if (_.isNil(vm.task.digital_list)) {
@@ -770,7 +771,7 @@ app.controller('oohCTRL', function ($state, $auth, $uibModal, $stateParams, $tim
                 }
             }
 
-            if (_.isNil(vm.task.video) ) {
+            if (_.isNil(vm.task.video)) {
             } else {
                 if (vm.task.video == 1) {
                     if (_.isNil(vm.task.video_len)) {
@@ -796,7 +797,7 @@ app.controller('oohCTRL', function ($state, $auth, $uibModal, $stateParams, $tim
                         vm.errorMsg.push({ id: 'graphic_len', msg: 'Please provide the Motion Graphic length.' });
                     } else {
                         if (vm.task.graphic_len == 'Other') {
-                            if (_.isNil(vm.task.graphic_len_option) ) {
+                            if (_.isNil(vm.task.graphic_len_option)) {
                                 vm.errorMsg.push({ id: 'graphic_len_option', msg: 'Please provide the Motion Graphic length.' });
                             } else {
                                 type_count = type_count + 1;
@@ -808,7 +809,7 @@ app.controller('oohCTRL', function ($state, $auth, $uibModal, $stateParams, $tim
                 }
             }
 
-            if (_.isNil(vm.task.others)  || vm.task.others == "") {
+            if (_.isNil(vm.task.others) || vm.task.others == "") {
             } else {
                 type_count = type_count + 1;
             }
@@ -871,7 +872,7 @@ app.controller('oohCTRL', function ($state, $auth, $uibModal, $stateParams, $tim
     vm.gotoParent = function () {
         //$state.go('creative', { orderID: $stateParams.orderID });
         var tmpID = null;
-        if (_.isNil(vm.task.parent_id) ) { } else { tmpID = vm.task.parent_id };
+        if (_.isNil(vm.task.parent_id)) { } else { tmpID = vm.task.parent_id };
         if (_.isNil(tmpID)) {
             if (_.isNil(vm.task.job_id)) { } else { tmpID = vm.task.job_id };
         }
@@ -885,7 +886,7 @@ app.controller('oohCTRL', function ($state, $auth, $uibModal, $stateParams, $tim
     vm.addProduct = function (typ) {
 
         if (typ == 'Digital') {
-            if (_.isNil(vm.task.digital_list) ) vm.task.digital_list = [];
+            if (_.isNil(vm.task.digital_list)) vm.task.digital_list = [];
         } else {
             if (_.isNil(vm.task.static_list)) vm.task.static_list = [];
         }
@@ -1212,14 +1213,14 @@ app.controller('oohCTRL', function ($state, $auth, $uibModal, $stateParams, $tim
         if (type == 'artwork') {
             vm.spinners.artwork.visible = true;
             vm.spinners.artwork.progress = 0;
-            if (_.isNil(vm.task.artwork) ) vm.task.artwork = [];
+            if (_.isNil(vm.task.artwork)) vm.task.artwork = [];
             if (_.isNil(vm.task.final_size)) vm.task.final_size = vm.task.pub_size;
         } else if (type == 'article') {
             if (_.isNil(vm.task.article)) vm.task.article = [];
         } else {
             vm.spinners.materials.visible = true;
             vm.spinners.materials.progress = 0;
-            if (_.isNil(vm.task.materials) ) vm.task.materials = [];
+            if (_.isNil(vm.task.materials)) vm.task.materials = [];
         }
 
         angular.forEach(files, function (file) {
@@ -1371,6 +1372,18 @@ app.controller('oohCTRL', function ($state, $auth, $uibModal, $stateParams, $tim
             vm.task.digital_list = DataFactory.cleanArray(vm.task.digital_list);
         }
     }
+
+    vm.printThis = function () {
+        vm.hdrStyle = {};
+        DataFactory.printThis();
+        $timeout(function () { vm.hdrStyle = { 'background-size': 'cover' }; }, 5000);
+    };
+
+    vm.saveThis = function () {
+        vm.hdrStyle = {};
+        DataFactory.saveThis(vm.task.task_no);
+        $timeout(function () { vm.hdrStyle = { 'background-size': 'cover' }; }, 5000);
+    };
 
     vm.firstAction = function () {
         if ($stateParams.orderTitle == "enableLogging") vm.isLogEnabled = true;

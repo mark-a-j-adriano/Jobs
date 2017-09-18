@@ -17,18 +17,17 @@ app.controller('salesDashCTRL', function ($auth, $state, $stateParams, $uibModal
   };
 
 
-
   vm.columnTitle = [
-    { text: " ", predicate: " ", sortable: false, dataType: "button" },
+    { text: " ", predicate: " ", sortable: false, dataType: "button", style:{}},
     //{ text: "Job Number", predicate: "job_no", sortable: true, dataType: "string" },
-    { text: "Title", predicate: "title", sortable: true, dataType: "string" },
-    { text: "Booking Type", predicate: "booking_type", sortable: true, dataType: "string" },
-    { text: "Ad Spend", predicate: "ad_spend", sortable: true, dataType: "number" },
-    { text: "Production Cost", predicate: "production_cost", sortable: true, dataType: "number" },
-    { text: "Status", predicate: "status", sortable: true, dataType: "string" },
-    { text: "Action", predicate: "", sortable: false, dataType: "string" }
+    { text: "Title", predicate: "title", sortable: true, dataType: "string", style:{} },
+    { text: "Booking Type", predicate: "booking_type", sortable: true, dataType: "string", style:{} },
+    { text: "Sales Person", predicate: "submitted_by", sortable: true, dataType: "string", style:{} },
+    { text: "Ad Spend", predicate: "ad_spend", sortable: true, dataType: "number", style:{"text-align":"center"} },
+    { text: "Production Cost", predicate: "production_cost", sortable: true, dataType: "number", style:{"text-align":"center"} },
+    { text: "Status", predicate: "status", sortable: true, dataType: "string", style:{} },
+    { text: "Action", predicate: "", sortable: false, dataType: "string", style:{} }
   ];
-
 
   vm.subColumnTitle = [
     { text: "#", predicate: "", sortable: false, dataType: "number" },
@@ -42,7 +41,6 @@ app.controller('salesDashCTRL', function ($auth, $state, $stateParams, $uibModal
     { text: "Status", predicate: "status", sortable: true, dataType: "string" },
     { text: "Action", predicate: "", sortable: false, dataType: "string" }
   ];
-
 
   ////console.log('columnTitle : ' + JSON.stringify(vm.columnTitle));
   vm.getJobList = function (tmpStatus) {

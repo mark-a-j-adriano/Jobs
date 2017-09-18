@@ -16,6 +16,7 @@ app.controller('importerCTRL', function ($sce, $state, $auth, $uibModal, $stateP
     vm.pubTypes = [{ code: 'CLS', name: 'Classified' }];
     vm.filesForDeletion = [];
     vm.qProductsError = false;
+    vm.hdrStyle = { 'background-size': 'cover' };
     vm.readOnly = true;
     vm.docHistory = [];
     vm.docMessages = [];
@@ -597,12 +598,15 @@ app.controller('importerCTRL', function ($sce, $state, $auth, $uibModal, $stateP
         }
     };
     vm.filterLogoGrp = function () {
-        //console.log('[filterLogoGrp]  Start', vm.task.category);        
+        console.log('[filterLogoGrp]  Start', vm.task.category);
         if (!_.isNil(vm.task.category)) {
             if (vm.task.category == 'Obituary Pix') {
             } else {
                 vm.LogoGrps = angular.copy(vm.LogoGrpOptions);
-                //console.log('[filterLogoGrp] 0', vm.LogoGrps);
+                console.log('[filterLogoGrp] 0', vm.LogoGrps);
+                console.log('[filterLogoGrp] 1', vm.task.charge_option);
+                console.log('[filterLogoGrp] 2', vm.task.colour);
+                console.log('[filterLogoGrp] 3', vm.task.language);
                 if (!(_.isNil(vm.task.charge_option) && _.isNil(vm.task.colour) && _.isNil(vm.task.language))) {
                     vm.LogoGrps = _.filter(vm.LogoGrps, function (o) {
                         /*
@@ -619,7 +623,7 @@ app.controller('importerCTRL', function ($sce, $state, $auth, $uibModal, $stateP
                         return _.includes(o.charge, vm.task.charge_option) && _.includes(o.colour, vm.task.colour) && _.includes(o.pub, vm.task.language);
                     });
                 }
-                //console.log('[filterLogoGrp]  vm.LogoGrps', vm.LogoGrps)
+                console.log('[filterLogoGrp]  vm.LogoGrps', vm.LogoGrps)
             }
         }
     }
@@ -642,7 +646,13 @@ app.controller('importerCTRL', function ($sce, $state, $auth, $uibModal, $stateP
                 vm.task.parent_id = $stateParams.orderID;
                 vm.task.logged_in_user = currentUser.id;
                 //vm.task.in_house = "No";
-                vm.cc_response_dsp = _.uniq(vm.task.cc_response.split(","));
+
+                if (_.isNil(vm.task.cc_response) || vm.task.cc_response == '') {
+                    vm.cc_response_dsp = [];
+                } else {
+                    vm.cc_response_dsp = _.uniq(vm.task.cc_response.split(","));
+                }
+
                 var res = $stateParams.taskID.split('~');
                 vm.task.job_no = res[0];
                 //console.log('res : ' + JSON.stringify(res[0]));
@@ -765,7 +775,8 @@ app.controller('importerCTRL', function ($sce, $state, $auth, $uibModal, $stateP
                     if (vm.task.feature > 0) vm.task.feature = true;
                     vm.task.size_option = 'Other';
                     vm.productList = DataFactory.parseLodash(vm.task.products);
-                    if (_.isNil(vm.task.cc_response)) {
+
+                    if (_.isNil(vm.task.cc_response) || vm.task.cc_response == '') {
                         vm.cc_response_dsp = [];
                     } else {
                         vm.cc_response_dsp = _.uniq(vm.task.cc_response.split(","));
@@ -1262,13 +1273,13 @@ app.controller('importerCTRL', function ($sce, $state, $auth, $uibModal, $stateP
         } else {
             vm.errorMsg.push({ id: 'category', msg: 'Category is required.' });
         }
-
+        /*
         if (vm.task.instruction) {
             if (_.isNil(vm.task.instruction) || vm.task.instruction == '') vm.errorMsg.push({ id: 'instruction', msg: 'Instruction is required.' });
         } else {
             vm.errorMsg.push({ id: 'instruction', msg: 'Instruction is required.' });
         }
-
+        */
         if (vm.productList) {
             if (_.isNil(vm.productList) || vm.productList.length < 1) vm.errorMsg.push({ id: 'productList', msg: 'Product List is required.' });
         } else {
@@ -1617,7 +1628,7 @@ app.controller('importerCTRL', function ($sce, $state, $auth, $uibModal, $stateP
 
     vm.revertTask = function (chatFlag) {
         var tmp = {
-            frm_class: 'box-classified',
+            frm_class: 'box-importer',
             frm_title: 'Request Re-Submission',
             isConfirm: false,
             isChat: true,
@@ -1881,6 +1892,18 @@ app.controller('importerCTRL', function ($sce, $state, $auth, $uibModal, $stateP
     vm.deleteRow = function (ndex) {
         vm.productList[ndex] = null;
         vm.productList = DataFactory.cleanArray(vm.productList);
+    };
+
+    vm.printThis = function () {
+        vm.hdrStyle = {};
+        DataFactory.printThis();
+        $timeout(function () { vm.hdrStyle = { 'background-size': 'cover' }; }, 5000);
+    };
+
+    vm.saveThis = function () {
+        vm.hdrStyle = {};
+        DataFactory.saveThis(vm.task.task_no);
+        $timeout(function () { vm.hdrStyle = { 'background-size': 'cover' }; }, 5000);
     };
 
     vm.firstAction = function () {

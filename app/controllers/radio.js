@@ -19,6 +19,7 @@ app.controller('radioCTRL', function ($state, $auth, $uibModal, $stateParams, $t
     vm.readOnly = true;
     vm.docHistory = [];
     vm.docMessages = [];
+    vm.hdrStyle = { 'background-size': 'cover' };
     vm.cc_response_dsp = [];
     vm.ACL = {
         //TRUE MEANS YOU ARE RESTRICTED
@@ -28,7 +29,7 @@ app.controller('radioCTRL', function ($state, $auth, $uibModal, $stateParams, $t
         section3: true,     //Assignment Details
         section4: true,     //Preview of Completed Artwork  - team_members     
     };
-    
+
     vm.accessControl = function () {
         var tmpFlag = '';
         var tmpStatus = vm.task.status;
@@ -287,7 +288,7 @@ app.controller('radioCTRL', function ($state, $auth, $uibModal, $stateParams, $t
                 vm.task.production_cost = 0;
                 vm.task.parent_id = $stateParams.orderID;
                 vm.task.logged_in_user = currentUser.id;
-                if (_.isNil(vm.task.cc_response)) {
+                if (_.isNil(vm.task.cc_response) || vm.task.cc_response == '') {
                     vm.cc_response_dsp = [];
                 } else {
                     vm.cc_response_dsp = _.uniq(vm.task.cc_response.split(","));
@@ -356,6 +357,12 @@ app.controller('radioCTRL', function ($state, $auth, $uibModal, $stateParams, $t
                 } else {
                     //console.log('[getTask] - prepare Data');
                     vm.task.ad_spend = parseFloat(vm.task.ad_spend);
+
+                    if (_.isNil(vm.task.cc_response) || vm.task.cc_response == '') {
+                        vm.cc_response_dsp = [];
+                    } else {
+                        vm.cc_response_dsp = _.uniq(vm.task.cc_response.split(","));
+                    }
 
                     if (_.isNil(vm.task.due_date)) {
                     } else {
@@ -1206,7 +1213,7 @@ app.controller('radioCTRL', function ($state, $auth, $uibModal, $stateParams, $t
             },
             // error handler
             function (response) {
-               //console.log('Ooops, something went wrong..  \n ' + JSON.stringify(response));
+                //console.log('Ooops, something went wrong..  \n ' + JSON.stringify(response));
             });
     };
 
@@ -1251,11 +1258,24 @@ app.controller('radioCTRL', function ($state, $auth, $uibModal, $stateParams, $t
             });
     };
 
-    vm.getRadioStations();
-    vm.getRadioContracts();
-    vm.getJobClassification();
+    vm.printThis = function () {
+        vm.hdrStyle = {};
+        DataFactory.printThis();
+        $timeout(function () { vm.hdrStyle = { 'background-size': 'cover' }; }, 5000);
+    };
+
+    vm.saveThis = function () {
+        vm.hdrStyle = {};
+        DataFactory.saveThis(vm.task.task_no);
+        $timeout(function () { vm.hdrStyle = { 'background-size': 'cover' }; }, 5000);
+    };
+
+
 
     vm.firstAction = function () {
+        vm.getRadioStations();
+        vm.getRadioContracts();
+        vm.getJobClassification();
         if ($stateParams.orderTitle == "enableLogging") vm.isLogEnabled = true;
         if ($stateParams.action == "create") {
             //console.log('[radio] - create');

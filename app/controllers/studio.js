@@ -23,6 +23,7 @@ app.controller('studioCTRL', function ($state, $auth, $uibModal, $stateParams, $
     vm.docMessages = [];
     vm.trixEditor1 = false;
     vm.trixEditor2 = false;
+    vm.hdrStyle = { 'background-size': 'cover' };
     var host = StorageFactory.getAppSettings('UPL');
     var createStorageKey, host, uploadAttachment;
     var events = ['trixInitialize', 'trixChange', 'trixSelectionChange', 'trixFocus',
@@ -51,7 +52,7 @@ app.controller('studioCTRL', function ($state, $auth, $uibModal, $stateParams, $
         creative: { visible: false, progress: 0 },
     };
 
-  
+
     vm.cleanTrix = function (tmpStr, type) {
         var str = _.replace(tmpStr, new RegExp('"', "g"), "'");
         str = _.replace(str, new RegExp("<strong>", "g"), "");
@@ -557,7 +558,7 @@ app.controller('studioCTRL', function ($state, $auth, $uibModal, $stateParams, $
                 vm.task.job_no = res[0];
                 //console.log('res : ' + JSON.stringify(res[0]));
                 vm.task.task_no = res.join("-");
-                if (_.isNil(vm.task.cc_response)) {
+                if (_.isNil(vm.task.cc_response) || vm.task.cc_response == '') {
                     vm.cc_response_dsp = [];
                 } else {
                     vm.cc_response_dsp = _.uniq(vm.task.cc_response.split(","));
@@ -663,6 +664,12 @@ app.controller('studioCTRL', function ($state, $auth, $uibModal, $stateParams, $
                     vm.task.production_cost = parseFloat(vm.task.production_cost);
                     vm.display.ad_spend = $filter('currency')(vm.task.ad_spend, "");
                     vm.display.production_cost = $filter('currency')(vm.task.production_cost, "");
+
+                    if (_.isNil(vm.task.cc_response) || vm.task.cc_response == '') {
+                        vm.cc_response_dsp = [];
+                    } else {
+                        vm.cc_response_dsp = _.uniq(vm.task.cc_response.split(","));
+                    }
 
                     if (_.isNil(vm.task.due_date)) {
                     } else {
@@ -1670,15 +1677,15 @@ app.controller('studioCTRL', function ($state, $auth, $uibModal, $stateParams, $
                 break;
             }
         }
-                
-        if( _.isNil(vm.task.artwork_trix) || vm.task.artwork_trix==''){
+
+        if (_.isNil(vm.task.artwork_trix) || vm.task.artwork_trix == '') {
             if (_.isNil(vm.task.artwork) || _.isEmpty(vm.task.artwork)) previewNotReady = true;
-        }     
+        }
 
         if (hasTBD) {
             toastr.error("Please update the ET Number or CASH number details in the Product table", { closeButton: true });
         } else if (previewNotReady) {
-            toastr.error("Please upload an Artwork Preview", { closeButton: true });            
+            toastr.error("Please upload an Artwork Preview", { closeButton: true });
         } else if (vm.task.pub_size != vm.task.final_size) {
             if (_.isNil(vm.task.final_ad_spend) || vm.task.final_ad_spend == "") {
                 toastr.error("Please update final ad spend.", { closeButton: true });
@@ -1728,6 +1735,18 @@ app.controller('studioCTRL', function ($state, $auth, $uibModal, $stateParams, $
         vm.productList = DataFactory.cleanArray(vm.productList);
         //_.findLastIndex(array, {}) 
     }
+
+    vm.printThis = function () {
+        vm.hdrStyle = {};
+        DataFactory.printThis();
+        $timeout(function () { vm.hdrStyle = { 'background-size': 'cover' }; }, 5000);
+    };
+
+    vm.saveThis = function () {
+        vm.hdrStyle = {};
+        DataFactory.saveThis(vm.task.task_no);
+        $timeout(function () { vm.hdrStyle = { 'background-size': 'cover' }; }, 5000);
+    };
 
     vm.firstAction = function () {
         if ($stateParams.orderTitle == "enableLogging") vm.isLogEnabled = true;
