@@ -123,7 +123,7 @@ app.factory("DataFactory", [
     obj.gotoDashBoard = function (str) {
       var accessLVL = parseInt(str);
       if ($auth.isAuthenticated()) {
-        if (accessLVL >= 30) {
+        if (accessLVL >= 25) {
           //Sales Team Lead /SALES
           $state.go('sales');
         } else if (accessLVL >= 20) {

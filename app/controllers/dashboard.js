@@ -175,7 +175,7 @@ app.controller('salesDashCTRL', function ($auth, $state, $stateParams, $uibModal
 
   vm.accessControl = function () {
     var accessLVL = parseInt(currentUser.role);
-    if (accessLVL >= 30) {
+    if (accessLVL >= 25) {
       //SALES //Sales Team Lead
 
     } else if (accessLVL >= 20) {

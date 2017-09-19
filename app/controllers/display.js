@@ -94,7 +94,7 @@ app.controller('displayCTRL', function ($state, $auth, $uibModal, $stateParams, 
         }
         var writer = eng_writer + ", " + chi_writer + ", " + mal_writer;
 
-        if (accessLVL >= 30) {
+        if (accessLVL >= 25) {
             //Sales Team Lead /SALES
             if ((current_user == submitted_by) || (current_user == cc_response)) {
                 if (vm.statusNum == 0) {

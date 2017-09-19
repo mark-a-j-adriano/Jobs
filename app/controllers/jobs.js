@@ -129,7 +129,7 @@ app.controller("creativeCTRL", function (
     //console.log('[accessControl] - cc_response_username : ' + JSON.stringify(vm.job.cc_response_username));
     */
     var accessLVL = parseInt(currentUser.role);
-    if (accessLVL >= 30) {
+    if (accessLVL >= 25) {
       //SALES //Sales Team Lead
       if ((current_user == submitted_by) || (current_user == cc_response)) tmpFlag = true;
     } else if (accessLVL > 20) {

@@ -70,7 +70,7 @@ app.controller('radioCTRL', function ($state, $auth, $uibModal, $stateParams, $t
         //console.log('accessLVL:' + accessLVL + ' | statusNum:' + vm.statusNum);
         //console.log('current_user:' + current_user + ' | designer:' + designer);
 
-        if (accessLVL >= 30) {
+        if (accessLVL >= 25) {
             //Sales Team Lead /SALES
             if ((current_user == submitted_by) || (current_user == cc_response)) {
                 if ((vm.statusNum == 0) || (vm.statusNum == 3)) {

@@ -362,7 +362,7 @@ app.controller('studioCTRL', function ($state, $auth, $uibModal, $stateParams, $
             writer = vm.task.writer_username.toLowerCase().trim();
         }
 
-        if (accessLVL >= 30) {
+        if (accessLVL >= 25) {
             //Sales Team Lead /SALES
             if ((current_user == submitted_by) || (current_user == cc_response)) {
                 if (vm.statusNum == 0) {
