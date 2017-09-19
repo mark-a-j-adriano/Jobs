@@ -773,7 +773,7 @@ app.controller("creativeCTRL", function (
                 height: file.$ngfHeight,
                 width: file.$ngfWidth,
                 type: file.type,
-                url: "service/tmp/" + res,
+                url: "service/tmp/" + arr[0] + "/" + vm.task.task_no.toLowerCase() + "/" + encodeURIComponent(nam),
                 uploadBy: vm.currentUser.id,
                 uploadDt: moment(timeStamp).format("YYYY-MM-DD HH:mm:ss")
               };

@@ -288,7 +288,7 @@ app.controller('classifiedCTRL', function ($sce, $state, $auth, $uibModal, $stat
                             width: file.$ngfWidth,
                             type: file.type,
                             blob: attachment.attachment.fileObjectURL,
-                            url: "service/tmp/" + res,
+                            url: "service/tmp/" + arr[0] + "/" + vm.task.task_no.toLowerCase() + "/" + encodeURIComponent(nam),
                             base: (file.type.includes("image/png") ? vm.base64 : null),
                             uploadBy: vm.currentUser.id,
                             uploadDt: moment(new Date()).format('YYYY-MM-DD HH:mm:ss'),
@@ -1624,7 +1624,7 @@ app.controller('classifiedCTRL', function ($sce, $state, $auth, $uibModal, $stat
                                 height: file.$ngfHeight,
                                 width: file.$ngfWidth,
                                 type: file.type,
-                                url: "service/tmp/" + res,
+                                url: "service/tmp/" + arr[0] + "/" + vm.task.task_no.toLowerCase() + "/" + encodeURIComponent(nam),
                                 uploadBy: vm.currentUser.id,
                                 uploadDt: moment(timeStamp).format('YYYY-MM-DD HH:mm:ss'),
                             };
@@ -1702,7 +1702,7 @@ app.controller('classifiedCTRL', function ($sce, $state, $auth, $uibModal, $stat
         }
     };
     vm.approveArtwork = function () {
-        var hasTBD = true;
+        var hasTBD = false;
         var previewNotReady = false;
         for (i = 0; i < vm.productList.length; i++) {
             if ((vm.productList[i].etNum_tbd) || (vm.productList[i].cashNum_tbd)) {
@@ -1719,7 +1719,7 @@ app.controller('classifiedCTRL', function ($sce, $state, $auth, $uibModal, $stat
             toastr.error("Please update the ET Number or CASH number details in the Product table", { closeButton: true });
         } else if (previewNotReady) {
             toastr.error("Please upload an Artwork Preview", { closeButton: true });
-        } else if (_.isNil(vm.task.final_ad_spend) || vm.task.final_ad_spend == "" || parseFloat(vm.task.final_ad_spend) == 0) {
+        } else if (_.isNil(vm.task.ad_spend) || vm.task.ad_spend == "" || parseFloat(vm.task.ad_spend) == 0) {
             toastr.error("Please update final ad spend (orig. size: " + vm.task.pub_size + " -> final size: " + vm.task.final_size + " ).", { closeButton: true });
             /*
               } else if (vm.task.pub_size != vm.task.final_size) {

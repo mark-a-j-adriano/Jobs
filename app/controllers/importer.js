@@ -287,7 +287,7 @@ app.controller('importerCTRL', function ($sce, $state, $auth, $uibModal, $stateP
                             width: file.$ngfWidth,
                             type: file.type,
                             blob: attachment.attachment.fileObjectURL,
-                            url: "service/tmp/" + res,
+                            url: "service/tmp/" + arr[0] + "/" + vm.task.task_no.toLowerCase() + "/" + encodeURIComponent(nam),
                             base: (file.type.includes("image/png") ? vm.base64 : null),
                             uploadBy: vm.currentUser.id,
                             uploadDt: moment(new Date()).format('YYYY-MM-DD HH:mm:ss'),
@@ -1752,7 +1752,7 @@ app.controller('importerCTRL', function ($sce, $state, $auth, $uibModal, $stateP
                                 height: file.$ngfHeight,
                                 width: file.$ngfWidth,
                                 type: file.type,
-                                url: "service/tmp/" + res,
+                                url: "service/tmp/" + arr[0] + "/" + vm.task.task_no.toLowerCase() + "/" + encodeURIComponent(nam),
                                 uploadBy: vm.currentUser.id,
                                 uploadDt: moment(timeStamp).format('YYYY-MM-DD HH:mm:ss'),
                             };

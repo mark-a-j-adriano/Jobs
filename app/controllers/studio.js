@@ -139,14 +139,14 @@ app.controller('studioCTRL', function ($state, $auth, $uibModal, $stateParams, $
             $timeout(function () {
                 var res = response.data;
                 //console.log('[uploadAttachment] - result : ' + JSON.stringify(res));
-                console.info('uploadAttachment details:', details);
+                //console.info('uploadAttachment details:', details);
                 if (res.indexOf("ERROR") > 0) {
                 } else {
-                    ////console.log('[uploadFiles] - file : ' + JSON.stringify(file));
+                    //console.log('[uploadFiles] - file : ' + JSON.stringify(file));
                     var arr = res.split("/" + vm.task.task_no.toLowerCase() + "/");
                     var nam = "";
                     if (_.isString(arr[1])) nam = arr[1].trim();
-                    //console.log('[uploadFiles] - nam : ' + JSON.stringify(nam));
+                    //console.log('[uploadFiles] - nam : ' + JSON.stringify(nam), arr);
                     if (nam != "") {
                         var fileTmp = {
                             name: arr[1],
@@ -155,13 +155,12 @@ app.controller('studioCTRL', function ($state, $auth, $uibModal, $stateParams, $
                             width: file.$ngfWidth,
                             type: file.type,
                             blob: attachment.attachment.fileObjectURL,
-                            url: "service/tmp/" + res,
+                            url: "service/tmp/" + arr[0] + "/" + vm.task.task_no.toLowerCase() + "/" + encodeURIComponent(nam),
                             base: (file.type.includes("image/png") ? vm.base64 : null),
                             uploadBy: vm.currentUser.id,
                             uploadDt: moment(new Date()).format('YYYY-MM-DD HH:mm:ss'),
                         };
-                        console.info('[uploadAttachment] - type:', type);
-                        //console.log('[uploadAttachment] - fileTmp : ' + JSON.stringify(fileTmp));
+                        //console.log('[uploadAttachment] - type : ' + type + ' | fileTmp : ' + JSON.stringify(fileTmp));
 
                         if (type == "materials") {
                             vm.spinners.materials.visible = false;
@@ -1567,7 +1566,7 @@ app.controller('studioCTRL', function ($state, $auth, $uibModal, $stateParams, $
                         var arr = res.split("/" + vm.task.task_no + "/");
                         var nam = "";
                         if (_.isString(arr[1])) nam = arr[1].trim();
-
+                        //console.log('[uploadFiles] - nam : ' + JSON.stringify(nam), arr);
                         if (nam != "") {
                             var fileTmp = {
                                 name: arr[1],
@@ -1575,11 +1574,11 @@ app.controller('studioCTRL', function ($state, $auth, $uibModal, $stateParams, $
                                 height: file.$ngfHeight,
                                 width: file.$ngfWidth,
                                 type: file.type,
-                                url: "service/tmp/" + res,
+                                url: "service/tmp/" + arr[0] + "/" + vm.task.task_no.toLowerCase() + "/" + encodeURIComponent(nam),
                                 uploadBy: vm.currentUser.id,
                                 uploadDt: moment(timeStamp).format('YYYY-MM-DD HH:mm:ss'),
                             };
-                            //console.log('[uploadFiles] - fileTmp : ' + JSON.stringify(fileTmp));
+                            //console.log('[uploadAttachment] - type : ' + type + ' | fileTmp : ' + JSON.stringify(fileTmp));
 
                             if (type == 'artwork') {
                                 vm.task.artwork.push(fileTmp);
