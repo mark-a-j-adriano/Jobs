@@ -835,13 +835,14 @@ app.controller('contentCTRL', function ($state, $auth, $uibModal, $stateParams, 
         } else {
           vm.errorMsg.push({ id: 'materials', msg: 'Materials is required.' });
         }
-        */
+       
 
         if (vm.task.instruction) {
             if (_.isNil(vm.task.instruction) || vm.task.instruction == '') vm.errorMsg.push({ id: 'instruction', msg: 'Instruction is required.' });
         } else {
             vm.errorMsg.push({ id: 'instruction', msg: 'Instruction is required.' });
         }
+        */
 
         if (vm.productList) {
             if (_.isNil(vm.productList) || vm.productList.length < 1) vm.errorMsg.push({ id: 'productList', msg: 'Product List is required.' });
@@ -1728,46 +1729,15 @@ app.controller('contentModalCtrl', function ($uibModalInstance, focus, toastr, p
         var errMsg = [];
         if (vm.product.pubID == '') errMsg.push('Publication is required');
         if (_.isNil(vm.product.pubDate)) errMsg.push('Publication date is required');
-
-        var isComplete1 = false;
-        if (_.isNil(vm.product.etNum) || vm.product.etNum == '') {
-            isComplete1 = vm.product.etNum_tbd;
-        } else {
-            if (_.isNil(vm.product.etDate)) {
-                errMsg.push('ET Date is required');
-            } else {
-                //console.log('[etNum]');
-                isComplete1 = true;
-            }
-        }
-
-        var isComplete2 = false;
-        if (_.isNil(vm.product.cashNum) || vm.product.cashNum == '') {
-            isComplete2 = vm.product.cashNum_tbd;
-        } else {
-            if (_.isNil(vm.product.cashDate)) {
-                errMsg.push('CASH Date is required');
-            } else {
-                //console.log('[cashDate]');
-                isComplete2 = true;
-            }
-        }
-
-        if (!(isComplete1 || isComplete2)) errMsg.push('ET number or CASH is required');
+       
         if (errMsg.length > 0) {
             toastr.error(errMsg[0], { closeButton: true });
         } else {
             var tmp = {
                 pubID: vm.product.pubID,
                 pubName: vm.product.pubName,
-                pubDate: (_.isNil(vm.product.pubDate) ? null : moment(vm.product.pubDate).format('YYYY-MM-DD')),
-                etNum: vm.product.etNum,
-                etNum_tbd: vm.product.etNum_tbd,
-                etDate: (_.isNil(vm.product.etDate) ? null : moment(vm.product.etDate).format('YYYY-MM-DD')),
-                cashNum: vm.product.cashNum,
-                cashDate: (_.isNil(vm.product.cashDate) ? null : moment(vm.product.cashDate).format('YYYY-MM-DD')),
-                cashNum_tbd: vm.product.cashNum_tbd,
-                ad_base: vm.product.ad_base
+                pubDate: (_.isNil(vm.product.pubDate) ? null : moment(vm.product.pubDate).format('YYYY-MM-DD')),              
+                filename: vm.product.filename
             }
             $uibModalInstance.close(tmp);
         }

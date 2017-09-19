@@ -1885,7 +1885,7 @@ app.controller('importerCTRL', function ($sce, $state, $auth, $uibModal, $stateP
         //import complete
         vm.submitTask('Import Complete');
     };
-    vm.closeimporterTask = function () {
+    vm.closeImporterTask = function () {
         //  completed
         vm.submitTask('Completed');
     };

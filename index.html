@@ -99,7 +99,7 @@
               </li>
 
               <!-- COPYWRITER -->
-              <li ng-hide="ctrl.role=='Designer' || ctrl.role=='Sales'"><a ui-sref="copywriter"><i class="fa fa-edit"></i> 
+              <li ng-show="ctrl.=='Copywriter'|| ctrl.role=='Coordinator' || ctrl.role=='Administrator'"><a ui-sref="copywriter"><i class="fa fa-edit"></i> 
               <span>My Writing Task<br/>(Copywriter)</span></a>
               </li>
 

@@ -36,73 +36,12 @@
                         </div>
                         <div class="col-sm-2">&nbsp;</div>
                     </div>
-                </div>
-                <div class="row">
                     <div class="form-group">
-                        <label class="col-sm-4 control-label">ET Number :</label>
-                        <div class="col-sm-4">
-                            <input type="text" class="form-control input-sm fld-att" ng-model="ctrl.product.etNum" text-mask="ctrl.filter.etNum" ng-change="ctrl.clrField('etNum_tbd');">
-                        </div>
-                        <div class="col-sm-4">
-                            <input type="checkbox" name="etNum_tbd" id="etNum_tbd" ng-model="ctrl.product.etNum_tbd" ng-change="ctrl.clrField('etNum');">
-                            <label for="etNum_tbd">&emsp;TBA</label>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-4 control-label">ET Date :</label>
+                        <label class="col-sm-4 control-label">Filename :</label>
                         <div class="col-sm-6">
-                            <p class="input-group">
-                                <input id="etDate" type="text" class="form-control input-sm fld-att" datetime-picker="dd/MM/yyyy" datepicker-options="ctrl.dateTimePicker2.datepickerOptions"
-                                    enable-time="false" ng-model="ctrl.product.etDate" is-open="ctrl.dateTimePicker2.open" close-on-date-selection="true"
-                                    readonly />
-                                <span class="input-group-btn">
-                                            <button type="button" class="btn btn-default fld-att"   
-                                            ng-click="ctrl.openCalendar($event, 'dateTimePicker2')" 
-                                            ng-disabled="ctrl.product.etNum == '' || ctrl.product.etNum==null">
-                                                <i class="fa fa-calendar"></i>
-                                            </button>
-                                        </span>
-                            </p>
+                            <input type="text" class="form-control input-sm fld-att" ng-model="ctrl.product.filename">
                         </div>
                         <div class="col-sm-2">&nbsp;</div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group">
-                        <label class="col-sm-4 control-label">Cash Number :</label>
-                        <div class="col-sm-4">
-                            <input type="text" class="form-control input-sm fld-att" ng-model="ctrl.product.cashNum" text-mask="ctrl.filter.cash" ng-change="ctrl.clrField('cashNum_tbd');">
-                        </div>
-                        <div class="col-sm-4">
-                            <input type="checkbox" name="cashNum_tbd" id="cashNum_tbd" ng-model="ctrl.product.cashNum_tbd" ng-change="ctrl.clrField('cashNum');">
-                            <label for="cashNum_tbd">&emsp;TBA</label>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-4 control-label">Import Date :</label>
-                        <div class="col-sm-6">
-                            <p class="input-group">
-                                <input id="cashDate" type="text" class="form-control input-sm fld-att" datetime-picker="dd/MM/yyyy" datepicker-options="ctrl.dateTimePicker3.datepickerOptions"
-                                    enable-time="false" ng-model="ctrl.product.cashDate" is-open="ctrl.dateTimePicker3.open"
-                                    close-on-date-selection="true" readonly />
-                                <span class="input-group-btn">
-                                            <button type="button" class="btn btn-default fld-att"   
-                                            ng-click="ctrl.openCalendar($event, 'dateTimePicker3')" 
-                                            ng-disabled="ctrl.product.cashNum == '' || ctrl.product.cashNum==null">
-                                                <i class="fa fa-calendar"></i>
-                                            </button>
-                                        </span>
-                            </p>
-
-                        </div>
-                        <div class="col-sm-2">&nbsp;</div>
-                    </div>
-                     <div class="form-group">
-                        <label class="col-sm-4 control-label">Ad Base :</label>
-                        <div class="col-sm-6">
-                            <input type="text" class="form-control input-sm fld-att" ng-model="ctrl.product.ad_base">
-                        </div>    
-                        <div class="col-sm-2">&nbsp;</div>                  
                     </div>
                 </div>
             </div>
@@ -130,8 +69,8 @@
                             <label>Final Ad Spend :</label>
                             <div class="input-group">
                                 <span class="input-group-addon fld-att">$</span>
-                                <input id='ad_spend' type="number" class="form-control input-sm fld-att" style="text-align:right;padding-right:10px;" 
-                                ng-model="ctrl.final_ad_spend" min="0.01" step="0.01">
+                                <input id='ad_spend' type="number" class="form-control input-sm fld-att" style="text-align:right;padding-right:10px;" ng-model="ctrl.final_ad_spend"
+                                    min="0.01" step="0.01">
                             </div>
                         </div>
                         <div class="form-group">

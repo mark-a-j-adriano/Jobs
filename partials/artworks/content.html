@@ -693,36 +693,23 @@
                         <table class="table table-hover table-bordered">
                             <thead>
                                 <tr>
-                                    <th class="col-xs-1" style="text-align:center">Publication</th>
-                                    <th class="col-xs-1" style="text-align:center">Pub Date</th>
-                                    <th class="col-xs-2" style="text-align:center">ET Number</th>
-                                    <th class="col-xs-1" style="text-align:center">ET Date</th>
-                                    <th class="col-xs-2" style="text-align:center">CASH</th>
-                                    <th class="col-xs-2" style="text-align:center">Import Date</th>
-                                    <th class="col-xs-2" style="text-align:center">Ad Base</th>
-                                    <th class="col-xs-1" style="text-align:center">&nbsp;</th>
+                                    <th class="col-xs-3" style="text-align:center">Publication</th>
+                                    <th class="col-xs-3" style="text-align:center">Pub Date</th>                                   
+                                    <th class="col-xs-3" style="text-align:center">Filename</th>
+                                    <th class="col-xs-3" style="text-align:center">&nbsp;</th>
                                 </tr>
                             </thead>
                             <tbody style="min-height:100px;">
                                 <tr ng-repeat="option in ctrl.productList track by $index">
 
-                                    <td class="col-xs-1" style="text-align:center">{{option.pubID}}</td>
-                                    <td class="col-xs-1" style="text-align:center">{{option.pubDate | date:"dd/MM/yyyy"}}</td>
+                                    <td class="col-xs-3" style="text-align:center">{{option.pubID}}</td>
+                                    <td class="col-xs-3" style="text-align:center">{{option.pubDate | date:"dd/MM/yyyy"}}</td>                                    
+                                    <td class="col-xs-3" style="text-align:center">{{option.filename}}</td>
 
-                                    <td class="col-xs-2" style="text-align:center" ng-show="option.etNum_tbd">TBA</td>
-                                    <td class="col-xs-2" style="text-align:center" ng-hide="option.etNum_tbd">{{option.etNum}}</td>
-                                    <td class="col-xs-1" style="text-align:center">{{option.etDate | date:"dd/MM/yyyy"}}</td>
-
-                                    <td class="col-xs-2" style="text-align:center" ng-show="option.cashNum_tbd">TBA</td>
-                                    <td class="col-xs-2" style="text-align:center" ng-hide="option.cashNum_tbd">{{option.cashNum}}</td>
-                                    <td class="col-xs-2" style="text-align:center">{{option.cashDate | date:"dd/MM/yyyy"}}</td>
-
-                                    <td class="col-xs-2" style="text-align:center">{{option.ad_base}}</td>
-
-                                    <td class="col-xs-1" style="text-align:center" ng-show="ctrl.ACL.section7 || option == null">
+                                    <td class="col-xs-3" style="text-align:center" ng-show="ctrl.ACL.section7 || option == null">
                                         &nbsp;
                                     </td>
-                                    <td class="col-xs-1" style="text-align:center; color: black;" ng-hide="ctrl.ACL.section7 || option == null">
+                                    <td class="col-xs-3" style="text-align:center; color: black;" ng-hide="ctrl.ACL.section7 || option == null">
                                         <button type="button" class="btn btn-danger pull-right" ng-show="vm.statusNum <= 2" ng-click="ctrl.deleteRow($index);" style="text-align:center; color: black;"
                                             popover="Delete" popover-trigger="mouseenter">
 											<i class="fa fa-trash-o"></i>													 
