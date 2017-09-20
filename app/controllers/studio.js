@@ -1686,12 +1686,17 @@ app.controller('studioCTRL', function ($state, $auth, $uibModal, $stateParams, $
         } else if (previewNotReady) {
             toastr.error("Please upload an Artwork Preview", { closeButton: true });
         } else if (vm.task.pub_size != vm.task.final_size) {
+            console.log('ad_spend : ' + JSON.stringify(vm.task.ad_spend) + ' | final_ad_spend : ' + JSON.stringify(vm.task.final_ad_spend));
             if (_.isNil(vm.task.final_ad_spend) || vm.task.final_ad_spend == "") {
                 toastr.error("Please update final ad spend.", { closeButton: true });
             } else if (parseFloat(vm.task.final_ad_spend) == 0) {
                 toastr.error("Please update final ad spend (orig. size: " + vm.task.pub_size + " -> final size: " + vm.task.final_size + " ).", { closeButton: true });
             } else {
-                if (parseFloat(vm.task.final_ad_spend) == parseFloat(vm.task.ad_spend)) toastr.error("Please update final ad spend (orig. size: " + vm.task.pub_size + " -> final size: " + vm.task.final_size + " ).", { closeButton: true });
+                if (parseFloat(vm.task.final_ad_spend) == parseFloat(vm.task.ad_spend)) {
+                    toastr.error("Please update final ad spend (orig. size: " + vm.task.pub_size + " -> final size: " + vm.task.final_size + " ).", { closeButton: true });
+                }else{
+                    vm.submitTask('Pending Import');
+                }
             }
             /*
             if (_.isNil(vm.task.final_production_cost)  || vm.task.final_production_cost == "") {

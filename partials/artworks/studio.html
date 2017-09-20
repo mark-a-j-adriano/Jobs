@@ -289,10 +289,10 @@
                         <div class="row">
                             <div class="col-10 col-sm-10">
                                 <div class="form-group">
-                                    <label>Date / Time Required</label>
+                                    <label>Date Required</label>
                                     <p class="input-group">
-                                        <input type="text" class="form-control input-sm fld-att" datetime-picker="dd/MM/yyyy  h:mm a" datepicker-options="ctrl.dateTimePicker.datepickerOptions"
-                                            default-time="9:00" ng-model="ctrl.task.due_date" is-open="ctrl.dateTimePicker.open"
+                                        <input type="text" class="form-control input-sm fld-att" datetime-picker="dd/MM/yyyy" datepicker-options="ctrl.dateTimePicker.datepickerOptions"
+                                            ng-model="ctrl.task.due_date" is-open="ctrl.dateTimePicker.open" enable-time="false"
                                             ng-readonly="ctrl.ACL.section0" />
                                         <span class="input-group-btn">
                                             <button type="button" class="btn btn-default fld-att"   
