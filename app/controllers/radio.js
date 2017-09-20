@@ -48,8 +48,10 @@ app.controller('radioCTRL', function ($state, $auth, $uibModal, $stateParams, $t
             vm.statusNum = 4;
         } else if (tmpStatus == "import completed") {
             vm.statusNum = 5;
-        } else if (tmpStatus == "completed" || tmpStatus == "cancelled") {
+         } else if (tmpStatus == "completed") {
             vm.statusNum = 6;
+        } else if (tmpStatus == "cancelled") {
+            vm.statusNum = 7;
         } else {
             vm.statusNum = 0;
         }

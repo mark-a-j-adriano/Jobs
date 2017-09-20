@@ -63,8 +63,10 @@ app.controller('contentCTRL', function ($state, $auth, $uibModal, $stateParams, 
             vm.statusNum = 4;
         } else if (tmpStatus == "import completed") {
             vm.statusNum = 5;
-        } else if (tmpStatus == "completed" || tmpStatus == "cancelled") {
+        } else if (tmpStatus == "completed") {
             vm.statusNum = 6;
+        } else if (tmpStatus == "cancelled") {
+            vm.statusNum = 7;
         } else {
             vm.statusNum = 0;
         }
@@ -1729,14 +1731,14 @@ app.controller('contentModalCtrl', function ($uibModalInstance, focus, toastr, p
         var errMsg = [];
         if (vm.product.pubID == '') errMsg.push('Publication is required');
         if (_.isNil(vm.product.pubDate)) errMsg.push('Publication date is required');
-       
+
         if (errMsg.length > 0) {
             toastr.error(errMsg[0], { closeButton: true });
         } else {
             var tmp = {
                 pubID: vm.product.pubID,
                 pubName: vm.product.pubName,
-                pubDate: (_.isNil(vm.product.pubDate) ? null : moment(vm.product.pubDate).format('YYYY-MM-DD')),              
+                pubDate: (_.isNil(vm.product.pubDate) ? null : moment(vm.product.pubDate).format('YYYY-MM-DD')),
                 filename: vm.product.filename
             }
             $uibModalInstance.close(tmp);

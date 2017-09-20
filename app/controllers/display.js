@@ -57,6 +57,8 @@ app.controller('displayCTRL', function ($state, $auth, $uibModal, $stateParams, 
             vm.statusNum = 2;
         } else if (tmpStatus == "completed") {
             vm.statusNum = 3;
+        } else if (tmpStatus == "cancelled") {
+            vm.statusNum = 4;
         } else {
             vm.statusNum = 0;
         }

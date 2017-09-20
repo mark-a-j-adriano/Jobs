@@ -339,6 +339,8 @@ app.controller('studioCTRL', function ($state, $auth, $uibModal, $stateParams, $
             vm.statusNum = 5;
         } else if (tmpStatus == "completed") {
             vm.statusNum = 6;
+        } else if (tmpStatus == "cancelled") {
+            vm.statusNum = 7;
         } else {
             vm.statusNum = 0;
         }
@@ -1694,7 +1696,7 @@ app.controller('studioCTRL', function ($state, $auth, $uibModal, $stateParams, $
             } else {
                 if (parseFloat(vm.task.final_ad_spend) == parseFloat(vm.task.ad_spend)) {
                     toastr.error("Please update final ad spend (orig. size: " + vm.task.pub_size + " -> final size: " + vm.task.final_size + " ).", { closeButton: true });
-                }else{
+                } else {
                     vm.submitTask('Pending Import');
                 }
             }

@@ -140,6 +140,8 @@ app.controller('classifiedCTRL', function ($sce, $state, $auth, $uibModal, $stat
             vm.statusNum = 5;
         } else if (tmpStatus == "completed") {
             vm.statusNum = 6;
+        } else if (tmpStatus == "cancelled") {
+            vm.statusNum = 7;
         } else {
             vm.statusNum = 0;
         }

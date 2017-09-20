@@ -1,11 +1,12 @@
-<div id="printSectionId" class="container"  style="padding:0;">
+<div id="printSectionId" class="container" style="padding:0;">
     <!-- Header content -->
     <section class="content" style="background-color:white;min-height: 0px;padding:0">
         <div class="row">
             <div class="col-md-12">
                 <!--<img style="width:100%" src="./lib/img/jobs/JobReqBanner - Display.jpg">-->
                 <div class="box" style="margin-bottom:0px;">
-                    <div class="box-header" id="taskHeader" style="background-image:url('./lib/img/jobs/JobReqBanner - Display.jpg');min-height:65px;" ng-style="ctrl.hdrStyle">
+                    <div class="box-header" id="taskHeader" style="background-image:url('./lib/img/jobs/JobReqBanner - Display.jpg');min-height:65px;"
+                        ng-style="ctrl.hdrStyle">
                         <!--<img style="width:100%" src="./lib/img/jobs/JobReqBanner - Display.jpg">-->
                         <div class="box-tools pull-right">
                             <button type="button" class="btn btn-box-tool" title="Close Task" style="background-color:rgba(255,255,255,0.5);" ng-click="ctrl.gotoMain();">
@@ -792,13 +793,14 @@
                     </button>
                 </div>
 
-                <div class="pull-right" style="margin-right:25px;" ng-hide="(ctrl.statusNum == 0 || ctrl.statusNum == 3)">
+                <div class="pull-right" style="margin-right:25px;">
                     <button type="button" class="btn btn-default btn-sm" ng-click="ctrl.developerLog=!ctrl.developerLog" ng-show="ctrl.isLogEnabled"
                         style="border: 1px solid #a1a1a1;border-radius: 25px;background:white;">
                      <i class="fa fa-question-circle"></i>
                     </button>
 
-                    <button type="button" class="btn btn-primary bg-teal-gradient" ng-click="ctrl.revertTask();" style="border: 1px solid #a1a1a1;border-radius: 25px;margin-left: 10px;margin-right: 10px;">
+                    <button type="button" class="btn btn-primary bg-teal-gradient" ng-click="ctrl.revertTask();" ng-hide="(ctrl.statusNum < 1 || ctrl.statusNum > 2)"
+                        style="border: 1px solid #a1a1a1;border-radius: 25px;margin-left: 10px;margin-right: 10px;">
                          <i class="fa fa-comments-o"></i> Chat
                     </button>
 
@@ -900,8 +902,9 @@
                     </button>
                 </div>
 
-                <div class="pull-right" style="margin-right:25px;" ng-hide="(ctrl.statusNum == 0 || ctrl.statusNum == 3)">
-                    <button type="button" class="btn btn-primary bg-teal-gradient" ng-click="ctrl.revertTask();" style="border: 1px solid #a1a1a1;border-radius: 25px;margin-left: 10px;margin-right: 10px;">
+                <div class="pull-right" style="margin-right:25px;">
+                    <button type="button" class="btn btn-primary bg-teal-gradient" ng-click="ctrl.revertTask();" ng-hide="(ctrl.statusNum < 1 || ctrl.statusNum > 2)"
+                        style="border: 1px solid #a1a1a1;border-radius: 25px;margin-left: 10px;margin-right: 10px;">
                          <i class="fa fa-comments-o"></i> Chat
                     </button>
 

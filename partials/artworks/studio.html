@@ -869,7 +869,7 @@
                     </button>
                 </div>
 
-                <div class="pull-right" style="margin-right:25px;" ng-hide="(ctrl.statusNum == 0 || ctrl.statusNum == 3)">
+                <div class="pull-right" style="margin-right:25px;">
                     <button type="button" class="btn btn-default btn-sm" ng-click="ctrl.developerLog=!ctrl.developerLog" ng-show="ctrl.isLogEnabled"
                         style="border: 1px solid #a1a1a1;border-radius: 25px;background:white;">
                      <i class="fa fa-question-circle"></i>
@@ -879,7 +879,8 @@
                          <i class="fa fa-comments-o"></i> Chat
                     </button>
 
-                    <button type="button" class="btn btn-info" ng-click="ctrl.printThis('printSectionId');" style="border: 1px solid #a1a1a1;border-radius: 25px;background:maroon;">
+                    <button type="button" class="btn btn-info" ng-click="ctrl.printThis('printSectionId');" ng-hide="(ctrl.statusNum < 1 || ctrl.statusNum > 5)"
+                        style="border: 1px solid #a1a1a1;border-radius: 25px;background:maroon;">
                          <i class="fa fa-print"></i> Print
                     </button>
 
@@ -986,13 +987,14 @@
                     </button>
                 </div>
 
-                <div class="pull-right" style="margin-right:25px;" ng-hide="(ctrl.statusNum == 0 || ctrl.statusNum == 3)">
+                <div class="pull-right" style="margin-right:25px;">
                     <button type="button" class="btn btn-default btn-sm" ng-click="ctrl.developerLog=!ctrl.developerLog" ng-show="ctrl.isLogEnabled"
                         style="border: 1px solid #a1a1a1;border-radius: 25px;background:white;">
                      <i class="fa fa-question-circle"></i>
                     </button>
 
-                    <button type="button" class="btn btn-primary bg-teal-gradient" ng-click="ctrl.revertTask();" style="border: 1px solid #a1a1a1;border-radius: 25px;margin-left: 10px;margin-right: 10px;">
+                    <button type="button" class="btn btn-primary bg-teal-gradient" ng-click="ctrl.revertTask();" ng-hide="(ctrl.statusNum < 1 || ctrl.statusNum > 5)"
+                        style="border: 1px solid #a1a1a1;border-radius: 25px;margin-left: 10px;margin-right: 10px;">
                          <i class="fa fa-comments-o"></i> Chat
                     </button>
 
