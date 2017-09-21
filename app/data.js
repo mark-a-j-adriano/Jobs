@@ -258,6 +258,31 @@ app.factory("DataFactory", [
       return deferred.promise;
     }
 
+
+    obj.getCLSMembers = function (filters) {
+      //GET MEMBER  INFORMATION
+      //GET REQUESTOR / CC RESPONSE INFORMATION
+      // FOR STATE RESOLVE
+      //console.log("[getMembers] - user_data : " + JSON.stringify(filters), filters);
+      var deferred = $q.defer();
+      var httpURL = base_url + "/json/users/classified-designers";
+      $http.post(httpURL, filters).then(
+        //success
+        function (response) {
+          deferred.resolve(response.data);
+          //console.log("[getMembers] - response.data : " + JSON.stringify(response.data));
+          //console.log("[getMembers] - response.status : " + JSON.stringify(response.status));
+        },
+        // error handler
+        function (response) {
+          deferred.reject(response);
+          //console.log("[selectMember] Ooops, something went wrong..  \n " + JSON.stringify(response));
+        }
+      );
+
+      return deferred.promise;
+    };
+
     obj.getMembers = function (filters) {
       //GET MEMBER  INFORMATION
       //GET REQUESTOR / CC RESPONSE INFORMATION

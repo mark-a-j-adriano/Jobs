@@ -1344,7 +1344,7 @@ app.controller('classifiedCTRL', function ($sce, $state, $auth, $uibModal, $stat
         };
 
         if (order == "1") {
-            DataFactory.getMember(tmpData).then(
+            DataFactory.getCLSMembers(tmpData).then(
                 //success
                 function (response) {
                     //console.log('[selectUser - getMember] - response.data : ' + JSON.stringify(response.data));
@@ -1377,7 +1377,7 @@ app.controller('classifiedCTRL', function ($sce, $state, $auth, $uibModal, $stat
                         return tmp;
                     },
                     members: function (DataFactory) {
-                        return DataFactory.getMembers(tmpData);
+                        return DataFactory.getCLSMembers(tmpData);
                     }
                 }
             }).result.then(function (submitVar) {
