@@ -888,7 +888,13 @@
                         style="margin-left: 10px;">
                         <i class="fa fa-reply"></i> &nbsp; Request Re-submission
                     </button>
+                    <!--
                     <button type="button" class="btn btn-success" ng-click="ctrl.isAssigned();" style="margin-left: 10px;" ng-show="ctrl.task.status=='Pending Assignment' || ctrl.statusNum == 0"
+                        style="margin-left: 10px;">
+                        <i class="fa fa-save"></i> &nbsp; Save Assignments
+                    </button>
+                    -->
+                     <button type="button" class="btn btn-success" ng-click="ctrl.submitTask('In Progress');" style="margin-left: 10px;" ng-show="ctrl.task.status=='Pending Assignment' || ctrl.statusNum == 0"
                         style="margin-left: 10px;">
                         <i class="fa fa-save"></i> &nbsp; Save Assignments
                     </button>
