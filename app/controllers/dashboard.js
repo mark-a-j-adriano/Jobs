@@ -46,7 +46,7 @@ app.controller('salesDashCTRL', function ($auth, $state, $stateParams, $uibModal
   vm.getJobList = function (tmpStatus) {
     ////console.log('[getJobList] - START');
     //pass in: {username, status}
-    var filter = { username: currentUser.id, status: tmpStatus, as_sales: true };
+    var filter = { username: currentUser.id, status: tmpStatus, as_sales: true, dashboard:"Sales" };
     DataFactory.getJobList(filter).then(
       //success
       function (response) {
@@ -294,7 +294,7 @@ app.controller('designerDashCTRL', function ($auth, $state, $stateParams, $uibMo
   vm.getTaskList = function (tmpStatus) {
     ////console.log('[getJobList] - START');
     //pass in: {username, status}
-    var filter = { username: currentUser.id, status: tmpStatus, as_sales: false };
+    var filter = { username: currentUser.id, status: tmpStatus, as_sales: false, dashboard:"Designer" };
     DataFactory.getJobList(filter).then(
       //success
       function (response) {
@@ -494,7 +494,7 @@ app.controller('copywriterDashCTRL', function ($auth, $state, $stateParams, $uib
   vm.getTaskList = function (tmpStatus) {
     ////console.log('[getJobList] - START');
     //pass in: {username, status}
-    var filter = { username: currentUser.id, status: tmpStatus, as_sales: false };
+    var filter = { username: currentUser.id, status: tmpStatus, as_sales: false, dashboard: "Copywriter" };
     DataFactory.getJobList(filter).then(
       //success
       function (response) {
@@ -696,7 +696,7 @@ app.controller('coordinatorDashCTRL', function ($auth, $state, $stateParams, $ui
   vm.getTaskList = function (tmpStatus) {
     ////console.log('[getJobList] - START');
     //pass in: {username, status}
-    var filter = { username: currentUser.id, status: tmpStatus, as_sales: false };
+    var filter = { username: currentUser.id, status: tmpStatus, as_sales: false, dashboard:"Coordinator" };
     DataFactory.getJobList(filter).then(
       //success
       function (response) {
